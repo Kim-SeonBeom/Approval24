@@ -1,0 +1,323 @@
+@charset "UTF-8";
+/*
+ * ========================================
+ * 1. HEADER 전체 구조 및 상단 바 (.top-bar)
+ * ========================================
+ */
+.header {
+    width: 100%;
+    /* height: 268px; - 전체 높이는 내부 요소에 따라 유동적으로 조절 */
+    box-sizing: border-box;
+    /* position: fixed; (헤더 고정 시 필요) */
+    /* z-index: 1000; */
+    background-color: #ffffff; /* 배경색 */
+}
+
+/* 최상단 정부 고시 바 */
+.top-bar {
+    width: 100%;
+    height: 48px;
+    background: #0087BA; /* 파란색 배경 */
+    display: flex;
+    align-items: center;
+    padding-left: 200px; /* 전체 중앙 정렬 후 왼쪽 여백을 주는 방식 */
+    box-sizing: border-box;
+}
+
+.gov-logo-1 {
+    /* 실제 로고 이미지 (예: 태극 문양)가 들어갈 공간 */
+    width: 32px;
+    height: 32px;
+    background: #ffffff; /* 임시 배경 */
+    border-radius: 4px;
+    margin-right: 14px;
+}
+
+.unofficial-gov-notice {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+/*
+ * ========================================
+ * 2. 메인 로고 및 검색 (.frame-7)
+ * ========================================
+ */
+.frame-7 {
+    width: 1280px; /* 고정 너비 또는 max-width */
+    height: 147px;
+    margin: 0 auto; /* 중앙 정렬 */
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-between; /* 요소들을 양 끝으로 분산 */
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+/* 로고 그룹 */
+.frame-47 {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* 공간 축소 방지 */
+}
+
+.logo-image {
+    width: 96px; /* 이미지 너비 */
+    height: 96px; /* 이미지 높이 */
+    background-image: url('${pageContext.request.contextPath}/resources/images/work24.jpg'); /* ⚠️ 이미지 경로 확인 */
+    background-size: cover;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 40px;
+    color: #000000;
+}
+
+/* 검색창 컨테이너 */
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 348px; /* 너비 고정 */
+    height: 57px;
+    border: 1px solid #000000;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    margin-right: 20px; /* 로그인/알림 그룹과의 간격 */
+}
+
+.search-input-field {
+    flex-grow: 1; /* 남은 공간 채우기 */
+    height: 100%;
+    border: none;
+    padding: 0 15px;
+    font-family: 'Inter';
+    font-size: 18px;
+    line-height: 22px;
+    outline: none;
+}
+
+.search-button-container {
+    width: 90px;
+    height: 100%;
+    background: #D9D9D9; /* 버튼 배경색 */
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.search-button-text {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 18px;
+    color: #000000;
+}
+
+/* 알림 및 로그인 그룹 (.frame-9, .frame-8) */
+.frame-9, .frame-8 {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.notification-btn {
+    width: 59px;
+    height: 57px;
+    background: #D9D9D9;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 18px;
+    color: #000000;
+    cursor: pointer;
+    margin-right: 12px;
+}
+
+/* 로그인 버튼 (로그아웃 상태) */
+.login-group {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.login-group img {
+    width: 57px;
+    height: 57px;
+    margin-right: 10px;
+}
+.login-btn {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+/* 로그인 완료 상태 */
+.logged-in-group {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 57px;
+    height: 57px;
+    background: #0087BA;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.user-name {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    color: #000000;
+    max-width: 150px; /* 긴 ID를 위한 최대 너비 설정 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* 드롭다운 메뉴 스타일 (JSP 코드에 있음) */
+.dropdown-menu {
+    /* 드롭다운 메뉴 위치 및 스타일 */
+    display: none; /* 초기 상태 숨김 */
+    position: absolute;
+    right: 40px; /* .frame-7의 오른쪽 패딩에 맞춤 */
+    top: 195px; /* 헤더 높이에 따라 조절 */
+    width: 300px;
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1001;
+    padding: 10px 0;
+}
+
+/* 드롭다운 메뉴가 열렸을 때 */
+.logged-in-group[data-dropdown-menu].active + .dropdown-menu {
+    display: block;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+}
+.avatar-large {
+    width: 60px;
+    height: 60px;
+    /* ... (user-avatar와 동일한 스타일) */
+    background: #0087BA;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 24px;
+    margin-right: 15px;
+}
+.id-display {
+    margin: 0;
+    font-weight: 600;
+}
+.dropdown-menu hr {
+    border: none;
+    border-top: 1px solid #EEEEEE;
+    margin: 5px 0;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+.menu-item:hover {
+    background: #F0F0F0;
+}
+/* 계정 목록 항목 */
+.account-switch-item {
+    padding-left: 15px;
+}
+.avatar-small {
+    width: 30px;
+    height: 30px;
+    background: #AAAAAA;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 14px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+/*
+ * ========================================
+ * 3. 카테고리 메뉴 (.category-menu)
+ * ========================================
+ */
+.category-menu {
+    width: 100%;
+    height: 73px;
+    background: #C4C4C4; /* 배경색 */
+    display: flex;
+    justify-content: center; /* 버튼들을 중앙으로 모음 */
+    align-items: center;
+    padding: 0 40px; /* 내부 여백 */
+    box-sizing: border-box;
+    border-top: 1px solid #000000; /* 상단 구분선 */
+}
+
+.category-menu a {
+    flex: 1; /* 각 버튼이 동일한 너비를 갖도록 설정 */
+    max-width: 200px; /* 버튼 최대 너비 제한 (선택 사항) */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    border-right: 1px solid #000000; /* 버튼 간 구분선 */
+    box-sizing: border-box;
+    background-color: #C4C4C4; /* 기본 배경색 */
+    transition: background-color 0.3s;
+}
+
+.category-menu a:last-child {
+    border-right: none; /* 마지막 버튼 오른쪽 선 제거 */
+}
+
+/* 활성화된 카테고리 스타일 */
+.category-menu a.active {
+    background-color: #8C8C8C; /* 활성화 배경색 */
+    color: #FFFFFF; /* 활성화 텍스트 색상 */
+}

@@ -1,0 +1,314 @@
+@charset "UTF-8";
+/* 메인 콘텐츠 컨테이너 (header 바로 아래에 위치) */
+.main-content {
+    /* 기존 header 높이를 고려하여 top 설정, 또는 relative */
+    padding-top: 20px; /* 헤더와의 간격 */
+    width: 1280px; /* 전체 폭 고정 (이미지 기반) */
+    margin: 0 auto; /* 중앙 정렬 */
+    box-sizing: border-box;
+    /* height: 1255px; (화면 높이에 따라 조절되도록 auto로 변경) */
+    position: relative; /* 자식 absolute 요소 기준 */
+}
+
+/* 홈모양 > 대기 (카테고리 상태) */
+.status-path {
+    height: 67px;
+    display: flex;
+    align-items: center;
+    padding-left: 44px; /* 왼쪽 여백 */
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+/* 접수 서식 섹션 */
+.reception-info-section {
+    display: flex; /* Flexbox로 가로 정렬 */
+    height: 247px;
+    border: 1px solid #000000; /* 전체 테두리 */
+    margin-bottom: 20px; /* 아래 간격 */
+}
+
+/* 접수 라벨 (왼쪽 열) */
+.reception-label-column {
+    width: 253px; /* 고정 너비 */
+    background: #ADA4A4;
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: space-around; /* 아이템 간 간격 균등 분배 */
+    padding: 10px 0; /* 상하 패딩 */
+    box-sizing: border-box;
+}
+
+.reception-label-item {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    padding-left: 15px; /* 텍스트 왼쪽 여백 */
+    height: 24px; /* 각 아이템 높이 */
+    display: flex;
+    align-items: center;
+}
+
+/* 접수 상세 내용 (오른쪽 열) */
+.reception-detail-column {
+    flex-grow: 1; /* 남은 공간 모두 사용 */
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: space-around;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.reception-detail-item {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    padding-left: 15px; /* 텍스트 왼쪽 여백 */
+    height: 24px; /* 각 아이템 높이 */
+    display: flex;
+    align-items: center;
+}
+
+/* 날짜 및 처리기한 라인 */
+.detail-date-line, .detail-department-line {
+    display: flex; /* 내부 아이템 가로 정렬 */
+    height: 49.4px; /* 이미지 기준 높이 */
+    align-items: center;
+    padding: 0; /* 기본 패딩 제거 */
+}
+
+.detail-date-line > .date-item,
+.detail-department-line > .department-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 15px; /* 각 항목의 왼쪽 패딩 */
+}
+
+.detail-date-line .data-text,
+.detail-department-line .data-text {
+    font-size: 20px;
+    line-height: 24px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.process-deadline-box, .담당자-box {
+    flex-grow: 1; /* 남은 공간 채우기 */
+    display: flex;
+    align-items: center;
+    background: #FFFFFF; /* 이미지와 동일한 배경색 */
+    height: 100%;
+    padding-left: 0; /* 내부 패딩은 label과 data-text에서 조절 */
+}
+.process-deadline-box .deadline-label,
+.담당자-box .담당자-label {
+    background: #ADA2A2;
+    height: 50px;
+    width: 188px; /* 너비 고정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-right: 12px; /* 라벨과 데이터 사이 간격 */
+    flex-shrink: 0; /* 축소 방지 */
+}
+
+/* 결제내용 섹션 */
+.payment-content-section {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 439px;
+    border: 1px solid #000000;
+    margin-bottom: 20px;
+}
+
+.payment-header {
+    width: 100%;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid #000000; /* 하단 테두리 추가 */
+}
+
+.payment-title {
+    padding-left: 15px;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+.payment-body {
+    flex-grow: 1; /* 남은 공간 모두 사용 */
+    width: 100%;
+    padding: 15px; /* 내용 패딩 */
+    box-sizing: border-box;
+    border-bottom: 1px solid #000000; /* 하단 테두리 */
+}
+
+.payment-text {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    /* 줄바꿈을 위해 display: block */
+    display: block;
+}
+
+.attachment-section {
+    box-sizing: border-box;
+    width: 100%;
+    height: 49px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.attachment-button {
+    width: 135px;
+    height: 100%;
+    background: #6EDBFF;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    flex-shrink: 0; /* 축소 방지 */
+    margin-right: 15px; /* 버튼과 파일 이름 사이 간격 */
+}
+
+.attachment-filename span {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+/* 진행내역 섹션 */
+.progress-history-section {
+    height: 242px;
+    margin-bottom: 20px; /* 아래 간격 */
+    box-sizing: border-box;
+}
+
+.progress-history-title {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    padding-left: 13px;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+}
+
+.progress-table {
+    height: 175px; /* 58.33 * 3 = 174.99px */
+    display: grid;
+    grid-template-rows: repeat(3, 1fr); /* 3줄 */
+    grid-template-columns: 460px 360px 460px; /* 3열, 고정 너비 */
+    border: 1px solid #BBB5B5; /* 전체 테이블 테두리 */
+    box-sizing: border-box;
+}
+
+.table-header-row {
+    display: contents; /* grid-template-columns에 따라 자식 배치 */
+}
+
+.table-header-cell {
+    background: #BBB5B5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    border-right: 1px solid #000000; /* 각 셀 사이 구분선 */
+    border-bottom: 1px solid #000000;
+}
+.table-header-cell:last-child {
+    border-right: none; /* 마지막 셀 오른쪽 테두리 제거 */
+}
+
+.table-row {
+    display: contents; /* grid-template-columns에 따라 자식 배치 */
+}
+.table-row .table-cell {
+    border: 1px solid #BBB5B5; /* 각 셀 테두리 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px; /* 데이터 폰트 크기 */
+    color: #333;
+    box-sizing: border-box;
+}
+.table-row:first-of-type .table-cell { /* 첫번째 데이터 줄 */
+    border-top: none; /* 헤더와 붙어있으므로 위 테두리 제거 */
+}
+.table-row .table-cell:first-child { /* 첫번째 셀 */
+    border-left: none; /* 왼쪽 테두리 제거 */
+}
+.table-row .table-cell:last-child { /* 마지막 셀 */
+    border-right: none; /* 오른쪽 테두리 제거 */
+}
+.progress-table .table-row:last-of-type .table-cell {
+    border-bottom: none; /* 마지막 줄 아래 테두리 제거 */
+}
+
+
+/* 액션 버튼 그룹 */
+.action-buttons {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    gap: 20px; /* 버튼 사이 간격 */
+    padding: 62px 0; /* 상하 패딩 (bottom: 62px에 해당) */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.approve-btn, .reject-btn {
+    width: 160px;
+    height: 60px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000; /* 승인 버튼 텍스트 색 */
+}
+
+.approve-btn {
+    background: #14EA4D; /* 승인 버튼 배경색 */
+}
+
+.reject-btn {
+    background: #FB324D; /* 반려 버튼 배경색 */
+    color: #FFFFFF; /* 반려 버튼 텍스트 색 */
+}

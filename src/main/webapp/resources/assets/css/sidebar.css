@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+/* 1. 기본 상태: SVG 이미지에 흑백 + 투명도 필터 적용 (비활성화 상태) */
+/* 이 코드가 인라인 스타일이 없는 상태에서 흐림 효과를 만듭니다. */
+.navbar-nav .nav-icon-blur {
+    filter: grayscale(100%) opacity(0.5) !important; 
+    opacity: 0.5 !important; 
+    transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* 2. Hover 상태: 필터 제거 (마우스 올렸을 때 선명하게) */
+.navbar-nav .nav-link:hover .nav-icon-blur {
+    filter: none !important; 
+    opacity: 1 !important; 
+}
+
+/* 3. 텍스트 흐림 효과 (비활성화 상태) */
+.navbar-nav .nav-item .nav-link span {
+    opacity: 0.5 !important;
+    transition: opacity 0.2s ease;
+}
+/* Hover 시 텍스트 선명하게 */
+.navbar-nav .nav-link:hover span {
+    opacity: 1 !important;
+}
+
+/* ⚠️ Active 클래스 관련 CSS는 모두 제거하세요! */
