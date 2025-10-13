@@ -17,9 +17,14 @@ public class testcontroller {
 		return "tables";
 	}
 	
-	@GetMapping("charts")
+	@GetMapping("/charts")
 	public String charts() {
 		return "charts";
+	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "login";
 	}
 
 }
