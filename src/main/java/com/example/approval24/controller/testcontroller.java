@@ -11,5 +11,10 @@ public class testcontroller {
 		System.out.println("되냐?");
 		return "index";
 	}
+	
+	@GetMapping("/tables")
+	public String tables() {
+		return "tables";
+	}
 
 }
