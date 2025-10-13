@@ -16,5 +16,10 @@ public class testcontroller {
 	public String tables() {
 		return "tables";
 	}
+	
+	@GetMapping("charts")
+	public String charts() {
+		return "charts";
+	}
 
 }
