@@ -11,61 +11,63 @@
                 <div class="sidebar-brand-text mx-3">결재24</div>
             </a>
             </div>
-            
+
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-    			<a class="nav-link" href="/approval24/">
-        			<img src="${pageContext.request.contextPath}/resources/assets/img/home.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px; ">
-        		<span>메인</span></a>
-			</li>
+                <a class="nav-link" href="/approval24/">
+                	<img src="${pageContext.request.contextPath}/resources/assets/img/home.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px; ">
+                    <span>메인</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
-            <!-- Nav Item - Dropdown -->
+
+            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>실업급여</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                    	<h6 class="collapse-header">처리 현황</h6>
+                        <h6 class="collapse-header">처리 현황:</h6>
                         <a class="collapse-item" href="/approval24/tables">대기</a>
                         <a class="collapse-item" href="/approval24/tables">반려</a>
                         <a class="collapse-item" href="/approval24/tables">승인</a>
                     </div>
                 </div>
             </li>
+
             
-            
-            <!-- Nav Item - Tables -->
+            <!-- Nav Item - 실업인정 -->
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/tables">
-                   <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>실업인정</span></a>
             </li>
             
-            <!-- Nav Item - Tables -->
+            <!-- Nav Item - 조기 재취업수당 -->
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/tables">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>조기 재취업수당</span></a>
             </li>
-               <!-- Divider -->
+            
+            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - 공지사항 -->
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/charts">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>공지사항</span></a>
             </li>
-            
+
+            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
             <!-- Sidebar Search -->
@@ -81,7 +83,8 @@
                     </div>
                  </div>
             </form>
-                    
+            
+            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
