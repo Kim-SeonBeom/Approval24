@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -149,6 +150,18 @@
                                             <td>2013/03/03</td>
                                             <td>$342,000</td>
                                         </tr>
+                                        
+	                                    <c:forEach var="item" items="${list}">
+											<tr>
+												<td>${item.mainCode}</td>
+														<td>${item.productName}</td>
+												<td>${item.manufacturerName}</td>
+												<td>${item.quantity}</td>
+												<td>${item.transactionType}</td>
+												<td>${item.transactionDate}</td>
+											</tr>
+										</c:forEach>
+										
                                     </tbody>
                                 </table>
                             </div>
