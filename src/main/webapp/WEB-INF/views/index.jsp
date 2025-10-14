@@ -262,7 +262,9 @@
             </div>
         </div>
     </div>
-    
+
+<!-- Logout Modal-->
+<%@ include file="/WEB-INF/views/common/logoutModal.jsp" %>
 <!-- footer 영역 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
     

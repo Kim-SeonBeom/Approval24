@@ -21,7 +21,7 @@
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar --><!-- Logout Modal-->
+                <!-- Topbar -->
                     	<%@ include file="/WEB-INF/views/common/navbar.jsp" %>
                 <!-- End of Topbar -->
 
@@ -181,7 +181,8 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+<!-- Logout Modal-->
+<%@ include file="/WEB-INF/views/common/logoutModal.jsp" %>
 <!-- footer 영역 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
