@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>결재해조</title>
+    
+    <link rel="icon" href="${pageContext.request.contextPath}/resources/assets/img/work24.png"/>
 
     <!-- Custom fonts for this template-->
     <link href="resources/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

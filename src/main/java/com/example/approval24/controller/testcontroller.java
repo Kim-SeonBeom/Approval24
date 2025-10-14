@@ -8,7 +8,6 @@ public class testcontroller {
 	
 	@GetMapping("/")
 	public String testmain() {
-		System.out.println("되냐?");
 		return "index";
 	}
 	
@@ -25,6 +24,12 @@ public class testcontroller {
 	@GetMapping("/login")
 	public String login() {
 		return "login";
+	}
+	
+	@GetMapping("/pending")
+	public String pending() {
+		//잘 하는 집을 안 가봐서 그래
+		return "pending";
 	}
 
 }

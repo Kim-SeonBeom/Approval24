@@ -4,6 +4,7 @@
 <html>
 <!-- header 영역 -->
 <head>
+ <title>결재해조</title>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 </head>
 
