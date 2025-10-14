@@ -142,10 +142,10 @@
 								</table>
 
 							<div class="text-right mt-4 mb-4">
-                    <button type="button" class="btn btn-success btn-lg shadow-sm mr-2" onclick="approvePayment()">
+                    <button type="button" class="btn btn-primary btn-lg shadow-sm mr-2"  data-toggle="modal" data-target="#approveModal" >
 						<i class="fas fa-check-circle"></i> 승인
 					</button>
-                    <button type="button" class="btn btn-danger btn-lg shadow-sm" onclick="rejectPayment()">
+                    <button type="button" class="btn btn-danger btn-lg shadow-sm" data-toggle="modal" data-target="#rejectModal">
 						<i class="fas fa-times-circle"></i> 반려
 					</button>
 				</div>
@@ -155,5 +155,47 @@
             </div>
 	</div>
 	</div>
+    
+   <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">반려 사유</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                     <textarea class="form-control" id="rejectComment" rows="4" placeholder="반려 사유를 입력하세요.(필수)" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                     <button type="button" class="btn btn-danger" onclick="confirmReject()">반려 확인</button> 
+                </div>
+            </div>
+        </div>
+    </div>	
+    
+    <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">승인 코멘트</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" id="approveComment" rows="4" placeholder="승인 코멘트를 입력하세요. (선택)" ></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmApprove()">승인 확인</button> 
+                </div>
+            </div>
+        </div>
+    </div>	
+    
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
