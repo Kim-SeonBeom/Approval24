@@ -5,6 +5,13 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<!-- 테이블 hover -->
+<style>
+tbody tr:hover {
+  background-color: #f5f5f5;
+  color: blue;
+}
+</style>
 </head>
 
 <body id="page-top">
@@ -54,104 +61,102 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Brielle Williamson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>New York</td>
-                                            <td>61</td>
-                                            <td>2012/12/02</td>
-                                            <td>$372,000</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Herrod Chandler</td>
-                                            <td>Sales Assistant</td>
-                                            <td>San Francisco</td>
-                                            <td>59</td>
-                                            <td>2012/08/06</td>
-                                            <td>$137,500</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Rhona Davidson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>55</td>
-                                            <td>2010/10/14</td>
-                                            <td>$327,900</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Colleen Hurst</td>
-                                            <td>Javascript Developer</td>
-                                            <td>San Francisco</td>
-                                            <td>39</td>
-                                            <td>2009/09/15</td>
-                                            <td>$205,500</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Sonya Frost</td>
-                                            <td>Software Engineer</td>
-                                            <td>Edinburgh</td>
-                                            <td>23</td>
-                                            <td>2008/12/13</td>
-                                            <td>$103,600</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Jena Gaines</td>
-                                            <td>Office Manager</td>
-                                            <td>London</td>
-                                            <td>30</td>
-                                            <td>2008/12/19</td>
-                                            <td>$90,560</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>Quinn Flynn</td>
-                                            <td>Support Lead</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2013/03/03</td>
-                                            <td>$342,000</td>
-                                        </tr>
-                                        
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230690</td>
+										    <td>실업급여 신규 신청</td>
+										    <td>정동윤</td>
+										    <td>대기</td>
+										    <td>2025-10-13</td>
+										    <td>2025-11-22</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230691</td>
+										    <td>실업급여 재신청</td>
+										    <td>김서연</td>
+										    <td>대기</td>
+										    <td>2025-10-14</td>
+										    <td>2025-11-23</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230692</td>
+										    <td>실업급여 지급 연장 요청</td>
+										    <td>박준혁</td>
+										    <td>대기</td>
+										    <td>2025-10-15</td>
+										    <td>2025-11-24</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230693</td>
+										    <td>실업급여 재심사 신청</td>
+										    <td>이수진</td>
+										    <td>대기</td>
+										    <td>2025-10-16</td>
+										    <td>2025-11-25</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230694</td>
+										    <td>실업급여 수급자격 변경신청</td>
+										    <td>최민호</td>
+										    <td>대기</td>
+										    <td>2025-10-17</td>
+										    <td>2025-11-26</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230695</td>
+										    <td>실업급여 중지 해제 신청</td>
+										    <td>김나연</td>
+										    <td>대기</td>
+										    <td>2025-10-18</td>
+										    <td>2025-11-27</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230696</td>
+										    <td>실업급여 구직활동 인정신청</td>
+										    <td>윤지호</td>
+										    <td>대기</td>
+										    <td>2025-10-19</td>
+										    <td>2025-11-28</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230697</td>
+										    <td>실업급여 수급기간 연장신청</td>
+										    <td>박서준</td>
+										    <td>대기</td>
+										    <td>2025-10-20</td>
+										    <td>2025-11-29</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230698</td>
+										    <td>실업급여 지급 재개 신청</td>
+										    <td>정하은</td>
+										    <td>대기</td>
+										    <td>2025-10-21</td>
+										    <td>2025-11-30</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230699</td>
+										    <td>실업급여 신청서 수정요청</td>
+										    <td>이도현</td>
+										    <td>대기</td>
+										    <td>2025-10-22</td>
+										    <td>2025-12-01</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230700</td>
+										    <td>실업급여 추가서류 제출신청</td>
+										    <td>한유진</td>
+										    <td>대기</td>
+										    <td>2025-10-23</td>
+										    <td>2025-12-02</td>
+										  </tr>
+										  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										    <td>2058230701</td>
+										    <td>실업급여 상담신청</td>
+										    <td>조민재</td>
+										    <td>대기</td>
+										    <td>2025-10-24</td>
+										    <td>2025-12-03</td>
+										  </tr>
 	                                    <%-- <c:forEach var="item" items="${list}">
 											<tr>
 												<td>${item.mainCode}</td>

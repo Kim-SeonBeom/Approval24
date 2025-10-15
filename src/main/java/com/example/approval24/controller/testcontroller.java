@@ -16,9 +16,9 @@ public class testcontroller {
 		return "tables";
 	}
 	
-	@GetMapping("/charts")
+	@GetMapping("/notice")
 	public String charts() {
-		return "charts";
+		return "notice";
 	}
 	
 	@GetMapping("/login")

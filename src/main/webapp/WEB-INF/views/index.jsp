@@ -6,6 +6,13 @@
 <head>
  <title>결재해조</title>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<!-- 테이블 hover -->
+<style>
+tbody tr:hover {
+  background-color: #f5f5f5;
+  color: blue;
+}
+</style>
 </head>
 
 <body id="page-top">
@@ -166,54 +173,43 @@
 
                         <div class="col-lg-6 mb-4">
 
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">민원 조회</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                            src="resources/assets/img/undraw_posting_photo.svg" alt="...">
-                                    </div>
-                                    <p>민원을 조회해 보세요!</p>
-                                    <a href="/approval24/tables">민원 조회하기 &rarr;</a>
-                                </div>
-                            </div>
+                            <!-- DataTables Example -->
+		                    <div class="card shadow mb-4">
+		                        <div class="card-header py-3">
+		                            <h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
+		                        </div>
+		                        <div class="card-body">
+		                            <div class="table-responsive">
+		                                <table class="table table-bordered" id="dataTable_index" width="100%" cellspacing="0">
+		                                    
+		                                    <tbody>
+		                                          <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												    <td>[공지] 10월 20일(월) 시스템 정기 점검 안내</td>
+												    <td>2025-10-10</td>
+												  </tr>
+												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												    <td>[업데이트] 실업급여 신청서 양식이 새롭게 변경되었습니다.</td>
+												    <td>2025-10-12</td>
+												  </tr>
+												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												    <td>[알림] 홈페이지 접속 지연 현상 해결 및 복구 완료 안내</td>
+												    <td>2025-10-13</td>
+												  </tr>
+												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												    <td>[공지] 실업급여 관련 상담센터 운영시간 단축 안내 (09:00~17:00)</td>
+												    <td>2025-10-14</td>
+												  </tr>
+												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+													<td>[안내] 11월 공휴일(개천절, 한글날) 고객센터 휴무 일정 공지</td>
+													<td>2025-10-15</td>
+												  </tr>
+		                                    </tbody>
+		                                </table>
+		                            </div>
+		                            <a href="/approval24/notice">공지사항 조회하기 &rarr;</a>
+		                        </div>
+		                    </div>
                         </div>
-                        
-                    <!-- DataTables Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable_index" width="100%" cellspacing="0">
-                                    
-                                    <tbody>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1</td>
-                                            <td>2025-10-13</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2</td>
-                                            <td>2025-10-14</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2</td>
-                                            <td>2025-10-14</td>
-                                        </tr>
-                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
-                                            <td>내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2</td>
-                                            <td>2025-10-14</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <a href="/approval24/charts">공지사항 조회하기 &rarr;</a>
-                        </div>
-                    </div>
                     </div>
 
                 </div>
@@ -249,7 +245,7 @@
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 <script>
-$(document).on('click', '#dataTable tbody tr.clickable-row', function (e) {
+$(document).on('click', '#dataTable_index tbody tr.clickable-row', function (e) {
   if ($(e.target).closest('a, button, input, [data-no-row-click]').length) return;
 
   const url = $(this).data('href');

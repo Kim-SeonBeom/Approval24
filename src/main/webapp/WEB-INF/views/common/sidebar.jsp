@@ -59,9 +59,9 @@
                <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - notice -->
             <li class="nav-item">
-                <a class="nav-link" href="/approval24/charts">
+                <a class="nav-link" href="/approval24/notice">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>공지사항</span></a>
             </li>
