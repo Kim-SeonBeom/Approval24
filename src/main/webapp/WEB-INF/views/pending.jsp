@@ -34,7 +34,7 @@
 				<!-- 페이지 서식 -->
 				<!-- Page Heading -->
 				<div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">취업지원급 신청</h1>
+                        <h1 class="h3 mb-0 text-gray-800">취업지원금 신청</h1>
                  </div>
                  
                   <!-- DataTables Example -->
@@ -95,7 +95,7 @@
 											<td>
 												<i class="fas fa-file-download"></i>
 												<a href="[실제 파일 다운로드 경로]">
-                    								거지증명서.hwp
+                    								취업지원증명서.hwp
                 								</a>
 											</td>
 										</tr>
@@ -195,7 +195,9 @@
             </div>
         </div>
     </div>	
-    
-    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+<!-- Logout Modal-->
+<%@ include file="/WEB-INF/views/common/logoutModal.jsp" %>
+<!-- footer 영역 -->
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

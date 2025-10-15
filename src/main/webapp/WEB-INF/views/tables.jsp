@@ -30,7 +30,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">민원 내역</h1>
+                    <h1 class="h3 mb-2 text-gray-800">실업급여</h1>
                     <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
                         For more information about DataTables, please visit the <a target="_blank"
                             href="https://datatables.net">official DataTables documentation</a>.</p>
@@ -38,7 +38,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">대기 민원내역</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -46,15 +46,16 @@
                                     <thead>
                                         <tr>
                                         	<th>접수번호</th>
+                                            <th>신청명</th>
                                             <th>신청자</th>
+                                            <th>상태</th>
                                             <th>신청일</th>
                                             <th>마감일</th>
-                                            <th>상태</th>
-                                            <th>비고</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                    	
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Tiger Nixon</td>
                                             <td>System Architect</td>
                                             <td>Edinburgh</td>
@@ -62,7 +63,7 @@
                                             <td>2011/04/25</td>
                                             <td>$320,800</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Garrett Winters</td>
                                             <td>Accountant</td>
                                             <td>Tokyo</td>
@@ -70,7 +71,7 @@
                                             <td>2011/07/25</td>
                                             <td>$170,750</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Ashton Cox</td>
                                             <td>Junior Technical Author</td>
                                             <td>San Francisco</td>
@@ -78,7 +79,7 @@
                                             <td>2009/01/12</td>
                                             <td>$86,000</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Cedric Kelly</td>
                                             <td>Senior Javascript Developer</td>
                                             <td>Edinburgh</td>
@@ -86,7 +87,7 @@
                                             <td>2012/03/29</td>
                                             <td>$433,060</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Airi Satou</td>
                                             <td>Accountant</td>
                                             <td>Tokyo</td>
@@ -94,7 +95,7 @@
                                             <td>2008/11/28</td>
                                             <td>$162,700</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Brielle Williamson</td>
                                             <td>Integration Specialist</td>
                                             <td>New York</td>
@@ -102,7 +103,7 @@
                                             <td>2012/12/02</td>
                                             <td>$372,000</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Herrod Chandler</td>
                                             <td>Sales Assistant</td>
                                             <td>San Francisco</td>
@@ -110,7 +111,7 @@
                                             <td>2012/08/06</td>
                                             <td>$137,500</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Rhona Davidson</td>
                                             <td>Integration Specialist</td>
                                             <td>Tokyo</td>
@@ -118,7 +119,7 @@
                                             <td>2010/10/14</td>
                                             <td>$327,900</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Colleen Hurst</td>
                                             <td>Javascript Developer</td>
                                             <td>San Francisco</td>
@@ -126,7 +127,7 @@
                                             <td>2009/09/15</td>
                                             <td>$205,500</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Sonya Frost</td>
                                             <td>Software Engineer</td>
                                             <td>Edinburgh</td>
@@ -134,7 +135,7 @@
                                             <td>2008/12/13</td>
                                             <td>$103,600</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Jena Gaines</td>
                                             <td>Office Manager</td>
                                             <td>London</td>
@@ -142,7 +143,7 @@
                                             <td>2008/12/19</td>
                                             <td>$90,560</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>Quinn Flynn</td>
                                             <td>Support Lead</td>
                                             <td>Edinburgh</td>
@@ -151,7 +152,7 @@
                                             <td>$342,000</td>
                                         </tr>
                                         
-	                                    <c:forEach var="item" items="${list}">
+	                                    <%-- <c:forEach var="item" items="${list}">
 											<tr>
 												<td>${item.mainCode}</td>
 														<td>${item.productName}</td>
@@ -160,7 +161,7 @@
 												<td>${item.transactionType}</td>
 												<td>${item.transactionDate}</td>
 											</tr>
-										</c:forEach>
+										</c:forEach> --%>
 										
                                     </tbody>
                                 </table>
@@ -198,6 +199,18 @@
 <%@ include file="/WEB-INF/views/common/logoutModal.jsp" %>
 <!-- footer 영역 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+<script>
+$(document).on('click', '#dataTable tbody tr.clickable-row', function (e) {
+  if ($(e.target).closest('a, button, input, [data-no-row-click]').length) return;
+
+  const url = $(this).data('href');
+  if (url) {
+    window.location.assign(url);
+  }
+});
+</script>
+
 </body>
 
 </html>

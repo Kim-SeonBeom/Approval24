@@ -192,19 +192,19 @@
                                 <table class="table table-bordered" id="dataTable_index" width="100%" cellspacing="0">
                                     
                                     <tbody>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1</td>
                                             <td>2025-10-13</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2</td>
                                             <td>2025-10-14</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2</td>
                                             <td>2025-10-14</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
                                             <td>내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2</td>
                                             <td>2025-10-14</td>
                                         </tr>
@@ -243,30 +243,21 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/approval24/login">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
 <!-- Logout Modal-->
 <%@ include file="/WEB-INF/views/common/logoutModal.jsp" %>
 <!-- footer 영역 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+<script>
+$(document).on('click', '#dataTable tbody tr.clickable-row', function (e) {
+  if ($(e.target).closest('a, button, input, [data-no-row-click]').length) return;
+
+  const url = $(this).data('href');
+  if (url) {
+    window.location.assign(url);
+  }
+});
+</script>
     
 </body>
 </html>
