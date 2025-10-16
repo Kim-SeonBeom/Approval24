@@ -34,8 +34,12 @@ public class testcontroller {
 
 	@GetMapping("/account")
 	public String account()	{
-		
 		return "account";
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage()	{
+		return "mypage";
 	}
 
 }
