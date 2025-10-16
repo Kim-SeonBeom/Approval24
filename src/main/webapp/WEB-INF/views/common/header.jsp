@@ -18,3 +18,6 @@
     
     <!-- Custom styles for this page -->
     <link href="resources/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
+    <!-- Data Table Custom css -->
+    <link href="resources/assets/css/common-datatable.css" rel="stylesheet">

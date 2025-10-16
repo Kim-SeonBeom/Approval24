@@ -20,3 +20,7 @@
     <script src="resources/assets/js/demo/chart-area-demo.js"></script>
     <script src="resources/assets/js/demo/chart-pie-demo.js"></script>
     
+    <!-- Common data table scripts -->
+    <script src="resources/assets/js/common-datatable.js"></script>
+    
+    
