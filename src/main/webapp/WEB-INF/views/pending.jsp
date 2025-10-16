@@ -48,30 +48,34 @@
                             <div class="table-responsive">
                             <!-- 접수표 -->
                                 <table class="table table-bordered mb-4" id="dataTable_index" width="100%" cellspacing="0">
+                                    <colgroup>
+	                                	<col style="width: 18%;">
+	                                	<col style="width: 32%;">
+	                                	<col style="width: 18%;">
+	                                	<col style="width: 32%;">
+	                                </colgroup>
                                     <tbody>
                                         <tr>
-                                            <td class="text-dark bg-light  font-weight-bold" style="width: 25%;"  >접수일자</td>
-                                            <td>2025-10-13</td>
+                                            <th scope="col" class="text-dark bg-light  font-weight-bold"  >접수부서</th>
+                                            <td colspan="3">취업지원과</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-dark bg-light font-weight-bold " style="width: 25%;" >처리기한</td>
-                                            <td>2025-11-22</td>
+                                            <th scope="col" class="text-dark bg-light font-weight-bold "  >민원서식</th>
+                                            <td colspan="3">취업지원금 신청</td>
                                         </tr>
                                         <tr>
-                                           <td class="text-dark bg-light font-weight-bold " style="width: 25%;" >민원서식명</td>
-                                            <td>취업지원금 신청</td>
+                                           <th scope="col" class="text-dark bg-light font-weight-bold "  >담당자</th>
+                                            <td colspan="3">이혜성</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-dark bg-light  font-weight-bold" style="width: 25%;" >접수부서</td>
-                                            <td>취업지원 민원처리과</td>
+                                            <th scope="col" class="text-dark bg-light  font-weight-bold"  >담당자번호</th>
+                                            <td colspan="3">010-2859-9296</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-dark bg-light font-weight-bold" style="width: 25%;" >담당자</td>
-                                            <td>이혜성</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-dark bg-light font-weight-bold" style="width: 25%;" >담당자 전화번호</td>
-                                            <td>031-248-8596</td>
+                                            <th scope="col" class="text-dark bg-light font-weight-bold"  >접수일</th>
+                                            <td>2025-10-15</td>
+                                             <th scope="col" class="text-dark bg-light font-weight-bold"  >마감일</th>
+                                            <td>2025-11-21</td>
                                         </tr>
                                     </tbody>
                                    </table>
