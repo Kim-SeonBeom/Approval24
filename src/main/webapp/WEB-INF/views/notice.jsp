@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,9 +36,7 @@ tbody tr:hover {
 
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">공지사항</h1>
-					<p class="mb-4">
-						Chart.js is a third party plugin that is used to generate the charts in this theme. The charts below have been customized - for further customization options, please visit the <a target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js documentation</a>.
-					</p>
+					<br>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">

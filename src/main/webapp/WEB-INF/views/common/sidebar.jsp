@@ -27,11 +27,20 @@
             
             <!-- Nav Item - Dropdown -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>실업급여</span>
-                </a>
+            	<c:if test="${loginUser.departmentName eq '인사팀'}">
+	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+	                    aria-expanded="true" aria-controls="collapsePages">
+	                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+	                    <span>${loginUser.work}</span>
+	                </a>
+                </c:if>
+                <c:if test="${loginUser.departmentName eq '실업급여팀'}">
+	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+	                    aria-expanded="true" aria-controls="collapsePages">
+	                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+	                    <span>${loginUser.work}</span>
+	                </a>
+                </c:if>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                     	<h6 class="collapse-header">처리 현황</h6>
