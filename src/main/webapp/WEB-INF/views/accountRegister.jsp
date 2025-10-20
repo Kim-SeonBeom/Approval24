@@ -16,13 +16,6 @@
 	color: #858796;
 }
 
-.roles-box {
-	max-height: 200px;
-	overflow: auto;
-	border: 1px solid #e3e6f0;
-	border-radius: .35rem;
-	padding: .5rem;
-}
 </style>
 </head>
 <body id="page-top">
@@ -44,7 +37,7 @@
 
 					<!-- Card -->
 					<div class="row justify-content-center">
-					
+
 						<div class="col-lg-10 col-xl-10">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -89,8 +82,7 @@
 												<label for="email" class="required">사원번호</label> <input type="email" class="form-control" id="email" name="email" required>
 											</div>
 											<div class="form-group col-md-6">
-												<label for="loginId" class="required">로그인 아이디</label> <input type="text" class="form-control" id="loginId" name="loginId" autocomplete="username" required>
-
+												<label for="loginId" class="required">로그인 아이디 </label> <input type="text" class="form-control flex-grow-1 mr-2" id="loginId" name="loginId" autocomplete="username" required>
 											</div>
 										</div>
 
@@ -104,10 +96,6 @@
 												<div id="pwMatch" class="small mt-1"></div>
 											</div>
 										</div>
-
-										<!-- 숨겨진 상태값 (이번 버전: 즉시 활성) -->
-										<!-- <input type="hidden" name="accountStatus" value="ACTIVE"> -->
-
 										<div class="d-flex justify-content-between">
 											<a href="/approval24/" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
 											</a>

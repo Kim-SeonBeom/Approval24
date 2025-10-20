@@ -52,4 +52,9 @@ public class testcontroller {
 		return "accountRegister";
 	}
 
+	@GetMapping("/notice/detail")
+	public String noticeDetail() {
+		return "noticeDetail";
+	}
+
 }
