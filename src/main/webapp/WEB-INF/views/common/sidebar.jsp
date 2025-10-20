@@ -97,6 +97,12 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/regist">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>권한신청</span></a>
+            </li>
 
         </ul>
 <!-- End of Sidebar -->

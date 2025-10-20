@@ -33,18 +33,23 @@ public class testcontroller {
 	}
 
 	@GetMapping("/account")
-	public String account()	{
+	public String account() {
 		return "account";
 	}
-	
+
 	@GetMapping("/mypage")
-	public String mypage()	{
+	public String mypage() {
 		return "mypage";
 	}
-	
+
 	@GetMapping("/application")
-	public String	application()	{
+	public String application() {
 		return "application";
+	}
+
+	@GetMapping("/regist")
+	public String accountRegist() {
+		return "accountRegister";
 	}
 
 }
