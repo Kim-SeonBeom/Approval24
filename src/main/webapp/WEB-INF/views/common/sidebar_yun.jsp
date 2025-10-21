@@ -8,7 +8,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/work24.png" width= 40px;>
                 </div>
-                <div class="sidebar-brand-text mx-3">고용24</div>
+                <div class="sidebar-brand-text mx-3">결재24</div>
             </a>
             </div>
             
@@ -29,14 +29,14 @@
            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>실업급여</span>
+                    <span>계정관리</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#minwonSidebar" style="">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">실업급여</h6>
-                         <a class="collapse-item" href="/approval24/tables">실업급여 신청</a>
-                        <a class="collapse-item" href="/approval24/benefits">실업인정 신고</a>
-                        <a class="collapse-item" href="/approval24/tables">조기 재취업수당 신고</a>
+                        <h6 class="collapse-header">처리현황</h6>
+                         <a class="collapse-item" href="/approval24/tables">대기</a>
+                        <a class="collapse-item" href="/approval24/benefits">반려</a>
+                        <a class="collapse-item" href="/approval24/tables">승인</a>
                     </div>
                 </div>
             </li>
@@ -108,7 +108,7 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
             
-            <li class="nav-item">
+            <li class="nav-item ">
                 <a class="nav-link" href="/approval24/regist">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>권한신청</span></a>
