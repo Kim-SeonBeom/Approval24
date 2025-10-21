@@ -17,7 +17,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-    			<a class="nav-link" href="/approval24/minwon">
+    			<a class="nav-link" href="/approval24/">
         			<img src="${pageContext.request.contextPath}/resources/assets/img/home.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px; ">
         		<span>메인</span></a>
 			</li>
@@ -85,21 +85,7 @@
                     <span>공지사항</span></a>
             </li>
             
-            <hr class="sidebar-divider d-none d-md-block">
             
-            <!-- Sidebar Search -->
-            <form
-                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group" style="margin: 10px 10px 10px -3px;">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                    aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" style="background-color:gray;">
-                           <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
-                 </div>
-            </form>
                     
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -108,12 +94,14 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
             
-            <li class="nav-item ">
+            <li class="nav-item" style="position: sticky; top:4000px;">
                 <a class="nav-link" href="/approval24/regist">
-                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>권한신청</span></a>
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/add_user.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>계정신청</span></a>
             </li>
 
         </ul>
+        
+
 
 

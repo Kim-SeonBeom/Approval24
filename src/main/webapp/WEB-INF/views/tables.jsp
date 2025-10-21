@@ -13,7 +13,7 @@
 	<div id="wrapper">
 
 		<!-- Sidebar -->
-		<%@ include file="/WEB-INF/views/common/sidebar_dropdown.jsp"%>
+		<%@ include file="/WEB-INF/views/common/sidebar_yun.jsp"%>
 		<!-- End of Sidebar -->
 
 		<!-- Content Wrapper -->
