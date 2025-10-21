@@ -57,4 +57,9 @@ public class testcontroller {
 		return "noticeDetail";
 	}
 
+	@GetMapping("/notice/new")
+	public String noticeWrite() {
+		return "noticeWrite";
+	}
+
 }

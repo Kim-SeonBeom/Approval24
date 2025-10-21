@@ -37,7 +37,7 @@
 							<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">공지사항 내역</h6>
 							<!-- 글쓰기 버튼 안보이게 -->
 							<c:if test="${loginUser.departmentName eq '인사팀'}">
-								<button class="btn btn-primary btn-sm" style="font-size: 1rem; padding: 0.25rem 0.75rem;">글쓰기</button>
+								<button class="btn btn-primary btn-sm" id="noticeWrite" style="font-size: 1rem; padding: 0.25rem 0.75rem;">글쓰기</button>
 							</c:if>
 						</div>
 						<div class="card-body">
@@ -199,6 +199,11 @@
 	<!-- footer 영역 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	<script src="resources/assets/js/demo/chart-bar-demo.js"></script>
+	<script>
+		$("#noticeWrite").on('click', function() {
+			window.location.href="${pageContext.request.contextPath}/notice/new";
+		});
+	</script>
 
 
 </body>

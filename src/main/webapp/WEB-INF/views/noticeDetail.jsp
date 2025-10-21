@@ -7,7 +7,6 @@
 <title>공지사항 상세 | 결재24</title>
 <style>
 /* 표 기반(딱딱한) 상세 레이아웃 */
-
 .kv-table th {
 	width: 140px;
 	background: #f8f9fc;
@@ -22,7 +21,7 @@
 	white-space: pre-wrap;
 	line-height: 1.6;
 	min-height: 300px;
-} 
+}
 
 .kv-table .attach-cell ul {
 	margin: 0;
@@ -32,7 +31,6 @@
 .kv-table .attach-cell li+li {
 	margin-top: .25rem;
 }
-
 </style>
 </head>
 <body id="page-top">
@@ -82,42 +80,39 @@
 							<!-- 표 기반 상세 -->
 							<div class="table-responsive">
 								<table class="table table-bordered table-sm kv-table">
-								    <colgroup>
-	                                	<col style="width: 18%;">
-	                                	<col style="width: 32%;">
-	                                	<col style="width: 18%;">
-	                                	<col style="width: 32%;">
-	                                </colgroup>
+									<colgroup>
+										<col style="width: 18%;">
+										<col style="width: 32%;">
+										<col style="width: 18%;">
+										<col style="width: 32%;">
+									</colgroup>
 									<tbody>
 										<!-- 제목 -->
 										<tr>
-											<th scope="col"  class="text-dark bg-light  font-weight-bold" > 제목</th>
+											<th scope="col" class="text-dark bg-light  font-weight-bold">제목</th>
 											<td colspan="3"><strong class="text-gray-900"> <c:out value="${notice.title}" default="[제목 없음]" />
 											</strong></td>
 										</tr>
 
 										<!-- (선택) 최소 메타: 필요 없으면 이 두 행 삭제해도 됩니다 -->
 										<tr>
-											<th scope="col"  class="text-dark bg-light  font-weight-bold" > 작성자</th>
+											<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
 											<td><c:out value="${notice.source}" default="인사팀_정동윤" /></td>
-											<th scope="col"  class="text-dark bg-light  font-weight-bold" > 등록일</th>
+											<th scope="col" class="text-dark bg-light  font-weight-bold">등록일</th>
 											<td><c:out value="${notice.regDate}" default="-" /></td>
 										</tr>
 
 										<!-- 내용 -->
 										<tr>
-											<th scope="col"  class="text-dark bg-light  font-weight-bold" > 내용</th>
-											<td colspan="3" class="content-cell">									
-													<c:out value="${notice.content}" default="내용이 없습니다." />						
-											</td>
-											
+											<th scope="col" class="text-dark bg-light  font-weight-bold">내용</th>
+											<td colspan="3" class="content-cell"><c:out value="${notice.content}" default="내용이 없습니다." /></td>
+
 										</tr>
 
 										<!-- 첨부 -->
 										<tr>
-											<th scope="col"  class="text-dark bg-light  font-weight-bold" > 첨부파일</th>
-											<td colspan="3" class="attach-cell">
-												<c:choose>
+											<th scope="col" class="text-dark bg-light  font-weight-bold">첨부파일</th>
+											<td colspan="3" class="attach-cell"><c:choose>
 													<c:when test="${not empty notice.attachList}">
 														<ul class="list-unstyled mb-0">
 															<c:forEach var="f" items="${notice.attachList}">
@@ -130,13 +125,11 @@
 													<c:otherwise>
 														<span class="text-muted">첨부파일이 없습니다.</span>
 													</c:otherwise>
-												</c:choose>
-											</td>
+												</c:choose></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-
 						</div>
 					</div>
 
