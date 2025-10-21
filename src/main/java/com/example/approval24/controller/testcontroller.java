@@ -51,6 +51,15 @@ public class testcontroller {
 	public String accountRegist() {
 		return "accountRegister";
 	}
+	@GetMapping("/benefits")
+	public String	benefits()	{
+		return "benefits";
+	}
+	
+	@GetMapping("/minwon")
+	public String	minwon()	{
+		return "index2";
+	}
 
 	@GetMapping("/notice/detail")
 	public String noticeDetail() {
