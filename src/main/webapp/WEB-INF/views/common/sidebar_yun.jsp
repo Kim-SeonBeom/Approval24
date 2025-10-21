@@ -116,5 +116,4 @@
 
         </ul>
 
-	<!-- footer 영역 -->
-	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+
