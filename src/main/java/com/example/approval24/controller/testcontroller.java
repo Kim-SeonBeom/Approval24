@@ -51,13 +51,14 @@ public class testcontroller {
 	public String accountRegist() {
 		return "accountRegister";
 	}
+
 	@GetMapping("/benefits")
-	public String	benefits()	{
+	public String benefits() {
 		return "benefits";
 	}
-	
+
 	@GetMapping("/minwon")
-	public String	minwon()	{
+	public String minwon() {
 		return "index2";
 	}
 
@@ -69,6 +70,17 @@ public class testcontroller {
 	@GetMapping("/notice/new")
 	public String noticeWrite() {
 		return "noticeWrite";
+	}
+
+	@GetMapping("/account/auth")
+	public String accountApprove() {
+		return "accountAuth";
+	}
+	
+	@GetMapping("/account/requests")
+	public String accountRequestList() {
+		return "accountRequests";
+	
 	}
 
 }
