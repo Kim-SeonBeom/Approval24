@@ -67,6 +67,16 @@ public class testcontroller {
 		return "trainingSubsidy";
 	}
 
+	@GetMapping("/jobResearchReport")
+	public String report() {
+		return "jobResearchReport";
+	}
+	
+	@GetMapping("/tempWorkerMaternity")
+	public String tempWorker() {
+		return "tempWorkerMaternityBenefit";
+	}
+
 	@GetMapping("/minwon")
 	public String minwon() {
 		return "index2";
@@ -91,10 +101,14 @@ public class testcontroller {
 	public String accountRequestList() {
 		return "accountRequests";
 	}
-	
+
 	@GetMapping("/delegate")
 	public String delegatePage() {
 		return "delegate";
 	}
+	@GetMapping("/employmentInsurance")
+	   public String insurance() {
+	      return "employmentInsurance";
+	   }
 
 }
