@@ -41,7 +41,11 @@
             
                <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
-            
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/delegate">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>대결자지정</span></a>
+            </li>
             <!-- Nav Item - notice -->
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/notice">
