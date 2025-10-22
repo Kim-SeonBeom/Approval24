@@ -25,46 +25,20 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
             
-            <!-- Nav Item - Dropdown -->
+            <!-- Nav Item - Tables -->
             <li class="nav-item">
-            	<c:if test="${loginUser.departmentName eq '인사팀'}">
-	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-	                    aria-expanded="true" aria-controls="collapsePages">
-	                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-	                    <span>${loginUser.work}</span>
-	                </a>
-                </c:if>
-                <c:if test="${loginUser.departmentName eq '실업급여팀'}">
-	                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-	                    aria-expanded="true" aria-controls="collapsePages">
-	                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-	                    <span>${loginUser.work}</span>
-	                </a>
-                </c:if>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    	<h6 class="collapse-header">처리 현황</h6>
-                        <a class="collapse-item" href="/approval24/tables">대기</a>
-                        <a class="collapse-item" href="/approval24/tables">반려</a>
-                        <a class="collapse-item" href="/approval24/tables">승인</a>
-                    </div>
-                </div>
+                <a class="nav-link" href="/approval24/benefits">
+                   <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>민원 등록</span></a>
             </li>
-            
             
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/tables">
                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>실업인정</span></a>
+                    <span>내 민원 보기</span></a>
             </li>
             
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="/approval24/tables">
-                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>조기 재취업수당</span></a>
-            </li>
                <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
@@ -77,31 +51,17 @@
             
             <hr class="sidebar-divider d-none d-md-block">
             
-            <!-- Sidebar Search -->
-            <form
-                class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group" style="margin: 10px 10px 10px -3px;">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                    aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" style="background-color:gray;">
-                           <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
-                 </div>
-            </form>
-                    
-            <hr class="sidebar-divider d-none d-md-block">
+            
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
             
-            <li class="nav-item">
+            <li class="nav-item" style="position: sticky; top:4000px;">
                 <a class="nav-link" href="/approval24/regist">
-                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>권한신청</span></a>
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/add_user.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>계정신청</span></a>
             </li>
 
         </ul>

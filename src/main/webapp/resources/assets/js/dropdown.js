@@ -1,4 +1,4 @@
-        <script>
+
         $(document).ready(function(){
         	var currentPath = window.location.pathname;
         	
@@ -28,4 +28,3 @@
         		}
         	});
         });
-        </script>
