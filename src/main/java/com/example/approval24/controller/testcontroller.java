@@ -57,6 +57,16 @@ public class testcontroller {
 		return "benefits";
 	}
 
+	@GetMapping("/trainingLoan")
+	public String trainingExpense() {
+		return "trainingLoan";
+	}
+
+	@GetMapping("/trainingSubsidy")
+	public String subsidy() {
+		return "trainingSubsidy";
+	}
+
 	@GetMapping("/minwon")
 	public String minwon() {
 		return "index2";
@@ -76,11 +86,11 @@ public class testcontroller {
 	public String accountApprove() {
 		return "accountAuth";
 	}
-	
+
 	@GetMapping("/account/requests")
 	public String accountRequestList() {
 		return "accountRequests";
-	
+
 	}
 
 }
