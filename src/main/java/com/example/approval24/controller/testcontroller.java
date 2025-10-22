@@ -90,7 +90,11 @@ public class testcontroller {
 	@GetMapping("/account/requests")
 	public String accountRequestList() {
 		return "accountRequests";
-
+	}
+	
+	@GetMapping("/delegate")
+	public String delegatePage() {
+		return "delegate";
 	}
 
 }
