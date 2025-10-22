@@ -7,9 +7,9 @@
 <!-- header 영역 -->
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-</head>
 <title>결재 승인</title>
 </head>
+
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -107,6 +107,64 @@
 									</tbody>
 								</table>
 								
+								<!-- 결재선 지정 -->
+								<div class="d-sm-flex align-items-center justify-content-between mb-2	mt-4">
+    									<h5 class="h5 mb-0 text-gray-800 mt-4">결재선 설정</h5>
+								</div>
+								
+								<div class="d-flex mb-3">
+                                    <select id="presetSelector" class="form-control mr-2" style="max-width: 200px;">
+                                        <option value="">북마크 불러오기</option>
+                                    </select>
+                                    <button type="button" class="btn btn-secondary btn-icon-split btn-sm mr-2" onclick="loadSelectedPreset()">
+                                        <span class="icon text-white-50"><i class="fas fa-bookmark"></i></span>
+                                        <span class="text">불러오기</span>
+                                    </button>
+                                    <input id=boomarkName placeholder="북마크 이름을 입력해주세요" style="margin-right:7px;">
+                                    <button type="button" class="btn btn-info btn-icon-split btn-sm" onclick="saveApprovalPreset()" style="margin-right:7px;">
+                                        <span class="icon text-white-50"><i class="fas fa-save"></i></span>
+                                        <span class="text">현재 결재선 저장</span>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-danger btn-icon-split btn-sm" onclick="clearPresets()">
+									  <span class="icon text-white-50"><i class="fas fa-trash-alt"></i></span>
+									  <span class="text">북마크 삭제</span>
+									</button>
+
+                                </div>
+								
+								
+								<table class="table table-bordered" width="100%" cellspacing="0">
+
+									<thead>
+										<tr>
+											<th class="bg-light  text-dark text-center"
+												style="border-top: 2px solid #28a745;">기안제목</th>
+											<th class="bg-light  text-dark text-center"
+												style="border-top: 2px solid #28a745;">결재권한</th>
+											<th class="bg-light  text-dark text-center"
+												style="border-top: 2px solid #28a745;">결재권자</th>
+										</tr>
+									</thead>
+									
+									<tbody id="approvalTableBody">
+                                        <!-- 자바스크립트가 동적으로 행을 삽입합니다. -->
+                                    </tbody>
+								</table>
+								
+								<!-- 테이블 행 추가 -->
+						        <div class="mt-6 text-center">
+						            <button id="addRowButton"
+									        type="button"
+									        class="btn btn-primary text-white"
+									        style="background-color:#16a34a; border-color:#16a34a;"
+									        onclick="addRow()">
+									  + 테이블 행 추가
+									</button>
+						        </div>
+								
+								
+								
 								<!-- 진행내역 -->
 								<div class="d-sm-flex align-items-center justify-content-between mb-2	mt-4">
     									<h5 class="h5 mb-0 text-gray-800 mt-4">결재 진행 상태</h5>
@@ -199,10 +257,222 @@
                 </div>
             </div>
         </div>
-    </div>	
+    </div>
+</div>
 <!-- Logout Modal-->
 <%@ include file="/WEB-INF/views/common/logoutModal.jsp" %>
 <!-- footer 영역 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+<script>
+let rowCounter = 0;
+const PRESET_STORAGE_KEY = 'approvalPresets';
+
+// ================================================
+// 1. 더미 데이터 정의
+// ================================================
+const APPROVAL_AUTHORITIES = [
+  { value: "review",  text: "검토" },
+  { value: "approve", text: "승인" }
+];
+
+const APPROVAL_USERS = [
+  { value: "jeong", text: "정동윤 - 과장" },
+  { value: "kim",   text: "김선범 - 팀장" },
+  { value: "lee",   text: "이승찬 - 부장" },
+  { value: "park",  text: "양윤모 - 차장" }
+];
+
+// ================================================
+// 2. 헬퍼 함수
+// ================================================
+function createOptionsHtml(data, selectedValue) {
+  if (selectedValue === undefined || selectedValue === null) selectedValue = '';
+  let options = '<option value="select">-- 선택하세요 --</option>';
+  data.forEach(function(item) {
+    let selected = (item.value === selectedValue) ? ' selected' : '';
+    options += '<option value="' + item.value + '"' + selected + '>' + item.text + '</option>';
+  });
+  return options;
+}
+
+/** 결재선 테이블의 단일 행 HTML을 생성 */
+function generateApprovalRowHtml(authorityValue, userValue, isFirst) {
+  if (authorityValue === undefined || authorityValue === null) authorityValue = '';
+  if (userValue === undefined || userValue === null) userValue = '';
+  rowCounter++;
+
+  const authorityOptions = createOptionsHtml(APPROVAL_AUTHORITIES, authorityValue);
+  const userOptions = createOptionsHtml(APPROVAL_USERS, userValue);
+  const disabledAttr = isFirst ? ' disabled' : '';
+  const titleAttr = isFirst ? ' title="첫 행은 삭제할 수 없습니다"' : ' title="행 삭제"';
+
+  let html = '';
+  html += '<tr class="approval-row">';
+  html +=   '<td class="align-middle">미용업 영업신고 수리</td>';
+  html +=   '<td class="align-middle">';
+  html +=     '<select class="form-control" id="authorityId_' + rowCounter + '" name="authorityId" required style="width:100%;">';
+  html +=       authorityOptions;
+  html +=     '</select>';
+  html +=   '</td>';
+  html +=   '<td class="align-middle">';
+  html +=     '<div class="d-flex align-items-center">';
+  html +=       '<select class="form-control mr-2" id="userName_' + rowCounter + '" name="userName" required style="width:70%;">';
+  html +=         userOptions;
+  html +=       '</select>';
+  html +=       '<button type="button" onclick="removeRow(this)" data-role="delete-row" class="btn btn-danger btn-icon-split btn-sm"' + titleAttr + disabledAttr + '>';
+  html +=         '<span class="icon text-white-50"><i class="fas fa-trash"></i></span>';
+  html +=         '<span class="text">삭제</span>';
+  html +=       '</button>';
+  html +=     '</div>';
+  html +=   '</td>';
+  html += '</tr>';
+  return html;
+}
+
+// ================================================
+// 3. 초기화
+// ================================================
+function initializeForm() {
+  const tableBody = document.getElementById('approvalTableBody');
+  tableBody.innerHTML = generateApprovalRowHtml('select', 'select', true);
+  updatePresetSelector();
+
+  // 삭제 버튼 활성화/비활성화 제어
+  const selector = document.getElementById('presetSelector');
+  const delBtn = document.querySelector('button[onclick="clearPresets()"]');
+  if (selector && delBtn) {
+    delBtn.disabled = !selector.value;
+    selector.addEventListener('change', function() {
+      delBtn.disabled = !selector.value;
+    });
+  }
+}
+document.addEventListener('DOMContentLoaded', initializeForm);
+
+// ================================================
+// 4. 북마크 기능
+// ================================================
+function updatePresetSelector() {
+  const selector = document.getElementById('presetSelector');
+  if (!selector) return;
+  const raw = localStorage.getItem(PRESET_STORAGE_KEY) || '{}';
+  let presets;
+  try { presets = JSON.parse(raw); } catch(e) { presets = {}; }
+
+  while (selector.options.length > 1) selector.remove(1);
+  Object.keys(presets).forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    selector.appendChild(option);
+  });
+}
+
+// 북마크 저장
+function saveApprovalPreset() {
+  const input = document.getElementById('boomarkName');
+  const name = input && input.value.trim() ? input.value.trim() : '자동 저장 (' + new Date().toLocaleString('ko-KR') + ')';
+
+  const rows = document.querySelectorAll('#approvalTableBody tr');
+  const currentApprovalData = [];
+  rows.forEach(row => {
+    const authorityId = row.querySelector('select[name^="authorityId"]').value;
+    const userName = row.querySelector('select[name^="userName"]').value;
+    if (authorityId && userName) currentApprovalData.push({ authority: authorityId, user: userName });
+  });
+
+
+  const raw = localStorage.getItem(PRESET_STORAGE_KEY) || '{}';
+  let presets;
+  try { presets = JSON.parse(raw); } catch(e) { presets = {}; }
+
+  presets[name] = currentApprovalData;
+  localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(presets));
+
+  updatePresetSelector();
+  if (input) input.value = '';
+}
+
+// 북마크 불러오기
+function loadSelectedPreset() {
+  const selector = document.getElementById('presetSelector');
+  const name = selector.value;
+
+  const raw = localStorage.getItem(PRESET_STORAGE_KEY) || '{}';
+  let presets;
+  try { presets = JSON.parse(raw); } catch(e) { presets = {}; }
+
+  const data = presets[name];
+
+  const tableBody = document.getElementById('approvalTableBody');
+  tableBody.innerHTML = '';
+  rowCounter = 0;
+  data.forEach((row, index) => {
+    tableBody.insertAdjacentHTML('beforeend', generateApprovalRowHtml(row.authority, row.user, index === 0));
+  });
+
+  const firstBtn = tableBody.firstElementChild?.querySelector('button[data-role="delete-row"]');
+  if (firstBtn) firstBtn.disabled = true;
+
+}
+
+// 북마크 삭제
+function clearPresets() {
+  const selector = document.getElementById('presetSelector');
+  const name = selector.value;
+
+  const raw = localStorage.getItem(PRESET_STORAGE_KEY) || '{}';
+  let presets;
+  try { presets = JSON.parse(raw); } catch(e) { presets = {}; }
+
+
+  delete presets[name];
+  localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(presets));
+  updatePresetSelector();
+  selector.selectedIndex = 0;
+
+}
+
+// ================================================
+// 5. 행 추가/삭제
+// ================================================
+function addRow() {
+  const tableBody = document.getElementById('approvalTableBody');
+  tableBody.insertAdjacentHTML('beforeend', generateApprovalRowHtml('', '', false));
+  const firstBtn = tableBody.firstElementChild?.querySelector('button[data-role="delete-row"]');
+  if (firstBtn) firstBtn.disabled = true;
+}
+
+function removeRow(button) {
+  const tableBody = document.getElementById('approvalTableBody');
+  const row = button.closest('tr');
+  if (!row || !tableBody) return;
+  tableBody.removeChild(row);
+  const firstBtn = tableBody.firstElementChild?.querySelector('button[data-role="delete-row"]');
+  if (firstBtn) firstBtn.disabled = true;
+}
+</script>
+<script>
+// 승인 / 반려 모달 관련
+function confirmReject() {
+  const reason = document.getElementById('rejectComment')?.value || '';
+  $('#rejectModal').modal('hide');
+}
+
+function confirmApprove() {
+  const approvalData = [];
+  document.querySelectorAll('#approvalTableBody tr').forEach((row, idx) => {
+    const authorityId = row.querySelector('select[name^="authorityId"]').value;
+    const userName = row.querySelector('select[name^="userName"]').value;
+    if (authorityId && userName) approvalData.push({ order: idx + 1, authorityId, userName });
+  });
+
+  const comment = document.getElementById('approveComment')?.value || '';
+  $('#approveModal').modal('hide');
+}
+</script>
+
+
 </body>
 </html>
