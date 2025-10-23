@@ -45,7 +45,6 @@
 					</div>
 
 					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/approval24/loan/training/apply">
-
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex align-items-center">
 								<h6 class="m-0 font-weight-bold text-primary">신청인 정보(출산여성 본인)</h6>
@@ -102,7 +101,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0" style="width:100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -145,7 +144,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0" style="width:100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -199,7 +198,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0" style="width:100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -254,7 +253,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0" style="width:100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -268,25 +267,25 @@
 													<label>
 													<input class="ml-2" type="radio" name="INCOME_ACT_1_YN"> 고용보험 피보험자이나 180일 요건 미충족으로 고용보험의 ‘출산전후휴가급여’를 지급받지 못하는 자(출산일 전일까지 30일 이상 피보험자격을 유지하고 있어야 함)</label><br>
 													<label>
-													<input class="ml-2" type="radio" name="INCOME_ACT_2_YN"> 고용보험법 적용 제외 사업의 근로자이거나 고용보험법 적용 제외자</label><br>
+													<input class="ml-2" type="radio" name="INCOME_ACT_1_YN"> 고용보험법 적용 제외 사업의 근로자이거나 고용보험법 적용 제외자</label><br>
 													<label>
-													<input class="ml-2" type="radio" name="INCOME_ACT_3_YN"> 고용보험 미성립사업장 소속 고용보험 미가입 근로자</label><br>
+													<input class="ml-2" type="radio" name="INCOME_ACT_1_YN"> 고용보험 미성립사업장 소속 고용보험 미가입 근로자</label><br>
 													</td>
 											</tr>
 											<tr>
 												<th>1인사업자(피고용인이 없는 단독사업자 및 공동사업자)</th>
 													<td colspan="3">
 													<label>
-													<input class="ml-2" type="radio" name="INCOME_ACT_4_YN"> 전전년도~출산년도 사업에 대한 세금신고 사실이 있는 자</label><br>
+													<input class="ml-2" type="radio" name="INCOME_ACT_2_YN"> 전전년도~출산년도 사업에 대한 세금신고 사실이 있는 자</label><br>
 													<label>
-													<input class="ml-2" type="radio" name="INCOME_ACT_5_YN"> 전전년도~출산년도 사업에 대한 세금신고 사실이 없는 자</label><br>
+													<input class="ml-2" type="radio" name="INCOME_ACT_2_YN"> 전전년도~출산년도 사업에 대한 세금신고 사실이 없는 자</label><br>
 													</td>
 											</tr>
 											<tr>
 												<th>기타 소득활동하는 자</th>
 													<td colspan="3">
 													<label>
-													<input class="ml-2" type="radio" name="INCOME_ACT_6_YN"> 사업자등록증 없는 특수형태근로자, 프리랜서 등</label>
+													<input class="ml-2" type="radio" name="INCOME_ACT_3_YN"> 사업자등록증 없는 특수형태근로자, 프리랜서 등</label>
 													</td>
 											</tr>
 										</tbody>
@@ -304,7 +303,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0" style= "width:100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -336,10 +335,10 @@
 								</button>
 							</div>
 						</div>
+						</form>
 				</div>
-				</form>
-
 			</div>
+			
 			<!-- /.container-fluid -->
 		</div>
 		<!-- /#content -->
@@ -347,7 +346,6 @@
 		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	</div>
 	<!-- /#content-wrapper -->
-	</div>
 	<!-- /#wrapper -->
 
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>

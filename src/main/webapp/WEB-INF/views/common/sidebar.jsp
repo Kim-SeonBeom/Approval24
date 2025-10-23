@@ -62,6 +62,53 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
             
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/trainingSubsidy">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>청년 빈 일자리 취업지원 특화 프로그램 수당 지급 신청 </span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/approval24/trainingLoan">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>실업자 취업훈련비 대부 신청</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/approval24/tempWorkerMaternity">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>기간제-파견근로자의 출산전후휴가 급여지급 신청</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/approval24/jobResearchReport">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>실업인정 신청</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/approval24/graduateProgram">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>졸업생 특화프로그램 신청</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/approval24/employmentInsurance">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>고용보험 미적용자 출산(유산･사산) 급여 신청</span></a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/approval24/challengeSupport">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>청년도전지원사업</span></a>
+            </li>
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             <li class="nav-item" style="position: sticky; top:4000px;">
                 <a class="nav-link" href="/approval24/regist">
                     <img src="${pageContext.request.contextPath}/resources/assets/img/add_user.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">

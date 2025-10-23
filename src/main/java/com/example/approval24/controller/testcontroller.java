@@ -77,11 +77,6 @@ public class testcontroller {
 		return "tempWorkerMaternityBenefit";
 	}
 
-	@GetMapping("/minwon")
-	public String minwon() {
-		return "index2";
-	}
-
 	@GetMapping("/notice/detail")
 	public String noticeDetail() {
 		return "noticeDetail";
@@ -109,6 +104,13 @@ public class testcontroller {
 	@GetMapping("/employmentInsurance")
 	   public String insurance() {
 	      return "employmentInsurance";
+
+	   }
+	
+	@GetMapping("/graduateProgram")
+	public String graduateProgram() {
+		return "graduateProgram";
+
 	}
 	
 	@GetMapping("/challengeSupport")
@@ -116,7 +118,6 @@ public class testcontroller {
 		return "challengeSupport";
 	}
 	
-
 	@GetMapping("/authorityList")
 	public String authorityList() {
 		return "authorityList";
@@ -131,7 +132,5 @@ public class testcontroller {
 	public String authorityEdit() {
 		return "authorityEdit";
 	}
-	
-	
-}
 
+}

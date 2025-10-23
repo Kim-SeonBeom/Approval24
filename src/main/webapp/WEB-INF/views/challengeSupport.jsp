@@ -41,18 +41,18 @@
 
 					<!-- Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">고용보험 미적용자 출산(유산･사산) 급여 신청서</h1>
+						<h1 class="h3 mb-0 text-gray-800">청년도전지원사업 신청서</h1>
 					</div>
 
 					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/approval24/loan/training/apply">
 
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex align-items-center">
-								<h6 class="m-0 font-weight-bold text-primary">신청인 정보(출산여성 본인)</h6>
+								<h6 class="m-0 font-weight-bold text-primary">신청항목</h6>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0" style="width:100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -97,7 +97,7 @@
 	                                            <td>
 	                                              <input type="text" class="form-control" id="ACCOUNT_NO" name="ACCOUNT_NO" placeholder="계좌번호는 ＂-＂ 없이 숫자로만 입력바랍니다.">
 												</td>
-	                                        </tr>
+	                                        </tr>                               
 	                                        <tr>
 												<th>대학재학생 여부</th>
 													<td colspan="3">
@@ -122,10 +122,12 @@
 								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitModal">
 									<i class="fas fa-paper-plane mr-1"></i> 신청
 								</button>
+								</div>
 							</div>
-						</div>
+							</form>
 				</div>
-				</form>
+				
+				
 
 			</div>
 			<!-- /.container-fluid -->
@@ -135,7 +137,6 @@
 		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	</div>
 	<!-- /#content-wrapper -->
-	</div>
 	<!-- /#wrapper -->
 
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
