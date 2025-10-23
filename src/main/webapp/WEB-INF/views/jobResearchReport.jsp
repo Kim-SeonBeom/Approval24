@@ -62,9 +62,9 @@
 										<tbody>
 											<tr>
 												<th>성명</th>
-												<td><input type="text" class="form-control" name="prev_co_nm" value="${dto.prev_co_nm}"></td>
+												<td><input type="text" class="form-control" name="complainuser_name" =></td>
 												<th>주민등록번호</th>
-												<td><input type="text" id="jumin_front" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="생년월일 6자리" style="width: 40%; display: inline-block;"> <span class="mx-1">-</span> <input type="text" id="jumin_back" maxlength="7" inputmode="numeric" pattern="[0-9]*" placeholder="뒤 7자리" style="width: 50%; display: inline-block;"></td>
+												<td><input type="text" id="complainuser_resi_no_front" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="생년월일 6자리" style="width: 40%; display: inline-block;"> <span class="mx-1">-</span> <input type="text" id="complainuser_resi_no_back" maxlength="7" inputmode="numeric" pattern="[0-9]*" placeholder="뒤 7자리" style="width: 50%; display: inline-block;"></td>
 											</tr>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold" style="vertical-align: middle;">주소</th>
@@ -73,20 +73,20 @@
 														<input type="text" class="form-control form-postal-code mr-2" placeholder="우편번호" name="postalCode" id="postalCode" readonly style="width: 150px;">
 
 														<button type="button" class="btn btn-secondary" onclick="openDaumPostcode()">주소 검색</button>
-													</div> <input type="text" class="form-control mb-2" placeholder="기본 주소" name="addr1" id="addr1" readonly> <input type="text" class="form-control" placeholder="상세 주소 (건물명, 동/호수 등)" name="addr2" id="addr2">
+													</div> <input type="text" class="form-control mb-2" placeholder="기본 주소" name="complainuser_addr1" id="complainuser_addr1" readonly> <input type="text" class="form-control" placeholder="상세 주소 (건물명, 동/호수 등)" name="complainuser_addr2" id="complainuser_addr2">
 												</td>
 											</tr>
 											<tr>
 												<th>전화번호</th>
-												<td><input type="tel" class="form-control" name="UNEMP_DT"></td>
+												<td><input type="tel" class="form-control" name="complainuser_tel"></td>
 												<th>휴대전화번호</th>
 
-												<td><input type="tel" class="form-control" name="UNEMP_DT"></td>
+												<td><input type="tel" class="form-control" name="complainuser_phone"></td>
 
 											</tr>
 											<tr>
 												<th>이메일</th>
-												<td colspan="3"><input type="email" class="form-control" name="UNEMP_DT"></td>
+												<td colspan="3"><input type="email" class="form-control" name="complainuser_email"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -111,13 +111,13 @@
 										<tbody>
 											<tr>
 												<th>예금주</th>
-												<td><input type="text" class="form-control" name="prev_co_nm" value="${dto.prev_co_nm}"></td>
+												<td><input type="text" class="form-control" name="ACCOUNT_HOLDER_NM"></td>
 												<th>은행명</th>
-												<td><input type="text" class="form-control" name="prev_co_nm" value="${dto.prev_co_nm}"></td>
+												<td><input type="text" class="form-control" name="BANK_NM" ></td>
 											</tr>
 											<tr>
 												<th>계좌번호</th>
-												<td colspan="3"><input type="text" class="form-control" name="prev_co_nm" value="${dto.prev_co_nm}"></td>
+												<td colspan="3"><input type="text" class="form-control" name="ACCOUNT_NO" ></td>
 											</tr>
 										</tbody>
 									</table>
@@ -144,42 +144,42 @@
 												<th>소득 발생 여부</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="SUBSIDY_BENEF_YN" id="benefitY" value="Y" <c:if test="${dto.SUBSIDY_BENEFIT_YN eq 'Y'}">checked</c:if>> <label class="form-check-label" for="benefitY">예</label>
+														<input class="form-check-input" type="radio" name="INCOME_OCCUR_YN" id="INCOME_OCCUR_YN" value="Y" > <label class="form-check-label" for="INCOME_OCCUR_YN">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="SUBSIDY_BENEF_YN" id="benefitN" value="N" <c:if test="${dto.SUBSIDY_BENEFIT_YN ne 'Y'}">checked</c:if>> <label class="form-check-label" for="benefitN">아니오</label>
+														<input class="form-check-input" type="radio" name="INCOME_OCCUR_YN" id="INCOME_OCCUR_YN" value="N" > <label class="form-check-label" for="INCOME_OCCUR_YN">아니오</label>
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<th>소득 내역</th>
-												<td><input type="text" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT" value="${dto.SUBSIDY_AMT}"></td>
+												<td><input type="text" class="form-control" name="INCOME_DETAIL" id="INCOME_DETAIL" ></td>
 												<th>근로 날짜</th>
-												<td><input type="date" class=form-contorl " name="subsidy_amt" id="subsidy_amt" value="${dto.sfadd_amt }" /></td>
+												<td><input type="date" class=form-contorl " name="WORK_START_DT" id="WORK_START_DT" /></td>
 											</tr>
 											<tr>
 												<th>소득 금액</th>
-												<td><input type="number" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT" value="${dto.SUBSIDY_AMT}" placeholder="(원)숫자만 입력"></td>
+												<td><input type="number" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT"  placeholder="(원)숫자만 입력"></td>
 												<th>소득 예정 금액</th>
-												<td><input type="number" class=form-contorl " name="subsidy_amt" id="subsidy_amt" value="${dto.sfadd_amt }" placeholder="(원)숫자만 입력" /></td>
+												<td><input type="number" class=form-contorl " name="INCOME_EST_AMT" id="INCOME_EST_AMT"  placeholder="(원)숫자만 입력" /></td>
 											</tr>
 											<tr>
 												<th>사업자 등록(자영업 개시)</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="SUBSIDY_NEFIT_YN" id="benefitY" value="Y" <c:if test="${dto.SUBSIDY_BENEFIT_YN eq 'Y'}">checked</c:if>> <label class="form-check-label" for="benefitY">예</label>
+														<input class="form-check-input" type="radio" name="BIZ_REG_YN" id="BIZ_REG_YN" value="Y" > <label class="form-check-label" for="BIZ_REG_YN">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="SUBSIDY_NEFIT_YN" id="benefitN" value="N" <c:if test="${dto.SUBSIDY_BENEFIT_YN ne 'Y'}">checked</c:if>> <label class="form-check-label" for="benefitN">아니오</label>
+														<input class="form-check-input" type="radio" name="BIZ_REG_YN" id="BIZ_REG_YN" value="N" > <label class="form-check-label" for="BIZ_REG_YN">아니오</label>
 													</div>
 												</td>
 											</tr>
 											<tr>
 
 												<th>사업 내용</th>
-												<td><input type="text" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT" value="${dto.SUBSIDY_AMT}"></td>
+												<td><input type="text" class="form-control" name="BIZ_DETAIL" id="BIZ_DETAIL" /></td>
 												<th>사업자등록일</th>
-												<td><input type="date" class=form-contorl " name="subsidy_amt" id="subsidy_amt" value="${dto.sfadd_amt }" /></td>
+												<td><input type="date" class=form-contorl " name="BIZ_REG_DT" id="BIZ_REG_DT" /></td>
 
 											</tr>
 										</tbody>
@@ -207,18 +207,18 @@
 												<th>자영업 준비활동</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="BSIDY_BENEFIT_YN" id="benefitY" value="Y" checked > <label class="form-check-label" for="benefitY">예</label>
+														<input class="form-check-input" type="radio" name="SELF_EMP_PREP_ACT_YN" id="SELF_EMP_PREP_ACT_YN" value="Y"  > <label class="form-check-label" for="SELF_EMP_PREP_ACT_YN">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="BSIDY_BENEFIT_YN" id="benefitN" value="N" > <label class="form-check-label" for="benefitN">아니오</label>
+														<input class="form-check-input" type="radio" name="SELF_EMP_PREP_ACT_YN" id="SELF_EMP_PREP_ACT_YN" value="N" > <label class="form-check-label" for="SELF_EMP_PREP_ACT_YN">아니오</label>
 													</div>
 												</td>
 											</tr>
 											<tr>
-												<th>사업 내용</th>
-												<td><input type="text" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT" value="${dto.SUBSIDY_AMT}"></td>
-												<th>시작예정일</th>
-												<td><input type="date" class=form-contorl " name="subsidy_amt" id="subsidy_amt" value="${dto.sfadd_amt }" /></td>
+												<th>자영업준비 활동내용</th>
+												<td><input type="text" class="form-control" name="SELF_EMP_PREP_ACT" id="SELF_EMP_PREP_ACT" /></td>
+												<th>자영업 시작예정일</th>
+												<td><input type="date" class=form-contorl " name="SELF_EMP_START_PLAN_DT" id="SELF_EMP_START_PLAN_DT"  /></td>
 
 											</tr>
 
@@ -226,23 +226,23 @@
 												<th>재취업여부</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="SUBSIDY_BENEFIT" id="benefitY" value="Y" checked> <label class="form-check-label" for="benefitY">예</label>
+														<input class="form-check-input" type="radio" name="RE_EMPLOYMENT_YN" id="RE_EMPLOYMENT_YN" value="Y" > <label class="form-check-label" for="RE_EMPLOYMENT_YN">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="SUBSIDY_BENEFIT" id="benefitN" value="N" > <label class="form-check-label" for="benefitN">아니오</label>
+														<input class="form-check-input" type="radio" name="RE_EMPLOYMENT_YN" id="RE_EMPLOYMENT_YN" value="N" > <label class="form-check-label" for="RE_EMPLOYMENT_YN">아니오</label>
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<th>회사명</th>
-												<td><input type="text" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT" value="${dto.SUBSIDY_AMT}" checked></td>
+												<td><input type="text" class="form-control" name="CO_NM" id="CO_NM" checked></td>
 												<th>취직예정일</th>
-												<td><input type="date" class=form-contorl " name="subsidy_amt" id="subsidy_amt" value="${dto.sfadd_amt }" /></td>
+												<td><input type="date" class=form-contorl " name="RE_EMPLOYMENT_PLAN_DT" id="RE_EMPLOYMENT_PLAN_DT" /></td>
 											</tr>
 											<tr>
 												<th>구직활동 외 활동사항</th>
 
-												<td colspan="3"><input type="text" class="form-control" name="SUBSIDY_AMT" id="SUBSIDY_AMT" value="${dto.SUBSIDY_AMT}"></td>
+												<td colspan="3"><input type="text" class="form-control" name="NON_JOB_SEEK_ACTIVITY" id="NON_JOB_SEEK_ACTIVITY" ></td>
 											</tr>
 
 										</tbody>
