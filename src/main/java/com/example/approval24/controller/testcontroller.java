@@ -109,6 +109,11 @@ public class testcontroller {
 	@GetMapping("/employmentInsurance")
 	   public String insurance() {
 	      return "employmentInsurance";
-	   }
+	}
+	
+	@GetMapping("/challengeSupport")
+	public String challenge() {
+		return "challengeSupport";
+	}
 
 }

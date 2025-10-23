@@ -28,7 +28,6 @@
                     
 
                     <!-- Content Row -->
-
                     <div class="row">
 
                         <!-- Area Chart -->
@@ -165,23 +164,23 @@
 		                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		                                    
 		                                    <tbody>
-		                                          <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+		                                          <tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
 												    <td>[공지] 10월 20일(월) 시스템 정기 점검 안내</td>
 												    <td>2025-10-10</td>
 												  </tr>
-												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												  <tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
 												    <td>[업데이트] 실업급여 신청서 양식이 새롭게 변경되었습니다.</td>
 												    <td>2025-10-12</td>
 												  </tr>
-												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												  <tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
 												    <td>[알림] 홈페이지 접속 지연 현상 해결 및 복구 완료 안내</td>
 												    <td>2025-10-13</td>
 												  </tr>
-												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												  <tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
 												    <td>[공지] 실업급여 관련 상담센터 운영시간 단축 안내 (09:00~17:00)</td>
 												    <td>2025-10-14</td>
 												  </tr>
-												  <tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+												  <tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
 													<td>[안내] 11월 공휴일(개천절, 한글날) 고객센터 휴무 일정 공지</td>
 													<td>2025-10-15</td>
 												  </tr>
