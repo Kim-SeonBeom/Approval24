@@ -110,5 +110,10 @@ public class testcontroller {
 	   public String insurance() {
 	      return "employmentInsurance";
 	   }
+	
+	@GetMapping("/graduateProgram")
+	public String graduateProgram() {
+		return "graduateProgram";
+	}
 
 }
