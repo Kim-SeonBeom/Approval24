@@ -115,5 +115,23 @@ public class testcontroller {
 	public String challenge() {
 		return "challengeSupport";
 	}
+	
+
+	@GetMapping("/authorityList")
+	public String authorityList() {
+		return "authorityList";
+	}
+	
+	@GetMapping("/authorityCreate")
+	public String authorityCreate() {
+		return "authorityCreate";
+	}
+	
+	@GetMapping("/authorityEdit")
+	public String authorityEdit() {
+		return "authorityEdit";
+	}
+	
+	
 }
 
