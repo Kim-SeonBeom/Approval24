@@ -109,11 +109,19 @@ public class testcontroller {
 	@GetMapping("/employmentInsurance")
 	   public String insurance() {
 	      return "employmentInsurance";
+
 	   }
 	
 	@GetMapping("/graduateProgram")
 	public String graduateProgram() {
 		return "graduateProgram";
+
+	}
+	
+	@GetMapping("/challengeSupport")
+	public String challenge() {
+		return "challengeSupport";
+
 	}
 
 }
