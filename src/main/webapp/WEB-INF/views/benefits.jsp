@@ -16,7 +16,7 @@
 	<div id="wrapper">
 	
 	<!-- sidebar -->
-	<%@ include file="/WEB-INF/views/common/sidebar2.jsp" %>
+	<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 	<!-- End of Sidebar -->
 	
 	<!-- Content Wrapper -->

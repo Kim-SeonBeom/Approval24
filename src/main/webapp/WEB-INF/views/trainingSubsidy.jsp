@@ -31,7 +31,7 @@
 <body id="page-top">
 	<div id="wrapper">
 
-		<%@ include file="/WEB-INF/views/common/sidebar2.jsp"%>
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
 
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">

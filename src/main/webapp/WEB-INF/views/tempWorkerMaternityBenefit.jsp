@@ -31,7 +31,7 @@
 <body id="page-top">
 	<div id="wrapper">
 
-		<%@ include file="/WEB-INF/views/common/sidebar2.jsp"%>
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
 
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
@@ -320,7 +320,7 @@
 	<script>
 
 
-  document.getElementById('btnCalcUnemp')?.addEventListener('click', function() {
+  document.getElementById('btnCalcUnemp').addEventListener('click', function() {
     const emp = document.querySelector('input[name="EMP_DT"]').value;
     const unemp = document.querySelector('input[name="UNEMP_DT"]').value;
     const days = daysBetweenStr(emp, unemp);
@@ -328,7 +328,7 @@
   });
 
   // 훈련기간 자동 계산 (TRAIN_START_DT ~ TRAIN_END_DT)
-  document.getElementById('btnCalcTrain')?.addEventListener('click', function() {
+  document.getElementById('btnCalcTrain').addEventListener('click', function() {
     const st = document.getElementById('TRAIN_START_DT').value;
     const en = document.getElementById('TRAIN_END_DT').value;
     const days = daysBetweenStr(st, en);
