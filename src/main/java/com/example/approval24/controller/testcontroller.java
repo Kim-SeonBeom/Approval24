@@ -77,11 +77,6 @@ public class testcontroller {
 		return "tempWorkerMaternityBenefit";
 	}
 
-	@GetMapping("/minwon")
-	public String minwon() {
-		return "index2";
-	}
-
 	@GetMapping("/notice/detail")
 	public String noticeDetail() {
 		return "noticeDetail";
