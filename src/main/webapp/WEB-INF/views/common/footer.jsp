@@ -23,4 +23,7 @@
     <!-- Common data table scripts -->
     <script src="${pageContext.request.contextPath}/resources/assets/js/common-datatable.js"></script>
     
-    
+    <!-- 주소 찾기 스크립트 -->
+    <script src="${pageContext.request.contextPath}/resources/assets/js/addressSearch.js"></script>
+    <!-- 다음 -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
