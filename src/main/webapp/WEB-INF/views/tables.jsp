@@ -140,7 +140,7 @@
 											<td>2025-10-23</td>
 											<td>2025-12-02</td>
 										</tr>
-										<tr class="clickable-row" data-href="/approval24/pending" style="cursor: pointer;">
+										<tr class="clickable-row" data-href="/approval24/application" style="cursor: pointer;">
 											<td>2058230701</td>
 											<td>실업급여 상담신청</td>
 											<td>조민재</td>

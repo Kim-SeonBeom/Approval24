@@ -114,18 +114,15 @@
 								</table>
 								
 								<!-- 진행내역 -->
-								<div
-									class="d-flex flex-column align-items-center justify-content-center mt-4">
-									<h5 class="h6 mb-2 text-gray-800 mt-4">결재선 추가</h5>
-									<img id="plusbutton"
-										src="${pageContext.request.contextPath}/resources/assets/img/plus.png"
-										style="width: 50px; height: 50px; cursor: pointer;" />
-								</div>
+								
 
 
 								<div class="text-right mt-4 mb-4">
                     <button type="button" class="btn btn-primary btn-lg shadow-sm mr-2"  data-toggle="modal" data-target="#applicationModal" >
-						<i class="fas fa-check-circle"></i> 상신
+						<i class="fas fa-check-circle"></i> 승인
+					</button>
+					<button type="button" class="btn btn-primary btn-lg shadow-sm mr-2"  data-toggle="modal" data-target="#applicationModal" >
+						<i class="fas fa-check-circle"></i> 반려
 					</button>
 				</div>
 				</div>

@@ -12,9 +12,14 @@
             </a>
             </div>
             
-            <!-- Divider -->
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+            
             <hr class="sidebar-divider my-0">
 
+			
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
     			<a class="nav-link" href="/approval24/">
@@ -23,7 +28,9 @@
 			</li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider d-none d-md-block">
+            
+            
             
             <!-- Nav Item - Tables -->
             <li class="nav-item">
@@ -36,7 +43,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/tables">
                    <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
-                    <span>내 민원 보기</span></a>
+                    <span>내 결재 보기(담당자)</span></a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/tables">
+                   <img src="${pageContext.request.contextPath}/resources/assets/img/side_search.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>내 결재 보기(검토자 or 승인자)</span></a>
             </li>
             
                <!-- Divider -->
@@ -53,14 +66,8 @@
                     <span>공지사항</span></a>
             </li>
             
-            <hr class="sidebar-divider d-none d-md-block">
+            <hr class="sidebar-divider">
             
-            
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
             
             <li class="nav-item">
                 <a class="nav-link" href="/approval24/trainingSubsidy">
@@ -97,17 +104,35 @@
                     <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
                     <span>청년도전지원사업</span></a>
             </li>
-
+			
+			<hr class="sidebar-divider">
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/authorityList">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>권한 조회</span></a>
+            </li>
             
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/authorityCreate">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>권한 생성</span></a>
+            </li>
             
+            <hr class="sidebar-divider">
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/account/requests">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>계정 신청 목록</span></a>
+            </li>
             
+            <li class="nav-item">
+                <a class="nav-link" href="/approval24/account">
+                    <img src="${pageContext.request.contextPath}/resources/assets/img/notice.svg" class="nav-icon-blur" style="width: 18px; margin-right: 3px;">
+                    <span>계정 리스트</span></a>
+            </li>
             
-            
-            
-            
-            
-            
-            
+            <hr class="sidebar-divider">
+ 
             
             <li class="nav-item" style="position: sticky; top:4000px;">
                 <a class="nav-link" href="/approval24/regist">
