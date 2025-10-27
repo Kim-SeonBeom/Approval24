@@ -132,22 +132,6 @@ public class testcontroller {
 	public String authorityEdit() {
 		return "authorityEdit";
 	}
-	
-	@GetMapping("/admin/insts")
-	public String insts() {
-		return "insts";
-	}
-	
-	@GetMapping("/admin/insts/new")
-	public String instsCreate() {
-		return "instsCreate";
-	}
-	
-	@GetMapping("/admin/insts/detail")
-	public String instsDetail() {
-		return "instsDetail";
-	}
-	
 
 	@GetMapping("/division")
 	public String division() {

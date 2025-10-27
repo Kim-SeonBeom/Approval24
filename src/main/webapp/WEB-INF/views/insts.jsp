@@ -53,22 +53,18 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="clickable-row" data-href="/approval24/admin/insts/detail" style="cursor: pointer;">
-											<td>2058230690</td>
-											<td>oti</td>
-											<td>정동윤</td>
-											<td>대기</td>
-											<td>2025-10-13</td>
-											<td>현재 날짜</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/admin/insts/detail" style="cursor: pointer;">
-											<td>2058230691</td>
-											<td>exa</td>
-											<td>김서연</td>
-											<td>대기</td>
-											<td>2025-10-14</td>
-											<td>2025-11-23</td>
-										</tr>
+									  <c:forEach var="inst" items="${getAllList}">
+									    <tr class="clickable-row"
+									        data-href="/approval24/admin/insts/detail?inst_id=${inst.instId}"
+									        style="cursor:pointer;">
+									      <td>${inst.instName}</td>
+									      <td>${inst.instAddress}</td>
+									      <td>${inst.instAddress}</td>
+									      <td>${inst.instPhone}</td>
+									      <td>${inst.createDt}</td>
+									      <td>${inst.updateDt}</td>
+									    </tr>
+									  </c:forEach>
 									</tbody>
 								</table>
 							</div>

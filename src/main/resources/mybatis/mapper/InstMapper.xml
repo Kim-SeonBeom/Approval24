@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.InstDAO">
+
+<!-- 기관목록 -->
+<select id="getAllInst" resultType="InstDTO">
+	select inst_id, inst_name, create_dt, update_dt, inst_address, inst_phone, inst_post, inst_head_name
+	from t1000_institution
+</select>
+
+<!-- 기관등록 -->
+<insert id="insertInst" parameterType="InstDTO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	insert into t1000_institution (inst_id, inst_name, create_dt, update_dt, inst_address, inst_phone, inst_post, inst_head_name)
+	values(#{inst_id}, #{inst_name}, #{create_dt}, SYSDATE, #{inst_address}, #{inst_phone}, #{inst_post}, #{inst_head_name})
+</insert>
+
+<!-- 기관수정 -->
+<update id="updateInst" parameterType="InstDTO">
+	update t1000_institution
+	set inst_name=#{inst_name},
+	 create_dt=#{create_dt},
+	 update_dt=SYSDATE,
+	 inst_address=#{inst_address},
+	 inst_phone=#{inst_phone}, 
+	 inst_post=#{inst_post}, 
+	 inst_head_name=#{inst_head_name}
+	where inst_id=#{inst_id} 
+</update>
+
+<!-- 기관삭제 -->
+<delete id="deleteInst"  parameterType="_int">
+    	delete from t1000_institution where inst_id = #{inst_id}
+</delete>
+</mapper>
