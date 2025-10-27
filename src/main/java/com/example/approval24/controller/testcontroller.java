@@ -147,5 +147,16 @@ public class testcontroller {
 	public String instsDetail() {
 		return "instsDetail";
 	}
+	
+
+	@GetMapping("/division")
+	public String division() {
+		return "division";
+	}
+	
+	@GetMapping("/division/detail")
+	public String divisionDetail() {
+		return "divisionDetail";
+	}
 
 }
