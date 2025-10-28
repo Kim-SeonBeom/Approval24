@@ -68,12 +68,6 @@
 						<!-- 상단 버튼 영역: 목록 / 저장 -->
 						<div class="card-header py-3 d-flex align-items-center">
 							<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">공지사항 작성</h6>
-							<div class="ml-auto">
-								<button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
-									<i class="fas fa-save mr-1"></i>저장
-								</button>
-								<a href="${pageContext.request.contextPath}/notice" class="btn btn-danger btn-sm">취소</a>
-							</div>
 
 						</div>
 
@@ -99,10 +93,10 @@
 											<!-- 작성자 / 등록일 -->
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
-												<td><input type="text" name="source" id="source" class="form-control form-control-sm" value="인사팀_정동윤" required></td>
+												<td><input type="text" class="form-control form-control-sm" value="${user.username}"  readonly></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
 												<td>
-													<!-- 화면 표시용 오늘 날짜, 서버 저장은 서버에서 실제 날짜로 처리 권장 --> <input type="text" class="form-control form-control-sm" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" readonly>
+													<input type="text" class="form-control form-control-sm" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" readonly>
 												</td>
 											</tr>
 
@@ -112,27 +106,61 @@
 												<td colspan="3" class="content-cell"><textarea name="content" id="content" class="form-control" style="min-height: 300px;" placeholder="공지 내용을 입력하세요" required></textarea></td>
 											</tr>
 
-											<!-- 첨부 -->
+											<!-- 카테고리 선택 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">첨부파일</th>
-												<td colspan="3" class="attach-cell">
-													<div id="fileInputs">
-														<div class="input-group input-group-sm mb-2">
-															<div class="custom-file">
-																<input type="file" class="custom-file-input" name="files" id="file0"> <label class="custom-file-label" for="file0">파일을 선택하세요</label>
-															</div>
-														</div>
+												<th scope="col" class="text-dark bg-light font-weight-bold">카테고리 선택</th>
+												<td colspan="3">
+													<div class="custom-control custom-radio custom-control-inline">
+														<input type="radio" id="typeAll" name="notice_type1"class="custom-control-input" > 
+														<label class="custom-control-label" for="typeAll">전체 공지</label>
 													</div>
-													<button type="button" class="btn btn-outline-secondary btn-sm" id="btnAddFile">
-														<i class="fas fa-plus mr-1"></i>파일 추가
-													</button>
+
+													<div class="custom-control custom-radio custom-control-inline">
+														<input type="radio" id="typeSupport" name="notice_type1"class="custom-control-input" value="support" checked>
+														<label class="custom-control-label" for="typeSupport">취업지원</label>
+													</div>
+													
+													<div class="custom-control custom-radio custom-control-inline">
+														<input type="radio" id="typeBaby" name="notice_type1"class="custom-control-input" value="baby" checked>
+														<label class="custom-control-label" for="typeBaby">출산</label>
+													</div>
+													
+													<div class="custom-control custom-radio custom-control-inline">
+														<input type="radio" id="typeLost" name="notice_type1"class="custom-control-input" value="lost" checked>
+														<label class="custom-control-label" for="typeLost">실업자</label>
+													</div>
+													
 												</td>
 											</tr>
+											
+											<!-- 팝업 공지 유무 -->
+											<tr>
+												<th scope="col" class="text-dark bg-light font-weight-bold">공지구분</th>
+												<td colspan="3">
+													<div class="custom-control custom-radio custom-control-inline">
+														<input type="radio" id="typePopup" name="notice_type"class="custom-control-input" value="Y"> 
+														<label class="custom-control-label" for="typePopup">팝업 공지</label>
+													</div>
+
+													<div class="custom-control custom-radio custom-control-inline">
+														<input type="radio" id="typeNormal" name="notice_type"class="custom-control-input" value="N" checked>
+														<label class="custom-control-label" for="typeNormal">일반 공지</label>
+													</div>
+												</td>
+											</tr>
+											
+											
 										</tbody>
 									</table>
 								</div>
+								<div class="d-flex justify-content-end">
+								<button type="button" class="btn btn-primary btn-sm mr-4" id="btnSaveTop">
+									<i class="fas fa-save mr-1"></i>등록	
+								</button>
+								<a href="${pageContext.request.contextPath}/notice" class="btn btn-danger btn-sm">
+								<i class="fas fa-times-circle mr-1"></i>취소</a>
+							</div>
 							</form>
-
 
 						</div>
 					</div>
@@ -146,7 +174,7 @@
 			<footer class="sticky-footer bg-white">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span>Copyright &copy; Your Website 2020</span>
+						<span>행정센터 &copy; 행정 2025</span>
 					</div>
 				</div>
 			</footer>
@@ -167,36 +195,6 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
-/* 커스텀 파일 인풋 라벨 표시 */
-$(document).on('change', '.custom-file-input', function () {
-	const fileName = $(this).val().split('\\').pop();
-	$(this).siblings('.custom-file-label').addClass("selected").text(fileName || '파일을 선택하세요');
-});
-
-/* 파일 입력 추가 */
-let fileIndex = 1;
-$('#btnAddFile').on('click', function () {
-	const id = 'file' + (fileIndex++);
-	const $row = $(`
-		<div class="input-group input-group-sm mb-2">
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" name="files" id="${id}">
-				<label class="custom-file-label" for="${id}">파일을 선택하세요</label>
-			</div>
-			<div class="input-group-append">
-				<button class="btn btn-outline-danger" type="button" title="삭제" data-remove-file>
-					<i class="fas fa-times"></i>
-				</button>
-			</div>
-		</div>
-	`);
-	$('#fileInputs').append($row);
-});
-
-/* 추가한 파일 입력 제거 */
-$(document).on('click', '[data-remove-file]', function () {
-	$(this).closest('.input-group').remove();
-});
 
 /* 저장 버튼(상·하단) 공통 처리 */
 function submitForm() {

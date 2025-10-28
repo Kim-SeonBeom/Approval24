@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.NoticeDAO">
+
+<!-- 공지사항 목록 -->
+<select id="noticeList" resultType="noticeDTO">
+	SELECT T.notice_id, T.title, T.category_cd, U.user_name, T.create_dt, T.view_account
+	FROM t3000_notice T
+	JOIN T1000_account  A ON T.account_id = A.account_id
+	JOIN t1000_user U ON A.user_no = U.user_no
+	ORDER BY T.notice_id DESC
+</select>
+
+</mapper>
