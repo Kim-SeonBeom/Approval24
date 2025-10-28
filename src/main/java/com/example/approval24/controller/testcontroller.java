@@ -21,11 +21,6 @@ public class testcontroller {
 		return "notice";
 	}
 
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
-
 	@GetMapping("/pending")
 	public String pending() {
 		// 잘 하는 집을 안 가봐서 그래

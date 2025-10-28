@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.approval24.dao.AuthorityDAO">
+
+    <!-- 계정 ID로 권한 조회 -->
+    <select id="findByAccountId" parameterType="long" resultType="com.example.approval24.domain.AuthorityDTO">
+        SELECT a.AUTHORITY_ID,
+               a.AUTHORITY_NAME,
+               a.CREATE_DT,
+               a.UPDATE_DT,
+               a.CREATE_ID,
+               a.UPDATE_ID,
+               a.DEL_YN,
+               a.IS_SYSTEM
+        FROM T1000_AUTHORITY a
+        JOIN T1000_AUTHORITY_ACCOUNT aa ON a.AUTHORITY_ID = aa.AUTHORITY_ID
+        WHERE aa.ACCOUNT_ID = #{accountId}
+          AND a.DEL_YN = 'N'
+    </select>
+
+    <!-- 전체 권한 조회 -->
+    <select id="findAll" resultType="com.example.approval24.domain.AuthorityDTO">
+        SELECT AUTHORITY_ID,
+               AUTHORITY_NAME,
+               CREATE_DT,
+               UPDATE_DT,
+               CREATE_ID,
+               UPDATE_ID,
+               DEL_YN,
+               IS_SYSTEM
+        FROM T1000_AUTHORITY
+        WHERE DEL_YN = 'N'
+    </select>
+
+</mapper>
