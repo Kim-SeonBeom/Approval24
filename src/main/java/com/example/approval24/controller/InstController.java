@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.approval24.dao.InstDAO;
 import com.example.approval24.domain.InstDTO;
@@ -15,22 +18,69 @@ public class InstController {
 	@Autowired
 	InstDAO dao;
 	
+	// 기관목록
 	@GetMapping("/admin/insts")
 	public String insts(Model model) {
-		System.out.print("!!");
 		List<InstDTO> getAllList = dao.getAllInst(); 
-		System.out.println(getAllList.toString());
 		model.addAttribute("getAllList",getAllList);
-		return "insts";
+		return "A/insts";
 	}
 	
+	// 기관등록
 	@GetMapping("/admin/insts/new")
-	public String instsCreate() {
-		return "instsCreate";
+	public String instsNew() {
+	    return "A/instsNew"; 
 	}
 	
-	@GetMapping("/admin/insts/detail")
-	public String instsDetail() {
-		return "instsDetail";
+	
+	@PostMapping("/admin/insts/new")
+	public String insertInst(InstDTO instDTO, RedirectAttributes rttr) {
+	    
+	    int result = dao.insertInst(instDTO);
+	    
+	    if(result > 0) {
+	        rttr.addFlashAttribute("insertMessage", "기관 정보가 성공적으로 등록되었습니다.");
+	    } else {
+	        rttr.addFlashAttribute("insertMessage", "기관 정보 등록에 실패했습니다.");
+	    }
+	    
+	    return "redirect:/admin/insts";
 	}
+	
+	// 기관상세
+	@GetMapping("/admin/insts/detail")
+	public String instsDetail(Model model, @RequestParam("inst_id") int instId) {
+	    InstDTO inst = dao.getInstById(instId);
+	    model.addAttribute("inst", inst);
+	    return "A/instsDetail";
+	}
+	
+	// 기관수정
+	@PostMapping("/admin/insts/update")
+	public String instsUpdate(InstDTO instDTO, RedirectAttributes rttr) {
+	    int result = dao.updateInst(instDTO);
+	    
+	    if (result > 0) {
+	        rttr.addFlashAttribute("updMessage", "기관 정보가 성공적으로 수정되었습니다.");
+	    } else {
+	        rttr.addFlashAttribute("updMessage", "기관 정보 수정에 실패했습니다.");
+	    }
+	    
+	    
+	    return "redirect:/admin/insts/detail?inst_id=" + instDTO.getInstId();
+	}
+	
+	// 기관삭제
+	@PostMapping("/admin/insts/delete")
+	public String instsUpdate(int instId, RedirectAttributes rttr) {
+		int result = dao.deleteInst(instId);
+		
+		if (result > 0 ) {
+			rttr.addFlashAttribute("delMessage", "기관 정보가 성공적으로 삭제되었습니다.");
+		} else {
+			rttr.addFlashAttribute("delMessage", "기관 정보 삭제에 실패했습니다.");
+		}
+		return "redirect:/admin/insts";
+	}
+
 }

@@ -133,14 +133,4 @@ public class testcontroller {
 		return "authorityEdit";
 	}
 
-	@GetMapping("/division")
-	public String division() {
-		return "division";
-	}
-	
-	@GetMapping("/division/detail")
-	public String divisionDetail() {
-		return "divisionDetail";
-	}
-
 }

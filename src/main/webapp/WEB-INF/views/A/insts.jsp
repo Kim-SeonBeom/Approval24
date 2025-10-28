@@ -32,6 +32,23 @@
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">기관 목록</h1>
 					<br>
+					<%-- 컨트롤러에서 전달받은 삭제 메시지 표시 --%>
+					<c:if test="${not empty delMessage}">
+					    <div class="alert alert-info alert-dismissible fade show" role="alert">
+					        ${delMessage}
+					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					            <span aria-hidden="true">&times;</span>
+					        </button>
+					    </div>
+					</c:if>
+					<c:if test="${not empty insertMessage}">
+					    <div class="alert alert-info alert-dismissible fade show" role="alert">
+					        ${insertMessage}
+					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					            <span aria-hidden="true">&times;</span>
+					        </button>
+					    </div>
+					</c:if>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
@@ -41,7 +58,7 @@
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<table class="table table-bordered" id="dataTable" style="width:100%" cellspacing="0">
 									<thead>
 										<tr>
 											<th>기관명</th>
@@ -58,7 +75,7 @@
 									        data-href="/approval24/admin/insts/detail?inst_id=${inst.instId}"
 									        style="cursor:pointer;">
 									      <td>${inst.instName}</td>
-									      <td>${inst.instAddress}</td>
+									      <td>${inst.instHeadName}</td>
 									      <td>${inst.instAddress}</td>
 									      <td>${inst.instPhone}</td>
 									      <td>${inst.createDt}</td>

@@ -3,7 +3,6 @@ package com.example.approval24.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.example.approval24.domain.InstDTO;
 
@@ -15,5 +14,7 @@ public interface InstDAO {
 	
 	public int updateInst(InstDTO instDTO);
 	
-	public int deleteInst(int id);
+	public int deleteInst(int instId);
+	
+	public InstDTO getInstById(int instId);
 }

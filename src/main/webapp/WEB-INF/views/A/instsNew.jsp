@@ -59,30 +59,28 @@
 
 					<!-- 상단 제목/버튼 -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-3">
-						<h1 class="h3 mb-0 text-gray-800">기관 상세</h1>
+						<h1 class="h3 mb-0 text-gray-800">기관 등록</h1>
 					</div>
 
 					<!-- 카드 -->
 					<div class="card shadow mb-4">
 
-						<!-- 상단 버튼 영역: 목록 / 저장 -->
+						<!-- 상단 버튼 영역: 등록 -->
 						<div class="card-header py-3 d-flex align-items-center">
-							<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">상세 내용</h6>
+							<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">작성 항목</h6>
 							<div class="ml-auto">
-								<button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
-									<i class="fas fa-save mr-1"></i>수정
+								<button type="submit" class="btn btn-primary btn-sm" id="btnSaveTop">
+									<i class="fas fa-save mr-1"></i>등록
 								</button>
-								<button type="button" class="btn btn-danger btn-sm" id="btnDeleteTop">
-									삭제
-								</button>
-								
+								<a href="${pageContext.request.contextPath}/admin/insts" class="btn btn-danger btn-sm">취소</a>
 							</div>
 
 						</div>
 
 
 						<div class="card-body">
-							<form id="noticeForm" method="post" action="<c:url value='/approval24/notice/save'/>" enctype="multipart/form-data" novalidate>
+							<form id="instInsertForm" action="/approval24/admin/insts/new" method="post">
+							
 
 								<div class="table-responsive">
 									<table class="table table-bordered table-sm kv-table">
@@ -96,16 +94,16 @@
 											<!-- 제목 -->
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">기관명</th>
-												<td colspan="3"><input type="text" name="inst_name" id="inst_name" class="form-control form-control-sm" value="${instsDTO.inst_name}" readonly required maxlength="200"></td>
+												<td colspan="3"><input type="text" name="instName" id="instName" class="form-control form-control-sm" placeholder="공지 제목을 입력하세요" required maxlength="200"></td>
 											</tr>
 
 											<!-- 작성자 / 등록일 -->
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">대표자명</th>
-												<td><input type="text" name="inst_head_name" id="inst_head_name" class="form-control form-control-sm" value="${instsDTO.inst_head_name}" readonly required></td>
+												<td><input type="text" name="instHeadName" id="instHeadName" class="form-control form-control-sm" placeholder="홍길동" required></td>
 												<th>기관 등록일</th>
-												<td><input type="date" class="form-control" value="${instsDTO.create_dt}" readonly
-													name="create_dt"></td>
+												<td><input type="date" class="form-control"
+													name="createDt"></td>
 											</tr>
 
 											<!-- 내용 -->
@@ -115,24 +113,24 @@
 												<td colspan="3">
 													<div class="d-flex mb-2">
 														<input type="text" class="form-control form-postal-code mr-2"
-															placeholder="우편번호" name="complainuser_post"
-															id="complainuser_post" readonly style="width: 150px;">
+															placeholder="우편번호" name="instPost"
+															id="instPost" readonly style="width: 150px;">
 						
 														<button type="button" class="btn btn-secondary"
 															onclick="openDaumPostcode()">주소 검색</button>
 													</div> <input type="text" class="form-control mb-2" placeholder="기본 주소"
-													name="inst_address" id="inst_address" readonly>
-													<input type="text" class="form-control" value="${instsDTO.inst_detail_address}" readonly
-													placeholder="상세 주소 (건물명, 동/호수 등)" name="inst_detail_address"
-													id="inst_detail_address">
+													name="instAddress" id="instAddress" readonly>
+													<input type="text" class="form-control"
+													placeholder="상세 주소 (건물명, 동/호수 등)" name="instDetailAddress"
+													id="instDetailAddress">
 												</td>
 											</tr>
 
-											<!-- 전화번호 -->
+											<!-- 연락처 -->
 											<tr>
 												<th>기관 연락처</th>
-												<td colspan="3"><input type="tel" class="form-control" value="${instsDTO.inst_phone}" readonly
-													name="inst_phone"></td>
+												<td colspan="3"><input type="tel" class="form-control"
+													name="instPhone" placeholder="010-xxxx-xxxx"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -172,53 +170,44 @@
 	<!-- footer 영역 (JS) -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
-	<script>
-/* 커스텀 파일 인풋 라벨 표시 */
-$(document).on('change', '.custom-file-input', function () {
-	const fileName = $(this).val().split('\\').pop();
-	$(this).siblings('.custom-file-label').addClass("selected").text(fileName || '파일을 선택하세요');
-});
-
-/* 파일 입력 추가 */
-let fileIndex = 1;
-$('#btnAddFile').on('click', function () {
-	const id = 'file' + (fileIndex++);
-	const $row = $(`
-		<div class="input-group input-group-sm mb-2">
-			<div class="custom-file">
-				<input type="file" class="custom-file-input" name="files" id="${id}">
-				<label class="custom-file-label" for="${id}">파일을 선택하세요</label>
-			</div>
-			<div class="input-group-append">
-				<button class="btn btn-outline-danger" type="button" title="삭제" data-remove-file>
-					<i class="fas fa-times"></i>
-				</button>
-			</div>
-		</div>
-	`);
-	$('#fileInputs').append($row);
-});
-
-/* 추가한 파일 입력 제거 */
-$(document).on('click', '[data-remove-file]', function () {
-	$(this).closest('.input-group').remove();
-});
-
-/* 저장 버튼(상·하단) 공통 처리 */
-function submitForm() {
-	const $form = $('#noticeForm');
-	// 간단 유효성 검사
-	const title = $('#title').val().trim();
-	const content = $('#content').val().trim();
-
-	if (!title) { alert('제목을 입력하세요.'); $('#title').focus(); return; }
-	if (!content) { alert('내용을 입력하세요.'); $('#content').focus(); return; }
-
-	// 중복 제출 방지
-	$('[id^=btnSave]').prop('disabled', true);
-	$form.trigger('submit');
+<script>
+// 1. Daum Postcode API 함수 (openDaumPostcode)
+function openDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // R: 도로명, J: 지번
+            const addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+            
+            // 우편번호 (ID: instPost)
+            document.getElementById('instPost').value = data.zonecode; 
+            
+            // 기본 주소 (ID: instAddress)
+            document.getElementById('instAddress').value = addr;
+            
+            // 상세 주소 입력창에 포커스 (ID: instDetailAddress)
+            document.getElementById('instDetailAddress').focus();
+        }
+    }).open();
 }
-$('#btnSaveTop, #btnSaveBottom').on('click', submitForm);
+
+// 2. 폼 제출 로직 (btnSaveTop)
+//    - 버튼이 폼 외부에 있으므로, 클릭 시 명시적으로 폼 제출
+$(document).ready(function() {
+    
+    // 폼 외부에 있는 등록 버튼 클릭 시 폼 제출
+    $('#btnSaveTop').on('click', function(e) {
+        
+        const form = document.getElementById('instInsertForm');
+        
+        if (!form.checkValidity()) {
+             // 유효성 검사 실패 시 브라우저가 기본 동작을 수행하고 제출 중단
+             return; 
+        }
+        
+        // 폼 제출
+        $('#instInsertForm').submit();
+    });
+});
 </script>
 
 </body>
