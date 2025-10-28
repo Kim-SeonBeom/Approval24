@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<title>공지사항</title>
 </head>
 <body id="page-top">
 
@@ -47,120 +49,24 @@
 										<tr>
 											<th>번호</th>
 											<th>제목</th>
-											<th>첨부파일</th>
-											<th>출처</th>
+											<th>카테고리</th>
+											<th>등록인</th>
 											<th>등록일</th>
 											<th>조회수</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>12</td>
-											<td>[공지] 10월 시스템 정기 점검 안내</td>
-											<td></td>
-											<td>인사팀_조민재</td>
-											<td>2025-10-12</td>
-											<td>412</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>11</td>
-											<td>[알림] 실업급여 신청 절차 개선사항 안내</td>
-											<td></td>
-											<td>인사팀_한유진</td>
-											<td>2025-10-11</td>
-											<td>367</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>10</td>
-											<td>[안내] 홈페이지 접속 지연 현상 복구 완료</td>
-											<td></td>
-											<td>인사팀_이도현</td>
-											<td>2025-10-10</td>
-											<td>298</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>9</td>
-											<td>[공지] 실업급여 수급자 교육 일정 변경 안내</td>
-											<td></td>
-											<td>인사팀_정하은</td>
-											<td>2025-10-09</td>
-											<td>425</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>8</td>
-											<td>[공지] 전산 시스템 보안 업데이트 공지</td>
-											<td></td>
-											<td>인사팀_박서준</td>
-											<td>2025-10-08</td>
-											<td>353</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>7</td>
-											<td>[안내] 실업급여 상담센터 운영시간 단축 안내</td>
-											<td></td>
-											<td>인사팀_윤지호</td>
-											<td>2025-10-07</td>
-											<td>287</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>6</td>
-											<td>[공지] 실업급여 구직활동 인정 기준 변경사항</td>
-											<td></td>
-											<td>인사팀_김나연</td>
-											<td>2025-10-06</td>
-											<td>404</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>5</td>
-											<td>[알림] 10월 공휴일 고객센터 휴무 안내</td>
-											<td></td>
-											<td>인사팀_최민호</td>
-											<td>2025-10-05</td>
-											<td>318</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>4</td>
-											<td>[공지] 실업급여 신청서 양식 변경 안내</td>
-											<td></td>
-											<td>인사팀_이수진</td>
-											<td>2025-10-04</td>
-											<td>459</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>3</td>
-											<td>[안내] 모바일 신청 서비스 점검 예정 (10/6 새벽)</td>
-											<td></td>
-											<td>인사팀_박준혁</td>
-											<td>2025-10-03</td>
-											<td>342</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>2</td>
-											<td>[공지] 개인정보 처리방침 개정 안내</td>
-											<td></td>
-											<td>인사팀_김서연</td>
-											<td>2025-10-02</td>
-											<td>271</td>
-										</tr>
-										<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-											<td>1</td>
-											<td>[알림] 실업급여 지급 일정 공지 (10월분)</td>
-											<td></td>
-											<td>인사팀_정동윤</td>
-											<td>2025-10-01</td>
-											<td>496</td>
-										</tr>
 
-										<%-- <c:forEach var="item" items="${list}">
-											<tr>
-												<td>${item.mainCode}</td>
-														<td>${item.productName}</td>
-												<td>${item.manufacturerName}</td>
-												<td>${item.quantity}</td>
-												<td>${item.transactionType}</td>
-												<td>${item.transactionDate}</td>
+										<c:forEach var="notice" items="${noticeList}">
+											<tr class="clickable-row" data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" style="cursor: pointer;">
+												<td>${notice.noticeId}</td>
+												<td>${notice.title}</td>
+												<td>${notice.categoryCd}</td>
+												<td>${notice.userName}</td>
+												<td><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년  'MM'월 ' dd'일'"/></td>
+												<td>${notice.viewAccount}</td>
 											</tr>
-										</c:forEach> --%>
+										</c:forEach>
 
 									</tbody>
 								</table>
@@ -178,7 +84,7 @@
 			<footer class="sticky-footer bg-white">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span>Copyright &copy; Your Website 2020</span>
+						<span>Copyright &copy; 결재24 2025</span>
 					</div>
 				</div>
 			</footer>

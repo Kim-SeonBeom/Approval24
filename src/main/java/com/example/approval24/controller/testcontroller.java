@@ -16,10 +16,6 @@ public class testcontroller {
 		return "tables";
 	}
 
-	@GetMapping("/notice")
-	public String charts() {
-		return "notice";
-	}
 
 	@GetMapping("/login")
 	public String login() {
@@ -75,16 +71,6 @@ public class testcontroller {
 	@GetMapping("/tempWorkerMaternity")
 	public String tempWorker() {
 		return "tempWorkerMaternityBenefit";
-	}
-
-	@GetMapping("/notice/detail")
-	public String noticeDetail() {
-		return "noticeDetail";
-	}
-
-	@GetMapping("/notice/new")
-	public String noticeWrite() {
-		return "noticeWrite";
 	}
 
 	@GetMapping("/account/auth")

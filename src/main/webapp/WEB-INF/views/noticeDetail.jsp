@@ -97,9 +97,9 @@
 										<!-- (선택) 최소 메타: 필요 없으면 이 두 행 삭제해도 됩니다 -->
 										<tr>
 											<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
-											<td><c:out value="${notice.source}" default="인사팀_정동윤" /></td>
+											<td><c:out value="${notice.userName}" default="인사팀_정동윤" /></td>
 											<th scope="col" class="text-dark bg-light  font-weight-bold">등록일</th>
-											<td><c:out value="${notice.regDate}" default="-" /></td>
+											<td><c:out value="${notice.createDt}" default="-" /></td>
 										</tr>
 
 										<!-- 내용 -->
