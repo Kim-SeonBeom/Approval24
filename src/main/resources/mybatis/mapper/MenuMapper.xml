@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.approval24.dao.MenuDAO">
+
+    <!-- 권한 ID 리스트로 메뉴 조회 -->
+    <select id="findByAuthorityIds" resultType="com.example.approval24.domain.MenuDTO" parameterType="java.util.List">
+        SELECT m.MENU_ID,
+               m.MENU_NAME,
+               m.MENU_URL,
+               m.PARENT_MENU_ID,
+               m.SEQ,
+               m.POPUP_YN,
+               m.CREATE_DT,
+               m.UPDATE_DT,
+               m.CREATE_ID,
+               m.UPDATE_ID,
+               m.DEL_YN
+        FROM T3000_MENU m
+        JOIN T3000_AUTHORITY_MENU ma ON m.MENU_ID = ma.MENU_ID
+        WHERE ma.AUTHORITY_ID IN
+        <foreach item="id" collection="authorityIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+          AND m.DEL_YN = 'N'
+    </select>
+
+    <!-- 전체 메뉴 조회 -->
+    <select id="findAll" resultType="com.example.approval24.domain.MenuDTO">
+        SELECT MENU_ID,
+               MENU_NAME,
+               MENU_URL,
+               PARENT_MENU_ID,
+               SEQ,
+               POPUP_YN,
+               CREATE_DT,
+               UPDATE_DT,
+               CREATE_ID,
+               UPDATE_ID,
+               DEL_YN
+        FROM T3000_MENU
+        WHERE DEL_YN = 'N'
+    </select>
+
+</mapper>

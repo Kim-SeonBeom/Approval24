@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.AccountDAO">
+
+    <select id="findByLogin" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
+        SELECT 
+            ACCOUNT_ID,
+            USER_NO,
+            INST_ID,
+            DEPT_ID,
+            LOGIN_ID,
+            PASSWORD,
+            CREATE_DT,
+            UPDATE_DT,
+            DEL_YN,
+            CREATE_ID,
+            UPDATE_ID,
+            ACCOUNT_STATUS_CD,
+            PWD_FAIL_CNT,
+            PWD_CHANGE_DT,
+            IS_SYSTEM
+        FROM T1000_ACCOUNT
+        WHERE LOGIN_ID = #{loginId}
+          AND PASSWORD = #{password}
+          AND DEL_YN = 'N'
+    </select>
+
+</mapper>
