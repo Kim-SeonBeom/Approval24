@@ -142,5 +142,11 @@ public class testcontroller {
 	public String divisionDetail() {
 		return "divisionDetail";
 	}
+	
+	@GetMapping("/totalcode")
+	public String totalcode()	{
+		
+		return "totalcode";
+	}
 
 }

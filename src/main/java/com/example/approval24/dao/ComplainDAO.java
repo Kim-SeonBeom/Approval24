@@ -11,6 +11,8 @@ public interface ComplainDAO {
 	public List<ComplainDTO> getMyWorks(int accountId);
 	
 	public int registComplain(ComplainDTO complainDTO);
+
+	public List<ComplainDTO> findByDeptOfAccountId(int accountId);
 	
 	
 }

@@ -6,18 +6,22 @@
 	<select id="getMyWorks" resultType="ComplainDTO"
 		parameterType="int">
 		select
-		c.complain_id, cc.category_name, u.complainuser_name,
-		c.complain_status_cd, c.rcpt_dt, c.proc_dt, c.due_dt
+		c.complain_id, cc.category_name,
+		u.complainuser_name,
+		c.complain_status_cd, c.rcpt_dt, c.proc_dt,
+		c.due_dt
 		from t2000_complain c
 		join t2000_complain_user u
-		on c.complainuser_no = u.complainuser_no
+		on
+		c.complainuser_no = u.complainuser_no
 		join t2000_complain_category cc
 		on c.complain_category_id = cc.complain_category_id
-		where c.account_id = #{accountId}
+		where c.account_id
+		= #{accountId}
 	</select>
-	
+
 	<!-- 민원 접수 -->
-		<insert id="registComplain" parameterType="ComplainDTO">
+	<insert id="registComplain" parameterType="ComplainDTO">
 		INSERT INTO
 		T2000_COMPLAIN (
 		COMPLAIN_CATEGORY_ID,
@@ -36,5 +40,21 @@
 		#{receiverAccountId}
 		)
 	</insert>
+
+	<select id="findByDeptOfAccountId" parameterType="int" resultType="ComplainDTO">
+		SELECT c.*,u.user_name,g.category_name,r.complainuser_name
+		FROM t2000_complain c
+		JOIN t1000_department_work d
+		ON d.complain_category_id = c.complain_category_id
+		JOIN t1000_account a
+		ON a.dept_id = d.department_id
+        join t1000_user u 
+        on a.user_no = u.user_no
+        join t2000_complain_category g
+        on g.complain_category_id = c.complain_category_id
+        join t2000_complain_user r
+        on c.complainuser_no = r.complainuser_no
+		WHERE a.account_id = #{accountId}
+	</select>
 
 </mapper>

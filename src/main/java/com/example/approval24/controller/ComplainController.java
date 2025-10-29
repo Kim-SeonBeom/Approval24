@@ -14,7 +14,7 @@ import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.service.CategoryService;
 import com.example.approval24.service.ComplainService;
 
-@Controller("/complain")
+@Controller
 public class ComplainController {
 
 	@Autowired
@@ -40,7 +40,7 @@ public class ComplainController {
 	@GetMapping("/complain/new")
 	public String complainRegForm(Model model) {
 		List<CategoryDTO> categories = categoryService.getCategoryList();
-		//		System.out.println(categories.toString());
+		// System.out.println(categories.toString());
 		model.addAttribute("categoryList", categories);
 
 		return "complain/regEditForm/complainRegForm";
@@ -49,11 +49,26 @@ public class ComplainController {
 
 	@PostMapping("/complain/new")
 	public String complainRegist(Model model, ComplainRegDTO complainRegDTO
-			//,HttpSession session(여기서 현재 로그인id 가져오기)
-			) {
-		complainService.complainRegister(complainRegDTO,accountId);
-		
+	// ,HttpSession session(여기서 현재 로그인id 가져오기)
+	) {
+		complainService.complainRegister(complainRegDTO, accountId);
+
 		return "redirect:/";
+
+	}
+
+	@GetMapping("/complains")
+	public String complainList(Model model
+			// ,HttpSession session(여기서 현재 로그인id가져오기)
+			) {
+		System.out.println("controller in");
+		List<ComplainDTO> complainList = complainService.complainList(accountId);
+		model.addAttribute("complainList", complainList);
+		System.out.println(complainList.toString());
+		System.out.println("contorller out");
+		
+		
+		return "/complain/complainList";
 
 	}
 

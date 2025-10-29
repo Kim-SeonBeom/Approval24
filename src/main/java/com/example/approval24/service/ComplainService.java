@@ -1,11 +1,14 @@
 package com.example.approval24.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.approval24.dao.AccountDAO;
 import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.dao.ComplainUserDAO;
@@ -23,6 +26,9 @@ public class ComplainService {
 
 	@Autowired
 	private CategoryDAO categoryDAO;
+	
+	@Autowired
+	private AccountDAO accountDAO;
 
 	public List<ComplainDTO> getMyWorkList(int accountId) {
 
@@ -58,7 +64,9 @@ public class ComplainService {
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
-		LocalDateTime deadlineDt = LocalDateTime.now().plusDays((long) dueDt);
+		LocalDateTime localDateTime = LocalDateTime.now().plusDays(dueDt); 
+		Date deadlineDt = java.util.Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
 
 		ComplainDTO complainDTO = new ComplainDTO();
 		complainDTO.setComplainCategoryId(complainRegDTO.getComplainCategoryId());
@@ -73,8 +81,6 @@ public class ComplainService {
 		//
 		//
 		complainDTO.setDeadlineDt(deadlineDt);
-		
-	
 		complainDTO.setReceiverAccountId(receiverAccountId);
 				
 		int result = complainDAO.registComplain(complainDTO);
@@ -84,6 +90,17 @@ public class ComplainService {
 			System.out.println("민원 등록 실패");
 		}
 
+	}
+
+	public List<ComplainDTO> complainList(int accountId) {
+		System.out.println("service input");
+
+		List<ComplainDTO> complainList = complainDAO.findByDeptOfAccountId(accountId);
+		System.out.println("***" + complainList);
+		System.out.println("service out");
+
+		
+		return complainList;
 	}
 
 }
