@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,14 +94,24 @@
 											<td colspan="3"><strong class="text-gray-900"> <c:out value="${notice.title}" default="[제목 없음]" />
 											</strong></td>
 										</tr>
-
-										<!-- (선택) 최소 메타: 필요 없으면 이 두 행 삭제해도 됩니다 -->
-										<tr>
-											<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
-											<td><c:out value="${notice.userName}" default="인사팀_정동윤" /></td>
-											<th scope="col" class="text-dark bg-light  font-weight-bold">등록일</th>
-											<td><c:out value="${notice.createDt}" default="-" /></td>
-										</tr>
+										
+										<c:if test="${empty notice.updateDt}" >
+											<tr>
+												<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
+												<td><c:out value="${notice.userName}" default="-" /></td>
+												<th scope="col" class="text-dark bg-light  font-weight-bold">등록일</th>
+												<td><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년 'MM'월 'dd'일 'HH:mm" /></td>
+											</tr>
+										</c:if>
+										
+										<c:if test="${notice.updateDt != null }">
+											<tr>
+												<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
+												<td><c:out value="${notice.userName}" default="-" /></td>
+												<th scope="col" class="text-dark bg-light  font-weight-bold">수정일</th>
+												<td><fmt:formatDate value="${notice.updateDt}" pattern="yyyy'년 'MM'월 'dd'일 'HH:mm" /></td>
+											</tr>
+										</c:if>
 
 										<!-- 내용 -->
 										<tr>
@@ -109,24 +120,6 @@
 
 										</tr>
 
-										<!-- 첨부 -->
-										<tr>
-											<th scope="col" class="text-dark bg-light  font-weight-bold">첨부파일</th>
-											<td colspan="3" class="attach-cell"><c:choose>
-													<c:when test="${not empty notice.attachList}">
-														<ul class="list-unstyled mb-0">
-															<c:forEach var="f" items="${notice.attachList}">
-																<li><a href="<c:url value='/approval24/notice/attach/download'><c:param name='fileId' value='${f.fileId}'/></c:url>"> <i class="far fa-file mr-1"></i> <c:out value="${f.fileName}" />
-																</a> <span class="text-muted small ml-1">(<c:out value="${f.sizeReadable}" />)
-																</span></li>
-															</c:forEach>
-														</ul>
-													</c:when>
-													<c:otherwise>
-														<span class="text-muted">첨부파일이 없습니다.</span>
-													</c:otherwise>
-												</c:choose></td>
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -142,7 +135,7 @@
 			<footer class="sticky-footer bg-white">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span>Copyright &copy; Your Website 2020</span>
+						<span>행정 &copy; 행정 2025</span>
 					</div>
 				</div>
 			</footer>

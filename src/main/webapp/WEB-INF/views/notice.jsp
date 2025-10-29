@@ -38,7 +38,7 @@
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 							<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">공지사항 내역</h6>
 							<!-- 글쓰기 버튼 안보이게 -->
-							<c:if test="${loginUser.departmentName eq '인사팀'}">
+							<c:if test="${loginUser.departmentName eq '인사'}">
 								<button class="btn btn-primary btn-sm" id="noticeWrite" style="font-size: 1rem; padding: 0.25rem 0.75rem;">글쓰기</button>
 							</c:if>
 						</div>
@@ -58,14 +58,16 @@
 									<tbody>
 
 										<c:forEach var="notice" items="${noticeList}">
-											<tr class="clickable-row" data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" style="cursor: pointer;">
-												<td>${notice.noticeId}</td>
-												<td>${notice.title}</td>
-												<td>${notice.categoryCd}</td>
-												<td>${notice.userName}</td>
-												<td><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년  'MM'월 ' dd'일'"/></td>
-												<td>${notice.viewAccount}</td>
-											</tr>
+											<c:if test="${notice.delYn eq 'N'}">
+												<tr class="clickable-row" data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" style="cursor: pointer;">
+													<td>${notice.noticeId}</td>
+													<td>${notice.title}</td>
+													<td>${notice.categoryCd}</td>
+													<td>${notice.userName}</td>
+													<td><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년  'MM'월 ' dd'일'"/></td>
+													<td>${notice.viewAccount}</td>
+												</tr>
+											</c:if>
 										</c:forEach>
 
 									</tbody>
@@ -84,7 +86,7 @@
 			<footer class="sticky-footer bg-white">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span>Copyright &copy; 결재24 2025</span>
+						<span>행정 &copy; 결재24 2025</span>
 					</div>
 				</div>
 			</footer>
