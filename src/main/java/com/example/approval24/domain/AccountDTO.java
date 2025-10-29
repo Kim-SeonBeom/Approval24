@@ -23,4 +23,6 @@ public class AccountDTO {
     private Integer pwdFailCnt;      // PWD_FAIL_CNT
     private Date pwdChangeDt;        // PWD_CHANGE_DT
     private String isSystem;         // IS_SYSTEM
+    
+    private String userName; 		// 추가 사항 유저이름
 }

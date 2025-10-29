@@ -8,35 +8,6 @@
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <title>공지사항 글쓰기 | 결재24</title>
-<style>
-/* 표 기반(딱딱한) 작성 레이아웃 */
-.kv-table th {
-	width: 140px;
-	background: #f8f9fc;
-	vertical-align: middle;
-}
-
-.kv-table td {
-	background: #fff;
-}
-
-/* 상세와 동일한 룩앤필 유지 */
-.kv-table .content-cell {
-	white-space: pre-wrap;
-	line-height: 1.6;
-	min-height: 300px; /* 상세와 동일한 최소 높이 */
-}
-
-/* 파일 리스트 UI 정리 */
-.kv-table .attach-cell ul {
-	margin: 0;
-	padding-left: 1rem;
-}
-
-.kv-table .attach-cell li+li {
-	margin-top: .25rem;
-}
-</style>
 </head>
 <body id="page-top">
 
@@ -73,7 +44,7 @@
 
 
 						<div class="card-body">
-							<form id="noticeForm" method="post" action="<c:url value='/approval24/notice/save'/>" enctype="multipart/form-data" novalidate>
+							<form id="saveNotice" method="post" action="<c:url value='/notice/save'/>" enctype="multipart/form-data" novalidate>
 
 								<div class="table-responsive">
 									<table class="table table-bordered table-sm kv-table">
@@ -87,13 +58,15 @@
 											<!-- 제목 -->
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">제목</th>
-												<td colspan="3"><input type="text" name="title" id="title" class="form-control form-control-sm" placeholder="공지 제목을 입력하세요" required maxlength="200"></td>
+												<td colspan="3"><input type="text" name="title" id="title"  value="${notice.title}" class="form-control form-control-sm" placeholder="공지 제목을 입력하세요" required maxlength="200"></td>
 											</tr>
 
 											<!-- 작성자 / 등록일 -->
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
-												<td><input type="text" class="form-control form-control-sm" value="${user.username}"  readonly></td>
+												<!-- 나중에 로그인 정보를 가져와 해당 유저의 insert -->
+												<td><input type="text" class="form-control form-control-sm" value="${sessionScope.authUser.userName}"  readonly>
+														<input type="hidden" name="createId" value="${notice.createId}"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
 												<td>
 													<input type="text" class="form-control form-control-sm" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" readonly>
@@ -103,7 +76,7 @@
 											<!-- 내용 -->
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">내용</th>
-												<td colspan="3" class="content-cell"><textarea name="content" id="content" class="form-control" style="min-height: 300px;" placeholder="공지 내용을 입력하세요" required></textarea></td>
+												<td colspan="3" class="content-cell"><textarea name="content" id="noticeContent"class="form-control" style="min-height: 300px;" placeholder="공지 내용을 입력하세요"  required>${notice.content}</textarea></td>
 											</tr>
 
 											<!-- 카테고리 선택 -->
@@ -111,22 +84,22 @@
 												<th scope="col" class="text-dark bg-light font-weight-bold">카테고리 선택</th>
 												<td colspan="3">
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeAll" name="notice_type1"class="custom-control-input" > 
+														<input type="radio" id="typeAll" name="categoryCd" value="" class="custom-control-input"  > 
 														<label class="custom-control-label" for="typeAll">전체 공지</label>
 													</div>
 
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeSupport" name="notice_type1"class="custom-control-input" value="support" checked>
+														<input type="radio" id="typeSupport" name="categoryCd"class="custom-control-input" value="support" >
 														<label class="custom-control-label" for="typeSupport">취업지원</label>
 													</div>
 													
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeBaby" name="notice_type1"class="custom-control-input" value="baby" checked>
+														<input type="radio" id="typeBaby" name="categoryCd"class="custom-control-input" value="baby" >
 														<label class="custom-control-label" for="typeBaby">출산</label>
 													</div>
 													
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeLost" name="notice_type1"class="custom-control-input" value="lost" checked>
+														<input type="radio" id="typeLost" name="categoryCd"class="custom-control-input" value="lost" >
 														<label class="custom-control-label" for="typeLost">실업자</label>
 													</div>
 													
@@ -138,12 +111,12 @@
 												<th scope="col" class="text-dark bg-light font-weight-bold">공지구분</th>
 												<td colspan="3">
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typePopup" name="notice_type"class="custom-control-input" value="Y"> 
+														<input type="radio" id="typePopup" name="popupYn"class="custom-control-input" value="Y"> 
 														<label class="custom-control-label" for="typePopup">팝업 공지</label>
 													</div>
 
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeNormal" name="notice_type"class="custom-control-input" value="N" checked>
+														<input type="radio" id="typeNormal" name="popupYn"class="custom-control-input" value="N" checked>
 														<label class="custom-control-label" for="typeNormal">일반 공지</label>
 													</div>
 												</td>
@@ -154,7 +127,7 @@
 									</table>
 								</div>
 								<div class="d-flex justify-content-end">
-								<button type="button" class="btn btn-primary btn-sm mr-4" id="btnSaveTop">
+								<button type="button" class="btn btn-primary btn-sm mr-4" id="btnSaveBottom">
 									<i class="fas fa-save mr-1"></i>등록	
 								</button>
 								<a href="${pageContext.request.contextPath}/notice" class="btn btn-danger btn-sm">
@@ -198,13 +171,16 @@
 
 /* 저장 버튼(상·하단) 공통 처리 */
 function submitForm() {
-	const $form = $('#noticeForm');
+	const $form = $('#saveNotice');
 	// 간단 유효성 검사
 	const title = $('#title').val().trim();
-	const content = $('#content').val().trim();
+	const content = $('#noticeContent').val().trim();
+	
+	console.log("제목 값:", title);
+    console.log("내용 값:", noticeContent);
 
 	if (!title) { alert('제목을 입력하세요.'); $('#title').focus(); return; }
-	if (!content) { alert('내용을 입력하세요.'); $('#content').focus(); return; }
+	if (!content) { alert('내용을 입력하세요.'); $('#noticeContent').focus(); return; }
 
 	// 중복 제출 방지
 	$('[id^=btnSave]').prop('disabled', true);
