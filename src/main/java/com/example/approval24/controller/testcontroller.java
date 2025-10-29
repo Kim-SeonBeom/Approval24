@@ -59,22 +59,22 @@ public class testcontroller {
 
 	@GetMapping("/trainingLoan")
 	public String trainingExpense() {
-		return "trainingLoan";
+		return "complain/regEditForm/trainingLoan";
 	}
 
 	@GetMapping("/trainingSubsidy")
 	public String subsidy() {
-		return "trainingSubsidy";
+		return "complain/regEditForm/trainingSubsidy";
 	}
 
 	@GetMapping("/jobResearchReport")
 	public String report() {
-		return "jobResearchReport";
+		return "complain/regEditForm/jobResearchReport";
 	}
 	
 	@GetMapping("/tempWorkerMaternity")
 	public String tempWorker() {
-		return "tempWorkerMaternityBenefit";
+		return "complain/regEditForm/tempWorkerMaternityBenefit";
 	}
 
 	@GetMapping("/notice/detail")
@@ -103,19 +103,19 @@ public class testcontroller {
 	}
 	@GetMapping("/employmentInsurance")
 	   public String insurance() {
-	      return "employmentInsurance";
+	      return "complain/regEditForm/employmentInsurance";
 
 	   }
 	
 	@GetMapping("/graduateProgram")
 	public String graduateProgram() {
-		return "graduateProgram";
+		return "complain/regEditForm/graduateProgram";
 
 	}
 	
 	@GetMapping("/challengeSupport")
 	public String challenge() {
-		return "challengeSupport";
+		return "complain/regEditForm/challengeSupport";
 	}
 	
 	@GetMapping("/authorityList")

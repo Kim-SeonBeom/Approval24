@@ -16,15 +16,15 @@
 					<tr>
 						<th>성명</th>
 						<td><input type="text" class="form-control"
-							name="complainuser_name"></td>
+							name="complainuserName" required></td>
 						<th>주민등록번호</th>
-						<td><input type="text" id="complainuser_resi_no_front"
-							maxlength="6" inputmode="numeric" pattern="[0-9]*"
-							placeholder="생년월일 6자리" style="width: 40%; display: inline-block;">
-							<span class="mx-1">-</span> <input type="text"
-							id="complainuser_resi_no_back" maxlength="7" inputmode="numeric"
+						<td><input type="text" class="form-control" id="complainuserResiNoFront" name="complainuserResiNoFront"
+							maxlength="6"  pattern="[0-9]*"
+							placeholder="생년월일 6자리" style="width: 40%; display: inline-block;" required>
+							<span class="mx-1">-</span> <input type="password"  class="form-control" 
+							id="complainuserResiNoBack" name="complainuserResiNoBack" maxlength="7" 
 							pattern="[0-9]*" placeholder="뒤 7자리"
-							style="width: 50%; display: inline-block;"></td>
+							style="width: 50%; display: inline-block;" required></td>
 					</tr>
 					<tr>
 						<th scope="col" class="text-dark bg-light font-weight-bold"
@@ -32,32 +32,31 @@
 						<td colspan="3">
 							<div class="d-flex mb-2">
 								<input type="text" class="form-control form-postal-code mr-2"
-									placeholder="우편번호" name="complainuser_post"
-									id="complainuser_post" readonly style="width: 150px;">
+									placeholder="우편번호" name="complainuserPost"
+									id="complainuserPost" readonly style="width: 150px;">
 
 								<button type="button" class="btn btn-secondary"
 									onclick="openDaumPostcode()">주소 검색</button>
 							</div> <input type="text" class="form-control mb-2" placeholder="기본 주소"
-							name="complainuser_addr1" id="complainuser_addr1" readonly>
+							name="complainuserAddress" id="complainuserAddress" readonly>
 							<input type="text" class="form-control"
-							placeholder="상세 주소 (건물명, 동/호수 등)" name="complainuser_addr2"
-							id="complainuser_addr2">
+							placeholder="상세 주소 (건물명, 동/호수 등)" name="complainuserAddrDetail"
+							id="complainuserAddrDetail" required>
 						</td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
 						<td><input type="tel" class="form-control"
-							name="complainuser_tel"></td>
+							name="complainuserTel"></td>
 						<th>휴대전화번호</th>
-
 						<td><input type="tel" class="form-control"
-							name="complainuser_phone"></td>
+							name="complainuserPhone" required></td>
 
 					</tr>
 					<tr>
 						<th>이메일</th>
 						<td colspan="3"><input type="email" class="form-control"
-							name="complainuser_email"></td>
+							name="complainuserEmail"></td>
 					</tr>
 				</tbody>
 			</table>

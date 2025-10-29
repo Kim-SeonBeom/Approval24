@@ -46,7 +46,7 @@
 
 					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/approval24/loan/training/apply">
 
-						<%@ include file="/WEB-INF/views/common/complainUserInfo.jsp"%>
+						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
 
 
 						<div class="card shadow mb-4">
