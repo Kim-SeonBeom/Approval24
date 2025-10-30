@@ -7,12 +7,12 @@
         menus = new ArrayList<>();
     }
 
-    // 메뉴 순서대로 정렬 (SEQ 기준)
-    menus.sort(Comparator.comparingLong(MenuVO::getSeq));
+    // 메뉴 순서대로 정렬 (SEQ 기준, null 안전)
+    menus.sort(Comparator.comparingLong(m -> m.getSeq() != null ? m.getSeq() : 0));
 
-    // 부모 메뉴만 추출
+    // 부모 메뉴만 추출 (ID null 제외)
     List<MenuVO> parentMenus = menus.stream()
-                                    .filter(m -> m.getParentMenuId() == null)
+                                    .filter(m -> m.getParentMenuId() == null && m.getMenuId() != null)
                                     .collect(Collectors.toList());
 %>
 
@@ -35,13 +35,12 @@
             // 권한 없는 메뉴는 표시 안함
             if (!"Y".equals(parent.getReadYn())) continue;
 
-            // 자식 메뉴 추출
+            // 자식 메뉴 추출 (null 안전)
             List<MenuVO> childMenus = menus.stream()
-                                        .filter(m -> parent.getMenuId().equals(m.getParentMenuId()))
-                                        .sorted(Comparator.comparingLong(MenuVO::getSeq))
+                                        .filter(m -> m.getParentMenuId() != null && m.getParentMenuId().equals(parent.getMenuId()))
+                                        .sorted(Comparator.comparingLong(m -> m.getSeq() != null ? m.getSeq() : 0))
                                         .collect(Collectors.toList());
 
-            // data-target 계산 (문자열 중첩 문제 해결)
             String dataTarget = childMenus.isEmpty() ? "" : "#collapse" + parent.getMenuId();
             String dataToggle = childMenus.isEmpty() ? "" : "collapse";
     %>
@@ -49,7 +48,7 @@
             <a class="nav-link" href="<%= parent.getMenuUrl() != null ? parent.getMenuUrl() : "#" %>" 
                data-toggle="<%= dataToggle %>" 
                data-target="<%= dataTarget %>" 
-               aria-expanded="true" aria-controls="collapse<%= parent.getMenuId() %>">
+               aria-expanded="false" aria-controls="collapse<%= parent.getMenuId() %>">
                 <span><%= parent.getMenuName() %></span>
             </a>
 
@@ -60,9 +59,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <%
                             for (MenuVO child : childMenus) {
-                                if (!"Y".equals(child.getReadYn())) continue;
+                                if (!"Y".equals(child.getReadYn()) || child.getMenuId() == null) continue;
                         %>
-                            <a class="collapse-item" href="<%= child.getMenuUrl() %>"><%= child.getMenuName() %></a>
+                            <a class="collapse-item" href="<%= child.getMenuUrl() != null ? child.getMenuUrl() : "#" %>"><%= child.getMenuName() %></a>
                         <%
                             }
                         %>
@@ -78,13 +77,12 @@
     %>
 </ul>
 
-<!-- Bootstrap collapse 관련 JS -->
+<!-- Bootstrap collapse JS -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var collapseElements = document.querySelectorAll('.collapse');
         collapseElements.forEach(function(el) {
             el.addEventListener('show.bs.collapse', function () {
-                // 다른 메뉴가 열려있으면 닫기
                 collapseElements.forEach(function(other) {
                     if (other !== el) {
                         var bsCollapse = bootstrap.Collapse.getInstance(other);

@@ -44,4 +44,67 @@
         WHERE DEL_YN = 'N'
     </select>
 
+    <!-- 메뉴 ID로 조회 -->
+    <select id="findById" resultType="com.example.approval24.domain.MenuDTO" parameterType="long">
+        SELECT MENU_ID,
+               MENU_NAME,
+               MENU_URL,
+               PARENT_MENU_ID,
+               SEQ,
+               POPUP_YN,
+               CREATE_DT,
+               UPDATE_DT,
+               CREATE_ID,
+               UPDATE_ID,
+               DEL_YN
+        FROM T3000_MENU
+        WHERE MENU_ID = #{menuId}
+          AND DEL_YN = 'N'
+    </select>
+
+    <!-- 메뉴 등록 -->
+    <insert id="insertMenu" parameterType="com.example.approval24.domain.MenuDTO">
+    	INSERT INTO T3000_MENU (
+        	MENU_NAME,
+        	MENU_URL,
+        	PARENT_MENU_ID,
+        	SEQ,
+        	POPUP_YN,
+        	CREATE_DT,
+        	CREATE_ID,
+        	DEL_YN
+    	) VALUES (
+        	#{menuName},
+        	#{menuUrl},
+        	#{parentMenuId},
+        	#{seq},
+        	#{popupYn},
+        	SYSDATE,
+        	#{createId},
+        	'N'
+    	)
+	</insert>
+
+    <!-- 메뉴 수정 -->
+    <update id="updateMenu" parameterType="com.example.approval24.domain.MenuDTO">
+        UPDATE T3000_MENU
+        SET MENU_NAME = #{menuName},
+            MENU_URL = #{menuUrl},
+            PARENT_MENU_ID = #{parentMenuId},
+            SEQ = #{seq},
+            POPUP_YN = #{popupYn},
+            UPDATE_DT = SYSDATE,
+            UPDATE_ID = #{updateId}
+        WHERE MENU_ID = #{menuId}
+          AND DEL_YN = 'N'
+    </update>
+
+    <!-- 메뉴 삭제 (논리 삭제) -->
+    <update id="deleteMenu" parameterType="long">
+        UPDATE T3000_MENU
+        SET DEL_YN = 'Y',
+            UPDATE_DT = SYSDATE
+        WHERE MENU_ID = #{menuId}
+    </update>
+
 </mapper>

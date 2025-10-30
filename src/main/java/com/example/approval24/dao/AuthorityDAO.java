@@ -15,4 +15,16 @@ public interface AuthorityDAO {
 
     // 전체 권한 조회 (관리용)
     List<AuthorityDTO> findAll();
+    
+    // 2️⃣ 권한 ID로 조회
+    AuthorityDTO findById(@Param("authorityId") Long authorityId);
+
+    // 3️⃣ 권한 등록
+    void insertAuthority(AuthorityDTO authority);
+
+    // 4️⃣ 권한 수정
+    void updateAuthority(AuthorityDTO authority);
+
+    // 5️⃣ 권한 삭제 (논리 삭제)
+    void deleteAuthority(@Param("authorityId") Long authorityId);
 }
