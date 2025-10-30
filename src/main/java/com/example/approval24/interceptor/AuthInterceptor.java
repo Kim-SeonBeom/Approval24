@@ -14,7 +14,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                              Object handler) throws Exception {
 
         HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("authUser") != null) {
+        if (session != null && session.getAttribute("user") != null) {
             return true; // 로그인 되어 있음
         }
 

@@ -15,4 +15,16 @@ public interface MenuDAO {
 
     // 전체 메뉴 조회 (관리용)
     List<MenuDTO> findAll();
+    
+    // 메뉴 아이디로 조회
+	MenuDTO findById(Long menuId);
+	
+	// 메뉴 등록
+    void insertMenu(MenuDTO menu);
+
+    // 메뉴 수정
+    int updateMenu(MenuDTO menu);
+
+    // 메뉴 삭제 
+    int deleteMenu(Long menuId);
 }
