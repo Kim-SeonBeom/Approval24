@@ -44,7 +44,7 @@
 
 
 						<div class="card-body">
-							<form id="saveNotice" method="post" action="<c:url value='/notice/save'/>" enctype="multipart/form-data" novalidate>
+							<form id="saveNotice" method="post" action="<c:url value='/notice/save'/>" novalidate>
 
 								<div class="table-responsive">
 									<table class="table table-bordered table-sm kv-table">
@@ -66,7 +66,7 @@
 												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
 												<!-- 나중에 로그인 정보를 가져와 해당 유저의 insert -->
 												<td><input type="text" class="form-control form-control-sm" value="${sessionScope.authUser.userName}"  readonly>
-														<input type="hidden" name="createId" value="${notice.createId}"></td>
+														<input type="hidden" name="createId" value="${sessionScope.authUser.accountId}"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
 												<td>
 													<input type="text" class="form-control form-control-sm" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" readonly>
@@ -89,17 +89,17 @@
 													</div>
 
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeSupport" name="categoryCd"class="custom-control-input" value="support" >
+														<input type="radio" id="typeSupport" name="categoryCd"class="custom-control-input" value="1" >
 														<label class="custom-control-label" for="typeSupport">취업지원</label>
 													</div>
 													
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeBaby" name="categoryCd"class="custom-control-input" value="baby" >
+														<input type="radio" id="typeBaby" name="categoryCd"class="custom-control-input" value="2" >
 														<label class="custom-control-label" for="typeBaby">출산</label>
 													</div>
 													
 													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeLost" name="categoryCd"class="custom-control-input" value="lost" >
+														<input type="radio" id="typeLost" name="categoryCd"class="custom-control-input" value="3" >
 														<label class="custom-control-label" for="typeLost">실업자</label>
 													</div>
 													
@@ -147,7 +147,7 @@
 			<footer class="sticky-footer bg-white">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span>행정센터 &copy; 행정 2025</span>
+						<span>행정 &copy; 결제24 2025</span>
 					</div>
 				</div>
 			</footer>
@@ -167,26 +167,33 @@
 	<!-- footer 영역 (JS) -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
-	<script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnSave = document.getElementById('btnSaveBottom');
+    const form = document.getElementById('saveNotice');
 
-/* 저장 버튼(상·하단) 공통 처리 */
-function submitForm() {
-	const $form = $('#saveNotice');
-	// 간단 유효성 검사
-	const title = $('#title').val().trim();
-	const content = $('#noticeContent').val().trim();
-	
-	console.log("제목 값:", title);
-    console.log("내용 값:", noticeContent);
+    btnSave.addEventListener('click', function() {
+        const title = document.getElementById('title').value.trim();
+        const content = document.getElementById('noticeContent').value.trim();
 
-	if (!title) { alert('제목을 입력하세요.'); $('#title').focus(); return; }
-	if (!content) { alert('내용을 입력하세요.'); $('#noticeContent').focus(); return; }
+        if (!title) {
+            alert('제목을 입력하세요.');
+            document.getElementById('title').focus();
+            return;
+        }
+        if (!content) {
+            alert('내용을 입력하세요.');
+            document.getElementById('noticeContent').focus();
+            return;
+        }
 
-	// 중복 제출 방지
-	$('[id^=btnSave]').prop('disabled', true);
-	$form.trigger('submit');
-}
-$('#btnSaveTop, #btnSaveBottom').on('click', submitForm);
+        // 중복 제출 방지
+        btnSave.disabled = true;
+
+        // 정상 submit
+        form.submit();
+    });
+});
 </script>
 
 </body>

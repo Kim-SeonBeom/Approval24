@@ -65,8 +65,8 @@
 							<a href="${pageContext.request.contextPath}/notice" class="btn btn-light btn-sm"> <i class="fas fa-list mr-1"></i>목록
 							</a>
 							<div>
-								<c:if test="${loginUser.departmentName eq '인사팀'}">
-									<a href="<c:url value='/approval24/notice/edit'><c:param name='noticeId' value='${notice.noticeId}'/></c:url>" class="btn btn-primary btn-sm"> <i class="fas fa-edit mr-1"></i>수정
+								<c:if test="${sessionScope.authUser.deptId eq '4'}">
+									<a href="<c:url value='/notice/edit/${notice.noticeId}'><c:param name='noticeId' value='${notice.noticeId}'/></c:url>" class="btn btn-primary btn-sm"> <i class="fas fa-edit mr-1"></i>수정
 									</a>
 									<button type="button" class="btn btn-danger btn-sm" id="btnDeleteFooter">
 										<i class="fas fa-trash-alt mr-1"></i>삭제
@@ -91,8 +91,10 @@
 										<!-- 제목 -->
 										<tr>
 											<th scope="col" class="text-dark bg-light  font-weight-bold">제목</th>
-											<td colspan="3"><strong class="text-gray-900"> <c:out value="${notice.title}" default="[제목 없음]" />
+											<td ><strong class="text-gray-900"> <c:out value="${notice.title}" default="[제목 없음]" />
 											</strong></td>
+											<th scope="col" class="text-dark bg-light  font-weight-bold">조회수</th>
+											<td><c:out value="${notice.viewCount}"/></td>
 										</tr>
 										
 										<c:if test="${empty notice.updateDt}" >
@@ -160,7 +162,7 @@
 		function doDelete() {
 			if (confirm('이 공지사항을 삭제하시겠습니까?')) {
 				$
-						.post('<c:url value="/approval24/notice/delete"/>', {
+						.post('<c:url value="/notice/delete"/>', {
 							noticeId : '${notice.noticeId}'
 						})
 						.done(
@@ -174,6 +176,11 @@
 			}
 		}
 		$('#btnDelete, #btnDeleteFooter').on('click', doDelete);
+	</script>
+	<script>
+	$(document).ready(funtction(){
+		const $ipdateForm = $('#instUpdateForm');
+	})
 	</script>
 
 </body>
