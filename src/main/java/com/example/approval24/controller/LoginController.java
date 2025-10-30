@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.service.AccountService;
 
 @Controller
@@ -25,7 +24,6 @@ public class LoginController {
         return "login"; 
     }
 
-    // 로그인 처리
     @PostMapping("/login")
     public String login(
             @RequestParam String loginId,
@@ -33,14 +31,19 @@ public class LoginController {
             HttpServletRequest request,
             Model model) {
 
-        
-        if (!accountService.login(loginId, password)) {
+        Long accountID = accountService.login(loginId, password);
+        if (accountID == null) {
             model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
             return "login";
         }
 
-        return "index"; // 로그인 후 이동할 페이지
+        HttpSession session = request.getSession();
+        session.setAttribute("user", accountID);
+        session.setAttribute("authMenus", accountService.getAuthMenus(accountID));
+
+        return "index";
     }
+
 
     // 로그아웃 처리
     @GetMapping("/logout")

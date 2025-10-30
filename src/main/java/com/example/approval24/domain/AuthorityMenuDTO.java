@@ -19,4 +19,6 @@ public class AuthorityMenuDTO {
     private Long createId;      // CREATE_ID
     private Long updatedId;     // UPDATED_ID
     private String delYn;       // DEL_YN
+    
+    private String menuName;    // 추가사항.
 }
