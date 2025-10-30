@@ -28,6 +28,13 @@ public class NoticeService {
 		System.out.println("등록 서비스 끝");
 		return result;
 	}
+	// 공지사항 수정
+	public int updateNotice(NoticeDTO noticeDTO) {
+		System.out.println("🔥 업데이트 요청 도착: " + noticeDTO);
+		int result = noticeDAO.updateNotice(noticeDTO);
+		System.out.println("업데이트 완료");
+		return result;
+	}
 	
 	// 공지사항 디테일
 	public NoticeDTO getnoticeDetail(Long noticeId) {
@@ -36,6 +43,17 @@ public class NoticeService {
 		System.out.println(dto.toString());
 		System.out.println("서비스 끝");
 		return noticeDAO.getnoticeDetail(noticeId);
+	}
+	
+	// 공지사항 삭제
+	public int deleteNotice(NoticeDTO noticeDTO) {
+		int result = noticeDAO.deleteNotice(noticeDTO);
+		return result;
+	}
+	
+	// 공지사항 조회수 증가
+	public void increaseViewCount(Long noticeId) {
+		noticeDAO.increaseViewCount(noticeId);
 	}
 
 }

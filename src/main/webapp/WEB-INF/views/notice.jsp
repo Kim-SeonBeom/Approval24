@@ -65,7 +65,7 @@
 													<td>${notice.categoryCd}</td>
 													<td>${notice.userName}</td>
 													<td><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년  'MM'월 ' dd'일'"/></td>
-													<td>${notice.viewAccount}</td>
+													<td>${notice.viewCount}</td>
 												</tr>
 											</c:if>
 										</c:forEach>

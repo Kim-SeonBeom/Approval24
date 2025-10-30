@@ -13,5 +13,11 @@ public interface NoticeDAO {
 	
 	public int saveNotice(NoticeDTO noticeDTO);
 	
-	public NoticeDTO getnoticeDetail(@Param("noticeId") Long notideId);
+	public int updateNotice(NoticeDTO noticeDTO);
+	
+	public int deleteNotice(NoticeDTO noticeDTO);
+	
+	public NoticeDTO getnoticeDetail(@Param("noticeId") Long noticeId);
+	
+	public void increaseViewCount(Long noticeId);
 }

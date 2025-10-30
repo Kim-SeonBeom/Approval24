@@ -4,7 +4,7 @@
 
 <!-- 공지사항 목록 -->
 <select id="noticeList" resultType="NoticeDTO">
-	SELECT T.notice_id, T.title, T.category_cd, U.user_name, T.create_dt, T.view_account, T.del_yn
+	SELECT T.notice_id, T.title, T.category_cd, U.user_name, T.create_dt, T.view_count, T.del_yn
 	FROM t3000_notice T
 	JOIN T1000_account  A ON COALESCE(T.update_Id, T.create_id) = A.account_id
 	JOIN t1000_user U ON A.user_no = U.user_no
@@ -13,25 +13,47 @@
 </select>
 
 <!-- 공지사항 추가 -->
-<insert id="noticeForm"  parameterType="NoticeDTO">
+<insert id="saveNotice"  parameterType="NoticeDTO">
 	INSERT INTO t3000_notice (
 	title, create_id, create_dt, content, category_cd, popup_yn
 	)
-	value(
-	#{title},#{accountId}, SYSDATE, #{content}, 
-	<if test="categoryCd ! = null and categoryCd !='' ">#{categoryCd}</if>
-	<if test="categoryCd = null or categoryCd ='' ">null</if>, 
+	values(
+	#{title},#{createId}, SYSDATE, #{content}, 
+	<if test="categoryCd != null and categoryCd != ''"> #{categoryCd}</if>
+    <if test="categoryCd == null or categoryCd == ''"> NULL</if>,
 	#{popupYn}
 	)
 </insert>
+<!-- 공지사항 수정 -->
+<update id="updateNotice" parameterType="NoticeDTO">
+	UPDATE t3000_notice
+	SET title = #{title}, content=#{content}, update_id = #{updateId}, category_cd = #{categoryCd}, popup_yn = #{popupYn}, 
+	update_dt = SYSDATE
+	WHERE notice_id = #{noticeId}
+
+</update>
 
 <!-- 공지사항 세부 내용 -->
 <select id="getnoticeDetail" resultType="NoticeDTO">
-	SELECT T.notice_id, T.title,T.content, T.update_dt, T.create_dt, T.CREATE_ID	, T.update_id, T.del_yn, T.view_account, U.user_name
+	SELECT T.notice_id, T.title,T.content, T.update_dt, T.create_dt, T.CREATE_ID	, T.update_id, T.del_yn, T.view_count, U.user_name
 	FROM t3000_notice T
 	JOIN t1000_account A ON COALESCE(T.update_id, T.create_id) = A.account_id
 	JOIN t1000_user U ON A.user_no = U.user_no
 	WHERE T.notice_id = #{noticeId}
 </select>
+
+<!-- 공지사항 삭제 -->
+<update id="deleteNotice" parameterType="NoticeDTO">
+	UPDATE t3000_notice
+	SET del_yn = 'Y'
+	WHERE notice_id= #{noticeId}
+</update>
+
+<!-- 조회수 증가 -->
+<update id="increaseViewCount" parameterType="NoticeDTO">
+	UPDATE t3000_notice
+	SET view_count = view_count + 1
+	WHERE notice_id = #{noticeId}
+</update>
 
 </mapper>

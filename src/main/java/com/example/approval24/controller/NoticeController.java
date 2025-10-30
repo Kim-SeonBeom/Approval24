@@ -33,6 +33,9 @@ public class NoticeController {
 		
 		System.out.println("컨트롤러 시작");
 		NoticeDTO notice = noticeService.getnoticeDetail(noticeId);
+		
+		// 조회수 증가
+		noticeService.increaseViewCount(noticeId);
 		System.out.println(notice.toString());
 		
 		model.addAttribute("notice", notice);
@@ -41,18 +44,34 @@ public class NoticeController {
 
 	@GetMapping("/notice/new")
 	public String noticeWrite() {
-		System.out.println("작성 컨트롤러 시작");
 		return "/noticeWrite";
 	}
 	
 	@PostMapping("/notice/save")
-	public String saveNotice(NoticeDTO notice, Model model) {
+	public String saveNotice(NoticeDTO notice) {
+		System.out.println("세이브 컨트롤러 시작");
 		noticeService.saveNotice(notice);
 		return "redirect:/notice";
 	}
+	// 업데이트 불러오기
+	@GetMapping("/notice/edit/{noticeId}")
+	public String editNotice(@PathVariable Long noticeId, Model model) {
+		System.out.println("edit 컨트롤러 시작");
+		NoticeDTO notice = noticeService.getnoticeDetail(noticeId);
+		model.addAttribute("notice", notice);
+		return "/noticeEdit";
+	}
+	// 업데이트 반영
+	@PostMapping("/notice/update")
+	public String updateNotice(NoticeDTO notice) {
+		noticeService.updateNotice(notice);		
+		return "redirect:/notice/detail/" + notice.getNoticeId();
+	}
 	
-	@PostMapping("/notice/edit")
-	public String editNoice(Model model) {
-		return "redirect: /notice/detail/{noticeId}";
+	// 공지삭제
+	@PostMapping( "/notice/delete")
+	public String deleteNotice(NoticeDTO noticeDTO) {
+		noticeService.deleteNotice(noticeDTO);
+		return "redirect:/notice";
 	}
 }
