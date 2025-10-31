@@ -2,6 +2,7 @@ package com.example.approval24.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,23 +30,22 @@ public class AccountService {
     @Autowired
     private MenuDAO menuDAO;
 
+    //로그인 기능
     public Long login(String loginId, String password) {
-
-        // 계정 조회
         AccountDTO account = accountDAO.findByLogin(loginId, password);
         if (account == null) return null; 
         return account.getAccountId();
     }
     
-
+    // 해당 계정의 메뉴/권한 조회
 	public List<MenuVO> getAuthMenus(Long accountID) {
-		 // 2️⃣ 권한 ID 조회
+		 // 권한 ID 조회
 	    List<Long> authorityIds = authorityAccountDAO.findByAccountId(accountID)
 	        .stream()
 	        .map(a -> a.getAuthorityId())
 	        .collect(Collectors.toList());
 
-	    // 3️⃣ 권한이 없으면 메뉴 빈값 세션 저장
+	    // 권한이 없으면 메뉴 빈값 세션 저장
 	    if (authorityIds.isEmpty()) {
 	        System.out.println("⚠️ 권한이 없는 계정입니다.");
 	        return Collections.emptyList();
@@ -86,6 +86,16 @@ public class AccountService {
 	    }).collect(Collectors.toList());
 	    
 		return menuVOList;
+	}
+
+	//계정 목록 필터링 조회
+	public List<AccountDTO> getAccountsByFilter(Map<String, Object> filterMap) {
+        return accountDAO.findAccountsByFilter(filterMap);
+    }
+	
+	//계정 기관 아이디 조회
+	public Long findInstIdByAccountId(Long accountId) {
+	    return accountDAO.findInstIdByAccountId(accountId);
 	}
 
 }

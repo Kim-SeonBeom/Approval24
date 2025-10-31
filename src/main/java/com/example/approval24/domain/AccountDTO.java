@@ -25,4 +25,5 @@ public class AccountDTO {
     private String isSystem;         // IS_SYSTEM
     
     private String userName; 		// 추가 사항 유저이름
+    private String deptName;        // 추가 사항 부서이름
 }
