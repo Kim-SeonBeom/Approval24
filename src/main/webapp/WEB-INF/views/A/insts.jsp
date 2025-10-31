@@ -32,16 +32,33 @@
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">기관 목록</h1>
 					<br>
+					<%-- 컨트롤러에서 전달받은 삭제 메시지 표시 --%>
+					<c:if test="${not empty delMessage}">
+					    <div class="alert alert-info alert-dismissible fade show" role="alert">
+					        ${delMessage}
+					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					            <span aria-hidden="true">&times;</span>
+					        </button>
+					    </div>
+					</c:if>
+					<c:if test="${not empty insertMessage}">
+					    <div class="alert alert-info alert-dismissible fade show" role="alert">
+					        ${insertMessage}
+					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					            <span aria-hidden="true">&times;</span>
+					        </button>
+					    </div>
+					</c:if>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">민원내역</h6>
+							<h6 class="m-0 font-weight-bold text-primary">기관 테이블</h6>
 							<button class="btn btn-primary btn-sm" id="instsCreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 기관 등록</button>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<table class="table table-bordered" id="dataTable" style="width:100%" cellspacing="0">
 									<thead>
 										<tr>
 											<th>기관명</th>
@@ -58,7 +75,7 @@
 									        data-href="/approval24/admin/insts/detail?inst_id=${inst.instId}"
 									        style="cursor:pointer;">
 									      <td>${inst.instName}</td>
-									      <td>${inst.instAddress}</td>
+									      <td>${inst.instHeadName}</td>
 									      <td>${inst.instAddress}</td>
 									      <td>${inst.instPhone}</td>
 									      <td>${inst.createDt}</td>

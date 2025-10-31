@@ -4,31 +4,66 @@
 
 <!-- 기관목록 -->
 <select id="getAllInst" resultType="InstDTO">
-	select inst_id, inst_name, create_dt, update_dt, inst_address, inst_phone, inst_post, inst_head_name
+	select inst_id, inst_name, to_char(create_dt, 'yyyy-mm-dd') AS create_dt, to_char(update_dt, 'yyyy-mm-dd') AS update_dt, inst_address, inst_phone, inst_post, inst_head_name, inst_detail_address, del_yn
 	from t1000_institution
+	where del_yn='N'
 </select>
 
 <!-- 기관등록 -->
-<insert id="insertInst" parameterType="InstDTO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-	insert into t1000_institution (inst_id, inst_name, create_dt, update_dt, inst_address, inst_phone, inst_post, inst_head_name)
-	values(#{inst_id}, #{inst_name}, #{create_dt}, SYSDATE, #{inst_address}, #{inst_phone}, #{inst_post}, #{inst_head_name})
+<insert id="insertInst" parameterType="InstDTO">
+    insert into t1000_institution (
+        inst_name,
+        create_dt,
+        update_dt,
+        inst_address,
+        inst_phone,
+        inst_post,
+        inst_head_name,
+        inst_detail_address
+    )
+    values (
+        #{instName},
+        SYSDATE,
+        SYSDATE,      
+        #{instAddress},
+        #{instPhone},
+        #{instPost},
+        #{instHeadName},
+        #{instDetailAddress}
+    )
 </insert>
 
 <!-- 기관수정 -->
 <update id="updateInst" parameterType="InstDTO">
 	update t1000_institution
-	set inst_name=#{inst_name},
-	 create_dt=#{create_dt},
+	set inst_name=#{instName},
 	 update_dt=SYSDATE,
-	 inst_address=#{inst_address},
-	 inst_phone=#{inst_phone}, 
-	 inst_post=#{inst_post}, 
-	 inst_head_name=#{inst_head_name}
-	where inst_id=#{inst_id} 
+	 inst_address=#{instAddress},
+	 inst_phone=#{instPhone},
+	 inst_post=#{instPost},
+	 inst_head_name=#{instHeadName},
+	 inst_detail_address=#{instDetailAddress}
+	where inst_id=#{instId}
 </update>
 
 <!-- 기관삭제 -->
-<delete id="deleteInst"  parameterType="_int">
-    	delete from t1000_institution where inst_id = #{inst_id}
-</delete>
+<update id="deleteInst" parameterType="int">
+    update t1000_institution 
+    set del_yn = 'Y' 
+    where inst_id = #{instId}
+</update>
+
+<!-- 기관조회(상세) -->
+<select id="getInstById" parameterType="int" resultType="InstDTO">
+	select inst_id, inst_name, to_char(create_dt, 'yyyy-mm-dd') AS create_dt, to_char(update_dt, 'yyyy-mm-dd') AS update_dt, inst_address, inst_phone, inst_post, inst_head_name, inst_detail_address
+	from t1000_institution
+	where inst_id=#{instId}
+</select>
+
+<!-- 기관명 리스트 -->
+<select id="getAllInstName" resultType="InstDTO">
+	select inst_name
+	from t1000_institution
+	where del_yn = 'N'
+</select>
 </mapper>
