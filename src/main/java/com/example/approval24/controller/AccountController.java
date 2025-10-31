@@ -21,11 +21,6 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    /**
-     * 계정 목록 조회
-     * GET /account/list
-     * 필터: loginId, userName, deptId, accountStatus, startDate, endDate
-     */
     @GetMapping("/list")
     public String getAccountList(
     		HttpSession session,
@@ -37,9 +32,16 @@ public class AccountController {
             @RequestParam(required = false) String endDate,
             Model model
     ) {
+    	Long accountId = (Long) session.getAttribute("user");
+    	if(accountId == null) {
+            return "redirect:/login";
+        }
     	
-    	//임시
-    	String instId = "5";
+    	Long instId = accountService.findInstIdByAccountId(accountId);
+    	if(instId == null) {
+            model.addAttribute("error", "소속 기관을 찾을 수 없습니다.");
+            return "common/errorPage"; 
+        }
     	
         Map<String, Object> params = new HashMap<>();
         params.put("instId", instId);
@@ -52,20 +54,10 @@ public class AccountController {
         
         List<AccountDTO> accounts = accountService.getAccountsByFilter(params);
         model.addAttribute("accounts", accounts); 
+        
+        model.addAttribute("deptList", accountService.getDeptList(instId));
+        model.addAttribute("statusList", accountService.getAccountStatusList("B0"));
 
         return "B/accountList";
     }
-
-    /**
-     * 계정 상태 변경
-     
-    @PostMapping("/update")
-    public String updateAccountStatus(
-            @RequestParam String accountId,
-            @RequestParam String newStatus
-    ) {
-        // 간단한 예시: 서비스 호출로 상태 변경
-        boolean updated = accountService.updateAccountStatus(accountId, newStatus);
-        return updated ? "SUCCESS" : "FAIL";
-    */
 }
