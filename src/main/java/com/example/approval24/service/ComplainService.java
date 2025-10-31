@@ -128,8 +128,8 @@ public class ComplainService {
 		}
 	}
 
-	public int saveue1(UE1DTO ue1DTO) {
-		return ue1DAO.updateInfo(ue1DTO);
+	public void saveue1(UE1DTO ue1DTO) {
+		ue1DAO.updateInfo(ue1DTO);
 
 	}
 

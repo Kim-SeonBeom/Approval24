@@ -101,10 +101,10 @@ public class ComplainController {
 		
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
-		int resultUser = complainuserService.saveComplainuser(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
 		
 		System.out.println(ue1DTO);
-		int resultComplainInfo = complainService.saveue1(ue1DTO);
+		complainService.saveue1(ue1DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");

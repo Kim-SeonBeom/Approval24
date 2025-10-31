@@ -17,9 +17,9 @@ public class ComplainuserService {
 		return complainuserDAO.findByComplainuserNo(complainuserNo); 
 	}
 	
-	public int saveComplainuser(ComplainuserDTO dto) {
+	public void saveComplainuser(ComplainuserDTO dto) {
 		
-		return complainuserDAO.updateComplainuserInfo(dto);
+		complainuserDAO.updateComplainuserInfo(dto);
 		
 	}
 
