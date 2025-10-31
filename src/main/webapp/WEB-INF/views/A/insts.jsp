@@ -53,7 +53,7 @@
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">민원내역</h6>
+							<h6 class="m-0 font-weight-bold text-primary">기관 테이블</h6>
 							<button class="btn btn-primary btn-sm" id="instsCreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 기관 등록</button>
 						</div>
 						<div class="card-body">

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.DeptDAO">
+
+<!-- 부서 기본정보 -->
+<select id="deptInfo" parameterType="int">
+	select dept_id,
+		dept_name,
+		dept_phone,
+		to_char(create_dt, 'YYYY-MM-DD') AS create_dt,
+		to_char(update_dt, 'YYYY-MM-DD') AS update_dt,
+		del_yn,
+		create_id,
+		update_id
+	from t1000_department
+	where dept_id = #{deptId}
+</select>
+
+<!-- 부서수정 -->
+<update id="updateDept" parameterType="DeptDTO">
+	update t1000_department
+	set dept_name=#{deptName},
+		update_dt=SYSDATE,
+		dept_phone=#{deptPhone}
+	where dept_id=#{deptId}
+</update>
+
+<!-- 부서 목록 -->
+<select id="getAllDept" resultType="DeptDTO">
+	select dept_id, 
+		dept_name,
+		dept_phone,
+		to_char(create_dt, 'YYYY-MM-DD') AS create_dt,
+		to_char(update_dt, 'YYYY-MM-DD') AS update_dt,
+		del_yn,
+		create_id,
+		update_id
+	from t1000_department
+	where del_yn = 'N'
+</select>
+
+<!-- 부서 삭제 -->
+<update id="deleteDept" parameterType="int">
+	update t1000_department
+	set del_yn = 'Y'
+	where dept_id = #{deptId}
+</update>
+
+<!-- 부서 등록 -->
+<insert id="insertDept" parameterType="DeptDTO">
+  insert into t1000_department (
+    dept_name, create_dt, update_dt, dept_phone
+  ) VALUES (
+    #{deptName}, SYSDATE, SYSDATE, #{deptPhone}
+  )
+
+  <!-- 같은 세션에서 직후에 CURRVAL 조회 → 방금 생성된 PK 획득 -->
+  <selectKey keyProperty="deptId" resultType="int" order="AFTER">
+    SELECT APPROVE.ISEQ$$_81303.CURRVAL FROM DUAL
+  </selectKey>
+</insert>
+
+</mapper>

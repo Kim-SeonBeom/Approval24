@@ -7,7 +7,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<title>기관 생성 | 결재24</title>
+<title>기관 등록 | 결재24</title>
 <style>
 /* 표 기반(딱딱한) 작성 레이아웃 */
 .kv-table th {

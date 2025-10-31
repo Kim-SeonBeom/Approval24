@@ -17,4 +17,7 @@ public interface InstDAO {
 	public int deleteInst(int instId);
 	
 	public InstDTO getInstById(int instId);
+	
+	// 기관명 리스트
+	public List<InstDTO> getAllInstName();
 }

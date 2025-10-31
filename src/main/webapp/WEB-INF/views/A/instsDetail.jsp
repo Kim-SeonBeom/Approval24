@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -101,12 +100,7 @@
 
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">대표자명</th>
-												<td><input type="text" name="instHeadName" id="instHeadName" class="form-control form-control-sm" value="${inst.instHeadName}" required></td>
-												<th>기관 등록일</th>
-												<td>
-                                                    <%-- 날짜 형식 변경 (DTO에서 String 타입으로 변환되거나, DTO에 @DateTimeFormat이 적용되어야 함) --%>
-                                                    <input type="date" class="form-control form-control-sm" value="${inst.createDt}" name="createDt">
-                                                </td>
+												<td colspan="3"><input type="text" name="instHeadName" id="instHeadName" class="form-control form-control-sm" value="${inst.instHeadName}" required></td>
 											</tr>
 
 											<tr>
@@ -119,7 +113,7 @@
 															id="instPost" value="${inst.instPost}" style="width: 150px;">
 						
 														<button type="button" class="btn btn-secondary btn-sm"
-															onclick="openDaumPostcode()">주소 검색</button>
+															onclick="openDaumPostcode()" id="btnSearchAddress">주소 검색</button>
 													</div> 
 													<input type="text" class="form-control mb-2" placeholder="기본 주소" 
 													name="instAddress" id="instAddress" value ="${inst.instAddress}">
@@ -178,9 +172,9 @@ $(document).ready(function() {
     
     // 폼 입력 필드를 기본적으로 readonly 설정
     $updatableInputs.prop('readonly', true);
-    
-    // 주소 검색 버튼 비활성화
+ 	// 주소 검색 버튼 비활성화
     $addressButton.prop('disabled', true);
+    
     
     // 2. 수정/저장 버튼 로직 (btnUpdateTop)
     $('#btnUpdateTop').on('click', function () {
@@ -241,23 +235,6 @@ function openDaumPostcode() {
         }
     }).open();
 }
-
-// 2. 폼 제출 로직 (btnUpdateTop)
-//    - 버튼이 폼 외부에 있으므로, 클릭 시 명시적으로 폼 제출
-$(document).ready(function() {
-    
-    // 폼 외부에 있는 등록 버튼 클릭 시 폼 제출
-    $('#btnUpdateTop').on('click', function(e) {
-        
-        if (!form.checkValidity()) {
-             // 유효성 검사 실패 시 브라우저가 기본 동작을 수행하고 제출 중단
-             return; 
-        }
-        
-        // 폼 제출
-        $('#').submit();
-    });
-});
 
 </script>
 
