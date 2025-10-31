@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class DeptInstDTO {
-	private Integer deptId;
+	private long deptId;
 	
 	private String deptName;
 	
@@ -18,11 +18,11 @@ public class DeptInstDTO {
 	
 	private String delYn;
 	
-	private int createId;
+	private long createId;
 	
-	private int updateId;
+	private long updateId;
 	
-	private int instId;
+	private long instId;
 	
 	private String instName;
 	
