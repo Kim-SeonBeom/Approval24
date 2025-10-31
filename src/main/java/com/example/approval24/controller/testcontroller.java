@@ -57,25 +57,7 @@ public class testcontroller {
 		return "benefits";
 	}
 
-	@GetMapping("/trainingLoan")
-	public String trainingExpense() {
-		return "complain/regEditForm/trainingLoan";
-	}
-
-	@GetMapping("/trainingSubsidy")
-	public String subsidy() {
-		return "complain/regEditForm/trainingSubsidy";
-	}
-
-	@GetMapping("/jobResearchReport")
-	public String report() {
-		return "complain/regEditForm/jobResearchReport";
-	}
 	
-	@GetMapping("/tempWorkerMaternity")
-	public String tempWorker() {
-		return "complain/regEditForm/tempWorkerMaternityBenefit";
-	}
 
 	@GetMapping("/notice/detail")
 	public String noticeDetail() {
@@ -101,22 +83,7 @@ public class testcontroller {
 	public String delegatePage() {
 		return "delegate";
 	}
-	@GetMapping("/employmentInsurance")
-	   public String insurance() {
-	      return "complain/regEditForm/employmentInsurance";
 
-	   }
-	
-	@GetMapping("/graduateProgram")
-	public String graduateProgram() {
-		return "complain/regEditForm/graduateProgram";
-
-	}
-	
-	@GetMapping("/challengeSupport")
-	public String challenge() {
-		return "complain/regEditForm/challengeSupport";
-	}
 	
 	@GetMapping("/authorityList")
 	public String authorityList() {

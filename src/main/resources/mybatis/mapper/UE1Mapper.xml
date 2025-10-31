@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.UE1DAO">
+
+	<!-- 민원 유무 조회 -->
+	<select id="existByComplainId" resultType="int"
+		parameterType="int">
+		select count(*)
+		from t4000_ue1
+		where complain_id
+		=
+		#{complainId}
+	</select>
+
+	<!-- 민원상세 조회 -->
+	<select id="findByComplainId" resultType="UE1DTO"
+		parameterType="int">
+		select *
+		from t4000_ue1
+		where complain_id
+		= #{complainId}
+	</select>
+
+	<!-- 민원 등록 -->
+	<insert id="insertInfo" parameterType="UE1DTO">
+		insert into
+		t4000_ue1(complain_id)
+		values(#{complainId})
+	</insert>
+
+	<!-- 민원 수정 -->
+	<update id="updateInfo" parameterType="UE1DTO">
+		UPDATE T4000_UE1
+		SET
+		PREV_CO_NM = #{prevCoNm},
+		PREV_CO_TEL_NO = #{prevCoTelNo},
+		PREV_CO_POSITION = #{prevCoPosition},
+		EMP_DT = #{empDt},
+		UNEMP_DT = #{unempDt},
+		UNEMP_PERIOD = #{unempPeriod},
+		SUBSIDY_BENEFIT_YN = #{subsidyBenefitYn},
+		SUBSIDY_AMT = #{subsidyAmt},
+		BIZ_REG_YN = #{bizRegYn},
+		TRAIN_INST_NM = #{trainInstNm},
+		TRAIN_POST = #{trainPost},
+		TRAIN_INST_ADDR = #{trainInstAddr},
+		TRAIN_INST_ADDR_DETAIL = #{trainInstAddrDetail},
+		TRAIN_START_DT = #{trainStartDt},
+		TRAIN_END_DT = #{trainEndDt},
+		TRAIN_PERIOD = #{trainPeriod},
+		TUITION_FEE_AMT = #{tuitionFeeAmt},
+		LOAN_APPL_AMT = #{loanApplAmt},	
+		UPDATE_DT = SYSDATE,
+		UPDATE_ID = #{updateId}
+		WHERE COMPLAIN_ID = #{complainId}
+	</update>
+
+
+</mapper>
+ 

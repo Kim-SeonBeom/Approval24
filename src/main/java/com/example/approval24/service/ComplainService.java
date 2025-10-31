@@ -8,12 +8,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.approval24.dao.AccountDAO;
 import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
-import com.example.approval24.dao.ComplainUserDAO;
+import com.example.approval24.dao.ComplainuserDAO;
+import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
+import com.example.approval24.domain.UE1DTO;
 
 @Service
 public class ComplainService {
@@ -22,13 +23,13 @@ public class ComplainService {
 	private ComplainDAO complainDAO;
 
 	@Autowired
-	private ComplainUserDAO complainUserDAO;
+	private ComplainuserDAO complainUserDAO;
 
 	@Autowired
 	private CategoryDAO categoryDAO;
-	
+
 	@Autowired
-	private AccountDAO accountDAO;
+	private UE1DAO ue1DAO;
 
 	public List<ComplainDTO> getMyWorkList(int accountId) {
 
@@ -36,13 +37,13 @@ public class ComplainService {
 	}
 
 	public void complainRegister(ComplainRegDTO complainRegDTO, int accountId) {
-	
+
 		String fullRegidentNo = complainRegDTO.getComplainuserResidentNo();
 		complainRegDTO.setComplainuserResidentNo(fullRegidentNo);
 
 		// 이미 등록된 민원인인지 확인
 		int count = complainUserDAO.countByResidentNo(fullRegidentNo);
-		
+
 		if (count > 0) {
 			// 이미 등록된 민원인이면 민원인 정보 update
 			complainUserDAO.updateUserInfo(complainRegDTO);
@@ -51,7 +52,7 @@ public class ComplainService {
 			complainUserDAO.registUserInfo(complainRegDTO);
 		}
 
-		//민원인No
+		// 민원인No
 		int complainuserNo = complainUserDAO.findByResidentNo(fullRegidentNo);
 
 		// Receiver_account_Id
@@ -64,15 +65,14 @@ public class ComplainService {
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
-		LocalDateTime localDateTime = LocalDateTime.now().plusDays(dueDt); 
+		LocalDateTime localDateTime = LocalDateTime.now().plusDays(dueDt);
 		Date deadlineDt = java.util.Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
 
 		ComplainDTO complainDTO = new ComplainDTO();
 		complainDTO.setComplainCategoryId(complainRegDTO.getComplainCategoryId());
 		complainDTO.setComplainuserNo(complainuserNo);
 		complainDTO.setAccountId(managerAccountId);
-		
+
 		// 민원 상태 코드 변경할지 말지 체크(현재는 하드코딩함)
 		//
 		//
@@ -82,7 +82,7 @@ public class ComplainService {
 		//
 		complainDTO.setDeadlineDt(deadlineDt);
 		complainDTO.setReceiverAccountId(receiverAccountId);
-				
+
 		int result = complainDAO.registComplain(complainDTO);
 		if (result == 1) {
 			System.out.println("민원 등록 성공");
@@ -93,14 +93,44 @@ public class ComplainService {
 	}
 
 	public List<ComplainDTO> complainList(int accountId) {
-		System.out.println("service input");
+//		System.out.println("service input");
 
 		List<ComplainDTO> complainList = complainDAO.findByDeptOfAccountId(accountId);
-		System.out.println("***" + complainList);
-		System.out.println("service out");
+//		System.out.println("***" + complainList);
+//		System.out.println("service out");
 
-		
 		return complainList;
+	}
+
+	public ComplainDTO getComplainInfo(int complainId) {
+
+		ComplainDTO dto = complainDAO.findById(complainId);
+
+		return dto;
+	}
+
+	public UE1DTO getUE1Info(int complainId) {
+
+		int count = ue1DAO.existByComplainId(complainId);
+		if (count > 0) {
+			System.out.println("등록된 민원존재");
+
+			return ue1DAO.findByComplainId(complainId);
+			
+		} else {
+			System.out.println("등록된 민원 없음");
+			UE1DTO ue1dto = new UE1DTO();
+			ue1dto.setComplainId(complainId);
+			ue1DAO.insertInfo(ue1dto);
+			System.out.println("민원 생성");
+			System.out.println(ue1dto.toString());
+			return ue1dto;
+		}
+	}
+
+	public int saveue1(UE1DTO ue1DTO) {
+		return ue1DAO.updateInfo(ue1DTO);
+
 	}
 
 }

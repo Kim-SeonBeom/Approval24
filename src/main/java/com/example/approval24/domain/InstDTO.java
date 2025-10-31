@@ -2,6 +2,8 @@ package com.example.approval24.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,13 +21,15 @@ public class InstDTO {
 	
 	private String instName;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createDt;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updateDt;
 	
 	private String instAddress;
 	
-	private String instDetailAddress;
+	private String instDetailAddress; 
 	
 	private String instPhone;
 	

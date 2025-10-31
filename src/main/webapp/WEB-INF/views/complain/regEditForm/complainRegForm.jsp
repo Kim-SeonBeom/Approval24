@@ -65,7 +65,7 @@
 							</a>
 							<div>
 								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitModal">
-									<i class="fas fa-paper-plane mr-1"></i> 신청
+									<i class="fas fa-paper-plane mr-1"></i> 등록
 								</button>
 							</div>
 						</div>

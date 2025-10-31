@@ -41,20 +41,31 @@
 		)
 	</insert>
 
-	<select id="findByDeptOfAccountId" parameterType="int" resultType="ComplainDTO">
-		SELECT c.*,u.user_name,g.category_name,r.complainuser_name
+	<select id="findByDeptOfAccountId" parameterType="int"
+		resultType="ComplainDTO">
+		SELECT
+		c.*,u.user_name,g.category_name,r.complainuser_name,g.category_url
 		FROM t2000_complain c
 		JOIN t1000_department_work d
-		ON d.complain_category_id = c.complain_category_id
+		ON
+		d.complain_category_id = c.complain_category_id
 		JOIN t1000_account a
-		ON a.dept_id = d.department_id
-        join t1000_user u 
-        on a.user_no = u.user_no
-        join t2000_complain_category g
-        on g.complain_category_id = c.complain_category_id
-        join t2000_complain_user r
-        on c.complainuser_no = r.complainuser_no
-		WHERE a.account_id = #{accountId}
+		ON 
+		a.dept_id = d.department_id
+		join t1000_user u
+		on a.user_no = u.user_no
+		join t2000_complain_category g
+		on g.complain_category_id = c.complain_category_id
+		join t2000_complain_user r
+		on c.complainuser_no = r.complainuser_no
+		WHERE a.account_id =
+		#{accountId}
+	</select>
+
+	<select id="findById" parameterType="int"
+		resultType="ComplainDTO">
+		select * from t2000_complain where complain_id = #{complainId}
+
 	</select>
 
 </mapper>

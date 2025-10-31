@@ -6,13 +6,13 @@ function openDaumPostcode() {
 			const addr = data.userSelectedType === 'R' ? data.roadAddress
 					: data.jibunAddress;
 
-			// 우편번호 (ID: instPost)
+			// 우편번호 
 			document.getElementById('complainuserPost').value = data.zonecode;
 
-			// 기본 주소 (ID: instAddress)
+			// 기본 주소
 			document.getElementById('complainuserAddress').value = addr;
 
-			// 상세 주소 입력창에 포커스 (ID: instDetailAddress)
+			// 상세 주소 입력창에 포커스
 			document.getElementById('complainuserAddrDetail').focus();
 		}
 	}).open();

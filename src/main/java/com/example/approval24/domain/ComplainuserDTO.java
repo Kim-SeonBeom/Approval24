@@ -7,10 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class ComplainRegDTO {
+public class ComplainuserDTO {
 
-	private int complainCategoryId;
-	
 	private int complainuserNo;
 
 	private String complainuserResiNoFront; // 주민번호 앞자리(6)
@@ -19,8 +17,8 @@ public class ComplainRegDTO {
 	private String complainuserName;
 	private String complainuserPost;
 	private String complainuserAddress;
-	private String complainuserAddrDetail;
-	private String complainuserTel; 
+	private String complainuserAddressDetail;
+	private String complainuserTel;
 	private String complainuserPhone;
 	private String complainuserEmail;
 	
@@ -36,7 +34,7 @@ public class ComplainRegDTO {
 			return this.complainuserResidentNo;
 	}
 
-	public void setComplainuserResidentNo(String complainuserResidentNo) {
+	public void setComplainuserResidentNo(String complainuserResidentNo) { 
 		this.complainuserResidentNo = complainuserResidentNo;
 		
 		if (complainuserResidentNo != null && complainuserResidentNo.length() >= 13) {

@@ -14,5 +14,7 @@ public interface ComplainDAO {
 
 	public List<ComplainDTO> findByDeptOfAccountId(int accountId);
 	
+	public ComplainDTO findById(int accountId);
+	
 	
 }

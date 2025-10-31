@@ -53,7 +53,8 @@
 										</tr>
 									</thead>
 									<c:forEach var="item" items="${complainList}">
-										<tr>
+								
+										<tr class="clickable-row" data-href="/approval24/${item.categoryUrl}/${item.complainId}" style="cursor: pointer;">
 											<td>${item.complainId}</td>
 											<td>${item.categoryName}</td>
 											<td>${item.complainuserName}</td>
