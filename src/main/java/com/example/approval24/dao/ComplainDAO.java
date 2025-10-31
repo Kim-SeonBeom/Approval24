@@ -8,13 +8,13 @@ import com.example.approval24.domain.ComplainDTO;
 
 @Mapper
 public interface ComplainDAO {
-	public List<ComplainDTO> getMyWorks(int accountId);
+	public List<ComplainDTO> getMyWorks(long accountId);
 	
 	public int registComplain(ComplainDTO complainDTO);
 
-	public List<ComplainDTO> findByDeptOfAccountId(int accountId);
+	public List<ComplainDTO> findByDeptOfAccountId(long accountId);
 	
-	public ComplainDTO findById(int accountId);
+	public ComplainDTO findById(long accountId);
 	
 	
 }

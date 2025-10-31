@@ -6,9 +6,9 @@ import com.example.approval24.domain.UE1DTO;
 
 @Mapper
 public interface UE1DAO {
-	public UE1DTO findByComplainId(int complainId);
+	public UE1DTO findByComplainId(long complainId);
 
-	public int existByComplainId(int complainId);
+	public int existByComplainId(long complainId);
 
 	public int updateInfo(UE1DTO ue1dto); 
 	

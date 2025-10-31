@@ -13,23 +13,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ComplainDTO {
 	
-	private int complainId;
+	private long complainId;
 	
 	
-	private int	complainCategoryId;
+	private long	complainCategoryId;
 	
 	private String categoryName;
 	
 	private String categoryUrl;
 	
 	
-	private int complainuserNo;
+	private long complainuserNo;
 	
 	private String complainuserName;
 	
 	
 	
-	private int accountId; //담당자계정id 
+	private long accountId; //담당자계정id 
 	
 	private String userName; //담당직원이름
 	
@@ -52,7 +52,7 @@ public class ComplainDTO {
 	
 	private char delYN;
 	
-	private int receiverAccountId; //접수자 id
+	private long receiverAccountId; //접수자 id
 	
 	
 }

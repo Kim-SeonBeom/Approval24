@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,6 +15,7 @@ import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.ComplainuserDTO;
 import com.example.approval24.domain.UE1DTO;
+import com.example.approval24.domain.UE2DTO;
 import com.example.approval24.service.CategoryService;
 import com.example.approval24.service.ComplainService;
 import com.example.approval24.service.ComplainuserService;
@@ -32,7 +32,7 @@ public class ComplainController {
 	@Autowired
 	private ComplainuserService complainuserService;
 
-	public int accountId = 13;
+	public long accountId = 13;
 
 	@GetMapping("/myWork")
 	public String myWorkList(Model model
@@ -82,7 +82,8 @@ public class ComplainController {
 
 	// 실업자취업훈련비 대부신청
 	@GetMapping("/ue1/{complainId}")
-	public String trainingLoan(@PathVariable int complainId, Model model) {
+	public String trainingLoan(@PathVariable long complainId, Model model) {
+		System.out.println("ue1 controller진입");
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
@@ -96,7 +97,7 @@ public class ComplainController {
 	}
 
 	@PostMapping("/ue1/{complainId}")
-	public String submitTrainingLoan(@PathVariable int complainId, UE1DTO ue1DTO, ComplainuserDTO complainuserDTO,
+	public String submitTrainingLoan(@PathVariable long complainId, UE1DTO ue1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 		
 		System.out.println("post 진입");
@@ -113,13 +114,33 @@ public class ComplainController {
 
 	// 실업인정신청
 	@GetMapping("/ue2/{complainId}")
-	public String report(@PathVariable int complainId, Model model) {
+	public String report(@PathVariable long complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-
+		System.out.println(complainuserDTO.toString());
+		
+		UE2DTO ue2DTO = complainService.getUE2Info(complainId);
+		System.out.println("Get : " + ue2DTO.toString());
 		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("detail", ue2DTO);
 
 		return "complain/regEditForm/ue2";
+	}
+	
+	@PostMapping("/ue2/{complainId}")
+	public String submitreport(@PathVariable long complainId, UE2DTO ue2DTO, ComplainuserDTO complainuserDTO,
+			RedirectAttributes redirectAttributes) {
+		
+		System.out.println("post 진입");
+		System.out.println(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
+		
+		System.out.println(ue2DTO);
+		complainService.saveue2(ue2DTO);
+
+		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
+		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
+		return "redirect:/ue2/" + complainId;
 	}
 
 	// 기간제 파견근로자 출산 전후 휴가 급여신청

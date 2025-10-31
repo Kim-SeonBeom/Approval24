@@ -12,7 +12,7 @@ public class ComplainuserService {
 	@Autowired
 	ComplainuserDAO complainuserDAO;
 
-	public ComplainuserDTO complainuserInfo(int complainuserNo) {
+	public ComplainuserDTO complainuserInfo(long complainuserNo) {
 
 		return complainuserDAO.findByComplainuserNo(complainuserNo); 
 	}

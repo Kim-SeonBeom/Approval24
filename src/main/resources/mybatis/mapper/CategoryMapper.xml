@@ -4,7 +4,7 @@
 
 	<!-- 민원서식 카테고리 목록 -->
 	<select id="findAllCategories" resultType="CategoryDTO"
-		parameterType="int">
+		parameterType="long">
 		select
 		complain_category_id,
 		category_name,
@@ -15,7 +15,7 @@
 
 	<!-- 민원서식별 처리기한 조회 -->
 	<select id="findDueDtById" resultType="int"
-		parameterType="int">
+		parameterType="long">
 		select
 		due_dt
 		from t2000_complain_category

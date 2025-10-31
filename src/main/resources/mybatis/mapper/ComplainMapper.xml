@@ -4,7 +4,7 @@
 
 	<!-- 내 민원조회 -->
 	<select id="getMyWorks" resultType="ComplainDTO"
-		parameterType="int">
+		parameterType="long">
 		select
 		c.complain_id, cc.category_name,
 		u.complainuser_name,
@@ -41,7 +41,7 @@
 		)
 	</insert>
 
-	<select id="findByDeptOfAccountId" parameterType="int"
+	<select id="findByDeptOfAccountId" parameterType="long"
 		resultType="ComplainDTO">
 		SELECT
 		c.*,u.user_name,g.category_name,r.complainuser_name,g.category_url
@@ -62,7 +62,7 @@
 		#{accountId}
 	</select>
 
-	<select id="findById" parameterType="int"
+	<select id="findById" parameterType="long"
 		resultType="ComplainDTO">
 		select * from t2000_complain where complain_id = #{complainId}
 

@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UE1DTO {
 
-	private int complainId;
+	private long complainId;
 
-	private int complainuserNo;
+	private long complainuserNo;
 
 	private String prevCoNm;
 
@@ -85,10 +85,10 @@ public class UE1DTO {
 	private Date updateDt;
 
 	/** CREATE_ID */
-	private int createId;
+	private long createId;
 
 	/** UPDATE_ID */
-	private int updateId;
+	private long updateId;
 
 	/** DEL_YN (Y/N, DEFAULT 'N') */
 	private String delYn;

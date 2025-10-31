@@ -16,7 +16,7 @@ public interface ComplainuserDAO {
 	
 	public int findByResidentNo(String ResidentNo);
 	
-	public ComplainuserDTO findByComplainuserNo(int complainuserNo);
+	public ComplainuserDTO findByComplainuserNo(long complainuserNo);
 
 	public int updateComplainuserInfo(ComplainuserDTO dto);
 

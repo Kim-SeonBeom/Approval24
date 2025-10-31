@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ComplainuserDTO {
 
-	private int complainuserNo;
+	private long complainuserNo;
 
 	private String complainuserResiNoFront; // 주민번호 앞자리(6)
 	private String complainuserResiNoBack; // 주민번호 뒷자리(7)

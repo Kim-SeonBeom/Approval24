@@ -55,7 +55,7 @@
 		)
 	</insert>
 
-	<select id="findByComplainuserNo" parameterType="int"
+	<select id="findByComplainuserNo" parameterType="long"
 		resultType="ComplainuserDTO">
 		select * from T2000_COMPLAIN_USER where complainuser_no = #{complainuserNo}
 	</select>

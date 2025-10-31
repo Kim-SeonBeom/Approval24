@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class AccountDTO {
 	
-	private int accountId;
-	private int userNo;
-	private int instId;
-	private int deptId;
+	private long accountId;
+	private long userNo;
+	private long instId;
+	private long deptId;
 	private String loginId;
 	
 

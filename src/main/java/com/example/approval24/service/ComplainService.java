@@ -12,9 +12,11 @@ import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.dao.ComplainuserDAO;
 import com.example.approval24.dao.UE1DAO;
+import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.UE1DTO;
+import com.example.approval24.domain.UE2DTO;
 
 @Service
 public class ComplainService {
@@ -30,13 +32,17 @@ public class ComplainService {
 
 	@Autowired
 	private UE1DAO ue1DAO;
+	
+	@Autowired
+	private UE2DAO ue2DAO;
 
-	public List<ComplainDTO> getMyWorkList(int accountId) {
+
+	public List<ComplainDTO> getMyWorkList(long accountId) {
 
 		return complainDAO.getMyWorks(accountId);
 	}
 
-	public void complainRegister(ComplainRegDTO complainRegDTO, int accountId) {
+	public void complainRegister(ComplainRegDTO complainRegDTO, long accountId) {
 
 		String fullRegidentNo = complainRegDTO.getComplainuserResidentNo();
 		complainRegDTO.setComplainuserResidentNo(fullRegidentNo);
@@ -53,15 +59,15 @@ public class ComplainService {
 		}
 
 		// 민원인No
-		int complainuserNo = complainUserDAO.findByResidentNo(fullRegidentNo);
+		long complainuserNo = complainUserDAO.findByResidentNo(fullRegidentNo);
 
 		// Receiver_account_Id
 		// 접수자 계정 id
-		int receiverAccountId = accountId;
+		long receiverAccountId = accountId;
 
 		// 담당자 지정 로직 들어와야 함 임시로 강제지정
 		// Manager_account_id
-		int managerAccountId = 13;
+		long managerAccountId = 13;
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
@@ -92,7 +98,7 @@ public class ComplainService {
 
 	}
 
-	public List<ComplainDTO> complainList(int accountId) {
+	public List<ComplainDTO> complainList(long accountId) {
 //		System.out.println("service input");
 
 		List<ComplainDTO> complainList = complainDAO.findByDeptOfAccountId(accountId);
@@ -102,14 +108,16 @@ public class ComplainService {
 		return complainList;
 	}
 
-	public ComplainDTO getComplainInfo(int complainId) {
+	public ComplainDTO getComplainInfo(long complainId) {
 
 		ComplainDTO dto = complainDAO.findById(complainId);
 
 		return dto;
 	}
-
-	public UE1DTO getUE1Info(int complainId) {
+	
+	//ue1 메서드
+	public UE1DTO getUE1Info(long complainId) {
+		System.out.println("getUE1Info 진입");
 
 		int count = ue1DAO.existByComplainId(complainId);
 		if (count > 0) {
@@ -130,6 +138,33 @@ public class ComplainService {
 
 	public void saveue1(UE1DTO ue1DTO) {
 		ue1DAO.updateInfo(ue1DTO);
+
+	}
+	
+	
+	//ue2메서드
+	
+	public UE2DTO getUE2Info(long complainId) {
+
+		int count = ue2DAO.existByComplainId(complainId);
+		if (count > 0) {
+			System.out.println("등록된 민원존재");
+
+			return ue2DAO.findByComplainId(complainId);
+			
+		} else {
+			System.out.println("등록된 민원 없음");
+			UE2DTO ue2dto = new UE2DTO();
+			ue2dto.setComplainId(complainId);
+			ue2DAO.insertInfo(ue2dto);
+			System.out.println("민원 생성");
+			System.out.println(ue2dto.toString());
+			return ue2dto; 
+		}
+	}
+
+	public void saveue2(UE2DTO ue2DTO) {
+		ue2DAO.updateInfo(ue2DTO);
 
 	}
 

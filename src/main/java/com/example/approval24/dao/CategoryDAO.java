@@ -11,6 +11,6 @@ public interface CategoryDAO {
 	
 	public List<CategoryDTO> findAllCategories();
 	
-	public int findDueDtById(int complainCategoryId);
+	public int findDueDtById(long complainCategoryId);
 
 }

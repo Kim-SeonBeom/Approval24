@@ -6,6 +6,6 @@ import com.example.approval24.domain.AccountDTO;
 
 @Mapper
 public interface AccountDAO {
-	public AccountDTO findById(int accountId);
+	public AccountDTO findById(long accountId);
 
 }

@@ -4,13 +4,20 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UE2DTO {
 
 	    /** COMPLAIN_ID (PK1) */
-	    private int complainId;
+	    private long complainId;
 
 	    /** COMPLAINUSER_NO (PK2) */
-	    private int complainuserNo;
+	    private long complainuserNo;
 
 	    /** BANK_NM */
 	    private String bankNm;
@@ -86,10 +93,10 @@ public class UE2DTO {
 	    private Date updateDt;
 
 	    /** CREATE_ID */
-	    private int createId;
+	    private long createId;
 
 	    /** UPDATE_ID */
-	    private int updateId;
+	    private long updateId;
 
 	    /** DEL_YN (Y/N, default 'N') */
 	    private String delYn;

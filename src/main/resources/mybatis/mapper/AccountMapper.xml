@@ -4,7 +4,7 @@
 
 	<!-- 민원서식 카테고리 목록 -->
 	<select id="findById" resultType="AccountDTO"
-		parameterType="int">
+		parameterType="long">
 		select
 		account_Id,
 		user_no,

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CategoryDTO {
-	private int complainCategoryId;
+	private long complainCategoryId;
 	private String categoryName;
 	private String categoryCd;
 	private String categoryUrl;	
