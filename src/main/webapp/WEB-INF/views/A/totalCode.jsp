@@ -77,9 +77,9 @@
 										</tr>
 									</thead>
 									<tbody>
-									  <c:forEach var="code" items="${getAllCodeList}">
+									  <c:forEach var="code" items="${getAllTotalCodeList}">
 									    <tr class="clickable-row"
-									        data-href="/approval24/admin/code/detail?code_id=${code.codeId}"
+									        data-href="/approval24/admin/totalcode/detail?code_id=${code.codeId}"
 									        style="cursor:pointer;">
 									      <td>${code.groupId}</td>
 									      <td>${code.codeId}</td>
@@ -126,7 +126,7 @@
 	
 <script>
 	$("#codeCreate").on('click', function() {
-		window.location.href="${pageContext.request.contextPath}/admin/code/new";
+		window.location.href="${pageContext.request.contextPath}/admin/totalcode/new";
 	});
 
   

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.approval24.dao.CodeDAO">
+<mapper namespace="com.example.approval24.dao.TotalCodeDAO">
 
 <!-- 코드 목록 -->
-<select id="getAllCode" resultType="CodeDTO">
+<select id="getAllTotalCode" resultType="TotalCodeDTO">
 	select group_id, code_id, sequence, code_name, code_detail, del_yn
 	from total_code
 </select>
