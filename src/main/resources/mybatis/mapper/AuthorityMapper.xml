@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.approval24.dao.AuthorityDAO">
+
+    <!-- 계정 ID로 권한 조회 -->
+    <select id="findByAccountId" parameterType="long" resultType="com.example.approval24.domain.AuthorityDTO">
+        SELECT a.AUTHORITY_ID,
+               a.AUTHORITY_NAME,
+               a.CREATE_DT,
+               a.UPDATE_DT,
+               a.CREATE_ID,
+               a.UPDATE_ID,
+               a.DEL_YN,
+               a.IS_SYSTEM
+        FROM T3000_AUTHORITY a
+        JOIN T3000_AUTHORITY_ACCOUNT aa ON a.AUTHORITY_ID = aa.AUTHORITY_ID
+        WHERE aa.ACCOUNT_ID = #{accountId}
+          AND a.DEL_YN = 'N'
+    </select>
+
+    <!-- 전체 권한 조회 -->
+    <select id="findAll" resultType="com.example.approval24.domain.AuthorityDTO">
+        SELECT AUTHORITY_ID,
+               AUTHORITY_NAME,
+               CREATE_DT,
+               UPDATE_DT,
+               CREATE_ID,
+               UPDATE_ID,
+               DEL_YN,
+               IS_SYSTEM
+        FROM T3000_AUTHORITY
+        WHERE DEL_YN = 'N'
+    </select>
+    
+    <!-- 권한 ID로 조회 -->
+    <select id="findById" resultType="com.example.approval24.domain.AuthorityDTO" parameterType="long">
+        SELECT AUTHORITY_ID,
+               AUTHORITY_NAME,
+               CREATE_DT,
+               UPDATE_DT,
+               CREATE_ID,
+               UPDATE_ID,
+               DEL_YN,
+               IS_SYSTEM
+        FROM T3000_AUTHORITY
+        WHERE AUTHORITY_ID = #{authorityId}
+          AND DEL_YN = 'N'
+    </select>
+
+    <!-- 권한 등록 -->
+    <insert id="insertAuthority" parameterType="com.example.approval24.domain.AuthorityDTO">
+        INSERT INTO T3000_AUTHORITY (
+            AUTHORITY_NAME,
+            CREATE_DT,
+            CREATE_ID,
+            DEL_YN,
+            IS_SYSTEM
+        ) VALUES (
+            #{authorityName},
+            SYSDATE,
+            #{createId},
+            'N',
+            #{isSystem}
+        )
+    </insert>
+
+    <!-- 권한 수정 -->
+    <update id="updateAuthority" parameterType="com.example.approval24.domain.AuthorityDTO">
+        UPDATE T3000_AUTHORITY
+        SET AUTHORITY_NAME = #{authorityName},
+            UPDATE_DT = SYSDATE,
+            UPDATE_ID = #{updateId},
+            IS_SYSTEM = #{isSystem}
+        WHERE AUTHORITY_ID = #{authorityId}
+          AND DEL_YN = 'N'
+    </update>
+
+    <!-- 권한 삭제 (논리 삭제) -->
+    <update id="deleteAuthority" parameterType="long">
+        UPDATE T3000_AUTHORITY
+        SET DEL_YN = 'Y',
+            UPDATE_DT = SYSDATE
+        WHERE AUTHORITY_ID = #{authorityId}
+    </update>
+
+</mapper>
