@@ -14,6 +14,7 @@ import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.ComplainuserDTO;
+import com.example.approval24.domain.MT1DTO;
 import com.example.approval24.domain.UE1DTO;
 import com.example.approval24.domain.UE2DTO;
 import com.example.approval24.service.CategoryService;
@@ -32,7 +33,8 @@ public class ComplainController {
 	@Autowired
 	private ComplainuserService complainuserService;
 
-	public long accountId = 13;
+	//임시로 넣은 계정ID
+	public long accountId = 41;
 
 	@GetMapping("/myWork")
 	public String myWorkList(Model model
@@ -145,13 +147,33 @@ public class ComplainController {
 
 	// 기간제 파견근로자 출산 전후 휴가 급여신청
 	@GetMapping("/mt1/{complainId}")
-	public String tempWorker(@PathVariable int complainId, Model model) {
+	public String tempWorker(@PathVariable long complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-
+		System.out.println(complainuserDTO.toString());
+		
+		MT1DTO mt1DTO = complainService.getMT1Info(complainId);
+		System.out.println("Get : " + mt1DTO.toString());
 		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("detail", mt1DTO);
 
 		return "complain/regEditForm/mt1";
+	}
+	
+	@PostMapping("/mt1/{complainId}")
+	public String submitTempWorker(@PathVariable long complainId, MT1DTO mt1DTO, ComplainuserDTO complainuserDTO,
+			RedirectAttributes redirectAttributes) {
+		
+		System.out.println("post 진입");
+		System.out.println(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
+		
+		System.out.println(mt1DTO);
+		complainService.savemt1(mt1DTO);
+
+		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
+		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
+		return "redirect:/mt1/" + complainId;
 	}
 
 	// 고용보험 미적용자 출산 급여 신청
@@ -197,7 +219,7 @@ public class ComplainController {
 		model.addAttribute("user", complainuserDTO);
 
 		return "complain/regEditForm/em3";
-
+ 
 	}
 
 }

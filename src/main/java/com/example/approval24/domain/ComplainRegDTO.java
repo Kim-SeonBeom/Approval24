@@ -19,7 +19,7 @@ public class ComplainRegDTO {
 	private String complainuserName;
 	private String complainuserPost;
 	private String complainuserAddress;
-	private String complainuserAddrDetail;
+	private String complainuserAddressDetail;
 	private String complainuserTel; 
 	private String complainuserPhone;
 	private String complainuserEmail;

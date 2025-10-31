@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.dao.ComplainuserDAO;
+import com.example.approval24.dao.MT1DAO;
 import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
+import com.example.approval24.domain.MT1DTO;
 import com.example.approval24.domain.UE1DTO;
 import com.example.approval24.domain.UE2DTO;
 
@@ -35,6 +37,9 @@ public class ComplainService {
 	
 	@Autowired
 	private UE2DAO ue2DAO;
+	
+	@Autowired
+	private MT1DAO mt1DAO;
 
 
 	public List<ComplainDTO> getMyWorkList(long accountId) {
@@ -67,7 +72,7 @@ public class ComplainService {
 
 		// 담당자 지정 로직 들어와야 함 임시로 강제지정
 		// Manager_account_id
-		long managerAccountId = 13;
+		long managerAccountId = 41;
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
@@ -165,6 +170,31 @@ public class ComplainService {
 
 	public void saveue2(UE2DTO ue2DTO) {
 		ue2DAO.updateInfo(ue2DTO);
+
+	}
+	
+	//mt1 메서드
+	public MT1DTO getMT1Info(long complainId) {
+
+		int count = mt1DAO.existByComplainId(complainId);
+		if (count > 0) {
+			System.out.println("등록된 민원존재");
+
+			return mt1DAO.findByComplainId(complainId);
+			
+		} else {
+			System.out.println("등록된 민원 없음");
+			MT1DTO mt1dto = new MT1DTO();
+			mt1dto.setComplainId(complainId);
+			mt1DAO.insertInfo(mt1dto);
+			System.out.println("민원 생성");
+			System.out.println(mt1dto.toString());
+			return mt1dto; 
+		}
+	}
+
+	public void savemt1(MT1DTO mt1DTO) {
+		mt1DAO.updateInfo(mt1DTO);
 
 	}
 
