@@ -8,8 +8,6 @@ public class TotalCodeDTO {
 	
 	private String codeId;
 	
-	private String sequence;
-	
 	private String codeName;
 	
 	private String codeDetail;

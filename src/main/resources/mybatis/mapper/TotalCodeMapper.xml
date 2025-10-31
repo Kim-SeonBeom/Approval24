@@ -4,7 +4,29 @@
 
 <!-- 코드 목록 -->
 <select id="getAllTotalCode" resultType="TotalCodeDTO">
-	select group_id, code_id, sequence, code_name, code_detail, del_yn
+	select group_id, code_id, code_name, code_detail, del_yn
 	from total_code
 </select>
+
+<!-- 코드 상세 -->
+<select id="TotalCodeInfo" resultType="TotalCodeDTO" parameterType="string">
+	select group_id, code_id, code_name, code_detail, del_yn
+	from total_code
+	where code_id=#{codeId}
+</select>
+
+<!-- 코드 수정, 삭제 -->
+<update id="TotalCodeUpd" parameterType="TotalCodeDTO">
+	update total_code
+	set code_name=#{codeName},
+		code_detail=#{codeDetail},
+		del_yn=#{delYn}
+	where code_id=#{codeId}
+</update>
+
+<!-- 코드 등록 -->
+<insert id="TotalCodeInsert" parameterType="TotalCodeDTO">
+	insert into total_code(group_id, code_id, code_name, code_detail, del_yn)
+	values (#{groupId}, #{codeId}, #{codeName}, #{codeDetail}, #{delYn})
+</insert>
 </mapper>

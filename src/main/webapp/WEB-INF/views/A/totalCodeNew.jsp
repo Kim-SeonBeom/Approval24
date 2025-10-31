@@ -7,7 +7,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<title>기관 등록 | 결재24</title>
+<title>공통코드 등록 | 결재24</title>
 <style>
 /* 표 기반(딱딱한) 작성 레이아웃 */
 .kv-table th {
@@ -59,7 +59,7 @@
 
 					<!-- 상단 제목/버튼 -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-3">
-						<h1 class="h3 mb-0 text-gray-800">기관 등록</h1>
+						<h1 class="h3 mb-0 text-gray-800">공통코드 등록</h1>
 					</div>
 
 					<!-- 카드 -->
@@ -72,14 +72,14 @@
 								<button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
 									<i class="fas fa-save mr-1"></i>등록
 								</button>
-								<a href="${pageContext.request.contextPath}/admin/insts" class="btn btn-danger btn-sm">취소</a>
+								<a href="${pageContext.request.contextPath}/admin/totalcode" class="btn btn-danger btn-sm">취소</a>
 							</div>
 
 						</div>
 
 
 						<div class="card-body">
-							<form id="instInsertForm" action="/approval24/admin/insts/new" method="post">
+							<form id="totalCodeInsertForm" action="/approval24/admin/totalcode/new" method="post">
 							
 
 								<div class="table-responsive">
@@ -91,47 +91,43 @@
 											<col style="width: 32%;">
 										</colgroup>
 										<tbody>
-											<!-- 제목 -->
+										
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">기관명</th>
-												<td colspan="3"><input type="text" name="instName" id="instName" class="form-control form-control-sm" placeholder="공지 제목을 입력하세요" required maxlength="200"></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">코드그룹ID</th>
+												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" required maxlength="200"></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">코드ID</th>
+												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" required></td>
 											</tr>
 
-											<!-- 작성자 / 등록일 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">대표자명</th>
-												<td><input type="text" name="instHeadName" id="instHeadName" class="form-control form-control-sm" placeholder="홍길동" required></td>
-												<th>기관 등록일</th>
-												<td><input type="date" class="form-control"
-													name="createDt"></td>
+												<th>코드명</th>
+												<td colspan="3"><input type="tel" class="form-control form-control-sm"
+													name="codeName"></td>
 											</tr>
-
-											<!-- 내용 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold"
-													style="vertical-align: middle;">주소</th>
-												<td colspan="3">
-													<div class="d-flex mb-2">
-														<input type="text" class="form-control form-postal-code mr-2"
-															placeholder="우편번호" name="instPost"
-															id="instPost" readonly style="width: 150px;">
-						
-														<button type="button" class="btn btn-secondary"
-															onclick="openDaumPostcode()">주소 검색</button>
-													</div> <input type="text" class="form-control mb-2" placeholder="기본 주소"
-													name="instAddress" id="instAddress" readonly>
-													<input type="text" class="form-control"
-													placeholder="상세 주소 (건물명, 동/호수 등)" name="instDetailAddress"
-													id="instDetailAddress">
-												</td>
+												<th>코드내용</th>
+												<td colspan="3"><input type="tel" class="form-control form-control-sm"
+													name="codeDetail"></td>
 											</tr>
-
-											<!-- 연락처 -->
 											<tr>
-												<th>기관 연락처</th>
-												<td colspan="3"><input type="tel" class="form-control"
-													name="instPhone" placeholder="010-xxxx-xxxx"></td>
+											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <td colspan="6">
+											    <div class="d-flex align-items-center" style="gap:16px;">
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
+											        <input type="radio" id="delYnN" name="delYn" value="N"
+											          <c:if test="N">checked="checked"</c:if> />
+											        <span class="ml-1">사용</span>
+											      </label>
+											
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
+											        <input type="radio" id="delYnY" name="delYn" value="Y"
+											          <c:if test="Y">checked="checked"</c:if> />
+											        <span class="ml-1">삭제</span>
+											      </label>
+											    </div>
+											  </td>
 											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -175,7 +171,7 @@ $(document).ready(function() {
     $('#btnSaveTop').on('click', function(e) {
         e.preventDefault();
         
-        const form = document.getElementById('instInsertForm');
+        const form = document.getElementById('totalCodeInsertForm');
         
         // 브라우저 기본 유효성 검사
         if (!form.checkValidity()) {
@@ -184,33 +180,13 @@ $(document).ready(function() {
         }
 
         // 확인창 추가
-        if (confirm('작성한 내용을 등록하시겠습니까?')) {
-            $('#instInsertForm').submit();
+        if (confirm('작성된 내용을 등록하시겠습니까?')) {
+            $('#totalCodeInsertForm').submit();
         } else {
             return false; // 취소 시 아무 동작도 안 함
         }
     });
 });
-
-
-// 1. Daum Postcode API 함수 (openDaumPostcode)
-function openDaumPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            // R: 도로명, J: 지번
-            const addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-            
-            // 우편번호 (ID: instPost)
-            document.getElementById('instPost').value = data.zonecode; 
-            
-            // 기본 주소 (ID: instAddress)
-            document.getElementById('instAddress').value = addr;
-            
-            // 상세 주소 입력창에 포커스 (ID: instDetailAddress)
-            document.getElementById('instDetailAddress').focus();
-        }
-    }).open();
-}
 </script>
 
 </body>
