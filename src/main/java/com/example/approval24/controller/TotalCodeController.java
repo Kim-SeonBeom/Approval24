@@ -5,17 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.approval24.service.CodeService;
+import com.example.approval24.service.TotalCodeService;
 
 @Controller
-public class CodeController {
+public class TotalCodeController {
 	@Autowired
-	CodeService codeService;
+	TotalCodeService codeService;
 	
 	// 코드 목록
-	@GetMapping("admin/code")
+	@GetMapping("admin/totalcode")
 	public String code(Model model) {
-		model.addAttribute("getAllCodeList", codeService.getAllCode());
-		return "A/code";
+		model.addAttribute("getAllTotalCodeList", codeService.getAllTotalCode());
+		return "A/totalCode";
 	}
 }

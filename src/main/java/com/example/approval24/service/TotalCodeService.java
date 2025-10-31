@@ -5,20 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.approval24.dao.CodeDAO;
-import com.example.approval24.domain.CodeDTO;
+import com.example.approval24.dao.TotalCodeDAO;
+import com.example.approval24.domain.TotalCodeDTO;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CodeService {
+public class TotalCodeService {
 	@Autowired
-	CodeDAO codeDAO;
+	TotalCodeDAO totalCodeDAO;
 	
 	// 코드 목록
-	public List<CodeDTO> getAllCode() {
-		return codeDAO.getAllCode();
+	public List<TotalCodeDTO> getAllTotalCode() {
+		return totalCodeDAO.getAllTotalCode();
 	}
 	
 
