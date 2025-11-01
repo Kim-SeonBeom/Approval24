@@ -1,6 +1,5 @@
 package com.example.approval24.domain;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;

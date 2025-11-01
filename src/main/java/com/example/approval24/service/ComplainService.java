@@ -12,11 +12,13 @@ import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.dao.ComplainuserDAO;
 import com.example.approval24.dao.MT1DAO;
+import com.example.approval24.dao.MT2DAO;
 import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.MT1DTO;
+import com.example.approval24.domain.MT2DTO;
 import com.example.approval24.domain.UE1DTO;
 import com.example.approval24.domain.UE2DTO;
 
@@ -40,6 +42,9 @@ public class ComplainService {
 	
 	@Autowired
 	private MT1DAO mt1DAO;
+	
+	@Autowired
+	private MT2DAO mt2DAO;
 
 
 	public List<ComplainDTO> getMyWorkList(long accountId) {
@@ -195,6 +200,31 @@ public class ComplainService {
 
 	public void savemt1(MT1DTO mt1DTO) {
 		mt1DAO.updateInfo(mt1DTO);
+
+	}
+	
+	//mt2 메서드
+	public MT2DTO getMT2Info(long complainId) {
+
+		int count = mt2DAO.existByComplainId(complainId);
+		if (count > 0) {
+			System.out.println("등록된 민원존재");
+
+			return mt2DAO.findByComplainId(complainId);
+			
+		} else {
+			System.out.println("등록된 민원 없음");
+			MT2DTO mt2dto = new MT2DTO();
+			mt2dto.setComplainId(complainId);
+			mt2DAO.insertInfo(mt2dto);
+			System.out.println("민원 생성");
+			System.out.println(mt2dto.toString());
+			return mt2dto;  
+		}
+	}
+
+	public void savemt2(MT2DTO mt2DTO) {
+		mt2DAO.updateInfo(mt2DTO);
 
 	}
 

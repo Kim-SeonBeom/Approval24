@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	    '#complainuserAddress'
 	  ].join(','));
 
-
 	  // 확인사항(소득) 종속
 	  const incomeYnY = document.getElementById('incomeYnY');
 	  const incomeYnN = document.getElementById('incomeYnN');
@@ -68,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	  // 초기: 보기 모드(모두 잠금)
 	  setEditMode(false);
+
 
 	  // 수정/저장 토글 클릭
 	  $updateBtn.on('click', function () {

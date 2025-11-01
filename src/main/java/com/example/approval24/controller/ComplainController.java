@@ -15,6 +15,7 @@ import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.ComplainuserDTO;
 import com.example.approval24.domain.MT1DTO;
+import com.example.approval24.domain.MT2DTO;
 import com.example.approval24.domain.UE1DTO;
 import com.example.approval24.domain.UE2DTO;
 import com.example.approval24.service.CategoryService;
@@ -178,15 +179,36 @@ public class ComplainController {
 
 	// 고용보험 미적용자 출산 급여 신청
 	@GetMapping("/mt2/{complainId}")
-	public String insurance(@PathVariable int complainId, Model model) {
+	public String noInsurance(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-
+		System.out.println(complainuserDTO.toString());
+		
+		MT2DTO mt2DTO = complainService.getMT2Info(complainId);
+		System.out.println("Get : " + mt2DTO.toString());
 		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("detail", mt2DTO);
 
 		return "complain/regEditForm/mt2";
 
 	}
+	
+	@PostMapping("/mt2/{complainId}")
+	public String submitNoInsurance(@PathVariable long complainId, MT2DTO mt2DTO, ComplainuserDTO complainuserDTO,
+			RedirectAttributes redirectAttributes) {
+		
+		System.out.println("post 진입");
+		System.out.println(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
+		
+		System.out.println(mt2DTO);
+		complainService.savemt2(mt2DTO);
+
+		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
+		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
+		return "redirect:/mt2/" + complainId;
+	}
+	
 
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
 	@GetMapping("/em1/{complainId}")
