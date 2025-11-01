@@ -39,7 +39,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
-        // ✅ 이 페이지의 실제 폼/버튼 id로 매칭
+        // 이 페이지의 실제 폼/버튼 id로 매칭
         const $form = $('#loanApplyForm');
         const $updateBtn = $('#btnUpdate');
         const $confirmBtn = $('#btnSubmitConfirm'); // 모달의 "저장" 버튼

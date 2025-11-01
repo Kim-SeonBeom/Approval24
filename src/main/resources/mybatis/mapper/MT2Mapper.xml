@@ -44,7 +44,8 @@
 		, BIZ_REG_NO = #{bizRegNo}
 		, CORP_REG_NO = #{corpRegNo}
 		, SELF_EMP_INSUR_YN = #{selfEmpInsurYn}
-		, BENIFIT_TYPE = #{benefitType}
+		, BENEFIT_TYPE = #{benefitType}
+		, PREGNANCY_WEEK = #{pregnancyWeek}
 		, BANK_NM = #{bankNm}
 		, ACCOUNT_NO = #{accountNo}
 		, ACCOUNT_HOLDER_NM = #{accountHolderNm}

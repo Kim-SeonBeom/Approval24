@@ -80,7 +80,7 @@
 													style="width: 40%; display: inline-block;"
 													class="form-control"
 													value="<c:out value='${detail.babyResiNoFront}'/>">
-													<span class="mx-1">-</span> <input type="text"
+													<span class="mx-1">-</span> <input type="text" name="babyResiNoBack"
 													id="babyResiNoBack" maxlength="7" inputmode="numeric"
 													pattern="[0-9]*" placeholder="뒤 7자리"
 													style="width: 50%; display: inline-block;"
@@ -128,29 +128,29 @@
 												<td>
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="RELATIONSHIP" id="RELATIONSHIP_1" value="배우자"
+															name="relationship" id="relationship_1" value="배우자"
 															<c:if test="${detail.relationship eq '배우자'}">checked</c:if>>
-														<label class="form-check-label" for="RELATIONSHIP_1">배우자</label>
+														<label class="form-check-label" for="relationship_1">배우자</label>
 													</div> &emsp;&emsp;&ensp;
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="RELATIONSHIP" id="RELATIONSHIP_2" value="4촌이내"
+															name="relationship" id="relationship_2" value="4촌이내"
 															<c:if test="${detail.relationship eq '4촌이내'}">checked</c:if>>
-														<label class="form-check-label" for="RELATIONSHIP_2">4촌이내
+														<label class="form-check-label" for="relationship_2">4촌이내
 															인척 </label>
 													</div> <br>
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="RELATIONSHIP" id="RELATIONSHIP_3" value="8촌이내"
+															name="relationship" id="relationship_3" value="8촌이내"
 															<c:if test="${detail.relationship eq '8촌이내'}">checked</c:if>>
-														<label class="form-check-label" for="RELATIONSHIP_3">8촌이내
+														<label class="form-check-label" for="relationship_3">8촌이내
 															혈족</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="RELATIONSHIP" id="RELATIONSHIP_4" value="해당없음"
+															name="relationship" id="relationship_4" value="해당없음"
 															<c:if test="${detail.relationship eq '해당없음'}">checked</c:if>>
-														<label class="form-check-label" for="RELATIONSHIP_4">해당없음</label>
+														<label class="form-check-label" for="relationship_4">해당없음</label>
 													</div>
 												</td>
 											</tr>
@@ -193,12 +193,12 @@
 													<div class="d-flex mb-2">
 														<input type="text"
 															class="form-control form-postal-code mr-2"
-															placeholder="우편번호" name="bisPost" id="bisPost" readonly
+															placeholder="우편번호" name="bizPost" id="bizPost" readonly
 															style="width: 150px;"
-															value="<c:out value='${detail.bisPost}'/>">
+															value="<c:out value='${detail.bizPost}'/>">
 
-														<button type="button" class="btn btn-secondary"
-															onclick="openDaumPostcode()">주소 검색</button>
+														<button type="button" class="btn btn-secondary" id="btnSearchBizAddress"
+															onclick="openBizPostcode()">주소 검색</button>
 													</div> <input type="text" class="form-control mb-2"
 													placeholder="기본 주소" name="bizAddr" id="bizAddr"
 													value="<c:out value='${detail.bizAddr}'/>" readonly>
@@ -266,7 +266,7 @@
 													</div>
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="benefitType" id=benefitType_2 value="유산/사산급여"
+															name="benefitType" id="benefitType_2" value="유산/사산급여"
 															<c:if test="${detail.benefitType ne '출산급여'}">checked</c:if>>
 														<label class="form-check-label" for="benefitType_2">유산/사산급여</label>
 													</div>
@@ -295,7 +295,7 @@
 													</div>&nbsp;
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="pregnancyWeek" id="PREGNANCY_WEEK_4" value="28주"
+															name="pregnancyWeek" id="PREGNANCY_WEEK_4" value="28주이상"
 															<c:if test="${detail.pregnancyWeek eq '28주이상'}">checked</c:if>>
 														<label class="form-check-label" for="PREGNANCY_WEEK_4">28주
 															이상</label>
@@ -376,16 +376,16 @@
 												<td colspan="3">
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="incomeAct" id="incomeAct_3" value="incomeType3"
-															<c:if test="${detail.incomeAct eq 'incomeType3'}">checked</c:if>>
-														<label class="form-check-label" for="incomeAct_3">전전년도~출산년도
+															name="incomeAct" id="incomeAct_4" value="incomeType4"
+															<c:if test="${detail.incomeAct eq 'incomeType4'}">checked</c:if>>
+														<label class="form-check-label" for="incomeAct_4">전전년도~출산년도
 															사업에 대한 세금신고 사실이 있는 자</label>
 													</div> <br>
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="incomeAct" id="incomeAct_4" value="incomeType4"
-															<c:if test="${detail.incomeAct eq 'incomeType4'}">checked</c:if>>
-														<label class="form-check-label" for="incomeAct_4">전전년도~출산년도
+															name="incomeAct" id="incomeAct_5" value="incomeType5"
+															<c:if test="${detail.incomeAct eq 'incomeType5'}">checked</c:if>>
+														<label class="form-check-label" for="incomeAct_5">전전년도~출산년도
 															사업에 대한 세금신고 사실이 없는 자</label>
 													</div>
 												</td>
@@ -395,9 +395,9 @@
 												<td colspan="3">
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio"
-															name="incomeAct" id="incomeAct_54" value="incomeType5"
-															<c:if test="${detail.incomeAct eq 'incomeType5'}">checked</c:if>>
-														<label class="form-check-label" for="incomeAct_5">사업자등록증
+															name="incomeAct" id="incomeAct_6" value="incomeType6"
+															<c:if test="${detail.incomeAct eq 'incomeType6'}">checked</c:if>>
+														<label class="form-check-label" for="incomeAct_6">사업자등록증
 															없는 특수형태근로자, 프리랜서 등</label>
 													</div>
 												</td>

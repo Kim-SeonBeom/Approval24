@@ -5,9 +5,16 @@ function clearVals($els) { $els.val(''); }
 
 document.addEventListener('DOMContentLoaded', function () {
 	  // form & buttons
+	  let isEditMode = false;
 	  const $form        = $('#submitForm');
 	  const $updateBtn   = $('#btnUpdate');         // "수정↔저장" 토글 버튼
 	  const $confirmBtn  = $('#btnSubmitConfirm');  // 모달 "제출" 버튼
+      const $userAddressBtn = $('#btnAddressSearch');
+      const $bizAddressBtn = $('#btnSearchBizAddress');
+      
+	  
+	  const $benefitRadios  = $form.find('input[name="benefitType"]');
+	  const $pregWeekRadios = $form.find('input[name="pregnancyWeek"]');
 
 	  // controls
 	  const $textInputs = $form.find([
@@ -25,35 +32,44 @@ document.addEventListener('DOMContentLoaded', function () {
 	    '#complainuserAddress'
 	  ].join(','));
 
-	  // 확인사항(소득) 종속
-	  const incomeYnY = document.getElementById('incomeYnY');
-	  const incomeYnN = document.getElementById('incomeYnN');
-	  const $incomeTypeRadios = $form.find('input[name="incomeType"]');
-	  const $incomeStartTime  = $form.find('input[name="incomeStartTime"]');
-	  const $incomeEndTime    = $form.find('input[name="incomeEndTime"]');
-	  const $workHours        = $form.find('input[name="workHours"]');
-
-	  function toggleIncomeBlock() {
-	    const off = !!(incomeYnN && incomeYnN.checked);
-	    const $group = $incomeTypeRadios.add($incomeStartTime).add($incomeEndTime).add($workHours);
-	    setDisabled($group, off);
-	    if (off) clearVals($group);
+	  function updatePregnancyWeekState() {
+		    if (!isEditMode) {
+		      // 보기모드: 항상 선택 불가 + 회색
+		      $pregWeekRadios
+		        .prop('disabled', true)
+		        .closest('.form-check').addClass('readonly-box')
+		        .css('pointer-events', 'none'); // 라벨 클릭도 막기(안전)
+		      return;
+		    }
+		    const selected = $benefitRadios.filter(':checked').val();
+		    if (selected === '출산급여') {
+		      $pregWeekRadios
+		        .prop('checked', false)
+		        .prop('disabled', true)
+		        .closest('.form-check').addClass('readonly-box')
+		        .css('pointer-events', 'none');
+		    } else {
+		      $pregWeekRadios
+		        .prop('disabled', false)
+		        .closest('.form-check').removeClass('readonly-box')
+		        .css('pointer-events', '');
+		    }
 	  }
-
-	  if (incomeYnY) incomeYnY.addEventListener('change', toggleIncomeBlock);
-	  if (incomeYnN) incomeYnN.addEventListener('change', toggleIncomeBlock);
+	  
+	  
 
 	  // ===== 편집 모드 토글 =====
 	  function setEditMode(isEdit) {
+		  
+		isEditMode = isEdit; 
 	    // 전체 활성/비활성
 	    setDisabled($textInputs, !isEdit);
 	    setDisabled($choiceInputs, !isEdit);
+	    if ($userAddressBtn.length)  $userAddressBtn.prop('disabled', !isEdit);
+	    if ($bizAddressBtn.length)  $bizAddressBtn.prop('disabled', !isEdit);
 
 	    // 항상 잠금 유지
 	    setDisabled($fixedReadonly, true);
-
-	    // 라디오 종속 재보정
-	    toggleIncomeBlock();
 
 	    // 버튼 라벨/스타일 토글
 	    if (isEdit) {
@@ -63,10 +79,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	      $updateBtn.html('<i class="fas fa-edit mr-1"></i>수정')
 	                .removeClass('btn-success').addClass('btn-primary');
 	    }
+	    updatePregnancyWeekState();
 	  }
 
 	  // 초기: 보기 모드(모두 잠금)
 	  setEditMode(false);
+	  
+	  $benefitRadios.on('change', updatePregnancyWeekState);
+
 
 
 	  // 수정/저장 토글 클릭
@@ -91,12 +111,27 @@ document.addEventListener('DOMContentLoaded', function () {
 	    setDisabled($textInputs, false);
 	    setDisabled($choiceInputs, false);
 
-	    // 소득 N이면 값 초기화 최종 보정
-	    toggleIncomeBlock();
 
 	    $form.trigger('submit');
 	  });
 
-	  // 초기 종속 블록 상태 반영
-	  toggleIncomeBlock();
 	});
+
+function openBizPostcode() {
+	new daum.Postcode({
+		oncomplete : function(data) {
+			// R: 도로명, J: 지번
+			const addr = data.userSelectedType === 'R' ? data.roadAddress
+					: data.jibunAddress;
+
+			// 우편번호 
+			document.getElementById('bizPost').value = data.zonecode;
+
+			// 기본 주소 
+			document.getElementById('bizAddr').value = addr;
+
+			// 상세 주소 입력창에 포커스
+			document.getElementById('bizAddrDetail').focus();
+		}
+	}).open();
+}
