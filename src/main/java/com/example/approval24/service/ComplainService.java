@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.dao.ComplainuserDAO;
+import com.example.approval24.dao.EM1DAO;
 import com.example.approval24.dao.EM2DAO;
 import com.example.approval24.dao.EM3DAO;
 import com.example.approval24.dao.MT1DAO;
@@ -19,6 +20,7 @@ import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
+import com.example.approval24.domain.EM1DTO;
 import com.example.approval24.domain.EM2DTO;
 import com.example.approval24.domain.EM3DTO;
 import com.example.approval24.domain.MT1DTO;
@@ -51,10 +53,10 @@ public class ComplainService {
 	private MT2DAO mt2DAO;
 	
 	@Autowired
+	private EM1DAO em1DAO;
+	
+	@Autowired
 	private EM2DAO em2DAO;
-	
-	
-	
 	
 	@Autowired
 	private EM3DAO em3DAO;
@@ -242,10 +244,34 @@ public class ComplainService {
 	}
 	
 	
+	//em1 메서드
+		public EM1DTO getEM1Info(long complainId) {
+			System.out.println("서비스진입");
+
+			int count = em1DAO.existByComplainId(complainId);
+			if (count > 0) {
+				System.out.println("등록된 민원존재");
+
+				return em1DAO.findByComplainId(complainId);
+				
+			} else {
+				System.out.println("등록된 민원 없음");
+				EM1DTO em1dto = new EM1DTO();
+				em1dto.setComplainId(complainId);
+				em1DAO.insertInfo(em1dto);
+				System.out.println("민원 생성");
+				System.out.println(em1dto.toString());
+				return em1dto; 
+			}
+		}
+
+		public void saveem1(EM1DTO em1dto) {
+			em1DAO.updateInfo(em1dto);
+
+		}
 	
 	
-	
-	
+
 	
 	//em2 메서드
 	public EM2DTO getEM2Info(long complainId) {

@@ -14,6 +14,7 @@ import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.ComplainuserDTO;
+import com.example.approval24.domain.EM1DTO;
 import com.example.approval24.domain.EM2DTO;
 import com.example.approval24.domain.EM3DTO;
 import com.example.approval24.domain.MT1DTO;
@@ -36,7 +37,7 @@ public class ComplainController {
 	@Autowired
 	private ComplainuserService complainuserService;
 
-	//임시로 넣은 계정ID 13,41,61
+	// 임시로 넣은 계정ID 13,41,61
 	public long accountId = 61;
 
 	@GetMapping("/myWork")
@@ -92,7 +93,7 @@ public class ComplainController {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
-		
+
 		UE1DTO ue1DTO = complainService.getUE1Info(complainId);
 		System.out.println(ue1DTO.toString());
 		model.addAttribute("user", complainuserDTO);
@@ -104,11 +105,11 @@ public class ComplainController {
 	@PostMapping("/ue1/{complainId}")
 	public String submitTrainingLoan(@PathVariable long complainId, UE1DTO ue1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
-		
+
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
-		
+
 		System.out.println(ue1DTO);
 		complainService.saveue1(ue1DTO);
 
@@ -123,7 +124,7 @@ public class ComplainController {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
-		
+
 		UE2DTO ue2DTO = complainService.getUE2Info(complainId);
 		System.out.println("Get : " + ue2DTO.toString());
 		model.addAttribute("user", complainuserDTO);
@@ -131,15 +132,15 @@ public class ComplainController {
 
 		return "complain/regEditForm/ue2";
 	}
-	
+
 	@PostMapping("/ue2/{complainId}")
 	public String submitreport(@PathVariable long complainId, UE2DTO ue2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
-		
+
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
-		
+
 		System.out.println(ue2DTO);
 		complainService.saveue2(ue2DTO);
 
@@ -154,7 +155,7 @@ public class ComplainController {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
-		
+
 		MT1DTO mt1DTO = complainService.getMT1Info(complainId);
 		System.out.println("Get : " + mt1DTO.toString());
 		model.addAttribute("user", complainuserDTO);
@@ -162,15 +163,15 @@ public class ComplainController {
 
 		return "complain/regEditForm/mt1";
 	}
-	
+
 	@PostMapping("/mt1/{complainId}")
 	public String submitTempWorker(@PathVariable long complainId, MT1DTO mt1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
-		
+
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
-		
+
 		System.out.println(mt1DTO);
 		complainService.savemt1(mt1DTO);
 
@@ -185,7 +186,7 @@ public class ComplainController {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
-		
+
 		MT2DTO mt2DTO = complainService.getMT2Info(complainId);
 		System.out.println("Get : " + mt2DTO.toString());
 		model.addAttribute("user", complainuserDTO);
@@ -194,15 +195,15 @@ public class ComplainController {
 		return "complain/regEditForm/mt2";
 
 	}
-	
+
 	@PostMapping("/mt2/{complainId}")
 	public String submitNoInsurance(@PathVariable long complainId, MT2DTO mt2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
-		
+
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
-		
+
 		System.out.println(mt2DTO);
 		complainService.savemt2(mt2DTO);
 
@@ -210,17 +211,37 @@ public class ComplainController {
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
 		return "redirect:/mt2/" + complainId;
 	}
-	
 
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
 	@GetMapping("/em1/{complainId}")
-	public String subsidy(@PathVariable int complainId, Model model) {
+	public String emptyWork(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
+		System.out.println(complainuserDTO.toString());
 
+		EM1DTO em1DTO = complainService.getEM1Info(complainId);
+		System.out.println("Get : " + em1DTO.toString());
 		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("detail", em1DTO);
 
 		return "complain/regEditForm/em1";
+
+	}
+
+	@PostMapping("/em1/{complainId}")
+	public String submitEmptyWork(@PathVariable long complainId, EM1DTO em1DTO, ComplainuserDTO complainuserDTO,
+			RedirectAttributes redirectAttributes) {
+
+		System.out.println("post 진입");
+		System.out.println(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
+
+		System.out.println(em1DTO);
+		complainService.saveem1(em1DTO);
+
+		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
+		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
+		return "redirect:/em1/" + complainId;
 	}
 
 	// 청년 도전 사업 지원 신청
@@ -229,24 +250,24 @@ public class ComplainController {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
-		
+
 		EM2DTO em2DTO = complainService.getEM2Info(complainId);
 		System.out.println("Get : " + em2DTO.toString());
 		model.addAttribute("user", complainuserDTO);
 		model.addAttribute("detail", em2DTO);
 
 		return "complain/regEditForm/em2";
- 
+
 	}
-	
+
 	@PostMapping("/em2/{complainId}")
 	public String submitYouthChallange(@PathVariable long complainId, EM2DTO em2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
-		
+
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
-		
+
 		System.out.println(em2DTO);
 		complainService.saveem2(em2DTO);
 
@@ -254,8 +275,6 @@ public class ComplainController {
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
 		return "redirect:/em2/" + complainId;
 	}
-	
-	
 
 	// 졸업생 특화 프로그램 신청
 	@GetMapping("/em3/{complainId}")
@@ -263,24 +282,24 @@ public class ComplainController {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 		System.out.println(complainuserDTO.toString());
-		
+
 		EM3DTO em3DTO = complainService.getEM3Info(complainId);
 		System.out.println("Get : " + em3DTO.toString());
 		model.addAttribute("user", complainuserDTO);
 		model.addAttribute("detail", em3DTO);
 
 		return "complain/regEditForm/em3";
- 
+
 	}
-	
+
 	@PostMapping("/em3/{complainId}")
 	public String submitGraduateProgram(@PathVariable long complainId, EM3DTO em3DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
-		
+
 		System.out.println("post 진입");
 		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
-		
+
 		System.out.println(em3DTO);
 		complainService.saveem3(em3DTO);
 
@@ -288,7 +307,5 @@ public class ComplainController {
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
 		return "redirect:/em3/" + complainId;
 	}
-	
-	
 
 }
