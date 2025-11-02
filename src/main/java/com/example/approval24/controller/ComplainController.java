@@ -14,6 +14,7 @@ import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.ComplainuserDTO;
+import com.example.approval24.domain.EM2DTO;
 import com.example.approval24.domain.EM3DTO;
 import com.example.approval24.domain.MT1DTO;
 import com.example.approval24.domain.MT2DTO;
@@ -224,14 +225,37 @@ public class ComplainController {
 
 	// 청년 도전 사업 지원 신청
 	@GetMapping("/em2/{complainId}")
-	public String challenge(@PathVariable int complainId, Model model) {
+	public String youthChallange(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-
+		System.out.println(complainuserDTO.toString());
+		
+		EM2DTO em2DTO = complainService.getEM2Info(complainId);
+		System.out.println("Get : " + em2DTO.toString());
 		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("detail", em2DTO);
 
-		return "complain/regEditForm/em2";
+		return "complain/regEditForm/em3";
+ 
 	}
+	
+	@PostMapping("/em2/{complainId}")
+	public String submitYouthChallange(@PathVariable long complainId, EM2DTO em2DTO, ComplainuserDTO complainuserDTO,
+			RedirectAttributes redirectAttributes) {
+		
+		System.out.println("post 진입");
+		System.out.println(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
+		
+		System.out.println(em2DTO);
+		complainService.saveem2(em2DTO);
+
+		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
+		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
+		return "redirect:/em2/" + complainId;
+	}
+	
+	
 
 	// 졸업생 특화 프로그램 신청
 	@GetMapping("/em3/{complainId}")

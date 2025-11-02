@@ -16,17 +16,6 @@ document
 					const $confirmBtn = $('#btnSubmitConfirm'); // 모달 "제출" 버튼
 					const $userAddressBtn = $('#btnAddressSearch');
 
-					//토글에 의한 제어를 위한 id값 찾기
-					const $participantType = $form
-							.find('input[name="participantType"]');
-					const $studentNo = $form.find('input[name="studentNo"]');
-					const $grade = $form.find('#grade');
-					const $major = $form.find('input[name="major"]');
-					const $studentStatus = $form
-							.find('#studentStatus');
-					const $graduateDate = $form
-							.find('input[name="graduateDate"]');
-
 					// controls
 					const $textInputs = $form.find([ 'input[type=text]',
 							'input[type=tel]', 'input[type=email]',
@@ -41,58 +30,6 @@ document
 					const $fixedReadonly = $([ '#complainuserResiNoFront',
 							'#complainuserResiNoBack', '#complainuserPost',
 							'#complainuserAddress' ].join(','));
-
-					function updateParticipantTypeState() {
-				
-						const selected = $participantType.filter(':checked')
-								.val();
-						if (selected === 'region') {
-							 $('#studentNo').val('');
-							    $('#grade').val('');
-							    $('#major').val('');
-							    $('#studentStatus').val('');
-							    $('#graduateDate').val('');
-							    
-							$studentNo.prop('checked', false).prop('disabled',
-									true).closest('.form-check').addClass(
-									'readonly-box').css('pointer-events',
-									'none');
-							$grade.prop('checked', false)
-									.prop('disabled', true).closest(
-											'.form-check').addClass(
-											'readonly-box').css(
-											'pointer-events', 'none');
-							$major.prop('checked', false)
-									.prop('disabled', true).closest(
-											'.form-check').addClass(
-											'readonly-box').css(
-											'pointer-events', 'none');
-							$studentStatus.prop('checked', false).prop(
-									'disabled', true).closest('.form-check')
-									.addClass('readonly-box').css(
-											'pointer-events', 'none');
-							$graduateDate.prop('checked', false).prop(
-									'disabled', true).closest('.form-check')
-									.addClass('readonly-box').css(
-											'pointer-events', 'none');
-						} else {
-							$studentNo.prop('disabled', false).closest(
-									'.form-check').removeClass('readonly-box')
-									.css('pointer-events', '');
-							$grade.prop('disabled', false).closest(
-									'.form-check').removeClass('readonly-box')
-									.css('pointer-events', '');
-							$major.prop('disabled', false).closest(
-									'.form-check').removeClass('readonly-box')
-									.css('pointer-events', '');
-							$studentStatus.prop('disabled', false).closest(
-									'.form-check').removeClass('readonly-box')
-									.css('pointer-events', '');
-							$graduateDate.prop('disabled', false).closest(
-									'.form-check').removeClass('readonly-box')
-									.css('pointer-events', '');
-						}
-					}
 
 					// ===== 편집 모드 토글 =====
 					function setEditMode(isEdit) {
@@ -119,13 +56,11 @@ document
 									.removeClass('btn-success').addClass(
 											'btn-primary');
 						}
-						updateParticipantTypeState();
+
 					}
 
 					// 초기: 보기 모드(모두 잠금)
 					setEditMode(false);
-
-					$participantType.on('change', updateParticipantTypeState);
 
 					// 수정/저장 토글 클릭
 					$updateBtn.on('click',
