@@ -235,7 +235,7 @@ public class ComplainController {
 		model.addAttribute("user", complainuserDTO);
 		model.addAttribute("detail", em2DTO);
 
-		return "complain/regEditForm/em3";
+		return "complain/regEditForm/em2";
  
 	}
 	

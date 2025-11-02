@@ -46,7 +46,7 @@
 						<h1 class="h3 mb-0 text-gray-800">청년도전지원사업 신청서</h1>
 					</div>
 
-					<form id="loanApplyForm" method="post"
+					<form id="submitForm" method="post"
 						action="${pageContext.request.contextPath}/em2/${detail.complainId}">
 
 						<%@ include
@@ -131,6 +131,7 @@
 		<!-- /#content -->
 
 		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+				<script src="${pageContext.request.contextPath}/resources/assets/js/complain/em2.js"></script>
 	</div>
 	<!-- /#content-wrapper -->
 	<!-- /#wrapper -->
@@ -159,25 +160,5 @@
 		</div>
 	</div>
 
-	<!-- 페이지 스크립트 -->
-	<script>
-
-
-  document.getElementById('btnCalcUnemp')?.addEventListener('click', function() {
-    const emp = document.querySelector('input[name="EMP_DT"]').value;
-    const unemp = document.querySelector('input[name="UNEMP_DT"]').value;
-    const days = daysBetweenStr(emp, unemp);
-    if (days !== '') document.getElementById('UNEMP_PERIOD').value = days;
-  });
-
-  // 훈련기간 자동 계산 (TRAIN_START_DT ~ TRAIN_END_DT)
-  document.getElementById('btnCalcTrain')?.addEventListener('click', function() {
-    const st = document.getElementById('TRAIN_START_DT').value;
-    const en = document.getElementById('TRAIN_END_DT').value;
-    const days = daysBetweenStr(st, en);
-    if (days !== '') document.getElementById('TRAIN_PERIOD').value = days;
-  });
-
-</script>
 </body>
 </html>
