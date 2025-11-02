@@ -15,14 +15,14 @@ public class EM1DTO {
 
 	private long complainId;
 	private String bizOwnerNm;
-	private String IndustryType;
+	private String industryType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date employmentDt;
 	private String bizPost;
 	private String bizAddr;
 	private String bizAddrDetail;
 	private String trainCourseNm;
-	private String instituteNm;
+	private String trainInstituteNm;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date trainStartDt;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -31,7 +31,5 @@ public class EM1DTO {
 	private String bankNm;
 	private String accountNo;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date graduateDate;
 
 }

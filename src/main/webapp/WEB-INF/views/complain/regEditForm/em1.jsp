@@ -74,7 +74,7 @@
 													name="bizOwnerNm" value="<c:out value='${detail.bizOwnerNm}'/>"></td>
 												<th>업종</th>
 												<td><input type="text" class="form-control"
-													name="IndustryType" value="<c:out value='${detail.IndustryType}'/>"></td>
+													name="industryType" value="<c:out value='${detail.industryType}'/>"></td>
 											</tr>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold"
@@ -132,7 +132,7 @@
 													name="trainCourseNm" value="<c:out value='${detail.trainCourseNm}'/>"></td>
 												<th>훈련기관명</th>
 												<td><input type="text" class="form-control"
-													name="instituteNm" value="<c:out value='${detail.instituteNm}'/>"></td>
+													name="trainInstituteNm" value="<c:out value='${detail.trainInstituteNm}'/>"></td>
 											</tr>
 											<tr>
 												<th>훈련시작일</th>
