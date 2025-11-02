@@ -13,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.AuthorityDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
+import com.example.approval24.domain.DeptDTO;
 import com.example.approval24.domain.MenuDTO;
 import com.example.approval24.service.AuthorityService;
 
@@ -28,12 +28,28 @@ public class AuthorityController {
 
     // 전체 권한 목록 조회
     @GetMapping("/list")
-    public String listAuthorities(Model model) {
-        List<AuthorityDTO> authorities = authorityService.getAllAuthorities();
+    public String listAuthorities(
+        @RequestParam(value = "deptId", required = false) Long deptId,
+        @RequestParam(value = "sortField", required = false) String sortField,
+        @RequestParam(value = "sortOrder", required = false) String sortOrder,
+        Model model) {
+        
+        List<AuthorityDTO> authorities = authorityService.getAllAuthorities(deptId, sortField, sortOrder);
+        
+        //부서 목록 조회 및 모델에 담기 (JSP 드롭다운 생성용)
+        List<DeptDTO> allDepartments = authorityService.getAllDepartments();
+        model.addAttribute("allDepartments", allDepartments);
+        
         model.addAttribute("authorities", authorities);
-        return "A/authorityList"; // list.jsp
+        
+        //현재 선택된 필터/정렬 상태를 모델에 담아 JSP가 상태를 유지하도록 함
+        model.addAttribute("currentDeptId", deptId);
+        model.addAttribute("currentSortField", sortField);
+        model.addAttribute("currentSortOrder", sortOrder);
+        
+        return "A/authorityList"; 
     }
-
+    
     // 권한 등록/수정 폼 이동
     @GetMapping({"/create", "/edit/{authorityId}"})
     public String form(@PathVariable(required = false) Long authorityId, Model model) {
@@ -85,6 +101,22 @@ public class AuthorityController {
 
         model.addAttribute("allMenus", allMenus);
 
+        List<DeptDTO> authorityDepartments = authorityService.getDepartmentsByAuthorityId(authorityId);
+        model.addAttribute("authorityDepartments", authorityDepartments);
+
+        // 미할당 부서 목록 조회
+        Set<Integer> assignedDeptIds = authorityDepartments.stream()
+                .map(DeptDTO::getDeptId)
+                .collect(Collectors.toSet());
+        
+        // 전체 부서 목록을 가져오는 서비스 메서드 호출
+        List<DeptDTO> unassignedDepartments = authorityService.getAllDepartments().stream()
+                .filter(dept -> !assignedDeptIds.contains(dept.getDeptId()))
+                .collect(Collectors.toList());
+
+        model.addAttribute("unassignedDepartments", unassignedDepartments);
+        
+
         return "A/authorityDetail";
     }
 
@@ -96,12 +128,22 @@ public class AuthorityController {
                                     @RequestParam(value = "createYn", required = false) List<String> createYns,
                                     @RequestParam(value = "updateYn", required = false) List<String> updateYns,
                                     @RequestParam(value = "deleteYn", required = false) List<String> deleteYns,
-                                    @RequestParam(value = "approveYn", required = false) List<String> approveYns) {
+                                    @RequestParam(value = "approveYn", required = false) List<String> approveYns,
+                                    HttpSession session) {
 
+        Long id = (Long) session.getAttribute("user"); 
+        if (id == null) {
+        	return "redirect:/login";
+        }
+        
         if (menuIds != null && !menuIds.isEmpty()) {
             List<AuthorityMenuDTO> authorityMenus = new java.util.ArrayList<>();
             for (int i = 0; i < menuIds.size(); i++) {
                 AuthorityMenuDTO am = new AuthorityMenuDTO();
+                
+                am.setCreateId(id); 
+                am.setUpdatedId(id);
+                
                 am.setAuthorityId(authorityId);
                 am.setMenuId(menuIds.get(i));
                 am.setReadYn(readYns != null && readYns.size() > i ? readYns.get(i) : "N");
@@ -128,7 +170,6 @@ public class AuthorityController {
                                       HttpSession session, 
                                       RedirectAttributes rttr) {
 
-        // 1. DTO 생성 및 요청 파라미터 설정
         AuthorityMenuDTO am = new AuthorityMenuDTO();
         am.setAuthorityId(authorityId);
         am.setMenuId(menuId);
@@ -138,19 +179,12 @@ public class AuthorityController {
         am.setDeleteYn(deleteYn);
         am.setApproveYn(approveYn);
 
-        // 2. 💡 세션에서 수정자 ID(updatedId) 설정
-        // 수정필요...
-        AccountDTO authUser = (AccountDTO) session.getAttribute("authUser"); 
-        
-        Long updatedId;
-        if (authUser != null) {
-            updatedId = authUser.getAccountId(); 
-        } else {
-            //..
-            updatedId = 0L; 
+        Long id = (Long) session.getAttribute("user"); 
+        if (id == null) {
+        	return "redirect:/login";
         }
 
-        am.setUpdatedId(updatedId); // DTO에 수정자 ID 설정
+        am.setUpdatedId(id);
 
         // 3. Service 호출
         authorityService.updateAuthorityMenu(am);
@@ -163,6 +197,39 @@ public class AuthorityController {
     @PostMapping("/deleteMenu")
     public String deleteAuthorityMenu(@RequestParam Long authorityId, @RequestParam Long menuId) {
         authorityService.deleteAuthorityMenu(authorityId, menuId);
+        return "redirect:/authority/detail/" + authorityId;
+    }
+    
+    
+    //권한 부서 등록
+    @PostMapping("/addDepartments")
+    public String addAuthorityDepartments(@RequestParam Long authorityId,
+                                            @RequestParam(value = "deptIds", required = false) List<Long> deptIds,
+                                            HttpSession session) {
+
+        Long currentUserId = (Long) session.getAttribute("user");
+        if (currentUserId == null) {
+            return "redirect:/login"; 
+        }
+
+        if (deptIds != null && !deptIds.isEmpty()) {
+            authorityService.addOrReactivateAuthorityDepartments(authorityId, deptIds, currentUserId);
+        }
+
+        return "redirect:/authority/detail/" + authorityId;
+    }
+
+
+    // 권한-부서 삭제
+    @PostMapping("/removeDepartment")
+    public String removeAuthorityDepartment(@RequestParam Long authorityId, @RequestParam Long deptId, HttpSession session) {
+        
+        Long currentUserId = (Long) session.getAttribute("user");
+        if (currentUserId == null) {
+            return "redirect:/login"; 
+        }
+
+        authorityService.deactivateAuthorityDepartment(authorityId, deptId, currentUserId);
         return "redirect:/authority/detail/" + authorityId;
     }
 }
