@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -40,13 +42,16 @@
 				<div class="container-fluid mb-4">
 
 					<!-- Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">졸업색 특화 프로그램 신청</h1>
 					</div>
 
-					<form id="ApplyForm" method="post" action="${pageContext.request.contextPath}/approval24/loan/training/apply">
+					<form id="submitForm" method="post"
+						action="${pageContext.request.contextPath}/em3/${detail.complainId}">
 
-						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
+						<%@ include
+							file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
 
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex align-items-center">
@@ -64,17 +69,29 @@
 										<tbody>
 											<tr>
 												<th>참여대학</th>
-												<td colspan="3"><input type="text" class="form-control" name="university_name"></td>
+												<td colspan="3"><input type="text" class="form-control"
+													name="universityName"
+													value="<c:out value='${detail.universityName}'/>"></td>
 
 											</tr>
 											<tr>
 												<th rowspan="2">참여자구분</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="participant_type" id="participant_type" value="graduate"> <label class="form-check-label" for="participant_type">①졸업생 특화 프로그램을 운영하는 대학(원)의 졸업생, 졸업 유예자 및 예정자 </label>
+														<input class="form-check-input" type="radio"
+															name="participantType" id="participantType"
+															value="graduate"
+															<c:if test="${detail.participantType eq 'graduate'}">checked</c:if>>
+														<label class="form-check-label" for="participantType">①졸업생
+															특화 프로그램을 운영하는 대학(원)의 졸업생, 졸업 유예자 및 예정자 </label>
 													</div> <br>
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="participant_type" id="participant_type" value="region"> <label class="form-check-label" for="participant_type">② ①에 해당하지 않는 직업계고 졸업생, 미취업 지역청년</label>
+														<input class="form-check-input" type="radio"
+															name="participantType" id="participantType"
+															value="region"> <label class="form-check-label"
+															for="participantType"
+															<c:if test="${detail.participantType eq 'region'}">checked</c:if>>②
+															①에 해당하지 않는 직업계고 졸업생, 미취업 지역청년</label>
 													</div>
 												</td>
 											</tr>
@@ -100,30 +117,43 @@
 										<tbody>
 											<tr>
 												<th>학번</th>
-												<td><input type="text" class="form-control" name="student_no"></td>
+												<td><input type="text" class="form-control"
+													name="studentNo"
+													value="<c:out value='${detail.studentNo}'/>"></td>
 												<th>학년</th>
 												<td><select name="grade" class="form-control">
-														<option value="1">1학년</option>
-														<option value="2">2학년</option>
-														<option value="3">3학년</option>
-														<option value="4">4학년</option>
-														<option value="5">5학년</option>
+														<option value="1"
+															<c:if test="${detail.grade == 1}">selected</c:if>>1학년</option>
+														<option value="2"
+															<c:if test="${detail.grade == 2}">selected</c:if>>2학년</option>
+														<option value="3"
+															<c:if test="${detail.grade == 3}">selected</c:if>>3학년</option>
+														<option value="4"
+															<c:if test="${detail.grade == 4}">selected</c:if>>4학년</option>
+														<option value="5"
+															<c:if test="${detail.grade == 5}">selected</c:if>>5학년</option>
 												</select></td>
 											</tr>
 											<tr>
 												<th>전공</th>
-												<td><input type="text" class="form-control" name="major"></td>
+												<td><input type="text" class="form-control"
+													name="major" value="<c:out value='${detail.major}'/>"></td>
 												<th>상태</th>
-												<td><select name="student_status" class="form-control">
-														<option value="1">재학</option>
-														<option value="2">휴업</option>
-														<option value="3">졸업</option>
+												<td><select name="studentStatus" class="form-control">
+														<option value="재학"
+															<c:if test="${detail.studentStatus eq '재학'}">selected</c:if>>재학</option>
+														<option value="휴학"
+															<c:if test="${detail.studentStatus eq '휴학'}">selected</c:if>>휴업</option>
+														<option value="졸업"
+															<c:if test="${detail.studentStatus eq '졸업'}">selected</c:if>>졸업</option>
 												</select></td>
 
 											</tr>
 											<tr>
 												<th>졸업(예정)연월일</th>
-												<td colspan="3"><input type="date" class="form-contorl" name="graduate_date"></td>
+												<td colspan="3"><input type="date" class="form-contorl"
+													name="graduateDate"
+													value="<fmt:formatDate value='${detail.graduateDate}' pattern='yyyy-MM-dd'/>"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -137,43 +167,51 @@
 
 
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/approval24" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
+							<a href="${pageContext.request.contextPath}/complain"
+								class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i>
+								취소
 							</a>
 							<div>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitModal">
-									<i class="fas fa-paper-plane mr-1"></i> 신청
+								<button type="button" class="btn btn-primary"
+									data-toggle="modal" data-target="#submitModal">
+									<i class="fas fa-paper-plane mr-1"></i> 수정
 								</button>
 							</div>
 						</div>
+
+					</form>
+
 				</div>
-				</form>
-
+				<!-- /.container-fluid -->
 			</div>
-			<!-- /.container-fluid -->
-		</div>
-		<!-- /#content -->
+			<!-- /#content -->
 
-		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-	</div>
-	<!-- /#content-wrapper -->
+			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+			<script
+				src="${pageContext.request.contextPath}/resources/assets/js/complain/em3.js"></script>
+		</div>
+		<!-- /#content-wrapper -->
 	</div>
 	<!-- /#wrapper -->
 
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
 
 	<!-- Submit Modal -->
-	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">
+	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog"
+		aria-labelledby="submitModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="submitModalLabel">신청 제출</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">입력하신 내용으로 신청을 제출할까요?</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-primary" id="btnSubmitConfirm">제출</button>
 				</div>
 			</div>

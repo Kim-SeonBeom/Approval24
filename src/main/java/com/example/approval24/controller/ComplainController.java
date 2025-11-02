@@ -14,6 +14,7 @@ import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.ComplainuserDTO;
+import com.example.approval24.domain.EM3DTO;
 import com.example.approval24.domain.MT1DTO;
 import com.example.approval24.domain.MT2DTO;
 import com.example.approval24.domain.UE1DTO;
@@ -34,8 +35,8 @@ public class ComplainController {
 	@Autowired
 	private ComplainuserService complainuserService;
 
-	//임시로 넣은 계정ID
-	public long accountId = 41;
+	//임시로 넣은 계정ID 13,41,61
+	public long accountId = 61;
 
 	@GetMapping("/myWork")
 	public String myWorkList(Model model
@@ -237,11 +238,33 @@ public class ComplainController {
 	public String graduateProgram(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-
+		System.out.println(complainuserDTO.toString());
+		
+		EM3DTO em3DTO = complainService.getEM3Info(complainId);
+		System.out.println("Get : " + em3DTO.toString());
 		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("detail", em3DTO);
 
 		return "complain/regEditForm/em3";
  
 	}
+	
+	@PostMapping("/em3/{complainId}")
+	public String submitGraduateProgram(@PathVariable long complainId, EM3DTO em3DTO, ComplainuserDTO complainuserDTO,
+			RedirectAttributes redirectAttributes) {
+		
+		System.out.println("post 진입");
+		System.out.println(complainuserDTO);
+		complainuserService.saveComplainuser(complainuserDTO);
+		
+		System.out.println(em3DTO);
+		complainService.saveem3(em3DTO);
+
+		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
+		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
+		return "redirect:/em3/" + complainId;
+	}
+	
+	
 
 }
