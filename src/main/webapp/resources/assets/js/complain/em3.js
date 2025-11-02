@@ -16,13 +16,14 @@ document
 					const $confirmBtn = $('#btnSubmitConfirm'); // 모달 "제출" 버튼
 					const $userAddressBtn = $('#btnAddressSearch');
 
+					//토글에 의한 제어를 위한 id값 찾기
 					const $participantType = $form
 							.find('input[name="participantType"]');
 					const $studentNo = $form.find('input[name="studentNo"]');
-					const $grade = $form.find('input[name="grade"]');
+					const $grade = $form.find('#grade');
 					const $major = $form.find('input[name="major"]');
 					const $studentStatus = $form
-							.find('input[name="studentStatus"]');
+							.find('#studentStatus');
 					const $graduateDate = $form
 							.find('input[name="graduateDate"]');
 
@@ -42,17 +43,16 @@ document
 							'#complainuserAddress' ].join(','));
 
 					function updateParticipantTypeState() {
-						if (!isEditMode) {
-							// 보기모드: 항상 선택 불가 + 회색
-							$$participantType.prop('disabled', true).closest(
-									'.form-check').addClass('readonly-box')
-									.css('pointer-events', 'none'); // 라벨 클릭도
-							// 막기(안전)
-							return;
-						}
+				
 						const selected = $participantType.filter(':checked')
 								.val();
-						if (selected === 'graduate') {
+						if (selected === 'region') {
+							 $('#studentNo').val('');
+							    $('#grade').val(''); // 기본 option value=""로 돌아감
+							    $('#major').val('');
+							    $('#studentStatus').val('');
+							    $('#graduateDate').val('');
+							    
 							$studentNo.prop('checked', false).prop('disabled',
 									true).closest('.form-check').addClass(
 									'readonly-box').css('pointer-events',
@@ -125,7 +125,7 @@ document
 					// 초기: 보기 모드(모두 잠금)
 					setEditMode(false);
 
-					$benefitRadios.on('change', updateParticipantTypeState);
+					$participantType.on('change', updateParticipantTypeState);
 
 					// 수정/저장 토글 클릭
 					$updateBtn.on('click',

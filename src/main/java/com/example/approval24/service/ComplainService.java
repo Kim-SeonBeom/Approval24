@@ -243,6 +243,7 @@ public class ComplainService {
 	
 	//em3 메서드
 	public EM3DTO getEM3Info(long complainId) {
+		System.out.println("서비스진입");
 
 		int count = em3DAO.existByComplainId(complainId);
 		if (count > 0) {
