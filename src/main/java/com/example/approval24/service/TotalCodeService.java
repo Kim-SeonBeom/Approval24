@@ -21,5 +21,7 @@ public class TotalCodeService {
 		return totalCodeDAO.getAllTotalCode();
 	}
 	
-
+	public List<TotalCodeDTO> getTotalCodeByGroupId(String groupId){
+	return totalCodeDAO.findCodesByGroupId(groupId);
+	}
 }

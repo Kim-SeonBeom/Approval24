@@ -46,20 +46,21 @@
 
     <!-- 메뉴 ID로 조회 -->
     <select id="findById" resultType="com.example.approval24.domain.MenuDTO" parameterType="long">
-        SELECT MENU_ID,
-               MENU_NAME,
-               MENU_URL,
-               PARENT_MENU_ID,
-               SEQ,
-               POPUP_YN,
-               CREATE_DT,
-               UPDATE_DT,
-               CREATE_ID,
-               UPDATE_ID,
-               DEL_YN
-        FROM T3000_MENU
-        WHERE MENU_ID = #{menuId}
-          AND DEL_YN = 'N'
+        SELECT m.MENU_ID,
+               m.MENU_NAME,
+               m.MENU_URL,
+               m.PARENT_MENU_ID,
+               m.SEQ,
+               m.POPUP_YN,
+               m.CREATE_DT,
+               m.UPDATE_DT,
+               m.CREATE_ID,
+               m.UPDATE_ID,
+               m.DEL_YN,
+               p.MENU_NAME AS PARENT_MENU_NAME
+        FROM T3000_MENU m
+    	LEFT JOIN T3000_MENU p ON m.PARENT_MENU_ID = p.MENU_ID
+    	WHERE m.MENU_ID = #{menuId}
     </select>
 
     <!-- 메뉴 등록 -->

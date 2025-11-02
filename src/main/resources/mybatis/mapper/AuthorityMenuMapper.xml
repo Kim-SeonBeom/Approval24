@@ -102,9 +102,9 @@
             DELETE_YN = #{deleteYn},
             APPROVE_YN = #{approveYn},
             UPDATE_DT = SYSDATE,
+            DEL_YN = 'N',
             UPDATED_ID = #{updatedId}  WHERE AUTHORITY_ID = #{authorityId}
         AND MENU_ID = #{menuId}
-        AND DEL_YN = 'N'
     </update>
 
     <update id="deleteAuthorityMenu">
@@ -115,4 +115,21 @@
       	AND MENU_ID = #{menuId}
 	</update>
 
+<select id="findDeletedAuthorityMenu" parameterType="com.example.approval24.domain.AuthorityMenuDTO" 
+            resultType="com.example.approval24.domain.AuthorityMenuDTO">
+        SELECT
+            AUTHORITY_ID,
+            MENU_ID,
+            READ_YN,
+            CREATE_YN,
+            UPDATE_YN,
+            DELETE_YN,
+            APPROVE_YN,
+            DEL_YN
+        FROM T3000_AUTHORITY_MENU 
+        WHERE
+            AUTHORITY_ID = #{authorityId}
+            AND MENU_ID = #{menuId}
+            AND DEL_YN = 'Y'
+    </select>
 </mapper>

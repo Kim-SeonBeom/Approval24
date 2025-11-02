@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.UserDAO">
+
+    <select id="findUsersByFilter" parameterType="UserDTO" resultType="UserDTO">
+        SELECT
+            U.USER_NO,
+            U.USER_RESIDENT_NO,
+            U.USER_NAME,
+            U.USER_EMAIL,
+            U.USER_TEL,
+            U.USER_PHONE,
+            U.USER_POSITION_CD,
+            C.CODE_NAME AS USER_POSITION_NAME,
+            U.DEL_YN,
+            U.CREATE_DT,
+            U.UPDATE_DT,
+            U.CREATE_ID,
+            U.UPDATE_ID
+        FROM T1000_USER U
+        LEFT JOIN TOTAL_CODE C
+            ON U.USER_POSITION_CD = C.CODE_ID
+            AND C.GROUP_ID = 'A0'
+        WHERE 1=1
+        <if test="userName != null and userName != ''">
+            AND U.USER_NAME LIKE '%' || #{userName} || '%'
+        </if>
+        <if test="userEmail != null and userEmail != ''">
+            AND U.USER_EMAIL LIKE '%' || #{userEmail} || '%'
+        </if>
+        <if test="delYn != null and delYn != ''">
+            AND U.DEL_YN = #{delYn}
+        </if>
+        <if test="userPositionCd != null and userPositionCd != ''">
+            AND U.USER_POSITION_CD = #{userPositionCd}
+        </if>
+        ORDER BY U.CREATE_DT DESC
+    </select>
+
+    <select id="findByResidentNo" parameterType="String" resultType="UserDTO">
+        SELECT
+            U.USER_NO,
+            U.USER_RESIDENT_NO,
+            U.USER_NAME,
+            U.USER_EMAIL,
+            U.USER_TEL,
+            U.USER_PHONE,
+            U.USER_POSITION_CD,
+            C.CODE_NAME AS USER_POSITION_NAME,
+            U.DEL_YN,
+            U.CREATE_DT,
+            U.UPDATE_DT,
+            U.CREATE_ID,
+            U.UPDATE_ID
+        FROM T1000_USER U
+        LEFT JOIN TOTAL_CODE C
+            ON U.USER_POSITION_CD = C.CODE_ID
+            AND C.GROUP_ID = 'A0'
+        WHERE U.USER_RESIDENT_NO = #{userResidentNo}
+    </select>
+    
+    <insert id="insertUser" parameterType="UserDTO" useGeneratedKeys="true" keyProperty="userNo">
+        INSERT INTO T1000_USER (
+            USER_RESIDENT_NO, USER_NAME, USER_EMAIL, USER_TEL, USER_PHONE, USER_POSITION_CD,
+            DEL_YN, CREATE_DT, CREATE_ID
+        ) VALUES (
+            #{userResidentNo}, #{userName}, #{userEmail}, #{userTel}, #{userPhone}, #{userPositionCd},
+            'N', SYSDATE, #{createId}
+        )
+    </insert>
+
+    <update id="updateUser" parameterType="UserDTO">
+        UPDATE T1000_USER
+        SET
+            USER_NAME = #{userName},
+            USER_EMAIL = #{userEmail},
+            USER_TEL = #{userTel},
+            USER_PHONE = #{userPhone},
+            USER_POSITION_CD = #{userPositionCd},
+            DEL_YN = #{delYn, jdbcType=CHAR},    UPDATE_DT = SYSDATE,
+            UPDATE_ID = #{updateId}
+        WHERE USER_NO = #{userNo}
+    </update>
+
+    <update id="deleteUser">
+        UPDATE T1000_USER
+        SET
+            DEL_YN = 'Y',
+            UPDATE_ID= #{updateId},
+            UPDATE_DT = SYSDATE
+            WHERE USER_NO = #{userNo}
+          AND DEL_YN = 'N'
+    </update>
+
+</mapper>

@@ -3,13 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
+    <%@ include file="/WEB-INF/views/common/header.jsp"%>
 </head>
 <body id="page-top">
 
 <div id="wrapper">
     <%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
-
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <%@ include file="/WEB-INF/views/common/navbar.jsp"%>
@@ -25,24 +24,18 @@
                     <div class="card-body">
                         <table class="table table-bordered">
                             <tr>
-                                <th>메뉴명</th>
-                                <td>${menu.menuName}</td>
-                            </tr>
-                            <tr>
-                                <th>URL</th>
-                                <td>${menu.menuUrl}</td>
-                            </tr>
-                            <tr>
                                 <th>부모 메뉴</th>
-                                <td>${menu.parentMenuId}</td>
-                            </tr>
-                            <tr>
-                                <th>순서(SEQ)</th>
-                                <td>${menu.seq}</td>
-                            </tr>
-                            <tr>
-                                <th>팝업 여부</th>
-                                <td>${menu.popupYn}</td>
+                                <td>
+                                    <%-- 💡 수정: 부모 메뉴 ID 대신 Name 표시 --%>
+                                    <c:choose>
+                                        <c:when test="${menu.parentMenuName != null}">
+                                            ${menu.parentMenuName} (${menu.parentMenuId})
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="text-secondary">최상위 메뉴</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                             </tr>
                             <tr>
                                 <th>생성일</th>
@@ -55,17 +48,17 @@
                         </table>
 
                         <br>
-                        <a href="${pageContext.request.contextPath}/menu/edit?menuId=${menu.menuId}" class="btn btn-warning btn-sm">수정</a>
+                        <%-- 🚨 경로 수정: 405 에러 방지를 위해 경로 변수 방식 사용 --%>
+                        <a href="${pageContext.request.contextPath}/menu/edit/${menu.menuId}" class="btn btn-warning btn-sm">수정</a>
+                        
                         <a href="${pageContext.request.contextPath}/menu/list" class="btn btn-secondary btn-sm">목록</a>
                     </div>
                 </div>
 
             </div>
         </div>
-
         <%@ include file="/WEB-INF/views/common/footer.jsp"%>
     </div>
 </div>
-
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.approval24.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +15,7 @@ public interface AuthorityDAO {
     List<AuthorityDTO> findByAccountId(@Param("accountId") Long accountId);
 
     // 전체 권한 조회 (관리용)
-    List<AuthorityDTO> findAll();
+    List<AuthorityDTO> findAll(Map<String, Object> params);
     
     // 2️⃣ 권한 ID로 조회
     AuthorityDTO findById(@Param("authorityId") Long authorityId);
