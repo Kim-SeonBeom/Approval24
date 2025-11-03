@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.EM2DAO">
+
+	<!-- 민원 유무 조회 -->
+	<select id="existByComplainId" resultType="int"
+		parameterType="long">
+		select count(*)
+		from t4000_em2
+		where complain_id
+		=
+		#{complainId}
+	</select>
+
+	<!-- 민원상세 조회 -->
+	<select id="findByComplainId" resultType="EM2DTO"
+		parameterType="long">
+		select *
+		from t4000_em2
+		where complain_id
+		= #{complainId}
+	</select>
+
+	<!-- 민원 등록 -->
+	<insert id="insertInfo" parameterType="EM2DTO">
+		insert into
+		t4000_em2(complain_id)
+		values(#{complainId})
+	</insert>
+
+	<!-- 민원 수정 -->
+	<update id="updateInfo" parameterType="EM2DTO">
+		UPDATE t4000_em2
+		SET
+		BANK_NM = #{bankNm},
+		ACCOUNT_NO = #{accountNo},
+		COLLEGER_YN = #{collegerYn},
+		UPDATE_DT = SYSDATE
+		WHERE COMPLAIN_ID =
+		#{complainId}
+	</update>
+
+
+</mapper>
+ 

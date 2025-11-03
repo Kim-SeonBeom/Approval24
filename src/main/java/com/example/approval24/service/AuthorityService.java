@@ -1,16 +1,22 @@
 package com.example.approval24.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.approval24.dao.AuthorityDAO;
+import com.example.approval24.dao.AuthorityDeptDAO;
 import com.example.approval24.dao.AuthorityMenuDAO;
+import com.example.approval24.dao.DeptDAO;
 import com.example.approval24.dao.MenuDAO;
 import com.example.approval24.domain.AuthorityDTO;
+import com.example.approval24.domain.AuthorityDeptDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
+import com.example.approval24.domain.DeptDTO;
 import com.example.approval24.domain.MenuDTO;
 
 @Service
@@ -24,10 +30,31 @@ public class AuthorityService {
     
     @Autowired 
     private MenuDAO menuDAO;
+    
+    @Autowired
+    private AuthorityDeptDAO authorityDeptDAO;
+    
+    @Autowired
+    private DeptDAO	deptDAO;
 
-    // 전체 권한 목록 조회
-    public List<AuthorityDTO> getAllAuthorities() {
-        return authorityDAO.findAll();
+    public List<AuthorityDTO> getAllAuthorities(Long deptId, String sortField, String sortOrder) {
+        Map<String, Object> params = new HashMap<>();
+            
+        if (deptId != null) {
+            params.put("deptId", deptId);
+        }
+        
+        if (sortField != null && !sortField.isEmpty()) {
+            params.put("sortField", sortField);
+            
+            if (sortOrder == null || sortOrder.isEmpty()) {
+                params.put("sortOrder", "DESC");
+            } else {
+                params.put("sortOrder", sortOrder.toUpperCase());
+            }
+        }
+        
+        return authorityDAO.findAll(params);
     }
 
     // 권한 ID로 상세 조회
@@ -67,7 +94,13 @@ public class AuthorityService {
     @Transactional
     public void createAuthorityMenus(List<AuthorityMenuDTO> authorityMenus) {
         for (AuthorityMenuDTO am : authorityMenus) {
-            authorityMenuDAO.insertAuthorityMenu(am);
+        	AuthorityMenuDTO deletedMenu = authorityMenuDAO.findDeletedAuthorityMenu(am);
+        	if (deletedMenu != null) {
+                authorityMenuDAO.updateAuthorityMenu(am);
+            } else {
+       
+                authorityMenuDAO.insertAuthorityMenu(am);
+            }
         }
     }
     
@@ -87,4 +120,50 @@ public class AuthorityService {
     public List<MenuDTO> getAllMenus() {
         return menuDAO.findAll();
     }
+    
+    // 권한-부서 조회
+    public List<DeptDTO> getDepartmentsByAuthorityId(Long authorityId) {
+        return authorityDeptDAO.getDeptsByAuthorityId(authorityId);
+    }
+    
+    @Transactional
+    public void addOrReactivateAuthorityDepartments(Long authorityId, List<Long> deptIds, Long currentUserId) {
+        if (deptIds != null) {
+            for (Long deptId : deptIds) {
+                
+                AuthorityDeptDTO existingMapping = authorityDeptDAO.selectAuthorityDept(authorityId, deptId);
+
+                if (existingMapping == null) {
+                    AuthorityDeptDTO newMapping = new AuthorityDeptDTO();
+                    newMapping.setAuthorityId(authorityId);
+                    newMapping.setDeptId(deptId);
+                    newMapping.setCreateId(currentUserId);
+                    authorityDeptDAO.insertAuthorityDept(newMapping);
+
+                } else if ("Y".equals(existingMapping.getDelYn())) {
+                    existingMapping.setUpdateId(currentUserId);
+                    existingMapping.setDelYn("N");
+                    
+                    authorityDeptDAO.updateAuthorityDept(existingMapping); 
+                }
+            }
+        }
+    }
+    
+    @Transactional
+    public void deactivateAuthorityDepartment(Long authorityId, Long deptId, Long currentUserId) {
+        AuthorityDeptDTO existingMapping = authorityDeptDAO.selectAuthorityDept(authorityId, deptId);
+        
+        if (existingMapping != null && "N".equals(existingMapping.getDelYn())) {
+            existingMapping.setUpdateId(currentUserId);
+            existingMapping.setDelYn("Y");
+            authorityDeptDAO.updateAuthorityDept(existingMapping); 
+        }
+    }
+    
+    @Transactional
+    public List<DeptDTO> getAllDepartments() {
+        return deptDAO.getAllDept();
+    }
+    
 }

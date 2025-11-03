@@ -30,4 +30,7 @@ public interface AuthorityMenuDAO {
 
 	// 메뉴-권한 업데이트
 	void updateAuthorityMenu(AuthorityMenuDTO authorityMenu);
+	
+	// 메뉴-권한 존재 여부 체크
+	AuthorityMenuDTO findDeletedAuthorityMenu(AuthorityMenuDTO authorityMenu);
 }

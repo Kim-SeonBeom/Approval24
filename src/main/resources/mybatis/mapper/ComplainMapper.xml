@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.ComplainDAO">
+
+	<!-- 내 민원조회 -->
+	<select id="getMyWorks" resultType="ComplainDTO"
+		parameterType="long">
+		select
+		c.complain_id, cc.category_name,
+		u.complainuser_name,
+		c.complain_status_cd, c.rcpt_dt, c.proc_dt,
+		c.due_dt
+		from t2000_complain c
+		join t2000_complain_user u
+		on
+		c.complainuser_no = u.complainuser_no
+		join t2000_complain_category cc
+		on c.complain_category_id = cc.complain_category_id
+		where c.account_id
+		= #{accountId}
+	</select>
+
+	<!-- 민원 접수 -->
+	<insert id="registComplain" parameterType="ComplainDTO">
+		INSERT INTO
+		T2000_COMPLAIN (
+		COMPLAIN_CATEGORY_ID,
+		COMPLAINUSER_NO,
+		ACCOUNT_ID,
+		COMPLAIN_STATUS_CD,
+		DEADLINE_DT,
+		RECEIVER_ACCOUNT_ID
+		)
+		VALUES (
+		#{complainCategoryId},
+		#{complainuserNo},
+		#{accountId},
+		#{complainStatusCd},
+		#{deadlineDt},
+		#{receiverAccountId}
+		)
+	</insert>
+
+	<select id="findByDeptOfAccountId" parameterType="long"
+		resultType="ComplainDTO">
+		SELECT
+		c.*,u.user_name,g.category_name,r.complainuser_name,g.category_url
+		FROM t2000_complain c
+		JOIN t1000_department_work d
+		ON
+		d.complain_category_id = c.complain_category_id
+		JOIN t1000_account a
+		ON 
+		a.dept_id = d.department_id
+		join t1000_user u
+		on a.user_no = u.user_no
+		join t2000_complain_category g
+		on g.complain_category_id = c.complain_category_id
+		join t2000_complain_user r
+		on c.complainuser_no = r.complainuser_no
+		WHERE a.account_id =
+		#{accountId}
+	</select>
+
+	<select id="findById" parameterType="long"
+		resultType="ComplainDTO">
+		select * from t2000_complain where complain_id = #{complainId}
+
+	</select>
+
+</mapper>

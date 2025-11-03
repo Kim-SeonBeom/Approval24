@@ -1,3 +1,4 @@
+
 package com.example.approval24.dao;
 
 import java.util.List;
@@ -17,4 +18,9 @@ public interface AccountDAO {
     List<AccountDTO> findAccountsByFilter(Map<String, Object> filterMap);
 
 	Long findInstIdByAccountId(Long accountId);
+
+	public AccountDTO findById(long accountId);
+
 }
+
+

@@ -18,4 +18,6 @@ public class MenuDTO {
     private Long createId;         // CREATE_ID
     private Long updateId;         // UPDATE_ID
     private String delYn;          // DEL_YN
+    
+    private String parentMenuName; //부모 이름
 }

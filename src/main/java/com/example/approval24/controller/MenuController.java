@@ -30,7 +30,7 @@ public class MenuController {
     public String menuDetail(@PathVariable Long menuId, Model model) {
         MenuDTO menu = menuService.getMenuById(menuId);
         model.addAttribute("menu", menu);
-        return "A/menuDetail"; // detail.jsp
+        return "A/menuDetail"; 
     }
 
     // 3️⃣ 메뉴 등록 폼 이동
@@ -56,7 +56,7 @@ public class MenuController {
         List<MenuDTO> parentMenus = menuService.getAllMenus();
         model.addAttribute("menu", menu);
         model.addAttribute("parentMenus", parentMenus);
-        return "A/menuEdit"; 
+        return "A/menuForm"; 
     }
 
     // 6️⃣ 메뉴 수정 처리

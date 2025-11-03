@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,10 +44,18 @@
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">기간제-파견근로자의 출산전후휴가 급여지급 신청</h1>
 					</div>
+					<c:if test="${not empty msg}">
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							<i class="fas fa-check-circle mr-1"></i> ${msg}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</c:if>
 
-					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/approval24/loan/training/apply">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/mt1/${detail.complainId}">
 
-						<%@ include file="/WEB-INF/views/common/complainUserInfo.jsp"%>
+						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
 
 
 						<div class="card shadow mb-4">
@@ -64,34 +73,35 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th>출산일(예정일) 또는 유산,사산일</th>
-												<td><input type="date" name="date"></td>
+												<th>출산일(예정일) 또는 유산·사산일</th>
+												<td><input type="date" class="form-control" name="birthDt" id="birthDt" value="<fmt:formatDate value='${detail.birthDt}' pattern='yyyy-MM-dd'/>" /></td>
 
 												<th>영아의 주민등록번호</th>
-												<td colspan="3"><input type="text" id="INFANT_RRN_FRONT" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="생년월일 6자리" style="width: 40%; display: inline-block;"> <span class="mx-1">-</span> <input type="text" id="INFANT_RRN_BACK" maxlength="7" inputmode="numeric" pattern="[0-9]*" placeholder="뒤 7자리" style="width: 50%; display: inline-block;"></td>
-
+												<td><input type="text" class="form-control" name="infantRrnFront" id="infantRrnFront" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="생년월일 6자리" style="width: 40%; display: inline-block;"value="<c:out value='${detail.infantRrnFront}'/>"> <span class="mx-1">-</span> <input type="password" class="form-control" name="infantRrnBack" id="infantRrnBack" maxlength="7" inputmode="numeric" pattern="[0-9]*" placeholder="뒤 7자리" style="width: 50%; display: inline-block;" value="<c:out value='${detail.infantRrnBack}'/>"></td>
 											</tr>
 
 											<tr>
 												<th>다태아 여부</th>
 												<td>
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="MULTIPLE_BIRTH_YN" id="MULTIPLE_BIRTH_YN" value="Y" /> <label class="form-check-label" for="MULTIPLE_BIRTH_YN">예</label>
+														<input class="form-check-input" type="radio" name="multipleBirthYn" id="multipleBirthYnY" value="Y" ${detail.multipleBirthYn == 'Y' ? 'checked' : ''}> <label class="form-check-label" for="multipleBirthYnY">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="MULTIPLE_BIRTH_YN" id="MULTIPLE_BIRTH_YN" value="N" /> <label class="form-check-label" for="MULTIPLE_BIRTH_YN">아니오</label>
+														<input class="form-check-input" type="radio" name="multipleBirthYn" id="multipleBirthYnN" value="N"  ${detail.multipleBirthYn != 'Y' ? 'checked' : ''}> <label class="form-check-label" for="multipleBirthYnN">아니오</label>
 													</div>
 												</td>
+
 												<th>미숙아 여부</th>
 												<td>
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="PREMATURE_BABY_YN" value="Y" id="PREMATURE_BABY_YN"><label class="form-check-label" for="PREMATURE_BABY_YN">예</label>
+														<input class="form-check-input" type="radio" name="prematureBabyYn" id="prematureBabyYnY" value="Y" ${detail.prematureBabyYn == 'Y' ? 'checked' : ''}> <label class="form-check-label" for="prematureBabyYnY">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="PREMATURE_BABY_YN" value="N" id="PREMATURE_BABY_YN"> <label class="form-check-label" for="PREMATURE_BABY_YN">아니오</label>
+														<input class="form-check-input" type="radio" name="prematureBabyYn" id="prematureBabyYnN" value="N" ${detail.prematureBabyYn != 'Y' ? 'checked' : ''}> <label class="form-check-label" for="prematureBabyYnN">아니오</label>
 													</div>
 												</td>
 											</tr>
+
 										</tbody>
 									</table>
 								</div>
@@ -115,16 +125,14 @@
 										<tbody>
 											<tr>
 												<th>근로 계약 시작일</th>
-												<td><input type="date" class=form-contorl " name="CONTRACT_START_DT" id="CONTRACT_START_DT" /></td>
+												<td><input type="date" class="form-control" name="contractStartDt" id="contractStartDt" value="<fmt:formatDate value='${detail.contractStartDt}' pattern='yyyy-MM-dd'/>"/></td>
 												<th>근로 계약 만료일</th>
-												<td><input type="date" class=form-contorl " name="CONTRACT_END_DT" id="CONTRACT_END_DT" /></td>
-
+												<td><input type="date" class="form-control" name="contractEndDt" id="contractEndDt" value="<fmt:formatDate value='${detail.contractEndDt}' pattern='yyyy-MM-dd'/>"/></td>
 											</tr>
 											<tr>
 												<th>출산 전후 휴가 기간</th>
-												<td colspan="3"><input type="number" class="form-control" name="MATERNITY_LEAVE_PERIOD" id="MATERNITY_LEAVE_PERIOD"></td>
+												<td colspan="3"><input type="text" class="form-control" name="maternityLeavePeriod" id="maternityLeavePeriod" value="<c:out value='${detail.maternityLeavePeriod}'/>" placeholder="예: 90일, 2025-01-01 ~ 2025-03-31 등" /></td>
 											</tr>
-
 										</tbody>
 									</table>
 								</div>
@@ -148,19 +156,19 @@
 										<tbody>
 											<tr>
 												<th>이번 회차 신청 시작일</th>
-												<td><input type="date" class=form-contorl " name="CURRENT_APPL_START_DT" id="CURRENT_APPL_START_DT" /></td>
+												<td><input type="date" class="form-control" name="currentApplStartDt" id="currentApplStartDt"  value="<fmt:formatDate value='${detail.currentApplStartDt}' pattern='yyyy-MM-dd'/>"/></td>
 												<th>이번 회차 신청 종료일</th>
-												<td><input type="date" class=form-contorl " name="CURRENT_APPL_END_DT" id="CURRENT_APPL_END_DT" /></td>
+												<td><input type="date" class="form-control" name="currentApplEndDt" id="currentApplEndDt"  value="<fmt:formatDate value='${detail.currentApplEndDt}' pattern='yyyy-MM-dd'/>"/></td>
 											</tr>
 											<tr>
 												<th>예금주</th>
-												<td><input type="text" class="form-control" name="ACCOUNT_HOLDER_NM" ></td>
+												<td><input type="text" class="form-control" name="accountHolderNm" value="<c:out value='${detail.accountHolderNm}'/>" /></td>
 												<th>은행명</th>
-												<td><input type="text" class="form-control" name="BANK_NM"></td>
+												<td><input type="text" class="form-control" name="bankNm"  value="<c:out value='${detail.bankNm}'/>"/></td>
 											</tr>
 											<tr>
 												<th>계좌번호</th>
-												<td colspan="3"><input type="text" class="form-control" name="PAYMENT_ACCOUNT_NO" ></td>
+												<td colspan="3"><input type="text" class="form-control" name="paymentAccountNo"  value="<c:out value='${detail.paymentAccountNo}'/>"/></td>
 											</tr>
 										</tbody>
 									</table>
@@ -186,35 +194,37 @@
 												<th>소득여부</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="INCOME_YN" id="INCOME_YN" value="Y" > <label class="form-check-label" for="INCOME_YN">예</label>
+														<input class="form-check-input" type="radio" name="incomeYn" id="incomeYnY" value="Y" ${detail.incomeYn == 'Y' ? 'checked' : ''}> <label class="form-check-label" for="incomeYnY">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="INCOME_YN" id="INCOME_YN" value="N" > <label class="form-check-label" for="INCOME_YN">아니오</label>
+														<input class="form-check-input" type="radio" name="incomeYn" id="incomeYnN" value="N" ${detail.incomeYn != 'Y' ? 'checked' : ''}> <label class="form-check-label" for="incomeYnN">아니오</label>
 													</div>
 												</td>
 											</tr>
+
 											<tr>
 												<th>소득 종류</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="INCOME_TYPE" id="INCOME_TYPE" value="사업소득" > <label class="form-check-label" for="INCOME_TYPE">사업소득</label>
+														<input class="form-check-input" type="radio" name="incomeType" id="incomeTypeBiz" value="사업소득"  ${detail.incomeType == '사업소득' ? 'checked' : ''}> <label class="form-check-label" for="incomeTypeBiz">사업소득</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="INCOME_TYPE" id="INCOME_TYPE" value="근로소득" > <label class="form-check-label" for="INCOME_TYPE">근로소득</label>
+														<input class="form-check-input" type="radio" name="incomeType" id="incomeTypeWork" value="근로소득" ${detail.incomeType == '근로소득' ? 'checked' : ''}> <label class="form-check-label" for="incomeTypeWork">근로소득</label>
 													</div>
 												</td>
 											</tr>
+
 											<tr>
 												<th>소득 활동 시작일</th>
-												<td><input type="date" class="form-control" name="INCOME_START_TIME"></td>
+												<td><input type="date" class="form-control" name="incomeStartTime" id="incomeStartTime" value="<fmt:formatDate value='${detail.incomeStartTime}' pattern='yyyy-MM-dd'/>"></td>
 												<th>소득 활동 중단일</th>
-												<td><input type="date" class="form-control" name="INCOME_END_TIME" ></td>
-											</tr>
-											<tr>
-												<th>근로 기간</th>
-												<td colspan="3"><input type="number" name="WORK_HOURS"></td>
+												<td><input type="date" class="form-control" name="incomeEndTime" id="incomeEndTime" value="<fmt:formatDate value='${detail.incomeEndTime}' pattern='yyyy-MM-dd'/>"></td>
 											</tr>
 
+											<tr>
+												<th>근로 기간(시간/일수 등)</th>
+												<td colspan="3"><input type="text" class="form-control" name="workHours" id="workHours"  value="<c:out value='${detail.workHours}'/>" placeholder="예: 주 15시간, 총 160시간, 30일 등"></td>
+											</tr>
 										</tbody>
 									</table>
 								</div>
@@ -223,25 +233,28 @@
 
 
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/approval24" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
+							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
 							</a>
 							<div>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitModal">
-									<i class="fas fa-paper-plane mr-1"></i> 신청
+								<button type="button" class="btn btn-primary" id="btnUpdate">
+									<i class="fas fa-edit mr-1"></i>수정
 								</button>
 							</div>
 						</div>
+
+						<input type="hidden" name="complainId" value="<c:out value='${detail.complainId}'/>"> <input type="hidden" name="complainuserNo" value="<c:out value='${user.complainuserNo}'/>">
+					</form>
+
 				</div>
-				</form>
-
+				<!-- /.container-fluid -->
 			</div>
-			<!-- /.container-fluid -->
-		</div>
-		<!-- /#content -->
 
-		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-	</div>
-	<!-- /#content-wrapper -->
+
+			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+			<!--페이지 전용 js -->
+			<script src="${pageContext.request.contextPath}/resources/assets/js/complain/mt1.js"></script>
+		</div>
+		<!-- /#content-wrapper -->
 	</div>
 	<!-- /#wrapper -->
 
@@ -266,31 +279,6 @@
 		</div>
 	</div>
 
-	<!-- 페이지 스크립트 -->
-	<script>
-		document
-				.getElementById('btnCalcUnemp')
-				.addEventListener(
-						'click',
-						function() {
-							const emp = document
-									.querySelector('input[name="EMP_DT"]').value;
-							const unemp = document
-									.querySelector('input[name="UNEMP_DT"]').value;
-							const days = daysBetweenStr(emp, unemp);
-							if (days !== '')
-								document.getElementById('UNEMP_PERIOD').value = days;
-						});
 
-		// 훈련기간 자동 계산 (TRAIN_START_DT ~ TRAIN_END_DT)
-		document.getElementById('btnCalcTrain').addEventListener('click',
-				function() {
-					const st = document.getElementById('TRAIN_START_DT').value;
-					const en = document.getElementById('TRAIN_END_DT').value;
-					const days = daysBetweenStr(st, en);
-					if (days !== '')
-						document.getElementById('TRAIN_PERIOD').value = days;
-				});
-	</script>
 </body>
 </html>

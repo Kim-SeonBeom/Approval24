@@ -13,13 +13,15 @@ public class InstDTO {
 	
 	private String instName;
 	
+
 	private String createDt;
 	
 	private String updateDt;
+
 	
 	private String instAddress;
 	
-	private String instDetailAddress;
+	private String instDetailAddress; 
 	
 	private String instPhone;
 	
