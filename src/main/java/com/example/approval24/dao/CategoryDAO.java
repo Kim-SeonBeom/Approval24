@@ -13,4 +13,8 @@ public interface CategoryDAO {
 	
 	public int findDueDtById(long complainCategoryId);
 
+	public CategoryDTO findByCategoryUrl(String categoryUrl);
+		
+	
+
 }

@@ -20,4 +20,9 @@ public class CategoryService {
 
 	}
 
+	public String getCategoryName(String categoryUrl) {
+		CategoryDTO dto = categoryDAO.findByCategoryUrl(categoryUrl);
+		return dto.getCategoryName();
+	}
+
 }
