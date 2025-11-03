@@ -30,7 +30,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">내 민원 목록</h1>
+					<h1 class="h3 mb-2 text-gray-800">접수 민원 목록</h1>
 					<br>
 
 					<!-- DataTales Example -->
@@ -46,19 +46,22 @@
 											<th>접수번호</th>
 											<th>민원서식</th>
 											<th>신청자</th>
+											<th>담당자</th>
 											<th>상태</th>
 											<th>신청일</th>
 											<th>마감일</th>
 										</tr>
 									</thead>
-									<c:forEach var="item" items="${list}">
-										<tr>
-											<td>${item.complainID}</td>
-											<td>${item.complainCategoryId}</td>
-											<td>${item.complainuserNo}</td>
-											<td>${item.complainStatusCD}</td>
-											<td>${item.dcptDT}</td>
-											<td>${item.dueDT}</td>
+									<c:forEach var="item" items="${complainList}">
+								
+										<tr class="clickable-row" data-href="/approval24/${item.categoryUrl}/${item.complainId}" style="cursor: pointer;">
+											<td>${item.complainId}</td>
+											<td>${item.categoryName}</td>
+											<td>${item.complainuserName}</td>
+											<td>${item.userName}</td>
+											<td>${item.complainStatusCd}</td>
+											<td>${item.rcptDt}</td>
+											<td>${item.deadlineDt}</td>
 										</tr>
 									</c:forEach>
 

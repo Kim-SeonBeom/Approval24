@@ -25,5 +25,6 @@
     
     <!-- 주소 찾기 스크립트 -->
     <script src="${pageContext.request.contextPath}/resources/assets/js/addressSearch.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/assets/js/user-addr.js"></script>
     <!-- 다음 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
