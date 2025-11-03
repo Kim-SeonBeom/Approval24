@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.approval24.dao.AuthorityMenuDAO">
+    
+    <select id="findByAuthorityIds" resultType="com.example.approval24.domain.AuthorityMenuDTO" parameterType="java.util.List">
+        SELECT 
+            am.AUTHORITY_ID,
+            am.MENU_ID,
+            am.READ_YN,
+            am.CREATE_YN,
+            am.UPDATE_YN,
+            am.DELETE_YN,
+            am.APPROVE_YN,
+            am.CREATE_DT,
+            am.UPDATE_DT,
+            am.CREATE_ID,
+            am.UPDATED_ID,
+            am.DEL_YN,
+            m.MENU_NAME  
+        FROM T3000_AUTHORITY_MENU am
+        JOIN T3000_MENU m ON am.MENU_ID = m.MENU_ID  WHERE am.AUTHORITY_ID IN
+        <foreach item="id" collection="authorityIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+          AND am.DEL_YN = 'N'
+    </select>
+
+    <select id="findAll" resultType="com.example.approval24.domain.AuthorityMenuDTO">
+        SELECT 
+            am.AUTHORITY_ID,
+            am.MENU_ID,
+            am.READ_YN,
+            am.CREATE_YN,
+            am.UPDATE_YN,
+            am.DELETE_YN,
+            am.APPROVE_YN,
+            am.CREATE_DT,
+            am.UPDATE_DT,
+            am.CREATE_ID,
+            am.UPDATED_ID,
+            am.DEL_YN,
+            m.MENU_NAME  
+        FROM T3000_AUTHORITY_MENU am
+        JOIN T3000_MENU m ON am.MENU_ID = m.MENU_ID  WHERE am.DEL_YN = 'N'
+    </select>
+
+    <select id="findByAuthorityId" parameterType="long" resultType="com.example.approval24.domain.AuthorityMenuDTO">
+        SELECT 
+            am.AUTHORITY_ID,
+            am.MENU_ID,
+            am.READ_YN,
+            am.CREATE_YN,
+            am.UPDATE_YN,
+            am.DELETE_YN,
+            am.APPROVE_YN,
+            am.CREATE_DT,
+            am.UPDATE_DT,
+            am.CREATE_ID,
+            am.UPDATED_ID,
+            am.DEL_YN,
+            m.MENU_NAME  
+        FROM T3000_AUTHORITY_MENU am
+        JOIN T3000_MENU m ON am.MENU_ID = m.MENU_ID  WHERE am.AUTHORITY_ID = #{authorityId}
+          AND am.DEL_YN = 'N'
+    </select>
+
+    <insert id="insertAuthorityMenu" parameterType="com.example.approval24.domain.AuthorityMenuDTO">
+        INSERT INTO T3000_AUTHORITY_MENU (
+            AUTHORITY_ID,
+            MENU_ID,
+            READ_YN,
+            CREATE_YN,
+            UPDATE_YN,
+            DELETE_YN,
+            APPROVE_YN,
+            CREATE_DT,
+            CREATE_ID,
+            DEL_YN
+        ) VALUES (
+            #{authorityId},
+            #{menuId},
+            #{readYn},
+            #{createYn},
+            #{updateYn},
+            #{deleteYn},
+            #{approveYn},
+            SYSDATE,
+            #{createId},
+            'N'
+        )
+    </insert>
+
+	<update id="updateAuthorityMenu" parameterType="com.example.approval24.domain.AuthorityMenuDTO">
+        UPDATE T3000_AUTHORITY_MENU
+        SET 
+            READ_YN = #{readYn},
+            CREATE_YN = #{createYn},
+            UPDATE_YN = #{updateYn},
+            DELETE_YN = #{deleteYn},
+            APPROVE_YN = #{approveYn},
+            UPDATE_DT = SYSDATE,
+            DEL_YN = 'N',
+            UPDATED_ID = #{updatedId}  WHERE AUTHORITY_ID = #{authorityId}
+        AND MENU_ID = #{menuId}
+    </update>
+
+    <update id="deleteAuthorityMenu">
+    	UPDATE T3000_AUTHORITY_MENU
+    	SET DEL_YN = 'Y',
+      	UPDATE_DT = SYSDATE
+    	WHERE AUTHORITY_ID = #{authorityId}
+      	AND MENU_ID = #{menuId}
+	</update>
+
+<select id="findDeletedAuthorityMenu" parameterType="com.example.approval24.domain.AuthorityMenuDTO" 
+            resultType="com.example.approval24.domain.AuthorityMenuDTO">
+        SELECT
+            AUTHORITY_ID,
+            MENU_ID,
+            READ_YN,
+            CREATE_YN,
+            UPDATE_YN,
+            DELETE_YN,
+            APPROVE_YN,
+            DEL_YN
+        FROM T3000_AUTHORITY_MENU 
+        WHERE
+            AUTHORITY_ID = #{authorityId}
+            AND MENU_ID = #{menuId}
+            AND DEL_YN = 'Y'
+    </select>
+</mapper>

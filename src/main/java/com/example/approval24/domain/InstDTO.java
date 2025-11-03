@@ -1,18 +1,10 @@
 package com.example.approval24.domain;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class InstDTO {
@@ -21,11 +13,11 @@ public class InstDTO {
 	
 	private String instName;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date createDt;
+
+	private String createDt;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date updateDt;
+	private String updateDt;
+
 	
 	private String instAddress;
 	
@@ -36,5 +28,7 @@ public class InstDTO {
 	private String instPost;
 	
 	private String instHeadName;
+	
+	private String delYn;
 
 }

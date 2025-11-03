@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.approval24.dao.AuthorityAccountDAO">
+
+    <!-- 계정 ID로 권한 ID 조회 -->
+    <select id="findByAccountId" parameterType="long" resultType="com.example.approval24.domain.AuthorityAccountDTO">
+        SELECT ACCOUNT_ID,
+               AUTHORITY_ID,
+               CREATE_DT,
+               UPDATE_DT,
+               CREATE_ID,
+               UPDATE_ID,
+               DEL_YN
+        FROM T3000_AUTHORITY_ACCOUNT
+        WHERE ACCOUNT_ID = #{accountId}
+          AND DEL_YN = 'N'
+    </select>
+
+</mapper>

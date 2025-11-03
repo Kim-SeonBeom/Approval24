@@ -16,15 +16,6 @@ public class testcontroller {
 		return "tables";
 	}
 
-	@GetMapping("/notice")
-	public String charts() {
-		return "notice";
-	}
-
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
 
 	@GetMapping("/pending")
 	public String pending() {
@@ -59,16 +50,6 @@ public class testcontroller {
 
 	
 
-	@GetMapping("/notice/detail")
-	public String noticeDetail() {
-		return "noticeDetail";
-	}
-
-	@GetMapping("/notice/new")
-	public String noticeWrite() {
-		return "noticeWrite";
-	}
-
 	@GetMapping("/account/auth")
 	public String accountApprove() {
 		return "accountAuth";
@@ -99,6 +80,7 @@ public class testcontroller {
 	public String authorityEdit() {
 		return "authorityEdit";
 	}
+
 
 	@GetMapping("/division")
 	public String division() {

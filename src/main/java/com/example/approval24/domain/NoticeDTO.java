@@ -1,0 +1,23 @@
+package com.example.approval24.domain;
+
+import java.util.Date;
+
+import lombok.Data;
+
+@Data
+
+public class NoticeDTO {
+	private String title;
+	private String content;	
+	private Long noticeId;
+	private int categoryCd;
+	private String userName;
+	private Date createDt;
+	private Date updateDt;
+	private Integer viewCount;
+	private Long createId;
+	private Long updateId;
+	private String popupYn;
+	private String delYn;
+
+}

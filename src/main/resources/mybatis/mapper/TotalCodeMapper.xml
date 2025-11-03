@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.TotalCodeDAO">
+
+<select id="findCodesByGroupId" parameterType="string" resultType="com.example.approval24.domain.TotalCodeDTO">
+    SELECT 
+        GROUP_ID,
+        CODE_ID,
+        CODE_NAME,
+        CODE_DETAIL,
+        DEL_YN
+    FROM TOTAL_CODE
+    WHERE GROUP_ID = #{groupId}
+      AND DEL_YN = 'N'
+    ORDER BY TO_NUMBER(SUBSTR(CODE_ID, -2)) ASC
+</select>
+
+<!-- 코드 목록 -->
+<select id="getAllTotalCode" resultType="TotalCodeDTO">
+	select group_id, code_id, code_name, code_detail, del_yn
+	from total_code
+</select>
+
+</mapper>

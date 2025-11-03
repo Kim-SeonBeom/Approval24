@@ -1,0 +1,27 @@
+package com.example.approval24.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.example.approval24.domain.UserDTO;
+
+@Mapper
+public interface UserDAO {
+
+    // 조건 검색 + 전체 조회 통합 (필터링 포함)
+    List<UserDTO> findUsersByFilter(UserDTO filter);
+
+    // 주민번호로 단건 조회
+    UserDTO findByResidentNo(String userResidentNo);
+
+    // 사용자 등록
+    int insertUser(UserDTO user);
+
+    // 사용자 수정
+    int updateUser(UserDTO user);
+
+    // 논리 삭제 (DEL_YN = 'Y')
+    int deleteUser(@Param("userNo")Long userNo,@Param("updateId") Long updateId);
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.DeptInstDAO">
+
+<!-- 부서에 속한 기관 List -->
+<select id="instByDept" parameterType="long" resultType="DeptInstDTO">
+  select i.inst_id,
+  	i.inst_name,
+  	t.dept_id
+  from t1000_institution_department t
+  join t1000_institution i on i.inst_id = t.inst_id
+  where t.dept_id=#{deptId}
+</select>
+
+<!-- 기관에 속한 부서 List -->
+<select id="findDeptByInst" parameterType="long" resultType="DeptDTO">
+    SELECT 
+        t.dept_id,
+        d.dept_name
+    FROM t1000_institution_department t
+    JOIN t1000_department d ON d.dept_id = t.dept_id
+    WHERE t.inst_id = #{instId}
+    ORDER BY d.dept_name
+</select>
+
+<!-- 부서와 기관 매핑 삭제 -->
+<delete id="deleteDI">
+	delete from t1000_institution_department
+	where dept_id = #{deptId}
+</delete>
+
+<!-- 다중 매핑 -->
+<insert id="insertDI">
+	insert all
+	<foreach collection="instIds" item="instId">
+		into t1000_institution_department (dept_id, inst_id, create_dt)
+		values (#{deptId,jdbcType=NUMERIC}, #{instId,jdbcType=NUMERIC}, SYSDATE)
+	</foreach>
+	select 1 from dual
+</insert>
+
+
+
+
+
+</mapper>
