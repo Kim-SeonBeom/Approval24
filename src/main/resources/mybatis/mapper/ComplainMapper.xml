@@ -44,7 +44,12 @@
 	<select id="findByDeptOfAccountId" parameterType="long"
 		resultType="ComplainDTO">
 		SELECT
-		c.*,u.user_name,g.category_name,r.complainuser_name,g.category_url
+		c.complain_id,
+		to_char(c.rcpt_dt, 'YYYY-MM-DD') as rcptDt,
+		to_char(c.deadline_dt, 'YYYY-MM-DD') as deadlineDt,
+		c.complain_Category_Id,
+		c.complain_status_cd,
+		u.user_name,g.category_name,r.complainuser_name,g.category_url
 		FROM t2000_complain c
 		JOIN t1000_department_work d
 		ON
@@ -66,6 +71,28 @@
 		resultType="ComplainDTO">
 		select * from t2000_complain where complain_id = #{complainId}
 
+	</select>
+	
+	<select id="findByCategoryId" parameterType="long" resultType="ComplainDTO">
+		SELECT
+		c.complain_id,
+		to_char(c.rcpt_dt, 'YYYY-MM-DD')  as rcptDt,
+		to_char(c.deadline_dt, 'YYYY-MM-DD')  as deadlineDt,
+		c.complain_Category_Id,
+		c.complain_status_cd,
+		u.user_name,g.category_name,r.complainuser_name,g.category_url
+		FROM t2000_complain c
+		JOIN t1000_department_work d
+		ON d.complain_category_id = c.complain_category_id
+		JOIN t1000_account a
+		ON a.dept_id = d.department_id
+		join t1000_user u
+		on a.user_no = u.user_no
+		join t2000_complain_category g
+		on g.complain_category_id = c.complain_category_id
+		join t2000_complain_user r
+		on c.complainuser_no = r.complainuser_no
+	 where c.complain_category_id = #{complainCategoryId}
 	</select>
 
 </mapper>

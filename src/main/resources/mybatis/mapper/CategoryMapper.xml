@@ -22,6 +22,13 @@
 		where complain_category_id = #{complainCategoryId}
 	</select>
 	
-	<!-- 계정이 속한 부서의 업무 목록 -->
+	<!-- URL로 findByCategoryUrl 찾기-->
+	<select id="findByCategoryUrl" resultType="CategoryDTO"
+		parameterType="String">
+		select
+		*
+		from t2000_complain_category
+		where category_Url = #{categoryUrl}
+	</select>
 
 </mapper>

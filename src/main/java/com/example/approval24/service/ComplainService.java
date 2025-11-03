@@ -18,6 +18,7 @@ import com.example.approval24.dao.MT1DAO;
 import com.example.approval24.dao.MT2DAO;
 import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
+import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.EM1DTO;
@@ -327,6 +328,18 @@ public class ComplainService {
 
 	public void saveem3(EM3DTO em3dto) {
 		em3DAO.updateInfo(em3dto);
+
+	}
+
+	public List<ComplainDTO> complainsByCategory(String categoryUrl) {
+//		System.out.println("service input");
+		CategoryDTO categoryDTO = categoryDAO.findByCategoryUrl(categoryUrl);
+
+		List<ComplainDTO> complainList = complainDAO.findByCategoryId(categoryDTO.getComplainCategoryId());
+//		System.out.println("***" + complainList);
+//		System.out.println("service out");
+
+		return complainList;
 
 	}
 

@@ -49,7 +49,6 @@ public class testcontroller {
 	}
 
 	
-
 	@GetMapping("/account/auth")
 	public String accountApprove() {
 		return "accountAuth";
