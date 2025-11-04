@@ -23,6 +23,4 @@ public interface DeptDAO {
 	// 부서 등록
 	public int insertDept(DeptDTO dto);
 	
-	
-
 }

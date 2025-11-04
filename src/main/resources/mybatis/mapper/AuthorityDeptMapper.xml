@@ -16,6 +16,18 @@
           AND D.DEL_YN = 'N'
         ORDER BY D.DEPT_ID ASC
     </select>
+    
+    <select id="getAuthoritysByDeptId" parameterType="long" resultType="AuthorityDTO" >
+    	SELECT
+    	A.authority_id AS authorityId, 
+    	A.authority_name AS authorityName
+    	FROM t3000_authority A
+  		JOIN t3000_authority_dept AD ON A.authority_ID = AD.authority_ID
+  		WHERE AD.dept_id = #{deptId}
+  		AND AD.del_yn = 'N'
+  		ORDER BY A.authority_name ASC
+    	
+    </select>
 
     <insert id="insertAuthorityDept" parameterType="com.example.approval24.domain.AuthorityDeptDTO">
         INSERT INTO T3000_AUTHORITY_DEPT (

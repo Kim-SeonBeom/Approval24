@@ -5,12 +5,15 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.example.approval24.domain.AuthorityDTO;
 import com.example.approval24.domain.AuthorityDeptDTO;
 import com.example.approval24.domain.DeptDTO;
 
 @Mapper
 public interface AuthorityDeptDAO {
 	List<DeptDTO> getDeptsByAuthorityId(Long authorityId);
+	
+	List<AuthorityDTO> getAuthoritysByDeptId(Long deptId);
 	
 	int insertAuthorityDept(AuthorityDeptDTO authorityDeptDTO);
 	

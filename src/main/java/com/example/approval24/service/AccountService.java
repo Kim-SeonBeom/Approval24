@@ -40,9 +40,19 @@ public class AccountService {
     private TotalCodeDAO codeDAO;
 
     //로그인 기능
-    public Long login(String loginId, String password) {
-        AccountDTO account = accountDAO.findByLogin(loginId, password);
+    public Long login(String loginId,String password) {
+        AccountDTO account = accountDAO.findByLogin(loginId);
         if (account == null) return null; 
+        else if(password != account.getPassword())
+        {
+        	int cnt = account.getPwdFailCnt();
+        	cnt++; account.setPwdFailCnt(cnt);
+        	accountDAO.updateAccount(account);
+        	//...
+        }
+        else {
+        	
+        }
         return account.getAccountId();
     }
     
