@@ -30,7 +30,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">접수 민원 목록</h1>
+					<h1 class="h3 mb-2 text-gray-800">${title }</h1>
 					<br>
 
 					<!-- DataTales Example -->

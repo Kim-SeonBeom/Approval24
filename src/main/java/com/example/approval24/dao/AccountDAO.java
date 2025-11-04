@@ -1,10 +1,10 @@
-
 package com.example.approval24.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.approval24.domain.AccountDTO;
 
@@ -22,7 +22,13 @@ public interface AccountDAO {
 	public int updateAccount(AccountDTO account);
 
 	void insert(AccountDTO accountDTO);
+	
+	// 계정 리스트 (로그인id 리스트)
+	List<AccountDTO> getAllAccount();
+	// 특정 부서에 따른 매핑 계정
+	public List<AccountDTO> findAccountByDept(@Param("deptId") Long deptId);
 
 }
+
 
 

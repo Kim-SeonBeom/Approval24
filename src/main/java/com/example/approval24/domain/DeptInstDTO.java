@@ -1,7 +1,5 @@
 package com.example.approval24.domain;
 
-import java.util.List;
-
 import lombok.Data;
 
 @Data
@@ -25,6 +23,4 @@ public class DeptInstDTO {
 	private long instId;
 	
 	private String instName;
-	
-	private List<Integer> instIds;
 }

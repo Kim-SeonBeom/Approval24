@@ -47,15 +47,14 @@ public class SignupController {
 	@Autowired
 	private AuthorityDeptDAO authDeptDAO;
 	
-	
-	//
+
 	
 	 // 회원가입
     @GetMapping("/Form")
     public String loginPage(Model model) {
     	List<InstDTO> inst = instDAO.getAllInst();
     	model.addAttribute("instList", inst);
-        return "B/signUp"; // 
+        return "/B/signUp"; 
     }
     
     // 부서 목록

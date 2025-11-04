@@ -3,7 +3,7 @@
 <mapper namespace="com.example.approval24.dao.DeptDAO">
 
 <!-- 부서 기본정보 -->
-<select id="deptInfo" parameterType="int">
+<select id="deptInfo" parameterType="long">
 	select dept_id,
 		dept_name,
 		dept_phone,
@@ -40,7 +40,7 @@
 </select>
 
 <!-- 부서 삭제 -->
-<update id="deleteDept" parameterType="int">
+<update id="deleteDept" parameterType="long">
 	update t1000_department
 	set del_yn = 'Y'
 	where dept_id = #{deptId}
@@ -53,11 +53,13 @@
   ) VALUES (
     #{deptName}, SYSDATE, SYSDATE, #{deptPhone}
   )
-
   <!-- 같은 세션에서 직후에 CURRVAL 조회 → 방금 생성된 PK 획득 -->
-  <selectKey keyProperty="deptId" resultType="int" order="AFTER">
+  <selectKey keyProperty="deptId" resultType="long" order="AFTER">
     SELECT APPROVE.ISEQ$$_81303.CURRVAL FROM DUAL
   </selectKey>
 </insert>
+
+
+
 
 </mapper>

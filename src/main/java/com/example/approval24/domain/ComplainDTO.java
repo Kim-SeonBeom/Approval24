@@ -12,47 +12,39 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ComplainDTO {
-	
+
 	private long complainId;
-	
-	
-	private long	complainCategoryId;
-	
+
+	private long complainCategoryId;
+
 	private String categoryName;
-	
+
 	private String categoryUrl;
-	
-	
+
 	private long complainuserNo;
-	
+
 	private String complainuserName;
-	
-	
-	
-	private long accountId; //담당자계정id 
-	
-	private String userName; //담당직원이름
-	
-	
+
+	private long accountId; // 담당자계정id
+
+	private String userName; // 담당직원이름
+
 	private String complainStatusCd;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date rcptDt;
-	
+
+	private String rcptDt;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date procDt;
-	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date approvalProcDt;
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date deadlineDt;
-	
+
+	private String deadlineDt;
+
 	private String complainComment;
-	
+
 	private char delYN;
-	
-	private long receiverAccountId; //접수자 id
-	
-	
+
+	private long receiverAccountId; // 접수자 id
+
 }

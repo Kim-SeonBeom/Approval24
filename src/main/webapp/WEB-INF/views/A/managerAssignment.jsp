@@ -30,7 +30,7 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">공통코드 목록</h1>
+					<h1 class="h3 mb-2 text-gray-800">담당자배정 목록</h1>
 					<br>
 					<%-- 컨트롤러에서 전달받은 삭제 메시지 표시 --%>
 					<c:if test="${not empty delMessage}">
@@ -53,7 +53,7 @@
 					<!-- 코드 테이블 조건 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">공통코드 테이블</h6>
+							<h6 class="m-0 font-weight-bold text-primary">담당자배정 테이블</h6>
 							<!-- 그룹 선택 -->
 	                        <div class="ml-4">
 	                           <select id="groupFilter" class="custom-select custom-select-sm form-control form-control-sm" style="min-width: 160px;">
@@ -61,7 +61,7 @@
 	                              <!-- 옵션은 JS에서 테이블 데이터를 읽어 자동 생성 -->
 	                           </select>
 	                        </div>
-							<button class="btn btn-primary btn-sm" id="codeCreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 코드 등록</button>
+							<button class="btn btn-primary btn-sm" id="MACreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 담당자 등록</button>
 						</div>
 						
 						<div class="card-body">
@@ -69,23 +69,25 @@
 								<table class="table table-bordered" id="dataTable" style="width:100%" cellspacing="0">
 									<thead>
 										<tr>
-											<th>코드그룹ID</th>
-											<th>코드ID</th>
-											<th>코드명</th>
-											<th>코드내용</th>
+											<th>기관명</th>
+											<th>부서명</th>
+											<th>민원서식명</th>
+											<th>로그인ID</th>
+											<th>사용자 이름</th>
 											<th>삭제여부</th>
 										</tr>
 									</thead>
 									<tbody>
-									  <c:forEach var="code" items="${getAllTotalCodeList}">
+									  <c:forEach var="MA" items="${getAllMAList}">
 									    <tr class="clickable-row"
-									        data-href="/approval24/admin/totalcode/detail?code_id=${code.codeId}"
+									        data-href="/approval24/admin/MA/detail?inst_id=${MA.instId}&dept_id=${MA.deptId}&complain_category_id=${MA.complainCategoryId}&account_id=${MA.accountId}"
 									        style="cursor:pointer;">
-									      <td>${code.groupId}</td>
-									      <td>${code.codeId}</td>
-									      <td>${code.codeName}</td>
-									      <td>${code.codeDetail}</td>
-									      <td>${code.delYn}</td>
+									      <td>${MA.instName}</td>
+									      <td>${MA.deptName}</td>
+									      <td>${MA.categoryName}</td>
+									      <td>${MA.loginId}</td>
+									      <td>${MA.userName}</td>
+									      <td>${MA.delYn}</td>
 									    </tr>
 									  </c:forEach>
 									</tbody>
@@ -125,8 +127,8 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 <script>
-	$("#codeCreate").on('click', function() {
-		window.location.href="${pageContext.request.contextPath}/admin/totalcode/new";
+	$("#MACreate").on('click', function() {
+		window.location.href="${pageContext.request.contextPath}/admin/MA/new";
 	});
 
   
@@ -165,7 +167,7 @@
                             true, false).draw();
                    });
 
-       // URL 파라미터로 기본 그룹 지정 가능 (?group=CODE 같은 형태)
+       // URL 파라미터로 기본 그룹 지정 가능 (?group=MA 같은 형태)
        var params = new URLSearchParams(location.search);
        var defaultGroup = params.get('group');
        if (defaultGroup && groups.includes(defaultGroup)) {

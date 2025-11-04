@@ -1,8 +1,8 @@
 package com.example.approval24.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import com.example.approval24.dao.MT1DAO;
 import com.example.approval24.dao.MT2DAO;
 import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
+import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.EM1DTO;
@@ -96,9 +97,9 @@ public class ComplainService {
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
-		LocalDateTime localDateTime = LocalDateTime.now().plusDays(dueDt);
-		Date deadlineDt = java.util.Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
+		String deadlineDt = LocalDate.now(ZoneId.systemDefault())
+		        .plusDays(dueDt)
+		        .format(DateTimeFormatter.ISO_DATE);
 		ComplainDTO complainDTO = new ComplainDTO();
 		complainDTO.setComplainCategoryId(complainRegDTO.getComplainCategoryId());
 		complainDTO.setComplainuserNo(complainuserNo);
@@ -327,6 +328,18 @@ public class ComplainService {
 
 	public void saveem3(EM3DTO em3dto) {
 		em3DAO.updateInfo(em3dto);
+
+	}
+
+	public List<ComplainDTO> complainsByCategory(String categoryUrl) {
+//		System.out.println("service input");
+		CategoryDTO categoryDTO = categoryDAO.findByCategoryUrl(categoryUrl);
+
+		List<ComplainDTO> complainList = complainDAO.findByCategoryId(categoryDTO.getComplainCategoryId());
+//		System.out.println("***" + complainList);
+//		System.out.println("service out");
+
+		return complainList;
 
 	}
 

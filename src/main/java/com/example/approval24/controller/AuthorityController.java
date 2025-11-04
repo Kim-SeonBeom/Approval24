@@ -2,6 +2,7 @@ package com.example.approval24.controller;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -99,13 +100,13 @@ public class AuthorityController {
                 .sorted(Comparator.comparingLong(MenuDTO::getSeq))
                 .collect(Collectors.toList());
 
-        model.addAttribute("allMenus", allMenus);
+        model.addAttribute("unassignedMenus", allMenus);
 
         List<DeptDTO> authorityDepartments = authorityService.getDepartmentsByAuthorityId(authorityId);
         model.addAttribute("authorityDepartments", authorityDepartments);
 
         // 미할당 부서 목록 조회
-        Set<Integer> assignedDeptIds = authorityDepartments.stream()
+        Set<Long> assignedDeptIds = authorityDepartments.stream()
                 .map(DeptDTO::getDeptId)
                 .collect(Collectors.toSet());
         
@@ -123,12 +124,8 @@ public class AuthorityController {
     // 권한-메뉴 매핑 등록 (한꺼번에)
     @PostMapping("/addMenus")
     public String addAuthorityMenus(@RequestParam Long authorityId,
-                                    @RequestParam(value = "menuIds", required = false) List<Long> menuIds,
-                                    @RequestParam(value = "readYn", required = false) List<String> readYns,
-                                    @RequestParam(value = "createYn", required = false) List<String> createYns,
-                                    @RequestParam(value = "updateYn", required = false) List<String> updateYns,
-                                    @RequestParam(value = "deleteYn", required = false) List<String> deleteYns,
-                                    @RequestParam(value = "approveYn", required = false) List<String> approveYns,
+    								@RequestParam(value = "menuIds", required = false) List<Long> menuIds,
+    								@RequestParam Map<String, String> allParams,
                                     HttpSession session) {
 
         Long id = (Long) session.getAttribute("user"); 
@@ -138,19 +135,19 @@ public class AuthorityController {
         
         if (menuIds != null && !menuIds.isEmpty()) {
             List<AuthorityMenuDTO> authorityMenus = new java.util.ArrayList<>();
-            for (int i = 0; i < menuIds.size(); i++) {
+            
+            for (Long menuId : menuIds) { 
                 AuthorityMenuDTO am = new AuthorityMenuDTO();
-                
-                am.setCreateId(id); 
+                am.setCreateId(id);
                 am.setUpdatedId(id);
-                
                 am.setAuthorityId(authorityId);
-                am.setMenuId(menuIds.get(i));
-                am.setReadYn(readYns != null && readYns.size() > i ? readYns.get(i) : "N");
-                am.setCreateYn(createYns != null && createYns.size() > i ? createYns.get(i) : "N");
-                am.setUpdateYn(updateYns != null && updateYns.size() > i ? updateYns.get(i) : "N");
-                am.setDeleteYn(deleteYns != null && deleteYns.size() > i ? deleteYns.get(i) : "N");
-                am.setApproveYn(approveYns != null && approveYns.size() > i ? approveYns.get(i) : "N");
+                am.setMenuId(menuId);
+
+                am.setReadYn(allParams.containsKey("readYn_" + menuId) ? "Y" : "N");
+                am.setCreateYn(allParams.containsKey("createYn_" + menuId) ? "Y" : "N");
+                am.setUpdateYn(allParams.containsKey("updateYn_" + menuId) ? "Y" : "N");
+                am.setDeleteYn(allParams.containsKey("deleteYn_" + menuId) ? "Y" : "N");
+                am.setApproveYn(allParams.containsKey("approveYn_" + menuId) ? "Y" : "N");
                 authorityMenus.add(am);
             }
             authorityService.createAuthorityMenus(authorityMenus);
@@ -185,8 +182,6 @@ public class AuthorityController {
         }
 
         am.setUpdatedId(id);
-
-        // 3. Service 호출
         authorityService.updateAuthorityMenu(am);
 
         return "redirect:/authority/detail/" + authorityId;

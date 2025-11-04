@@ -13,7 +13,7 @@
 </select>
 
 <!-- 기관에 속한 부서 List -->
-<select id="findDeptByInst" parameterType="long" resultType="DeptDTO">
+<select id="findDeptByInst" parameterType="Long" resultType="DeptInstDTO">
     SELECT 
         t.dept_id,
         d.dept_name
@@ -29,18 +29,11 @@
 	where dept_id = #{deptId}
 </delete>
 
-<!-- 다중 매핑 -->
+<!-- 단일 매핑 -->
 <insert id="insertDI">
-	insert all
-	<foreach collection="instIds" item="instId">
-		into t1000_institution_department (dept_id, inst_id, create_dt)
-		values (#{deptId,jdbcType=NUMERIC}, #{instId,jdbcType=NUMERIC}, SYSDATE)
-	</foreach>
-	select 1 from dual
+	insert into t1000_institution_department (dept_id, inst_id, create_dt, update_dt)
+	values (#{deptId,jdbcType=NUMERIC}, #{instId,jdbcType=NUMERIC}, SYSDATE, SYSDATE)
 </insert>
-
-
-
 
 
 </mapper>

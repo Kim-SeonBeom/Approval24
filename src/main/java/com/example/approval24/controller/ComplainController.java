@@ -38,7 +38,7 @@ public class ComplainController {
 	private ComplainuserService complainuserService;
 
 	// 임시로 넣은 계정ID 13,41,61
-	public long accountId = 61;
+	public long accountId = 41;
 
 	@GetMapping("/myWork")
 	public String myWorkList(Model model
@@ -77,13 +77,29 @@ public class ComplainController {
 	// ,HttpSession session(여기서 현재 로그인id가져오기)
 	) {
 //		System.out.println("controller in");
+		
+
+		String title = "접수 민원 목록";
 		List<ComplainDTO> complainList = complainService.complainList(accountId);
+		System.out.println("확인 = " + complainList.toString());
 		model.addAttribute("complainList", complainList);
+		model.addAttribute("title", title);
 //		System.out.println(complainList.toString());
 //		System.out.println("contorller out");
 
 		return "/complain/complainList";
 
+	}
+
+	@GetMapping("/{categoryUrl}")
+	public String ue1List(Model model, @PathVariable String categoryUrl) {
+		String categoryName = categoryService.getCategoryName(categoryUrl);
+		List<ComplainDTO> complainList = complainService.complainsByCategory(categoryUrl);
+		System.out.println("확인 = " + complainList.toString());
+		model.addAttribute("title", categoryName);
+		model.addAttribute("complainList", complainList);
+
+		return "/complain/complainList";
 	}
 
 	// 실업자취업훈련비 대부신청
