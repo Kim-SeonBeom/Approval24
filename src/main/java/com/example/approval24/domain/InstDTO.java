@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InstDTO {
 	
-	private int instId;
+	private long instId;
 	
 	private String instName;
 	

@@ -93,5 +93,26 @@
     SELECT INST_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID = #{accountId}
 </select>
 
+
+<!-- 계정 리스트 (id 리스트)-->
+<select id="getAllAccount" resultType="AccountDTO">
+	select *
+	from t1000_account
+	where del_yn='N'
+</select>
+
+<!-- 특정 부서에 따른 매핑 계정 -->
+<select id="findAccountByDept" parameterType="Long" resultType="AccountDTO">
+	select a.account_id, a.login_id, u.user_name
+	from t1000_account a
+	join t1000_user u
+	on u.user_no = a.user_no
+	where a.dept_id=#{deptId}
+	order by u.user_name
+</select>
+
 </mapper>
+
+</mapper>
+
 
