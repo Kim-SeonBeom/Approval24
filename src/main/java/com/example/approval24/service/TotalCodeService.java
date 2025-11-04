@@ -21,6 +21,7 @@ public class TotalCodeService {
 		return totalCodeDAO.getAllTotalCode();
 	}
 	
+
 	// 코드 상세
 	public TotalCodeDTO TotalCodeInfo(String codeId) {
 		return totalCodeDAO.TotalCodeInfo(codeId);
@@ -36,5 +37,10 @@ public class TotalCodeService {
 		return totalCodeDAO.TotalCodeInsert(codeDTO);
 	}
 	
+
+
+	public List<TotalCodeDTO> getTotalCodeByGroupId(String groupId){
+	return totalCodeDAO.findCodesByGroupId(groupId);
+	}
 
 }

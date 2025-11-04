@@ -21,19 +21,39 @@
           AND a.DEL_YN = 'N'
     </select>
 
-    <!-- 전체 권한 조회 -->
-    <select id="findAll" resultType="com.example.approval24.domain.AuthorityDTO">
-        SELECT AUTHORITY_ID,
-               AUTHORITY_NAME,
-               CREATE_DT,
-               UPDATE_DT,
-               CREATE_ID,
-               UPDATE_ID,
-               DEL_YN,
-               IS_SYSTEM
-        FROM T3000_AUTHORITY
-        WHERE DEL_YN = 'N'
-    </select>
+<select id="findAll" parameterType="map" resultType="com.example.approval24.domain.AuthorityDTO">
+    SELECT 
+        A.AUTHORITY_ID,
+        A.AUTHORITY_NAME,
+        A.CREATE_DT,
+        A.UPDATE_DT,
+        A.CREATE_ID,
+        A.UPDATE_ID,
+        A.DEL_YN,
+        A.IS_SYSTEM
+    FROM T3000_AUTHORITY A
+    
+    <if test="deptId != null and deptId != ''">
+    JOIN T3000_AUTHORITY_DEPT AD ON A.AUTHORITY_ID = AD.AUTHORITY_ID
+    </if>
+    
+    WHERE A.DEL_YN = 'N'
+    
+    <if test="deptId != null and deptId != ''">
+      AND AD.DEPT_ID = #{deptId}
+      AND AD.DEL_YN = 'N'
+    </if>
+    
+    ORDER BY
+    <choose>
+        <when test="sortField != null and sortField != ''">
+            ${sortField} ${sortOrder} 
+        </when>
+        <otherwise>
+            A.AUTHORITY_ID DESC
+        </otherwise>
+    </choose>
+</select>
     
     <!-- 권한 ID로 조회 -->
     <select id="findById" resultType="com.example.approval24.domain.AuthorityDTO" parameterType="long">

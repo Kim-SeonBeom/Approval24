@@ -48,26 +48,7 @@ public class testcontroller {
 		return "benefits";
 	}
 
-	@GetMapping("/trainingLoan")
-	public String trainingExpense() {
-		return "trainingLoan";
-	}
-
-	@GetMapping("/trainingSubsidy")
-	public String subsidy() {
-		return "trainingSubsidy";
-	}
-
-	@GetMapping("/jobResearchReport")
-	public String report() {
-		return "jobResearchReport";
-	}
 	
-	@GetMapping("/tempWorkerMaternity")
-	public String tempWorker() {
-		return "tempWorkerMaternityBenefit";
-	}
-
 	@GetMapping("/account/auth")
 	public String accountApprove() {
 		return "accountAuth";
@@ -82,22 +63,7 @@ public class testcontroller {
 	public String delegatePage() {
 		return "delegate";
 	}
-	@GetMapping("/employmentInsurance")
-	   public String insurance() {
-	      return "employmentInsurance";
 
-	   }
-	
-	@GetMapping("/graduateProgram")
-	public String graduateProgram() {
-		return "graduateProgram";
-
-	}
-	
-	@GetMapping("/challengeSupport")
-	public String challenge() {
-		return "challengeSupport";
-	}
 	
 	@GetMapping("/authorityList")
 	public String authorityList() {
@@ -112,6 +78,23 @@ public class testcontroller {
 	@GetMapping("/authorityEdit")
 	public String authorityEdit() {
 		return "authorityEdit";
+	}
+
+
+	@GetMapping("/division")
+	public String division() {
+		return "division";
+	}
+	
+	@GetMapping("/division/detail")
+	public String divisionDetail() {
+		return "divisionDetail";
+	}
+	
+	@GetMapping("/totalcode")
+	public String totalcode()	{
+		
+		return "totalcode";
 	}
 
 }

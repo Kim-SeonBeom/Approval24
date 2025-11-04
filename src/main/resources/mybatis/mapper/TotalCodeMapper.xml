@@ -6,14 +6,13 @@
     SELECT 
         GROUP_ID,
         CODE_ID,
-        SEQUENCE,
         CODE_NAME,
         CODE_DETAIL,
         DEL_YN
     FROM TOTAL_CODE
     WHERE GROUP_ID = #{groupId}
       AND DEL_YN = 'N'
-    ORDER BY TO_NUMBER(SEQUENCE) ASC
+    ORDER BY TO_NUMBER(SUBSTR(CODE_ID, -2)) ASC
 </select>
 
 <!-- 코드 목록 -->

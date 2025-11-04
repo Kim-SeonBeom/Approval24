@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.UE2DAO">
+
+	<!-- 민원 유무 조회 -->
+	<select id="existByComplainId" resultType="int"
+		parameterType="long">
+		select count(*)
+		from t4000_ue2
+		where complain_id
+		=
+		#{complainId}
+	</select>
+
+	<!-- 민원상세 조회 -->
+	<select id="findByComplainId" resultType="UE2DTO"
+		parameterType="long">
+		select *
+		from t4000_ue2
+		where complain_id
+		= #{complainId}
+	</select>
+
+	<!-- 민원 등록 -->
+	<insert id="insertInfo" parameterType="UE2DTO">
+		insert into
+		t4000_ue2(complain_id)
+		values(#{complainId})
+	</insert>
+
+	<!-- 민원 수정 -->
+	<update id="updateInfo" parameterType="UE2DTO">
+		UPDATE T4000_UE2
+		SET
+		BANK_NM = #{bankNm},
+		ACCOUNT_HOLDER_NM = #{accountHolderNm},
+		ACCOUNT_NO = #{accountNo},
+		INCOME_OCCUR_YN = #{incomeOccurYn},
+		INCOME_DETAIL = #{incomeDetail},
+		WORK_START_DT = #{workStartDt},
+		INCOME_AMT = #{incomeAmt},
+		INCOME_EST_AMT = #{incomeEstAmt},
+		BIZ_REG_YN = #{bizRegYn},
+		BIZ_REG_DT = #{bizRegDt},
+		BIZ_DETAIL = #{bizDetail},
+		SELF_EMP_PREP_ACT_YN = #{selfEmpPrepActYn},
+		SELF_EMP_PREP_ACT = #{selfEmpPrepAct},
+		SELF_EMP_START_PLAN_DT = #{selfEmpStartPlanDt},
+		RE_EMPLOYMENT_YN = #{reEmploymentYn},
+		RE_EMPLOYMENT_PLAN_DT = #{reEmploymentPlanDt},
+		CO_NM = #{coNm},
+		CO_TEL_NO = #{coTelNo},
+		NON_JOB_SEEK_ACTIVITY = #{nonJobSeekActivity},
+		UPDATE_DT = SYSDATE
+		WHERE COMPLAIN_ID = #{complainId}
+	</update>
+
+
+</mapper>
+ 
