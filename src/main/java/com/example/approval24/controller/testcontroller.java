@@ -59,11 +59,6 @@ public class testcontroller {
 		return "accountRequests";
 	}
 
-	@GetMapping("/delegate")
-	public String delegatePage() {
-		return "delegate";
-	}
-
 	
 	@GetMapping("/authorityList")
 	public String authorityList() {

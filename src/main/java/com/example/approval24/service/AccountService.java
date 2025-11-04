@@ -124,6 +124,12 @@ public class AccountService {
 	public List<TotalCodeDTO> getAccountStatusList(String groupId) {
 	    return codeDAO.findCodesByGroupId(groupId);
 	}
+	
+	//현재 로그인한 아이디와 같은기관&같은부서인 아이디 목록 조회
+	public List<AccountDTO> myTeamAccountList(long accountId){
+		 
+		return accountDAO.findByAccountIdAndDeptIdAndInstId(accountId);
+	}
 
 }
 

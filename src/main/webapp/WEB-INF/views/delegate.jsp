@@ -28,118 +28,78 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- Page Heading -->
-					<h1 class="h3 mb-4 text-gray-800">대결자 지정</h1>
-
-					<!-- 대결자 지정 폼 -->
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">대결자 등록</h6>
+					<h1 class="h3 mb-2 text-gray-800">대결자 지정</h1>
+					<br>
+					<c:if test="${not empty regMsg}">
+						<div class="alert alert-info alert-dismissible fade show" role="alert">
+							${regMsg	}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
 						</div>
-						<div class="card-body">
-							<form>
-								<div class="form-row align-items-end">
-									<div class="col-md-4 mb-3">
-										<label>대결 시작일</label>
-										<input type="date" class="form-control" value="2025-10-22">
-									</div>
-									<div class="col-md-4 mb-3">
-										<label>대결 종료일</label>
-										<input type="date" class="form-control" value="2025-10-26">
-									</div>
-									<div class="col-md-4 mb-3">
-										<label>부서</label>
-										<select class="form-control">
-											<option>민원1팀</option>
-											<option>민원2팀</option>
-											<option>민원3팀</option>
-											<option>인사팀</option>
-										</select>
-									</div>
-									<div class="col-md-4 mb-3">
-										<label>대결자</label>
-										<select class="form-control">
-											<option>홍길동</option>
-											<option>이수진</option>
-											<option>김서연</option>
-											<option>박준혁</option>
-										</select>
-									</div>
-								</div>
-								<button type="submit" class="btn btn-primary">등록</button>
-							</form>
+					</c:if>
+					<c:if test="${not empty delMsg}">
+						<div class="alert alert-info alert-dismissible fade show" role="alert">
+							${delMsg}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
 						</div>
-					</div>
+					</c:if>
 
-					<!-- 대결자 내역 -->
 					<div class="card shadow mb-4">
-						<div class="card-header py-3 d-flex justify-content-between align-items-center">
-							<h6 class="m-0 font-weight-bold text-primary">대결자 내역</h6>
+						<div class="card-header py-3 d-flex align-items-center justify-content-between">
+							<h6 class="m-0 font-weight-bold text-primary">대결자 목록</h6>
+							<button class="btn btn-primary btn-sm" id="write" style="font-size: 1rem; padding: 0.25rem 0.75rem;">등록</button>
+
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<table class="table table-bordered" width="100%" cellspacing="0">
+								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 									<thead>
 										<tr>
-											<th>번호</th>
+											<th>관리번호</th>
 											<th>대결자</th>
 											<th>시작일</th>
 											<th>종료일</th>
-											<th>상태</th>
-											<th>비고</th>
+											<th>사유</th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>홍길동</td>
-											<td>2025-10-20</td>
-											<td>2025-10-22</td>
-											<td>기간 만료</td>
-											<td></td>
+									<c:forEach var="item" items="${myDelegateList}">
+										<tr class="clickable-row" data-href="/approval24/delegate/${item.seqNo}" style="cursor: pointer;">
+											<td>${item.seqNo }</td>
+											<td>${item.delegateUserName}</td>
+											<td>${item.startDt}</td>
+											<td>${item.endDt}</td>
+											<td>${item.proxyComment}</td>
 										</tr>
-										<tr>
-											<td>2</td>
-											<td>이수진</td>
-											<td>2025-10-23</td>
-											<td>2025-10-26</td>
-											<td>진행 중</td>
-											<td>
-												<button class="btn btn-warning btn-sm">수정</button>
-												<button class="btn btn-danger btn-sm">삭제</button>
-											</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>김서연</td>
-											<td>2025-10-28</td>
-											<td>2025-10-30</td>
-											<td>예정</td>
-											<td>
-												<button class="btn btn-warning btn-sm">수정</button>
-												<button class="btn btn-danger btn-sm">삭제</button>
-											</td>
-										</tr>
+									</c:forEach>
 									</tbody>
 								</table>
 							</div>
 						</div>
 					</div>
-
 				</div>
-				<!-- /.container-fluid -->
 
 			</div>
-			<!-- End of Main Content -->
+
 
 			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+			<script>
+				$("#write")
+						.on(
+								'click',
+								function() {
+									window.location.href = "${pageContext.request.contextPath}/delegate/new";
+								});
+			</script>
 
 		</div>
 		<!-- End of Content Wrapper -->
 
+
 	</div>
 	<!-- End of Page Wrapper -->
-
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
 </body>
 </html>
