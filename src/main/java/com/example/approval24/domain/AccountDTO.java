@@ -4,9 +4,11 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class AccountDTO {
     private Long accountId;          // ACCOUNT_ID
     private Long userNo;             // USER_NO

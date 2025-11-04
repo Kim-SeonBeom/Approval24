@@ -21,6 +21,8 @@ public interface AccountDAO {
 
 	public AccountDTO findById(long accountId);
 
+	List<AccountDTO> findByAccountIdAndDeptIdAndInstId(long accountId);
+
 }
 
 
