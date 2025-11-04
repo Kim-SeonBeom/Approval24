@@ -54,8 +54,13 @@
         ON A.ACCOUNT_STATUS_CD = CC.CODE_ID
        AND CC.GROUP_ID = 'B0'
     WHERE A.IS_SYSTEM = 'N'
-      AND A.INST_ID = #{instId}
+      <if test="instId != null">
+        AND A.INST_ID = #{instId}
+      </if>
       AND A.DEL_YN = 'N'
+      <if test="accountId != null">
+        AND A.ACCOUNT_ID = #{accountId}
+      </if>
       <if test="loginId != null and loginId != ''">
         AND A.LOGIN_ID LIKE '%' || #{loginId} || '%'
       </if>

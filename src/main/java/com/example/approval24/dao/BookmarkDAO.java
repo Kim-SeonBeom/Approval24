@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.approval24.domain.BookmarkDTO;
+import com.example.approval24.domain.BookmarkDTO.Approver;
 
 @Mapper
 public interface BookmarkDAO {
@@ -24,4 +25,10 @@ public interface BookmarkDAO {
 
     // 특정 북마크 내 결재자 수정
     int updateApprover(@Param("params") Map<String, Object> params);
+    
+    // 특정 북마크 결재자 일괄 등록
+    void insertApprovers(List<Approver> approvers);
+    
+    // 북마크 디테일 삭제
+    int deleteApproversByBookmarkId(Long bookmarkId);
 }

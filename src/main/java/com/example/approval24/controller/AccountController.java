@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.service.AccountService;
+import com.example.approval24.service.DeptService;
+import com.example.approval24.service.TotalCodeService;
 
 @Controller
 @RequestMapping("/account")
@@ -20,6 +22,10 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private DeptService deptService;
+    @Autowired
+    private TotalCodeService codeService;
 
     @GetMapping("/list")
     public String getAccountList(
@@ -55,8 +61,8 @@ public class AccountController {
         List<AccountDTO> accounts = accountService.getAccountsByFilter(params);
         model.addAttribute("accounts", accounts); 
         
-        model.addAttribute("deptList", accountService.getDeptList(instId));
-        model.addAttribute("statusList", accountService.getAccountStatusList("B0"));
+        model.addAttribute("deptList", deptService.deptByInst(instId));
+        model.addAttribute("statusList", codeService.getTotalCodeByGroupId("B0"));
 
         return "B/accountList";
     }

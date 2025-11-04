@@ -37,6 +37,12 @@ public class DeptService {
 	public DeptDTO deptInfo(int deptId) {
 		return deptdao.deptInfo(deptId);
 	}
+	
+	// 특정 기관 부서 목록 조회
+	public List<DeptInstDTO> deptByInst(Long instId) {
+	    return deptinstdao.findDeptByInst(instId);
+	}
+	
 	// 특정 부서의 매핑 기관명
 	public List<DeptInstDTO> instByDept(int deptId) {
 		return deptinstdao.instByDept(deptId);

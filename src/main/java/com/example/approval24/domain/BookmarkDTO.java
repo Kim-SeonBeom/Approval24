@@ -19,11 +19,15 @@ public class BookmarkDTO {
 
     @Data
     public static class Approver {
+    	private Long bookmarkId;
         private Long seqNo;             
         private Long approverId;
         private String approverTypeCd;
         private Date createDt;
         private Date updateDt;
-        private String delYn;
+        //추가사항
+        private String approverName;
+        private String deptName;
+        private String approverTypeCdName;
     }
 }

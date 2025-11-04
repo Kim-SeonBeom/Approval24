@@ -34,10 +34,6 @@ public class AccountService {
     private AuthorityMenuDAO authorityMenuDAO;
     @Autowired
     private MenuDAO menuDAO;
-    @Autowired
-    private DeptInstDAO deptInstDAO;
-    @Autowired
-    private TotalCodeDAO codeDAO;
 
     //로그인 기능
     public Long login(String loginId, String password) {
@@ -107,15 +103,6 @@ public class AccountService {
 	    return accountDAO.findInstIdByAccountId(accountId);
 	}
 
-	//부서 목록 조회
-	public List<DeptInstDTO> getDeptList(Long instId) {
-	    return deptInstDAO.findDeptByInst(instId);
-	}
-
-	//계정 상태 코드 이름 조회
-	public List<TotalCodeDTO> getAccountStatusList(String groupId) {
-	    return codeDAO.findCodesByGroupId(groupId);
-	}
 
 }
 
