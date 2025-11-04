@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ import com.example.approval24.dao.MenuDAO;
 import com.example.approval24.dao.TotalCodeDAO;
 import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
-import com.example.approval24.domain.DeptDTO;
 import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.MenuDTO;
 import com.example.approval24.domain.MenuVO;
@@ -40,9 +38,19 @@ public class AccountService {
     private TotalCodeDAO codeDAO;
 
     //로그인 기능
-    public Long login(String loginId, String password) {
-        AccountDTO account = accountDAO.findByLogin(loginId, password);
+    public Long login(String loginId,String password) {
+        AccountDTO account = accountDAO.findByLogin(loginId);
         if (account == null) return null; 
+        else if(password != account.getPassword())
+        {
+        	int cnt = account.getPwdFailCnt();
+        	cnt++; account.setPwdFailCnt(cnt);
+        	accountDAO.updateAccount(account);
+        	//...
+        }
+        else {
+        	
+        }
         return account.getAccountId();
     }
     

@@ -25,12 +25,21 @@
 
 
 	<!-- index 영역 -->
-	<c:if test="${loginUser.departmentName ne '인사팀'}">
-		<%@ include file="/WEB-INF/views/jspf/index.jspf"%>
-	</c:if>
-	<c:if test="${loginUser.departmentName eq '인사팀'}">
-		<%@ include file="/WEB-INF/views/jspf/index_hr.jspf"%>
-	</c:if>
+	<c:choose>
+		<c:when test="${not empty sessionScope.user}">
+		<!-- 나중에 부서명으로 수정 -->
+			<c:if test="${sessionScope.authUser.deptId ne '4'}">
+				<%@ include file="/WEB-INF/views/jspf/index.jspf"%>
+			</c:if>
+			<!-- 나중에 부서명으로 수정 -->
+			<c:if test="${sessionScope.authUser.deptId eq '4'}">
+				<%@ include file="/WEB-INF/views/jspf/index_hr.jspf"%>
+			</c:if>
+		</c:when>
+		<c:otherwise>
+			<c:redirect url="/login"/>
+		</c:otherwise>
+	</c:choose>
 
 	<!-- Logout Modal-->
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>

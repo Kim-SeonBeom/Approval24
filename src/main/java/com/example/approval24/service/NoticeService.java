@@ -30,9 +30,7 @@ public class NoticeService {
 	}
 	// 공지사항 수정
 	public int updateNotice(NoticeDTO noticeDTO) {
-		System.out.println("🔥 업데이트 요청 도착: " + noticeDTO);
 		int result = noticeDAO.updateNotice(noticeDTO);
-		System.out.println("업데이트 완료");
 		return result;
 	}
 	

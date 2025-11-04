@@ -41,7 +41,7 @@ public class LoginController {
         session.setAttribute("user", accountID);
         session.setAttribute("authMenus", accountService.getAuthMenus(accountID));
 
-        return "index";
+        return "/index";
     }
 
 

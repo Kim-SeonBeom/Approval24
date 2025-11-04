@@ -12,4 +12,8 @@ public interface AuthorityAccountDAO {
 
     // 계정 ID로 권한 ID 리스트 조회
     List<AuthorityAccountDTO> findByAccountId(@Param("accountId") Long accountId);
+    
+    // 계정 Id, password
+    public void  authAccountSetup(AuthorityAccountDTO dto);
+    
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class TotalCodeDTO {
+
     private String groupId;
     private String codeId;
     

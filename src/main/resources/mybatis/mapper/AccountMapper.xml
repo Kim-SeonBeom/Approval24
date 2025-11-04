@@ -14,36 +14,6 @@
 		t1000_account
 	</select>
 
-
-	<select id="findByLogin" parameterType="map"
-		resultType="com.example.approval24.domain.AccountDTO">
-		SELECT
-		A.ACCOUNT_ID,
-		U.USER_NO,
-		A.INST_ID,
-		A.DEPT_ID,
-		A.LOGIN_ID,
-		A.PASSWORD,
-		A.CREATE_DT,
-		A.UPDATE_DT,
-		A.DEL_YN,
-		A.CREATE_ID,
-		A.UPDATE_ID,
-		A.ACCOUNT_STATUS_CD,
-		A.PWD_FAIL_CNT,
-		A.PWD_CHANGE_DT,
-		A.IS_SYSTEM,
-		U.user_name
-		FROM T1000_ACCOUNT A
-		JOIN t1000_user U ON
-		A.user_no = U.user_no
-		WHERE A.LOGIN_ID = #{loginId}
-		AND A.PASSWORD =
-		#{password}
-		AND A.ACCOUNT_STATUS_CD = 'B002'
-		AND A.DEL_YN = 'N'
-	</select>
-
 	<select id="findAccountsByFilter" parameterType="map"
 		resultType="com.example.approval24.domain.AccountDTO">
 		SELECT
@@ -98,6 +68,7 @@
 		ORDER BY A.CREATE_DT DESC
 	</select>
 
+
 	<select id="findInstIdByAccountId" parameterType="long"
 		resultType="long">
 		SELECT INST_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID =
@@ -122,5 +93,34 @@
 		and a.account_id != #{accountId}
 	</select>
 
+
+<!-- 계정 신청/등록  -->
+<insert id="insert" parameterType="AccountDTO">
+ 	INSERT INTO t1000_account
+ 	(user_no, inst_id, dept_id, login_Id, password, account_status_cd)
+ 	VALUES
+ 	(#{userNo},#{instId}, #{deptId}, #{loginId}, #{password}, 'B002')
+</insert>
+
+
+<!-- 계정 리스트 (id 리스트)-->
+<select id="getAllAccount" resultType="AccountDTO">
+	select *
+	from t1000_account
+	where del_yn='N'
+</select>
+
+<!-- 특정 부서에 따른 매핑 계정 -->
+<select id="findAccountByDept" parameterType="Long" resultType="AccountDTO">
+	select a.account_id, a.login_id, u.user_name
+	from t1000_account a
+	join t1000_user u
+	on u.user_no = a.user_no
+	where a.dept_id=#{deptId}
+	order by u.user_name
+</select>
+
 </mapper>
+
+
 
