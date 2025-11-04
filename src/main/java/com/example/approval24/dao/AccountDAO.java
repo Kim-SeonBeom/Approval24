@@ -17,4 +17,10 @@ public interface AccountDAO {
     List<AccountDTO> findAccountsByFilter(Map<String, Object> filterMap);
 
 	Long findInstIdByAccountId(Long accountId);
+	
+	// 계정 리스트 (로그인id 리스트)
+	List<AccountDTO> getAllAccount();
+	
+	// 특정 부서에 따른 매핑 계정
+	public List<AccountDTO> findAccountByDept(@Param("deptId") Long deptId);
 }

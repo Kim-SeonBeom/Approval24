@@ -9,7 +9,7 @@ import com.example.approval24.domain.TotalCodeDTO;
 
 @Mapper
 public interface TotalCodeDAO {
-    List<TotalCodeDTO> findCodesByGroupId(@Param("groupId") String groupId);
+    public List<TotalCodeDTO> findCodesByGroupId(@Param("groupId") String groupId);
     
 	public List<TotalCodeDTO> getAllTotalCode();
 	

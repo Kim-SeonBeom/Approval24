@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.ManagerAssignmentDAO">
+<!-- 담당자배정 목록 (id에 따른 name 가져오기) -->
+<select id="getAllManagerAssignment" resultType="ManagerAssignmentDTO">
+	select ma.inst_id, i.inst_name,
+		   ma.dept_id, d.dept_name,
+		   ma.complain_category_id, cc.category_name,
+		   ma.account_id, a.login_id, u.user_name,
+		   ma.del_yn
+	from t1500_manager_assignment ma
+	join t1000_institution i on i.inst_id = ma.inst_id
+	join t1000_department d on d.dept_id = ma.dept_id
+	join t2000_complain_category cc on cc.complain_category_id = ma.complain_category_id
+	join t1000_account a on a.account_id = ma.account_id
+	join t1000_user u on u.user_no = a.user_no 
+</select>
+
+<!-- 담당자배정 상세 -->
+<select id="ManagerAssignmentInfo" resultType="ManagerAssignmentDTO" parameterType="ManagerAssignmentDTO">
+	select ma.inst_id, i.inst_name,
+		   ma.dept_id, d.dept_name,
+		   ma.complain_category_id, cc.category_name,
+		   ma.account_id, a.login_id, u.user_name,
+		   ma.del_yn
+	from t1500_manager_assignment ma
+	join t1000_institution i on i.inst_id = ma.inst_id
+	join t1000_department d on d.dept_id = ma.dept_id
+	join t2000_complain_category cc on cc.complain_category_id = ma.complain_category_id
+	join t1000_account a on a.account_id = ma.account_id
+	join t1000_user u on u.user_no = a.user_no
+	where i.inst_id=#{instId} AND d.dept_id=#{deptId} AND cc.complain_category_id=#{complainCategoryId} AND a.account_id=#{accountId}
+</select>
+
+<!-- 담당자배정 수정/삭제 -->
+<update id="ManagerAssignmentUpd" parameterType="ManagerAssignmentDTO">
+	update t1500_manager_assignment
+	set del_yn=#{delYn},
+	update_dt=SYSDATE,
+	update_id=#{updateId}
+	where inst_id=#{instId}
+	and   dept_id=#{deptId}
+	and	  complain_category_id=#{complainCategoryId}
+	and   account_id=#{accountId}
+</update>
+
+<!-- 담당자배정 등록 -->
+<insert id="ManagerAssignmentInsert" parameterType="ManagerAssignmentDTO">
+	insert into t1500_manager_assignment(inst_id, dept_id, complain_category_id, account_id, create_id)
+	values (#{instId}, #{deptId}, #{complainCategoryId}, #{accountId}, #{createId})
+</insert>
+
+
+
+
+</mapper>

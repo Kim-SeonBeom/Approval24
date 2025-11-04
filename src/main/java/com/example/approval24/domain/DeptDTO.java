@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DeptDTO {
-	private int deptId;
+	private long deptId;
 	
 	private String deptName;
 	
@@ -16,7 +16,7 @@ public class DeptDTO {
 	
 	private String delYn;
 	
-	private int createId;
+	private long createId;
 	
-	private int updateId;
+	private long updateId;
 }
