@@ -1,8 +1,8 @@
 package com.example.approval24.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,9 +97,9 @@ public class ComplainService {
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
-		LocalDateTime localDateTime = LocalDateTime.now().plusDays(dueDt);
-		Date deadlineDt = java.util.Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
+		String deadlineDt = LocalDate.now(ZoneId.systemDefault())
+		        .plusDays(dueDt)
+		        .format(DateTimeFormatter.ISO_DATE);
 		ComplainDTO complainDTO = new ComplainDTO();
 		complainDTO.setComplainCategoryId(complainRegDTO.getComplainCategoryId());
 		complainDTO.setComplainuserNo(complainuserNo);
