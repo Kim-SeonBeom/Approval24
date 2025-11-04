@@ -106,7 +106,7 @@ public class AuthorityController {
         model.addAttribute("authorityDepartments", authorityDepartments);
 
         // 미할당 부서 목록 조회
-        Set<Integer> assignedDeptIds = authorityDepartments.stream()
+        Set<Long> assignedDeptIds = authorityDepartments.stream()
                 .map(DeptDTO::getDeptId)
                 .collect(Collectors.toSet());
         

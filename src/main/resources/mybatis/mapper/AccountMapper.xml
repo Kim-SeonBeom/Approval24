@@ -35,7 +35,6 @@
         FROM T1000_ACCOUNT A
         JOIN t1000_user U ON  A.user_no = U.user_no
         WHERE A.LOGIN_ID = #{loginId}
-          AND A.PASSWORD = #{password}
           AND A.ACCOUNT_STATUS_CD = 'B002'
           AND A.DEL_YN = 'N'
     </select>
@@ -94,6 +93,15 @@
 </select>
 
 
+<!-- 계정 신청/등록  -->
+<insert id="insert" parameterType="AccountDTO">
+ 	INSERT INTO t1000_account
+ 	(user_no, inst_id, dept_id, login_Id, password, account_status_cd)
+ 	VALUES
+ 	(#{userNo},#{instId}, #{deptId}, #{loginId}, #{password}, 'B002')
+</insert>
+
+
 <!-- 계정 리스트 (id 리스트)-->
 <select id="getAllAccount" resultType="AccountDTO">
 	select *
@@ -113,6 +121,5 @@
 
 </mapper>
 
-</mapper>
 
 

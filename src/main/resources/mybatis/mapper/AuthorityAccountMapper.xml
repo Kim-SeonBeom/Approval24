@@ -18,5 +18,13 @@
         WHERE ACCOUNT_ID = #{accountId}
           AND DEL_YN = 'N'
     </select>
+    
+        <!-- 계정 ID로 권한 ID 조회 -->
+    <insert id="authAccountSetup" parameterType="AuthorityAccountDTO" >
+    	INSERT INTO t3000_authority_account
+    	(account_id, authority_id)
+    	VALUES
+    	(#{accountId}, #{authorityId})
+    </insert>
 
 </mapper>

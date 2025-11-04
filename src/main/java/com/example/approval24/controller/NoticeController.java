@@ -29,7 +29,7 @@ public class NoticeController {
 	}
 	
 	@GetMapping("/notice/detail/{noticeId}")
-	public String noticeDetail(@PathVariable Long noticeId, Model model) {
+	public String noticeDetail(@PathVariable long noticeId, Model model) {
 		
 		System.out.println("컨트롤러 시작");
 		NoticeDTO notice = noticeService.getnoticeDetail(noticeId);
@@ -55,7 +55,7 @@ public class NoticeController {
 	}
 	// 업데이트 불러오기
 	@GetMapping("/notice/edit/{noticeId}")
-	public String editNotice(@PathVariable Long noticeId, Model model) {
+	public String editNotice(@PathVariable long noticeId, Model model) {
 		System.out.println("edit 컨트롤러 시작");
 		NoticeDTO notice = noticeService.getnoticeDetail(noticeId);
 		model.addAttribute("notice", notice);
