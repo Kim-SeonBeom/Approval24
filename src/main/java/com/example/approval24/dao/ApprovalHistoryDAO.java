@@ -1,0 +1,20 @@
+package com.example.approval24.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.example.approval24.domain.ApprovalHistoryDTO;
+
+@Mapper
+public interface ApprovalHistoryDAO {
+	List<ApprovalHistoryDTO> selectMyApprovalHistoryList(
+		    @Param("accountId") Long accountId,
+		    @Param("filterMap") Map<String, Object> filterMap
+		);
+	int updateApprovalHistoryStatus(ApprovalHistoryDTO approvalHistoryDTO);
+	
+	int insertApprovalHistory(ApprovalHistoryDTO approvalHistoryDTO);
+}
