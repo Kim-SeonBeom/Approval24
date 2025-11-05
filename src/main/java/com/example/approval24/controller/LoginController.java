@@ -31,11 +31,12 @@ public class LoginController {
             @RequestParam String password,
             HttpServletRequest request,
             Model model) {
+    	
     	if (loginId == null || loginId.isEmpty() || password == null || password.isEmpty()) {
             model.addAttribute("error", "아이디와 비밀번호를 입력해주세요.");
             return "login";
         }
-    
+
         AccountDTO accountDTO = accountService.login(loginId,password);
         
         if (accountDTO == null) {

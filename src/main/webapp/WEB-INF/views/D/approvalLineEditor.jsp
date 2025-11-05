@@ -1,40 +1,74 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<div id="approval-editor-area">
-    <h3>결재 라인 편집기</h3>
+<div id="content-wrapper" class="d-flex flex-column">
+	<div id="approval-editor-area">
+		<div class="container-fluid mb-4">
 
-    <div>
-        <label>부서 선택:</label>
-        <select id="deptSelect">
-            <option value="">-- 부서 선택 --</option>
-        </select>
+			<div class="card shadow mb-4">
+				<div class="card-header py-3 d-flex align-items-center justify-content-between">
+					<h3 class="m-0">결재 라인 편집기</h3>
+					<button type="button" class="btn btn-primary btn-sm" id="addLineBtn">결재자 추가</button>
+				</div>
+				<div class="card-body">
+					<table class="table table-bordered mb-0  text-center" width="100%">
+						<colgroup>
+							<col style="width: 5%">
+							<!-- 부서 -->
+							<col style="width: 20%">
+							<!-- 부서 select -->
+							<col style="width: 5%">
+							<!-- 계정 -->
+							<col style="width: 20%">
+							<!-- 계정 select -->
+							<col style="width: 10%">
+							<!-- 승인자 유형 -->
+							<col style="width: 40%">
+							<!-- 승인자 select -->
+						</colgroup>
+						<tbody>
+							<tr>
+								<th>부서 선택</th>
+								<td><select class="form-control w-auto" id="deptSelect">
+										<option value="">-- 부서 선택 --</option>
+								</select></td>
+								<th>계정 선택</th>
+								<td><select class="form-control w-auto" id="accountSelect">
+										<option value="">-- 계정 선택 --</option>
+								</select></td>
+								<th>승인자 유형</th>
+								<td><select class="form-control w-auto" id="approverTypeSelect">
+										<option value="">-- 승인자 유형 선택 --</option>
+								</select></td>
+							</tr>
 
-        <label>계정 선택:</label>
-        <select id="accountSelect">
-            <option value="">-- 계정 선택 --</option>
-        </select>
+						</tbody>
+					</table>
+					<table class="table table-bordered mb-0  text-center" width="100%" id="approvalLineTable">
+						<colgroup>
+							<col style="width: 25%">
+							<col style="width: 25%">
+							<col style="width: 25%">
+							<col style="width: 25%">
 
-        <label>승인자 유형:</label>
-        <select id="approverTypeSelect">
-            <option value="">-- 승인자 유형 선택 --</option>
-        </select>
+						</colgroup>
+						<thead>
+							<tr>
+								<th>부서</th>
+								<th>계정</th>
+								<th>승인자 유형</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
 
-        <button id="addLineBtn">결재자 추가</button>
-    </div>
-
-    <table border="1" id="approvalLineTable">
-        <thead>
-            <tr>
-                <th>부서</th>
-                <th>계정</th>
-                <th>승인자 유형</th>
-                <th>삭제</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-
-    <button id="submitApprovalBtn">결재 등록</button>
+					<div class="text-right">
+						<button type="button" class="btn btn-primary mt-3" id="submitApprovalBtn">결재 등록</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -104,14 +138,14 @@ document.addEventListener("DOMContentLoaded", () => {
             <td data-id="\${deptSel.value}">\${deptSel.options[deptSel.selectedIndex].text}</td>
             <td data-id="\${accSel.value}">\${accSel.options[accSel.selectedIndex].text}</td>
             <td data-id="\${typeSel.value}">\${typeSel.options[typeSel.selectedIndex].text}</td>
-            <td><button class="delBtn">삭제</button></td>
+            <td><button type="button" class="btn btn-danger btn-sm btn-del">삭제</button></td> 
         `;
         tableBody.appendChild(tr);
     });
 
     // 삭제 버튼 이벤트
     tableBody.addEventListener("click", (e) => {
-        if (e.target.classList.contains("delBtn")) {
+        if (e.target.classList.contains("btn-del")) {
             e.target.closest("tr").remove();
         }
     });
