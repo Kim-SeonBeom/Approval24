@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.service.AccountService;
 
 @Controller
@@ -30,18 +31,32 @@ public class LoginController {
             @RequestParam String password,
             HttpServletRequest request,
             Model model) {
-
-        Long accountID = accountService.login(loginId, password);
+    	if (loginId == null || loginId.isEmpty() || password == null || password.isEmpty()) {
+            model.addAttribute("error", "아이디와 비밀번호를 입력해주세요.");
+            return "login";
+        }
+    
+        AccountDTO accountID = accountService.login(loginId, password);
         if (accountID == null) {
             model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
             return "login";
         }
+        String status = accountID.getAccountStatusCd();
+         if("mispassword".equals(status)) {
+        	int failCnt = accountID.getPwdFailCnt();
+        	 model.addAttribute("error", " 비밀번호를 "+ failCnt +" 회 잘못 입력 하였습니다.(최대 5회)");
+        	 return "login";
+        }else if ("B004".equals(status)) {
+            model.addAttribute("error", "계정이 비밀번호 5회 오류로 인해 잠금되었습니다.");
+            return "login";
+        }
+        	
 
         HttpSession session = request.getSession();
         session.setAttribute("user", accountID);
-        session.setAttribute("authMenus", accountService.getAuthMenus(accountID));
-
-        return "/index";
+        session.setAttribute("authMenus", accountService.getAuthMenus(accountID.getAccountId()));
+    	
+        return "index";
     }
 
 

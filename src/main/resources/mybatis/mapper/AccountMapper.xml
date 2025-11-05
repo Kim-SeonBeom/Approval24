@@ -119,6 +119,22 @@
 	order by u.user_name
 </select>
 
+<!-- 계정 업데이트 del_yn 포함 -->
+<update id="updateAccount" parameterType="AccountDTO" >
+	UPDATE t1000_account a
+	<set>
+		update_dt = SYSDATE,
+		<if test ="instId != null">inst_id=#{instId},</if>
+		<if test ="deptId != null ">dept_id=#{deptId},</if>
+		<if test ="password != null and password != ''">password=#{password}, pwd_change_dt = SYSDATE,</if>
+		<if test = "delYn != null and delYn !=''">del_yn=#{delYn},</if>
+		<if test = "updateId != null">update_id=#{updateId},</if>
+		<if test = "accountStatusCd != null and accountStatusCd !=''">account_status_cd=#{accountStatusCd},</if>
+		<if test = "pwdFailCnt != null">pwd_fail_cnt=#{pwdFailCnt},</if>
+	</set>
+	WHERE account_id = #{accountId}
+</update>
+
 </mapper>
 
 
