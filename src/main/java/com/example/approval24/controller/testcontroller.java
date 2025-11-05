@@ -69,7 +69,13 @@ public class testcontroller {
 	public String authorityEdit() {
 		return "authorityEdit";
 	}
-
+	
+	//approvalLine
+	@GetMapping("/approvalLine")
+	public String approvalLine() {
+		return "D/approvalLine";
+	}
+	
 
 	@GetMapping("/division")
 	public String division() {
