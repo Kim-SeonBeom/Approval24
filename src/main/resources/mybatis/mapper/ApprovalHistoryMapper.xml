@@ -135,7 +135,7 @@
         LIMIT 1
     </select>
     
-<select id="selectHistoryByComplainId" resultType="ApprovalHistoryDTO">
+<select id="getHistoryIdByComplainId" resultType="ApprovalHistoryDTO">
         
         SELECT 
             T1.COMPLAIN_ID,

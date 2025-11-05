@@ -39,40 +39,43 @@
 			<div class="card-body">
     <form action="/approval24/bookmark/create" method="post" id="bookmarkForm">
        <div class="d-flex align-items-center mb-3">
-        <p class="m-0  me-3" >
+        <p class="form-group m-0  me-3" >
             <label for="bookmarkName">북마크 이름:</label>
             <input type="text" id="bookmarkName" name="bookmarkName" required>
         </p>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <p class="m-0">
+        <p class="form-group m-0">
             <label for="accountId">작성자 ID:</label>
             <%-- 실제 환경에서는 세션에서 가져와 hidden 필드로 처리 --%>
             <input type="number" id="accountId" name="accountId" value="${session.user}" readonly required> 
         </p>
         </div>
 
-        <div class="approver-box mb-3 border-dark" >
+        <div class="approver-box mb-3 border-dark border-2" >
             <h3 class="mb-3">결재자 추가</h3>
-            <hr class="border-dark">
+            <hr class="border-dark border-1 opacity-100">
             
             <%-- 1. 부서 선택 드롭다운 (Controller에서 받은 depts 사용) --%>
-            <label for="deptSelect">부서 선택:</label>
-            <select id="deptSelect">
+            <div class="mb-3">
+            <label for="deptSelect" class="form-label">부서 선택:</label>
+            <select id="deptSelect" class="form-select w-auto d-inline-block text-dark">
                 <option value="">-- 부서를 선택하세요 --</option>
                 <c:forEach var="dept" items="${depts}">
                     <option value="${dept.deptId}">${dept.deptName}</option>
                 </c:forEach>
             </select>
-            
+            </div>
+           
             <%-- 2. 부서 선택에 따라 계정 목록이 동적으로 채워질 곳 --%>
             <div id="accountList" style="margin-top: 10px;">
                 </div>
-            
+              <hr class="border-dark border-1 opacity-100">
             <%-- 3. 최종적으로 등록될 결재자 목록 --%>
-            <h4 style="margin-top: 20px;">선택된 결재 경로 (Approvers)</h4>
+            <h5 style="margin-top: 20px;" class="text-dark fw-bold">선택된 결재 경로 (Approvers)</h5>
             <div id="selectedApprovers">
+            </div>
                 </div>
-        </div>
+    
 		<div style="text-align: right;">
         <button type="submit" class="btn btn-primary">북마크 저장</button>
         <a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
@@ -123,9 +126,9 @@
                         var html = '<ul>';
                         if (accounts.length > 0) {
                             $.each(accounts, function(i, acc) {
-                                html += '<li class="approver-list-item">' + 
+                                html += '<li class="approver-list-item text-dark">' + 
                                         acc.userName + ' (' + acc.deptName + ') ' + 
-                                        '<button type="button" onclick="addApprover(' + acc.accountId + ', \'' + acc.userName + '\')">추가</button>' +
+                                        '<button type="button" class="btn btn-secondary" onclick="addApprover(' + acc.accountId + ', \'' + acc.userName + '\')">추가</button>' +
                                         '</li>';
                             });
                         } else {
@@ -149,14 +152,14 @@
             approverCount++;
             
             // DTO 구조에 맞게 Hidden 필드와 표시 요소를 추가
-            var approverHtml = '<div id="appr_' + approverCount + '" style="margin-bottom: 5px;">' +
+            var approverHtml = '<div id="appr_' + approverCount + '" class="border border-dark d-flex align-items-center justify-content-between mb-2 p-2 ">' +
                                 '<strong>순서 ' + approverCount + ' : ' + approverName + '</strong>' +
                                 // List<Approver> approvers[i].fieldName 형식으로 Spring이 바인딩
                                 '<input type="hidden" name="approvers[' + (approverCount - 1) + '].seqNo" value="' + approverCount + '">' +
                                 '<input type="hidden" name="approvers[' + (approverCount - 1) + '].approverId" value="' + accountId + '">' +
                                 '<input type="hidden" name="approvers[' + (approverCount - 1) + '].approverTypeCd" value="AP01">' + // 예시 코드
                                 '<input type="hidden" name="approvers[' + (approverCount - 1) + '].delYn" value="N">' +
-                                '<button type="button" onclick="removeApprover(' + approverCount + ')">제거</button>' +
+                                '<button type="button" class="btn btn-warning ml-4"onclick="removeApprover(' + approverCount + ')">제거</button>' +
                                 '</div>';
             
             $('#selectedApprovers').append(approverHtml);

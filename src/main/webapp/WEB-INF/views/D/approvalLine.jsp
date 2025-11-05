@@ -91,7 +91,7 @@
         // jQuery 코드 블록 내에서는 $를 사용합니다.
         $(document).ready(function() {
             const complainId = 62; 
-            const url = "/line"; 
+            const url = "/approval24/api/approval/line"; 
             
             $.ajax({
                 type: "GET",
