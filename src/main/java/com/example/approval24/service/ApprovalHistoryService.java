@@ -9,13 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.approval24.dao.ApprovalHistoryDAO;
+import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.domain.ApprovalHistoryDTO;
+import com.example.approval24.domain.ComplainDTO;
 
 @Service
 public class ApprovalHistoryService {
 
     @Autowired
-    private  ApprovalHistoryDAO approvalHistoryDAO;
+    private ApprovalHistoryDAO approvalHistoryDAO;
+    
+    @Autowired
+    private ComplainDAO complainDAO;
 
     @Transactional(readOnly = true) 
     public List<ApprovalHistoryDTO> getMyApprovalHistoryList(
@@ -27,30 +32,46 @@ public class ApprovalHistoryService {
 
     @Transactional
     public int processApprovalHistory(ApprovalHistoryDTO approvalData) {
-        
-        // 1. 비즈니스 로직 (필수 값 체크)
-        if (approvalData.getComplainId() == null || approvalData.getApprovalStatusCd() == null) {
+        // 필수 값 체크
+        if (approvalData.getApprovalStatusCd() == null) {
             throw new IllegalArgumentException("필수 결재 정보가 누락되었습니다.");
         }
         
         int result = 0;
         
-        // 2. SEQ_NO의 유무로 삽입 또는 갱신 결정
         if (approvalData.getSeqNo() == null) {
-            // 최초 결재 등록 시, 민원(COMPLAIN) 테이블의 상태도 업데이트
-            
-            result = approvalHistoryDAO.insertApprovalHistory(approvalData); 
-            
-        } else {
-            if (approvalData.getSeqNo() == null) {
-                throw new IllegalArgumentException("기존 이력 갱신 시에는 SEQ_NO가 필수입니다.");
-            }
-            result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
-            
-            // 최종 승인/반려 시, 민원(COMPLAIN) 테이블의 최종 상태를 업데이트
+        	throw new IllegalArgumentException("기존 이력 갱신 시에는 SEQ_NO가 필수입니다.");
         }
         
-        return result;
+        Long nextSeq = approvalData.getSeqNo() + 1;
+        Long complainId = approvalData.getComplainId();
+        String codeId = approvalData.getApprovalStatusCd();
+        // 다음 결재자 가져오기
+        ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
+        		complainId, nextSeq);
+        if ("E002".equals(codeId)) { // 승인 로직
+        	result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
+        	if(nextApprovalData == null) {
+        		ComplainDTO complainDTO = complainDAO.findById(complainId);
+        		complainDTO.setComplainStatusCd("D003"); //민원 처리 완료
+        	}
+        	else {
+        		nextApprovalData.setApprovalStatusCd("E001"); // 결재
+        		approvalHistoryDAO.updateApprovalHistoryStatus(nextApprovalData);
+        	}
+        	return result;
+        } 
+        else if ("E003".equals(codeId)) { // 반려 로직
+        	result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
+        	nextApprovalData = approvalHistoryDAO.getComplainManager(complainId);
+        	nextApprovalData.setApprovalStatusCd("E001"); // 결재
+        	approvalHistoryDAO.insertApprovalHistory(nextApprovalData);
+        	
+        	return result;
+        } 
+        else {
+            throw new IllegalArgumentException("처리할 수 없는 결재 상태 코드입니다: " + codeId);
+        }
     }
 
 
@@ -96,5 +117,10 @@ public class ApprovalHistoryService {
             approvalHistoryDAO.insertApprovalHistory(dto);
         }
     }
+
+
+	public List<ApprovalHistoryDTO> getApprovalHistoryByComplainId(Long complainId) {
+		return approvalHistoryDAO.getHistoryIdByComplainId(complainId);
+	}
     
 }

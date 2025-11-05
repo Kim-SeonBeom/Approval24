@@ -17,4 +17,11 @@ public interface ApprovalHistoryDAO {
 	int updateApprovalHistoryStatus(ApprovalHistoryDTO approvalHistoryDTO);
 	
 	int insertApprovalHistory(ApprovalHistoryDTO approvalHistoryDTO);
+	
+	ApprovalHistoryDTO getHistoryIdByComplainIdAndSeqNo(
+            @Param("complainId") Long complainId,
+            @Param("seqNo") Long seqNo);
+	ApprovalHistoryDTO getComplainManager(Long complainId);
+	
+	List<ApprovalHistoryDTO> getHistoryIdByComplainId(Long complainId);
 }
