@@ -30,6 +30,7 @@ import com.example.approval24.domain.UserDTO;
 import com.example.approval24.service.AuthorityService;
 import com.example.approval24.service.DeptService;
 import com.example.approval24.service.SignUpService;
+import com.example.approval24.service.UserService;
 
 @Controller
 @RequestMapping("/signup") 
@@ -37,6 +38,9 @@ public class SignupController {
 	
 	@Autowired
 	private SignUpService signUpService; 
+	
+	@Autowired
+	private UserService userService; 
 	
 	@Autowired
 	private   InstDAO instDAO;
@@ -85,6 +89,10 @@ public class SignupController {
     	String residentNo = (String) m.get("residentNo"); 
     	if(residentNo == null || residentNo.isEmpty()) {
     			throw new IllegalArgumentException("주민번호가 입력되지 않았습니다.");
+    		}
+    	UserDTO userdto = userService.getUserDetailByResidentNo(residentNo);
+    	if(userdto == null) {
+    		throw new IllegalArgumentException("해당하는 직원이 없습니다.");
     		}
     		// 생성된 계정 id
     		Long accountId = signUpService.approveRequest(m);

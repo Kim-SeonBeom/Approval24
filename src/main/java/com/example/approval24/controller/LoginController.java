@@ -37,6 +37,7 @@ public class LoginController {
         }
     
         AccountDTO accountDTO = accountService.login(loginId,password);
+        
         if (accountDTO == null) {
             model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
             return "login";

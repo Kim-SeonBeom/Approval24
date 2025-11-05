@@ -55,9 +55,6 @@
                                     <div class="text-center">
                                         <a class="small" href="${pageContext.request.contextPath}/signup/Form">계정이 없으신가요?</a>
                                     </div>
-                                         <div class="text-center">
-                                        <a class="small" href="forgot-password.html">비밀번호를 잊으셨나요?</a>
-                                    </div>
 
                                 </div>
                             </div>

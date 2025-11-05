@@ -16,6 +16,7 @@ import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
 import com.example.approval24.domain.MenuDTO;
 import com.example.approval24.domain.MenuVO;
+import com.example.approval24.util.BCryptUtil;
 
 @Service
 public class AccountService {
@@ -32,8 +33,9 @@ public class AccountService {
     //로그인 기능
     public AccountDTO login(String loginId, String password) {
         AccountDTO account = accountDAO.findByLogin(loginId);
-        if (account == null) return null; 
-        if (!password.equals(account.getPassword()))
+        if (account == null) return null;
+        boolean check = BCryptUtil.matches(password, account.getPassword());
+        if (!check)
         {
         	int cnt = account.getPwdFailCnt();
         	if(cnt < 5) {
