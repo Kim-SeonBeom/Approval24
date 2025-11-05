@@ -1,4 +1,4 @@
-package com.example.approval24.interceptor;
+package com.example.approval24.controller.active;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +39,9 @@ public class UserInfoControllerAdvice {
         }
 
         AccountDTO userInfo = dtoList.get(0);
+        if(userId != userInfo.getAccountId()) {
+        	return;
+        }
         model.addAttribute("loginuserName", userInfo.getUserName());
         model.addAttribute("logindeptName", userInfo.getDeptName());
     }
