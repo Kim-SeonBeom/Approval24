@@ -20,7 +20,6 @@
     FROM t1000_institution_department t
     JOIN t1000_department d ON d.dept_id = t.dept_id
     WHERE t.inst_id = #{instId}
-    ORDER BY d.dept_name
 </select>
 
 <!-- 부서와 기관 매핑 삭제 -->

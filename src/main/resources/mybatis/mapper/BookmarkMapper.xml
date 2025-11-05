@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.approval24.dao.BookmarkDAO">
+
+<resultMap id="bookmarkResultMap" type="com.example.approval24.domain.BookmarkDTO">
+    
+    <id property="bookmarkId" column="BOOKMARK_ID"/>
+    
+    <result property="accountId" column="ACCOUNT_ID"/>
+    <result property="bookmarkName" column="BOOKMARK_NAME"/>
+    <result property="createDt" column="CREATE_DT"/>
+    <result property="updateDt" column="UPDATE_DT"/>
+    <result property="delYn" column="DEL_YN"/>
+    
+    <collection property="approvers" column="BOOKMARK_ID" select="selectApproversByBookmarkId" ofType="com.example.approval24.domain.BookmarkDTO$Approver"/>
+</resultMap>
+
+<select id="selectApproversByBookmarkId" parameterType="long" resultType="com.example.approval24.domain.BookmarkDTO$Approver">
+    SELECT 
+        BD.SEQ_NO, 
+        BD.APPROVER_ID, 
+        BD.APPROVER_TYPE_CD, 
+        TCC.CODE_NAME AS approverTypeCdName,  A.USER_NAME AS approverName,          D.DEPT_NAME AS deptName,              BD.CREATE_DT, 
+        BD.UPDATE_DT
+    FROM T2000_BOOKMARK_DETAIL BD
+    
+    -- 결재자 계정 정보 조인
+    JOIN T1000_ACCOUNT A ON BD.APPROVER_ID = A.ACCOUNT_ID 
+    -- 결재자 부서 정보 조인
+    LEFT JOIN T1000_DEPARTMENT D ON A.DEPT_ID = D.DEPT_ID
+    -- 결재 타입 코드 정보 조인
+    LEFT JOIN TOTAL_CODE TCC ON BD.APPROVER_TYPE_CD = TCC.CODE_ID AND TCC.GROUP_ID = 'F0'
+    
+    WHERE BD.BOOKMARK_ID = #{bookmarkId}
+    ORDER BY BD.SEQ_NO
+</select>
+    
+    <select id="findByAccountId" parameterType="long" resultMap="bookmarkResultMap">
+        SELECT BOOKMARK_ID, ACCOUNT_ID, BOOKMARK_NAME, CREATE_DT, UPDATE_DT, DEL_YN
+        FROM T2000_BOOKMARK
+        WHERE ACCOUNT_ID = #{accountId} AND DEL_YN = 'N'
+        ORDER BY BOOKMARK_NAME
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="bookmarkResultMap">
+        SELECT BOOKMARK_ID, ACCOUNT_ID, BOOKMARK_NAME, CREATE_DT, UPDATE_DT, DEL_YN
+        FROM T2000_BOOKMARK
+        WHERE BOOKMARK_ID = #{bookmarkId} AND DEL_YN = 'N'
+    </select>
+
+    <insert id="insertBookmark" parameterType="com.example.approval24.domain.BookmarkDTO">
+        <selectKey keyProperty="bookmarkId" resultType="long" order="BEFORE">
+            SELECT T2000_BOOKMARK_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T2000_BOOKMARK (BOOKMARK_ID, ACCOUNT_ID, BOOKMARK_NAME, CREATE_DT, DEL_YN)
+        VALUES (#{bookmarkId}, #{accountId}, #{bookmarkName}, SYSDATE, 'N')
+    </insert>
+
+    <update id="updateBookmark" parameterType="map">
+        UPDATE T2000_BOOKMARK
+        <set>
+            <if test="bookmarkName != null and bookmarkName != ''">BOOKMARK_NAME = #{bookmarkName},</if>
+            <if test="delYn != null">DEL_YN = #{delYn},</if>
+            UPDATE_DT = SYSDATE
+        </set>
+        WHERE BOOKMARK_ID = #{bookmarkId}
+    </update>
+
+    <update id="updateApprover" parameterType="map">
+        UPDATE T2000_BOOKMARK_DETAIL
+        <set>
+            <if test="approverId != null">APPROVER_ID = #{approverId},</if>
+            <if test="approverTypeCd != null">APPROVER_TYPE_CD = #{approverTypeCd},</if>
+            UPDATE_DT = SYSDATE
+        </set>
+        WHERE BOOKMARK_ID = #{bookmarkId}
+          AND SEQ_NO = #{seqNo}
+    </update>
+
+<insert id="insertApprovers" parameterType="java.util.List">
+    INSERT ALL
+    <foreach collection="list" item="approver" separator=" ">
+        INTO T2000_BOOKMARK_DETAIL (
+            BOOKMARK_ID, SEQ_NO, APPROVER_ID, APPROVER_TYPE_CD
+        )
+        VALUES (
+            #{approver.bookmarkId}, 
+            #{approver.seqNo}, 
+            #{approver.approverId}, 
+            #{approver.approverTypeCd}
+        )
+    </foreach>
+    SELECT * FROM DUAL
+</insert>
+
+<delete id="deleteApproversByBookmarkId" parameterType="long">
+    DELETE FROM T2000_BOOKMARK_DETAIL
+    WHERE BOOKMARK_ID = #{bookmarkId}
+</delete>
+
+</mapper>

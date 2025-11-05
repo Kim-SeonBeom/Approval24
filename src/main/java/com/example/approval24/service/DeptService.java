@@ -15,7 +15,6 @@ import com.example.approval24.domain.InstDTO;
 
 @Service
 public class DeptService {
-
     @Autowired
     private InstDAO instdao;
 
@@ -96,4 +95,8 @@ public class DeptService {
 
         return d + i;
     }
+
+	public List<DeptInstDTO> deptByInst(Long instId) {
+		return deptinstdao.findDeptByInst(instId);
+	}
 }

@@ -11,15 +11,11 @@ import org.springframework.stereotype.Service;
 import com.example.approval24.dao.AccountDAO;
 import com.example.approval24.dao.AuthorityAccountDAO;
 import com.example.approval24.dao.AuthorityMenuDAO;
-import com.example.approval24.dao.DeptInstDAO;
 import com.example.approval24.dao.MenuDAO;
-import com.example.approval24.dao.TotalCodeDAO;
 import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
-import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.MenuDTO;
 import com.example.approval24.domain.MenuVO;
-import com.example.approval24.domain.TotalCodeDTO;
 
 @Service
 public class AccountService {
@@ -32,10 +28,6 @@ public class AccountService {
     private AuthorityMenuDAO authorityMenuDAO;
     @Autowired
     private MenuDAO menuDAO;
-    @Autowired
-    private DeptInstDAO deptInstDAO;
-    @Autowired
-    private TotalCodeDAO codeDAO;
 
     //로그인 기능
     public AccountDTO login(String loginId, String password) {
@@ -124,20 +116,9 @@ public class AccountService {
 	public Long findInstIdByAccountId(Long accountId) {
 	    return accountDAO.findInstIdByAccountId(accountId);
 	}
-
-	//부서 목록 조회
-	public List<DeptInstDTO> getDeptList(Long instId) {
-	    return deptInstDAO.findDeptByInst(instId);
-	}
-
-	//계정 상태 코드 이름 조회
-	public List<TotalCodeDTO> getAccountStatusList(String groupId) {
-	    return codeDAO.findCodesByGroupId(groupId);
-	}
 	
 	//현재 로그인한 아이디와 같은기관&같은부서인 아이디 목록 조회
 	public List<AccountDTO> myTeamAccountList(long accountId){
-		 
 		return accountDAO.findByAccountIdAndDeptIdAndInstId(accountId);
 	}
 

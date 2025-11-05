@@ -14,60 +14,59 @@
 		t1000_account
 	</select>
 
-	<select id="findAccountsByFilter" parameterType="map"
-		resultType="com.example.approval24.domain.AccountDTO">
-		SELECT
-		A.ACCOUNT_ID,
-		U.USER_NO,
-		U.USER_NAME,
-		A.INST_ID,
-		A.DEPT_ID,
-		D.DEPT_NAME,
-		A.LOGIN_ID,
-		A.PASSWORD,
-		A.CREATE_DT,
-		A.UPDATE_DT,
-		A.DEL_YN,
-		A.CREATE_ID,
-		A.UPDATE_ID,
-		A.ACCOUNT_STATUS_CD,
-		CC.CODE_NAME AS
-		ACCOUNT_STATUS_NAME,
-		A.PWD_FAIL_CNT,
-		A.PWD_CHANGE_DT
-		FROM t1000_account A
-		JOIN t1000_user U ON A.USER_NO = U.USER_NO
-		LEFT JOIN t1000_department D
-		ON A.DEPT_ID = D.DEPT_ID
-		LEFT JOIN total_code CC
-		ON A.ACCOUNT_STATUS_CD
-		= CC.CODE_ID
-		AND CC.GROUP_ID = 'B0'
-		WHERE A.IS_SYSTEM = 'N'
-		AND A.INST_ID
-		= #{instId}
-		AND A.DEL_YN = 'N'
-		<if test="loginId != null and loginId != ''">
-			AND A.LOGIN_ID LIKE '%' || #{loginId} || '%'
-		</if>
-		<if test="userName != null and userName != ''">
-			AND U.USER_NAME LIKE '%' || #{userName} || '%'
-		</if>
-		<if test="deptId != null">
-			AND A.DEPT_ID = #{deptId}
-		</if>
-		<if test="accountStatus != null and accountStatus != ''">
-			AND A.ACCOUNT_STATUS_CD = #{accountStatus}
-		</if>
-		<if test="startDate != null">
-			AND A.CREATE_DT &gt;= #{startDate}
-		</if>
-		<if test="endDate != null">
-			AND A.CREATE_DT &lt;= #{endDate}
-		</if>
-		ORDER BY A.CREATE_DT DESC
-	</select>
-
+<select id="findAccountsByFilter" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
+    SELECT 
+        A.ACCOUNT_ID,
+        U.USER_NO,
+        U.USER_NAME, 
+        A.INST_ID,
+        A.DEPT_ID,
+        D.DEPT_NAME, 
+        A.LOGIN_ID,
+        A.PASSWORD,
+        A.CREATE_DT,
+        A.UPDATE_DT,
+        A.DEL_YN,
+        A.CREATE_ID,
+        A.UPDATE_ID,
+        A.ACCOUNT_STATUS_CD,
+        CC.CODE_NAME AS ACCOUNT_STATUS_NAME,
+        A.PWD_FAIL_CNT,
+        A.PWD_CHANGE_DT
+    FROM t1000_account A
+    JOIN t1000_user U ON A.USER_NO = U.USER_NO
+    LEFT JOIN t1000_department D ON A.DEPT_ID = D.DEPT_ID
+    LEFT JOIN total_code CC
+        ON A.ACCOUNT_STATUS_CD = CC.CODE_ID
+       AND CC.GROUP_ID = 'B0'
+    WHERE A.IS_SYSTEM = 'N'
+      <if test="instId != null">
+        AND A.INST_ID = #{instId}
+      </if>
+      AND A.DEL_YN = 'N'
+      <if test="accountId != null">
+        AND A.ACCOUNT_ID = #{accountId}
+      </if>
+      <if test="loginId != null and loginId != ''">
+        AND A.LOGIN_ID LIKE '%' || #{loginId} || '%'
+      </if>
+      <if test="userName != null and userName != ''">
+        AND U.USER_NAME LIKE '%' || #{userName} || '%'
+      </if>
+      <if test="deptId != null">
+        AND A.DEPT_ID = #{deptId}
+      </if>
+      <if test="accountStatus != null and accountStatus != ''">
+        AND A.ACCOUNT_STATUS_CD = #{accountStatus}
+      </if>
+      <if test="startDate != null">
+        AND A.CREATE_DT &gt;= #{startDate}
+      </if>
+      <if test="endDate != null">
+        AND A.CREATE_DT &lt;= #{endDate}
+      </if>
+    ORDER BY A.CREATE_DT DESC
+</select>
 
 	<select id="findInstIdByAccountId" parameterType="long"
 		resultType="long">
@@ -127,12 +126,12 @@
           AND A.DEL_YN = 'N'
     </select>
 
-
 <!-- 계정 리스트 (id 리스트)-->
 <select id="getAllAccount" resultType="AccountDTO">
 	select *
 	from t1000_account
 	where del_yn='N'
+>>>>>>> 67d1c1bd27617a379cbf023038e7f77b7ee6fe7b
 </select>
 
 <!-- 특정 부서에 따른 매핑 계정 -->
