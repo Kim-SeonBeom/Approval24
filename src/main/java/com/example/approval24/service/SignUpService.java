@@ -20,6 +20,7 @@ import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.InstDTO;
 import com.example.approval24.domain.RequestDTO;
 import com.example.approval24.domain.UserDTO;
+import com.example.approval24.util.BCryptUtil;
 
 @Service
 public class SignUpService {
@@ -47,11 +48,16 @@ public class SignUpService {
 		if(user != null) {
 			AccountDTO accountDTO = new AccountDTO();
 			accountDTO.setLoginId((String)m.get("loginId"));
-			accountDTO.setPassword((String)m.get("password"));
+			
+			String password = BCryptUtil.hash((String)m.get("password"));
+			accountDTO.setPassword(password);
+			
 			accountDTO.setUserNo(user.getUserNo());
+			
 			String instIdStr = ((String) m.get("instId"));
 			Long instId =Long.valueOf(instIdStr);
 			accountDTO.setInstId(instId );
+			
 			String deptIdStr = ((String) m.get("deptId"));
 			Long deptId = Long.valueOf(deptIdStr);
 			accountDTO.setDeptId(deptId );

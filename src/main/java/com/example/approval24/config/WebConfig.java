@@ -14,11 +14,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login", "/logout", "/css/**", "/js/**", "/images/**", "/resources/**");
+                .excludePathPatterns("/login", "/logout", "/css/**", "/js/**", "/images/**", "/resources/**","/signup/**");
         
         registry.addInterceptor(new AuthMenuInterceptor())
         .addPathPatterns("/**")
-        .excludePathPatterns("/login","/logout","/css/**","/js/**","/images/**", "/resources/**");
+        .excludePathPatterns("/login","/logout","/css/**","/js/**","/images/**", "/resources/**","/signup/**");
     }
     
     
