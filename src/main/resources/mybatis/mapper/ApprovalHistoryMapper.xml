@@ -65,6 +65,10 @@
                 AND T1.APPROVAL_STATUS_CD = #{filterMap.approvalStatusCd}
             </if>
             
+            <if test="filterMap.categoryCd != null and filterMap.categoryCd != ''">
+                AND T3.CATEGORY_CD = #{filterMap.categoryCd}
+            </if>
+            
             AND T2.DEL_YN = 'N'
 
         </where>
