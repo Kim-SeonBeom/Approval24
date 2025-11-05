@@ -28,6 +28,8 @@ public interface AccountDAO {
 	// 특정 부서에 따른 매핑 계정
 	public List<AccountDTO> findAccountByDept(@Param("deptId") Long deptId);
 
+	List<AccountDTO> findByAccountIdAndDeptIdAndInstId(long accountId);
+
 }
 
 
