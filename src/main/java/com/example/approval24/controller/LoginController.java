@@ -37,6 +37,7 @@ public class LoginController {
         }
     
         AccountDTO accountDTO = accountService.login(loginId,password);
+        
         if (accountDTO == null) {
             model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
             return "login";
@@ -51,12 +52,12 @@ public class LoginController {
             return "login";
         }
         	
-
+        model.asMap().clear();
         HttpSession session = request.getSession();
         session.setAttribute("user", accountDTO.getAccountId());
         session.setAttribute("authMenus", accountService.getAuthMenus(accountDTO.getAccountId()));
     	
-        return "index";
+        return "redirect:/";
     }
 
 
