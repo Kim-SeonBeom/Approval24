@@ -130,10 +130,16 @@ document.addEventListener("DOMContentLoaded", () => {
             approverTypeCd: tr.children[2].dataset.id 
         }));
         
-        const complainIdValue = parseInt($('#complainId').val());
+        const complainIdString = $('input[name="complainId"]').val();
+        
+        if (!complainIdString || isNaN(complainIdString)) {
+            return console.error("민원 ID가 유효하지 않습니다. HTML input[id='complain-id']의 value를 확인하세요.");
+        }
 
+        const complainIdInt = parseInt(complainIdString, 10);
+        
         const requestBody = {
-            complainId: complainIdValue, 
+            complainId: complainIdInt, 
             contextUrl: window.location.href,
             approvalLineData: approvalLineData
         };

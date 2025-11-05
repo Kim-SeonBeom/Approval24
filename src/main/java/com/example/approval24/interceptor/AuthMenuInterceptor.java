@@ -20,6 +20,7 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
         @SuppressWarnings("unchecked")
         List<MenuVO> authMenus = (List<MenuVO>) session.getAttribute("authMenus");
         System.out.println("***()()()()()()()()()****");
+        if(authMenus == null) return true;
         System.out.println(authMenus.toString());
         
         
@@ -39,6 +40,8 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
                 .orElse(null);
  
         req.setAttribute("pageAuth", pageAuth);
+        
+        
         return true;
     }
 }

@@ -56,6 +56,6 @@ public class ApprovalHistoryController {
         model.addAttribute("categoryCodeList",categoryCodeList);
         model.addAttribute("statusCodeList", statusCodeList);
         
-        return "D/AppList"; 
+        return "D/approvalLineList"; 
     }
 }

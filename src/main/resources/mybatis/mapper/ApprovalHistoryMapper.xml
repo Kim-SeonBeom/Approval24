@@ -2,79 +2,78 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.approval24.dao.ApprovalHistoryDAO">
 
-    <select id="selectMyApprovalHistoryList" resultType="ApprovalHistoryDTO">
+<select id="selectMyApprovalHistoryList" resultType="ApprovalHistoryDTO">
+    
+    SELECT 
+        T1.COMPLAIN_ID,
+        T1.DELEGATE_ID,
+        T1.ACCOUNT_ID,
+        T1.APPROVAL_STATUS_CD,
+        T1.APPROVER_TYPE_CD,
+        T1.PROCESS_DT,
+        T1.APPROVAL_COMMENT,
+        T1.SEQ_NO,
+        T1.URL,
         
-        SELECT 
-            T1.COMPLAIN_ID,
-            T1.DELEGATE_ID,
-            T1.ACCOUNT_ID,
-            T1.APPROVAL_STATUS_CD,
-            T1.APPROVER_TYPE_CD,
-            T1.PROCESS_DT,
-            T1.APPROVAL_COMMENT,
-            T1.SEQ_NO,
-            T1.URL,
-            
-            T3.CATEGORY_CD,
-            
-            TC1.CODE_NAME AS CATEGORY_NAME,
-            
-            TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
-            
-            TC3.CODE_NAME AS APPROVER_TYPE_NAME
-            
-        FROM 
-            T2000_APPROVAL_HISTORY T1
+        T3.CATEGORY_CD,
         
-        INNER JOIN 
-            T2000_COMPLAIN T2 
-            ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
-            
-        LEFT OUTER JOIN 
-            T2000_COMPLAIN_CATEGORY T3 
-            ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC1 
-            ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC2 
-            ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC3 
-            ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
-            
-        <where>
-            (
-        		ACCOUNT_ID = #{accountId}
-        		OR DELEGATE_ID = #{accountId}  
-    		)
-            
-            <if test="filterMap.startDate != null and filterMap.startDate != ''">
-                AND T1.PROCESS_DT &gt;= TO_DATE(#{filterMap.startDate}, 'YYYY-MM-DD')
-            </if>
-            
-            <if test="filterMap.endDate != null and filterMap.endDate != ''">
-                AND T1.PROCESS_DT &lt; TO_DATE(#{filterMap.endDate}, 'YYYY-MM-DD') + 1 
-            </if>
-            
-            <if test="filterMap.approvalStatusCd != null and filterMap.approvalStatusCd != ''">
-                AND T1.APPROVAL_STATUS_CD = #{filterMap.approvalStatusCd}
-            </if>
-            
-            <if test="filterMap.categoryCd != null and filterMap.categoryCd != ''">
-                AND T3.CATEGORY_CD = #{filterMap.categoryCd}
-            </if>
-            
-            AND T2.DEL_YN = 'N'
+        TC1.CODE_NAME AS CATEGORY_NAME,
+        
+        TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
+        
+        TC3.CODE_NAME AS APPROVER_TYPE_NAME
+        
+    FROM 
+        T2000_APPROVAL_HISTORY T1
+    
+    INNER JOIN 
+        T2000_COMPLAIN T2 
+        ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
+        
+    LEFT OUTER JOIN 
+        T2000_COMPLAIN_CATEGORY T3 
+        ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
+        
+    LEFT OUTER JOIN 
+        TOTAL_CODE TC1 
+        ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
+        
+    LEFT OUTER JOIN 
+        TOTAL_CODE TC2 
+        ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
+        
+    LEFT OUTER JOIN 
+        TOTAL_CODE TC3 
+        ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
+        
+    <where>
+        (
+            T1.ACCOUNT_ID = #{accountId}   
+            OR T1.DELEGATE_ID = #{accountId} 
+        )
+        
+        <if test="filterMap.startDate != null and filterMap.startDate != ''">
+            AND T1.PROCESS_DT &gt;= TO_DATE(#{filterMap.startDate}, 'YYYY-MM-DD')
+        </if>
+        
+        <if test="filterMap.endDate != null and filterMap.endDate != ''">
+            AND T1.PROCESS_DT &lt; TO_DATE(#{filterMap.endDate}, 'YYYY-MM-DD') + 1 
+        </if>
+        
+        <if test="filterMap.approvalStatusCd != null and filterMap.approvalStatusCd != ''">
+            AND T1.APPROVAL_STATUS_CD = #{filterMap.approvalStatusCd}
+        </if>
+        
+        <if test="filterMap.categoryCd != null and filterMap.categoryCd != ''">
+            AND T3.CATEGORY_CD = #{filterMap.categoryCd}
+        </if>
+        
 
-        </where>
-        ORDER BY 
-            T1.PROCESS_DT DESC, T1.SEQ_NO DESC
-            
-    </select>
+    </where>
+    ORDER BY 
+        T1.PROCESS_DT DESC, T1.SEQ_NO DESC
+        
+</select>
     
     <insert id="insertApprovalHistory" parameterType="ApprovalHistoryDTO">
         INSERT INTO T2000_APPROVAL_HISTORY (

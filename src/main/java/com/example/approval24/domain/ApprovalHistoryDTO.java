@@ -19,4 +19,6 @@ public class ApprovalHistoryDTO {
     //추가사항
     private String approvalStatusName;
     private String approverTypeName;
+    private String categoryCd;        
+    private String categoryName;
 }
