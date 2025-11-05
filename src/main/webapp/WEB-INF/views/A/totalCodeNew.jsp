@@ -80,7 +80,6 @@
 								<button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
 									<i class="fas fa-save mr-1"></i>등록
 								</button>
-								<a href="${pageContext.request.contextPath}/admin/totalcode" class="btn btn-danger btn-sm">취소</a>
 							</div>
 
 						</div>
@@ -102,9 +101,9 @@
 										
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">코드그룹ID</th>
-												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" required maxlength="200"></td>
+												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" placeholder="ex) A0" required maxlength="200"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">코드ID</th>
-												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" required></td>
+												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" placeholder="ex) A001" required></td>
 											</tr>
 
 											<tr>
@@ -143,6 +142,10 @@
 
 
 						</div>
+					</div>
+					<!-- 하단 버튼 -->
+					<div class="d-flex justify-content-between mt-4">
+						<a href="${pageContext.request.contextPath}/admin/totalcode" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 
 				</div>

@@ -43,7 +43,6 @@
                 <button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
                   <i class="fas fa-save mr-1"></i>등록
                 </button>
-                <a href="${pageContext.request.contextPath}/admin/dept" class="btn btn-danger btn-sm">취소</a>
               </div>
             </div>
 
@@ -119,6 +118,10 @@
               </form>
             </div>
           </div>
+        <!-- 하단 버튼 -->
+		<div class="d-flex justify-content-between mt-4">
+			<a href="${pageContext.request.contextPath}/admin/dept" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+		</div>
 
         </div>
       </div>

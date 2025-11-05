@@ -139,6 +139,10 @@
 							</form>
 						</div>
 					</div>
+					<!-- 하단 버튼 -->
+					<div class="d-flex justify-content-between mt-4">
+						<a href="${pageContext.request.contextPath}/admin/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+					</div>
 				</div>
 				</div>
 			<footer class="sticky-footer bg-white">
