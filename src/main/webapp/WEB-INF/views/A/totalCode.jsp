@@ -73,7 +73,7 @@
 											<th>코드ID</th>
 											<th>코드명</th>
 											<th>코드내용</th>
-											<th>사용여부</th>
+											<th>삭제여부</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -142,7 +142,7 @@
        });
 
        // 1열(0-index) = 그룹코드 컬럼
-       var groupCol = table.column(1);
+       var groupCol = table.column(0);
        var $select = $('#groupFilter');
 
        // 현재 테이블 데이터에서 고유 그룹코드 추출하여 옵션 자동 생성

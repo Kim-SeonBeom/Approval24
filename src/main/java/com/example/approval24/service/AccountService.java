@@ -5,23 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.approval24.dao.AccountDAO;
 import com.example.approval24.dao.AuthorityAccountDAO;
 import com.example.approval24.dao.AuthorityMenuDAO;
-import com.example.approval24.dao.DeptInstDAO;
 import com.example.approval24.dao.MenuDAO;
-import com.example.approval24.dao.TotalCodeDAO;
 import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
-import com.example.approval24.domain.DeptDTO;
-import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.MenuDTO;
 import com.example.approval24.domain.MenuVO;
-import com.example.approval24.domain.TotalCodeDTO;
 
 @Service
 public class AccountService {
@@ -36,10 +30,30 @@ public class AccountService {
     private MenuDAO menuDAO;
 
     //로그인 기능
-    public Long login(String loginId, String password) {
-        AccountDTO account = accountDAO.findByLogin(loginId, password);
+    public AccountDTO login(String loginId, String password) {
+        AccountDTO account = accountDAO.findByLogin(loginId);
         if (account == null) return null; 
-        return account.getAccountId();
+        if (!password.equals(account.getPassword()))
+        {
+        	int cnt = account.getPwdFailCnt();
+        	if(cnt < 5) {
+        		cnt++; 
+        		account.setPwdFailCnt(cnt);
+        		accountDAO.updateAccount(account);
+        		account.setAccountStatusCd("mispassword");
+        	}else{
+        		account.setAccountStatusCd("B004");
+        		accountDAO.updateAccount(account);
+        	}
+        	
+        }
+        else {
+    		account.setPwdFailCnt(0);
+    		accountDAO.updateAccount(account);
+    	}
+        	account.setPassword(null);
+        	return account;
+       
     }
     
     // 해당 계정의 메뉴/권한 조회
@@ -102,7 +116,11 @@ public class AccountService {
 	public Long findInstIdByAccountId(Long accountId) {
 	    return accountDAO.findInstIdByAccountId(accountId);
 	}
-
+	
+	//현재 로그인한 아이디와 같은기관&같은부서인 아이디 목록 조회
+	public List<AccountDTO> myTeamAccountList(long accountId){
+		return accountDAO.findByAccountIdAndDeptIdAndInstId(accountId);
+	}
 
 }
 

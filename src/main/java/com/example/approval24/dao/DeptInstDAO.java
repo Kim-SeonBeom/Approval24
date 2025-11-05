@@ -14,13 +14,13 @@ public interface DeptInstDAO {
 	public List<DeptInstDTO> instByDept(@Param("deptId") long deptId);
 	
 	// 특정 기관의 매핑 부서
-	public List<DeptInstDTO> findDeptByInst(@Param("instId") long instId);
+	public List<DeptInstDTO> findDeptByInst(@Param("instId") Long instId);
 	
 	// 부서와 기관 매핑 삭제
 	public int deleteDI(@Param("deptId") long deptId);
 	
-	// 다중 매핑
-	public int insertDI (@Param("deptId") int deptId, @Param("instIds") List<Integer> instIds);
+	// 단일 매핑
+	public int insertDI (@Param("deptId") Long deptId, @Param("instId") Long instId);
 	
 	
 }

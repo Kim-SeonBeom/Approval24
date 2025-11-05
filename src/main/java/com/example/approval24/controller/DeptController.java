@@ -8,25 +8,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.approval24.service.DeptService;
 @Controller
+@RequestMapping("/admin")
 public class DeptController {
 	@Autowired
 	DeptService deptService;
 	
 	// 부서목록
-	@GetMapping("/admin/dept")
+	@GetMapping("/dept")
 	public String deptList(Model model) {
 		model.addAttribute("getAllDeptList", deptService.getAllDept());
 		return "A/dept";
 	}
 	
 	// 부서상세
-	@GetMapping("/admin/dept/detail")
-	public String divisionDetail(Model model, @RequestParam("dept_id") int deptId) {
+	@GetMapping("/dept/detail")
+	public String divisionDetail(Model model, @RequestParam("dept_id") long deptId) {
 		model.addAttribute("instByDeptList", deptService.instByDept(deptId));
 		model.addAttribute("deptInfo", deptService.deptInfo(deptId));
 		model.addAttribute("getAllInst", deptService.getAllInst());
@@ -35,16 +37,16 @@ public class DeptController {
 	
 	
 	// 부서수정
-	@PostMapping("/admin/dept/update")
-	public String deptUpdate(@RequestParam("deptId") int deptId,
+	@PostMapping("/dept/update")
+	public String deptUpdate(@RequestParam("deptId") long deptId,
 							 @RequestParam("deptName") String deptName,
 							 @RequestParam(value="deptPhone", required=false) String deptPhone,
-							 @RequestParam(value="instIds", required=false) List<Integer> instIds,
+							 @RequestParam(value="instIds", required=false) List<Long> instIds,
 							 RedirectAttributes rttr) {
 		
-		List<Integer> safeInstIds = (instIds == null) ? Collections.emptyList() : instIds;
+		List<Long> safeInstIds = (instIds == null) ? Collections.emptyList() : instIds;
 		
-		int result = deptService.updateDept(deptId, deptName, deptPhone, safeInstIds);
+		long result = deptService.updateDept(deptId, deptName, deptPhone, safeInstIds);
 		
 		if(result > 0) {
 			rttr.addFlashAttribute("updMessage", "부서 정보가 성공적으로 수정되었습니다.");
@@ -55,8 +57,8 @@ public class DeptController {
 	}
 	
 	// 부서 삭제
-	@PostMapping("/admin/dept/delete")
-	public String deptDelete(int deptId, RedirectAttributes rttr) {
+	@PostMapping("/dept/delete")
+	public String deptDelete(long deptId, RedirectAttributes rttr) {
 		int result = deptService.deleteDept(deptId);
 		
 		if (result > 0) {
@@ -68,19 +70,19 @@ public class DeptController {
 	}
 	
 	// 부서 등록
-	@GetMapping("/admin/dept/new")
+	@GetMapping("/dept/new")
 	public String deptNew(Model model) {
 		model.addAttribute("getAllInst", deptService.getAllInst());
 		return "A/deptNew";
 	}
 	
-	@PostMapping("/admin/dept/new")
+	@PostMapping("/dept/new")
 	public String deptNew(@RequestParam("deptName") String deptName,
 						  @RequestParam(value="deptPhone", required=false) String deptPhone,
-						  @RequestParam(value="instIds", required=false) List<Integer> instIds,
+						  @RequestParam(value="instIds", required=false) List<Long> instIds,
 						  RedirectAttributes rttr) {
-		List<Integer> safeInstIds = (instIds == null) ? Collections.emptyList() : instIds;
-		int result = deptService.insertDept(deptName, deptPhone, safeInstIds);
+		List<Long> safeInstIds = (instIds == null) ? Collections.emptyList() : instIds;
+		long result = deptService.insertDept(deptName, deptPhone, safeInstIds);
 		
 		if(result > 0) {
 			rttr.addFlashAttribute("insertMessage", "부서 정보가 성공적으로 등록되었습니다.");

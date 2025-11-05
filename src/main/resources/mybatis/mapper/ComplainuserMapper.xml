@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.approval24.dao.ComplainuserDAO">
+
+	<select id="countByResidentNo" parameterType="String">
+		select
+		count(complainuser_no) from T2000_COMPLAIN_USER where
+		COMPLAINUSER_RESIDENT_NO = #{ResidentNO}
+	</select>
+
+	<select id="findByResidentNo" parameterType="String">
+		select
+		complainuser_no from T2000_COMPLAIN_USER where
+		COMPLAINUSER_RESIDENT_NO = #{ResidentNO}
+
+	</select>
+
+	<update id="updateUserInfo" parameterType="ComplainRegDTO">
+		UPDATE
+		T2000_COMPLAIN_USER
+		SET
+		COMPLAINUSER_NAME = #{complainuserName},
+		COMPLAINUSER_POST = #{complainuserPost},
+		COMPLAINUSER_ADDRESS = #{complainuserAddress},
+		COMPLAINUSER_ADDRESS_DETAIL = #{complainuserAddressDetail},
+		COMPLAINUSER_TEL = #{complainuserTel},
+		COMPLAINUSER_PHONE = #{complainuserPhone},
+		COMPLAINUSER_EMAIL = #{complainuserEmail},
+		UPDATE_DT = #{updateDt}
+		WHERE COMPLAINUSER_RESIDENT_NO
+		=#{complainuserResidentNo}
+	</update>
+
+	<insert id="registUserInfo" parameterType="ComplainRegDTO">
+		INSERT INTO
+		T2000_COMPLAIN_USER (
+		COMPLAINUSER_NAME,
+		COMPLAINUSER_RESIDENT_NO,
+		COMPLAINUSER_POST,
+		COMPLAINUSER_ADDRESS,
+		COMPLAINUSER_ADDRESS_DETAIL,
+		COMPLAINUSER_TEL,
+		COMPLAINUSER_PHONE,
+		COMPLAINUSER_EMAIL
+		)
+		VALUES (
+		#{complainuserName},
+		#{complainuserResidentNo},
+		#{complainuserPost},
+		#{complainuserAddress},
+		#{complainuserAddressDetail},
+		#{complainuserTel},
+		#{complainuserPhone},
+		#{complainuserEmail}
+		)
+	</insert>
+
+	<select id="findByComplainuserNo" parameterType="long"
+		resultType="ComplainuserDTO">
+		select * from T2000_COMPLAIN_USER where complainuser_no = #{complainuserNo}
+	</select>
+	
+	<update id="updateComplainuserInfo" parameterType="ComplainuserDTO">
+		UPDATE
+		T2000_COMPLAIN_USER
+		SET
+		COMPLAINUSER_NAME = #{complainuserName},
+		COMPLAINUSER_POST = #{complainuserPost},
+		COMPLAINUSER_ADDRESS = #{complainuserAddress},
+		COMPLAINUSER_ADDRESS_DETAIL = #{complainuserAddressDetail},
+		COMPLAINUSER_TEL = #{complainuserTel},
+		COMPLAINUSER_PHONE = #{complainuserPhone},
+		COMPLAINUSER_EMAIL = #{complainuserEmail},
+		UPDATE_DT = #{updateDt}
+		WHERE COMPLAINUSER_NO
+		=#{complainuserNo}
+	
+	
+	</update>
+
+</mapper>

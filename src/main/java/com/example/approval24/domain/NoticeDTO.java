@@ -9,12 +9,12 @@ import lombok.Data;
 public class NoticeDTO {
 	private String title;
 	private String content;	
-	private Long noticeId;
-	private int categoryCd;
+	private long noticeId;
+	private long categoryCd;
 	private String userName;
 	private Date createDt;
 	private Date updateDt;
-	private Integer viewCount;
+	private Long viewCount;
 	private Long createId;
 	private Long updateId;
 	private String popupYn;

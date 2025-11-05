@@ -142,13 +142,25 @@
   <%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 <script>
-// 등록 버튼 클릭 시 폼 제출
 $(document).ready(function() {
-  $('#btnSaveTop').on('click', function() {
-    const form = document.getElementById('deptInsertForm');
-    if (!form.checkValidity()) return;
-    $('#deptInsertForm').submit();
-  });
+    $('#btnSaveTop').on('click', function(e) {
+        e.preventDefault();
+        
+        const form = document.getElementById('deptInsertForm');
+        
+        // 브라우저 기본 유효성 검사
+        if (!form.checkValidity()) {
+            form.reportValidity(); 
+            return; 
+        }
+
+        // 확인창 추가
+        if (confirm('작성한 내용을 등록하시겠습니까?')) {
+            $('#deptInsertForm').submit();
+        } else {
+            return false; // 취소 시 아무 동작도 안 함
+        }
+    });
 });
 </script>
 

@@ -17,7 +17,7 @@ public interface NoticeDAO {
 	
 	public int deleteNotice(NoticeDTO noticeDTO);
 	
-	public NoticeDTO getnoticeDetail(@Param("noticeId") Long noticeId);
+	public NoticeDTO getnoticeDetail(@Param("noticeId") long noticeId);
 	
 	public void increaseViewCount(Long noticeId);
 }

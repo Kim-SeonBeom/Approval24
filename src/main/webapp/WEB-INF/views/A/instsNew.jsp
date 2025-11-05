@@ -69,7 +69,7 @@
 						<div class="card-header py-3 d-flex align-items-center">
 							<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">작성 항목</h6>
 							<div class="ml-auto">
-								<button type="submit" class="btn btn-primary btn-sm" id="btnSaveTop">
+								<button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
 									<i class="fas fa-save mr-1"></i>등록
 								</button>
 								<a href="${pageContext.request.contextPath}/admin/insts" class="btn btn-danger btn-sm">취소</a>
@@ -171,6 +171,28 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 <script>
+$(document).ready(function() {
+    $('#btnSaveTop').on('click', function(e) {
+        e.preventDefault();
+        
+        const form = document.getElementById('instInsertForm');
+        
+        // 브라우저 기본 유효성 검사
+        if (!form.checkValidity()) {
+            form.reportValidity(); 
+            return; 
+        }
+
+        // 확인창 추가
+        if (confirm('작성한 내용을 등록하시겠습니까?')) {
+            $('#instInsertForm').submit();
+        } else {
+            return false; // 취소 시 아무 동작도 안 함
+        }
+    });
+});
+
+
 // 1. Daum Postcode API 함수 (openDaumPostcode)
 function openDaumPostcode() {
     new daum.Postcode({
@@ -189,25 +211,6 @@ function openDaumPostcode() {
         }
     }).open();
 }
-
-// 2. 폼 제출 로직 (btnSaveTop)
-//    - 버튼이 폼 외부에 있으므로, 클릭 시 명시적으로 폼 제출
-$(document).ready(function() {
-    
-    // 폼 외부에 있는 등록 버튼 클릭 시 폼 제출
-    $('#btnSaveTop').on('click', function(e) {
-        
-        const form = document.getElementById('instInsertForm');
-        
-        if (!form.checkValidity()) {
-             // 유효성 검사 실패 시 브라우저가 기본 동작을 수행하고 제출 중단
-             return; 
-        }
-        
-        // 폼 제출
-        $('#instInsertForm').submit();
-    });
-});
 </script>
 
 </body>

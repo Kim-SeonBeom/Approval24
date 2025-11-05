@@ -9,17 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InstDTO {
 	
-	private int instId;
+	private long instId;
 	
 	private String instName;
 	
+
 	private String createDt;
 	
 	private String updateDt;
+
 	
 	private String instAddress;
 	
-	private String instDetailAddress;
+	private String instDetailAddress; 
 	
 	private String instPhone;
 	

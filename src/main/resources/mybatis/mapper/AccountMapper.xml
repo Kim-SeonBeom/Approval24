@@ -2,31 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.approval24.dao.AccountDAO">
 
-    <select id="findByLogin" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
-        SELECT 
-            A.ACCOUNT_ID,
-            U.USER_NO,
-            A.INST_ID,
-            A.DEPT_ID,
-            A.LOGIN_ID,
-            A.PASSWORD,
-            A.CREATE_DT,
-            A.UPDATE_DT,
-            A.DEL_YN,
-            A.CREATE_ID,
-            A.UPDATE_ID,
-            A.ACCOUNT_STATUS_CD,
-            A.PWD_FAIL_CNT,
-            A.PWD_CHANGE_DT,
-            A.IS_SYSTEM,
-            U.user_name
-        FROM T1000_ACCOUNT A
-        JOIN t1000_user U ON  A.user_no = U.user_no
-        WHERE A.LOGIN_ID = #{loginId}
-          AND A.PASSWORD = #{password}
-          AND A.ACCOUNT_STATUS_CD = 'B002'
-          AND A.DEL_YN = 'N'
-    </select>
+	<!-- 민원서식 카테고리 목록 -->
+	<select id="findById" resultType="AccountDTO"
+		parameterType="long">
+		select
+		account_Id,
+		user_no,
+		inst_id,
+		dept_id
+		from
+		t1000_account
+	</select>
 
 <select id="findAccountsByFilter" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
     SELECT 
@@ -82,8 +68,99 @@
     ORDER BY A.CREATE_DT DESC
 </select>
 
-<select id="findInstIdByAccountId" parameterType="long" resultType="long">
-    SELECT INST_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID = #{accountId}
+	<select id="findInstIdByAccountId" parameterType="long"
+		resultType="long">
+		SELECT INST_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID =
+		#{accountId}
+	</select>
+
+	<select id="findByAccountIdAndDeptIdAndInstId"
+		parameterType="long" resultType="AccountDTO">
+		select
+		a.account_id as accountId,
+		a.user_no as userNo,
+		u.user_name as userName
+		from t1000_account a
+		join
+		t1000_user u on a.user_no = u.user_no
+		where (a.inst_id, a.dept_id) =
+		(select
+		a.inst_id, a.dept_id
+		from t1000_account a
+		where a.account_id =
+		#{accountId})
+		and a.account_id != #{accountId}
+	</select>
+
+
+<!-- 계정 신청/등록  -->
+<insert id="insert" parameterType="AccountDTO">
+ 	INSERT INTO t1000_account
+ 	(user_no, inst_id, dept_id, login_Id, password, account_status_cd)
+ 	VALUES
+ 	(#{userNo},#{instId}, #{deptId}, #{loginId}, #{password}, 'B002')
+</insert>
+<!-- 로그인 -->
+   <select id="findByLogin" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
+        SELECT 
+            A.ACCOUNT_ID,
+            U.USER_NO,
+            A.INST_ID,
+            A.DEPT_ID,
+            A.LOGIN_ID,
+            A.PASSWORD,
+            A.CREATE_DT,
+            A.UPDATE_DT,
+            A.DEL_YN,
+            A.CREATE_ID,
+            A.UPDATE_ID,
+            A.ACCOUNT_STATUS_CD,
+            A.PWD_FAIL_CNT,
+            A.PWD_CHANGE_DT,
+            A.IS_SYSTEM,
+            U.user_name
+        FROM T1000_ACCOUNT A
+        JOIN t1000_user U ON  A.user_no = U.user_no
+        WHERE A.LOGIN_ID = #{loginId}
+          AND A.ACCOUNT_STATUS_CD = 'B002'
+          AND A.DEL_YN = 'N'
+    </select>
+
+<!-- 계정 리스트 (id 리스트)-->
+<select id="getAllAccount" resultType="AccountDTO">
+	select *
+	from t1000_account
+	where del_yn='N'
+>>>>>>> 67d1c1bd27617a379cbf023038e7f77b7ee6fe7b
 </select>
 
+<!-- 특정 부서에 따른 매핑 계정 -->
+<select id="findAccountByDept" parameterType="Long" resultType="AccountDTO">
+	select a.account_id, a.login_id, u.user_name
+	from t1000_account a
+	join t1000_user u
+	on u.user_no = a.user_no
+	where a.dept_id=#{deptId}
+	order by u.user_name
+</select>
+
+<!-- 계정 업데이트 del_yn 포함 -->
+<update id="updateAccount" parameterType="AccountDTO" >
+	UPDATE t1000_account a
+	<set>
+		update_dt = SYSDATE,
+		<if test ="instId != null">inst_id=#{instId},</if>
+		<if test ="deptId != null ">dept_id=#{deptId},</if>
+		<if test ="password != null and password != ''">password=#{password}, pwd_change_dt = SYSDATE,</if>
+		<if test = "delYn != null and delYn !=''">del_yn=#{delYn},</if>
+		<if test = "updateId != null">update_id=#{updateId},</if>
+		<if test = "accountStatusCd != null and accountStatusCd !=''">account_status_cd=#{accountStatusCd},</if>
+		<if test = "pwdFailCnt != null">pwd_fail_cnt=#{pwdFailCnt},</if>
+	</set>
+	WHERE account_id = #{accountId}
+</update>
+
 </mapper>
+
+
+
