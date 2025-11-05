@@ -76,10 +76,12 @@ public class ApprovalHistoryService {
             	{
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
-                approvalStatusCd = "E001"; //대기 상태 코드
-            } else {
-                // 민원 상태코드 변경시 여기서 수정
-                approvalStatusCd = "E004"; 
+                approvalStatusCd = "E002";  //승인
+            } else if (i == 1) {
+                approvalStatusCd = "E001"; // 결재
+            }
+            else {
+            	approvalStatusCd = "E004"; // 대기
             }
             dto.setApprovalStatusCd(approvalStatusCd);
             dto.setUrl(url);
