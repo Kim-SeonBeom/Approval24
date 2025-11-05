@@ -16,6 +16,7 @@ import com.example.approval24.dao.EM2DAO;
 import com.example.approval24.dao.EM3DAO;
 import com.example.approval24.dao.MT1DAO;
 import com.example.approval24.dao.MT2DAO;
+import com.example.approval24.dao.ManagerAssignmentDAO;
 import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.CategoryDTO;
@@ -40,6 +41,9 @@ public class ComplainService {
 
 	@Autowired
 	private CategoryDAO categoryDAO;
+	
+	@Autowired
+	private ManagerAssignmentDAO managerDAO;
 
 	@Autowired
 	private UE1DAO ue1DAO;
@@ -91,16 +95,19 @@ public class ComplainService {
 		// 접수자 계정 id
 		long receiverAccountId = accountId;
 
-		// 담당자 지정 로직 들어와야 함 임시로 강제지정
-		// Manager_account_id
-		long managerAccountId = 41;
+		ComplainDTO complainDTO = new ComplainDTO();
+		
+		long complainCategoryId = complainDTO.getComplainCategoryId();
+		
+		long managerAccountId = managerDAO.ManagerAccountId(complainCategoryId);
+		
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
 		String deadlineDt = LocalDate.now(ZoneId.systemDefault())
 		        .plusDays(dueDt)
 		        .format(DateTimeFormatter.ISO_DATE);
-		ComplainDTO complainDTO = new ComplainDTO();
+		
 		complainDTO.setComplainCategoryId(complainRegDTO.getComplainCategoryId());
 		complainDTO.setComplainuserNo(complainuserNo);
 		complainDTO.setAccountId(managerAccountId);

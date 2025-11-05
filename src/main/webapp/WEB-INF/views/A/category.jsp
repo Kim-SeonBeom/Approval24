@@ -30,11 +30,11 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">공통코드 목록</h1>
+					<h1 class="h3 mb-2 text-gray-800">민원서식 목록</h1>
 					<br>
 					<%-- 컨트롤러에서 전달받은 삭제 메시지 표시 --%>
 					<c:if test="${not empty delMessage}">
-					    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+					    <div class="alert alert-info alert-dismissible fade show" role="alert">
 					        ${delMessage}
 					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					            <span aria-hidden="true">&times;</span>
@@ -53,7 +53,7 @@
 					<!-- 코드 테이블 조건 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">공통코드 테이블</h6>
+							<h6 class="m-0 font-weight-bold text-primary">민원서식 테이블</h6>
 							<!-- 그룹 선택 -->
 	                        <div class="ml-4">
 	                           <select id="groupFilter" class="custom-select custom-select-sm form-control form-control-sm" style="min-width: 160px;">
@@ -61,7 +61,7 @@
 	                              <!-- 옵션은 JS에서 테이블 데이터를 읽어 자동 생성 -->
 	                           </select>
 	                        </div>
-							<button class="btn btn-primary btn-sm" id="codeCreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 코드 등록</button>
+							<button class="btn btn-primary btn-sm" id="categoryCreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 민원서식 등록</button>
 						</div>
 						
 						<div class="card-body">
@@ -69,26 +69,50 @@
 								<table class="table table-bordered" id="dataTable" style="width:100%" cellspacing="0">
 									<thead>
 										<tr>
-											<th>코드그룹ID</th>
-											<th>코드ID</th>
-											<th>코드명</th>
-											<th>코드내용</th>
+											<th>민원서식명</th>
+											<th>유형코드</th>
+											<th>처리소요일</th>
+											<th>민원서식 URL</th>
 											<th>삭제여부</th>
 										</tr>
 									</thead>
 									<tbody>
-									  <c:forEach var="code" items="${getAllTotalCodeList}">
+									  <c:forEach var="category" items="${getAllCategoryList}">
 									    <tr class="clickable-row"
-									        data-href="/approval24/admin/totalcode/detail?code_id=${code.codeId}"
+									        data-href="/approval24/admin/category/detail?complain_category_id=${category.complainCategoryId}"
 									        style="cursor:pointer;">
-									      <td>${code.groupId}</td>
-									      <td>${code.codeId}</td>
-									      <td>${code.codeName}</td>
-									      <td>${code.codeDetail}</td>
-									      <td>${code.delYn}</td>
+									
+									      <!-- 민원서식명: codeName 없으면 categoryName -->
+									      <td>
+									        <c:choose>
+									          <c:when test="${not empty category.codeName}">
+									            <c:out value="${category.codeName}"/>
+									          </c:when>
+									          <c:otherwise>
+									            <c:out value="${category.categoryName}"/>
+									          </c:otherwise>
+									        </c:choose>
+									      </td>
+									
+									      <!-- 유형코드: codeId 없으면 categoryCd -->
+									      <td>
+									        <c:choose>
+									          <c:when test="${not empty category.codeId}">
+									            <c:out value="${category.codeId}"/>
+									          </c:when>
+									          <c:otherwise>
+									            <c:out value="${category.categoryCd}"/>
+									          </c:otherwise>
+									        </c:choose>
+									      </td>
+									
+									      <td><c:out value="${category.dueDt}"/></td>
+									      <td><c:out value="${category.categoryUrl}"/></td>
+									      <td><c:out value="${category.delYn}"/></td>
 									    </tr>
 									  </c:forEach>
 									</tbody>
+
 								</table>
 							</div>
 						</div>
@@ -125,8 +149,8 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 <script>
-	$("#codeCreate").on('click', function() {
-		window.location.href="${pageContext.request.contextPath}/admin/totalcode/new";
+	$("#categoryCreate").on('click', function() {
+		window.location.href="${pageContext.request.contextPath}/admin/category/new";
 	});
 
   

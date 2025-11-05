@@ -19,4 +19,7 @@ public interface ManagerAssignmentDAO {
 	
 	// 담당자배정 등록
 	public int ManagerAssignmentInsert(ManagerAssignmentDTO managerDTO);
+	
+	// 담당자배정 로직
+	public long ManagerAccountId(long complainCategoryId);
 }
