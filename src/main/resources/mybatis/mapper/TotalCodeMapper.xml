@@ -43,4 +43,14 @@
 	values (#{groupId}, #{codeId}, #{codeName}, #{codeDetail}, #{delYn})
 </insert>
 
+<!-- 등록시 코드ID 중복 체크 -->
+<select id="CountByCodeId" parameterType="String" resultType="int">
+	select count(*)
+	from total_code
+	where code_id=#{codeId}
+</select>
+
+
+
+
 </mapper>

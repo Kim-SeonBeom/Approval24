@@ -52,13 +52,20 @@ public class TotalCodeController {
 	}
 	
 	@PostMapping("/totalcode/new")
-	public String codeInsert(TotalCodeDTO codeDTO, RedirectAttributes rttr) {
+	public String codeInsert(TotalCodeDTO codeDTO, RedirectAttributes rttr, String codeId) {
 		int result = codeService.TotalCodeInsert(codeDTO);
+		
+		if(result == -1) {
+			rttr.addFlashAttribute("errorMessage", "이미 존재하는 코드ID입니다. 다른 코드ID를 사용해주세요.");
+			return "redirect:/admin/totalcode/new";
+		}
+		
 		
 		if(result > 0) {
 			rttr.addFlashAttribute("insertMessage", "공통코드 정보가 성공적으로 등록되었습니다.");
+			
 		} else {
-			rttr.addFlashAttribute("insertMessage", "공통코드 정보 등록에 실패했ㅅ브니다.");
+			rttr.addFlashAttribute("insertMessage", "공통코드 정보 등록에 실패했습니다.");
 		}
 		return "redirect:/admin/totalcode";
 	}

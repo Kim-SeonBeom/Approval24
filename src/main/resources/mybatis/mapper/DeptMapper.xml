@@ -14,6 +14,7 @@
 		update_id
 	from t1000_department
 	where dept_id = #{deptId}
+	order by create_dt DESC, update_dt DESC
 </select>
 
 <!-- 부서수정 -->

@@ -48,7 +48,7 @@ public class ComplainController {
 		List<ComplainDTO> myWorkList = complainService.getMyWorkList(accountId);
 
 		model.addAttribute("myWorkList", myWorkList);
-
+		
 		return "myWork";
 	}
 

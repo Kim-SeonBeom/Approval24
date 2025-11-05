@@ -50,9 +50,6 @@
             <div class="card-body">
               <!-- 부서 등록 폼 -->
               <form id="deptInsertForm" action="/approval24/admin/dept/new" method="post">
-                <c:if test="${not empty _csrf}">
-                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                </c:if>
 
                 <div class="table-responsive">
                   <table class="table table-bordered table-sm kv-table">
