@@ -52,12 +52,12 @@ public class LoginController {
             return "login";
         }
         	
-         model.asMap().clear();
+
         HttpSession session = request.getSession();
         session.setAttribute("user", accountDTO.getAccountId());
         session.setAttribute("authMenus", accountService.getAuthMenus(accountDTO.getAccountId()));
     	
-        return "redirect:/";
+        return "index";
     }
 
 
