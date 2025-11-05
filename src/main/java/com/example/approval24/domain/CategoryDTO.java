@@ -1,10 +1,10 @@
-
 package com.example.approval24.domain;
 
 import lombok.Data;
 
 @Data
 public class CategoryDTO {
+
 	private long complainCategoryId;
 	
 	private String categoryName;
@@ -30,5 +30,8 @@ public class CategoryDTO {
 	private String codeName;
 
 }
+
+
+
  
 

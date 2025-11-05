@@ -12,8 +12,7 @@ import com.example.approval24.domain.AccountDTO;
 @Mapper
 public interface AccountDAO {
     // 로그인용: loginId + password 일치하는 계정 조회
-    AccountDTO findByLogin(@Param("loginId") String loginId,
-                           @Param("password") String password);
+    AccountDTO findByLogin(String loginId);
     
     List<AccountDTO> findAccountsByFilter(Map<String, Object> filterMap);
 
@@ -21,7 +20,17 @@ public interface AccountDAO {
 
 	public AccountDTO findById(long accountId);
 	
-	public List<AccountDTO> findAccountByDept(Long deptId);
+	// 특정 부서에 따른 매핑 계정
+	public List<AccountDTO> findAccountByDept(@Param("deptId") Long deptId);
+  
+  public void updateAccount(AccountDTO account);
+  
+  void insert(AccountDTO accountDTO);
+  
+  // 계정 리스트 (로그인id 리스트)
+	List<AccountDTO> getAllAccount();
+  
+  List<AccountDTO> findByAccountIdAndDeptIdAndInstId(long accountId);
 
 }
 

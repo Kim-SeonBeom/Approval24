@@ -31,8 +31,7 @@
 <!-- URL로 findByCategoryUrl 찾기-->
 <select id="findByCategoryUrl" resultType="CategoryDTO"
 	parameterType="String">
-	select
-	*
+	select	*
 	from t2000_complain_category
 	where category_Url = #{categoryUrl}
 </select>
@@ -46,6 +45,7 @@
 	where dw.department_id=#{deptId}
 	order by cc.category_name
 </select>
+
 
 <!-- 민원서식 상세 -->
 <select id="CategoryInfo" parameterType="long" resultType="CategoryDTO">
@@ -84,8 +84,5 @@
 		category_url=#{categoryUrl}
 	where complain_category_id=#{complainCategoryId}
 </update>
-
-
-
 
 </mapper>

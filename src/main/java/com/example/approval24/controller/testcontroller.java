@@ -6,11 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class testcontroller {
 
-	@GetMapping("/")
-	public String testmain() {
-		return "index";
-	}
-
 	@GetMapping("/tables")
 	public String tables() {
 		return "tables";
@@ -57,11 +52,6 @@ public class testcontroller {
 	@GetMapping("/account/requests")
 	public String accountRequestList() {
 		return "accountRequests";
-	}
-
-	@GetMapping("/delegate")
-	public String delegatePage() {
-		return "delegate";
 	}
 
 	

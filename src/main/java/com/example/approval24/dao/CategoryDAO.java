@@ -1,4 +1,3 @@
-
 package com.example.approval24.dao;
 
 
@@ -10,6 +9,7 @@ import com.example.approval24.domain.CategoryDTO;
 
 @Mapper
 public interface CategoryDAO {
+
 	// 민원서식 목록
 	public List<CategoryDTO> findAllCategories();
 	
@@ -33,4 +33,3 @@ public interface CategoryDAO {
 	public int CategoryUpd(CategoryDTO categoryDTO);
 	
 }
-

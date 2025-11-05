@@ -38,7 +38,7 @@ public class ComplainController {
 	private ComplainuserService complainuserService;
 
 	// 임시로 넣은 계정ID 13,41,61
-	public long accountId = 41;
+	public long accountId = 13;
 
 	@GetMapping("/myWork")
 	public String myWorkList(Model model

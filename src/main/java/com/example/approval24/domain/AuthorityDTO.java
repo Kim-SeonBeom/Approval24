@@ -3,9 +3,11 @@ package com.example.approval24.domain;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class AuthorityDTO {
     private Long authorityId;      // AUTHORITY_ID
     private String authorityName;  // AUTHORITY_NAME
