@@ -101,6 +101,31 @@
  	VALUES
  	(#{userNo},#{instId}, #{deptId}, #{loginId}, #{password}, 'B002')
 </insert>
+<!-- 로그인 -->
+   <select id="findByLogin" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
+        SELECT 
+            A.ACCOUNT_ID,
+            U.USER_NO,
+            A.INST_ID,
+            A.DEPT_ID,
+            A.LOGIN_ID,
+            A.PASSWORD,
+            A.CREATE_DT,
+            A.UPDATE_DT,
+            A.DEL_YN,
+            A.CREATE_ID,
+            A.UPDATE_ID,
+            A.ACCOUNT_STATUS_CD,
+            A.PWD_FAIL_CNT,
+            A.PWD_CHANGE_DT,
+            A.IS_SYSTEM,
+            U.user_name
+        FROM T1000_ACCOUNT A
+        JOIN t1000_user U ON  A.user_no = U.user_no
+        WHERE A.LOGIN_ID = #{loginId}
+          AND A.ACCOUNT_STATUS_CD = 'B002'
+          AND A.DEL_YN = 'N'
+    </select>
 
 
 <!-- 계정 리스트 (id 리스트)-->
