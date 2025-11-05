@@ -199,9 +199,11 @@
 
 
 					</form>
-
+				
 				</div>
 				<!-- /.container-fluid -->
+				<jsp:include page="../../D/approvalLineEditor.jsp" />
+				
 			</div>
 			<!-- /#content -->
 
@@ -237,6 +239,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

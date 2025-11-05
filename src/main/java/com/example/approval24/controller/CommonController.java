@@ -36,11 +36,14 @@ public class CommonController {
     public ResponseEntity<List<DeptInstDTO>> getDepartmentList(HttpSession session) {
         Long userId = (Long) session.getAttribute("user");
 
+        System.out.println(userId);
         if (userId == null) {
             return ResponseEntity.status(401).build(); 
         }
         
         Long instId = accountService.findInstIdByAccountId(userId);
+        
+        System.out.println(instId);
         
         if (instId == null) {
              return ResponseEntity.status(404).build();
@@ -82,7 +85,7 @@ public class CommonController {
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("instId", instId);
         filterMap.put("deptId", deptId);
-        filterMap.put("accountStatus", "B0");
+        filterMap.put("accountStatus", "B002");
         
 		List<AccountDTO> accountList = accountService.getAccountsByFilter(filterMap);
 
