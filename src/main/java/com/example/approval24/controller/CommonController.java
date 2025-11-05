@@ -31,7 +31,7 @@ public class CommonController {
 	@Autowired
 	private TotalCodeService codeService;
 
-    //부서 목록
+    //이 계정이 속한 기관에 대한 부서 목록
     @GetMapping("/depts")
     public ResponseEntity<List<DeptInstDTO>> getDepartmentList(HttpSession session) {
         Long userId = (Long) session.getAttribute("user");

@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/WEB-INF/views/common/header.jsp"%>
     <meta charset="UTF-8">
     <title>북마크 등록</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -11,23 +12,48 @@
         .approver-list-item { margin-top: 5px; border: 1px solid #eee; padding: 5px; }
     </style>
 </head>
-<body>
-    <h1>새 북마크 등록 ✨</h1>
-    
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+	
+		<!-- Sidebar -->
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
+		
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
+							<!-- Begin Page Content -->
+				<div class="container-fluid">
+				
+				<h1 class="h3 mb-2 text-gray-800">새 북마크 등록</h1>
+
+<!-- DataTales Example -->
+	<div class="card shadow mb-4">
+		<div class="card-header py-3 d-flex align-items-center justify-content-between">
+		<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">새 북마크 등록</h6>
+		</div>
+			<div class="card-body">
     <form action="/approval24/bookmark/create" method="post" id="bookmarkForm">
-        <p>
+       <div class="d-flex align-items-center mb-3">
+        <p class="m-0  me-3" >
             <label for="bookmarkName">북마크 이름:</label>
             <input type="text" id="bookmarkName" name="bookmarkName" required>
         </p>
-        
-        <p>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <p class="m-0">
             <label for="accountId">작성자 ID:</label>
             <%-- 실제 환경에서는 세션에서 가져와 hidden 필드로 처리 --%>
-            <input type="number" id="accountId" name="accountId" value="1" required> 
+            <input type="number" id="accountId" name="accountId" value="${session.user}" readonly required> 
         </p>
+        </div>
 
-        <div class="approver-box">
-            <h3>결재자 추가</h3>
+        <div class="approver-box mb-3 border-dark" >
+            <h3 class="mb-3">결재자 추가</h3>
+            <hr class="border-dark">
             
             <%-- 1. 부서 선택 드롭다운 (Controller에서 받은 depts 사용) --%>
             <label for="deptSelect">부서 선택:</label>
@@ -47,11 +73,43 @@
             <div id="selectedApprovers">
                 </div>
         </div>
-
-        <button type="submit">북마크 저장</button>
-        <a href="/approval24/bookmark/list">취소</a>
+		<div style="text-align: right;">
+        <button type="submit" class="btn btn-primary">북마크 저장</button>
+        <a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
+        </div>
     </form>
+    </div>
+    </div>
     
+    		</div>
+				<!-- /.container-fluid -->
+    			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>행정 &copy; 결재24 2025</span>
+					</div>
+				</div>
+			</footer>
+			<!-- End of Footer -->
+    
+    	</div>
+		<!-- End of Content Wrapper -->
+    
+    	</div>
+	<!-- End of Page Wrapper -->
+    
+    	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- Logout Modal-->
+	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
+
+	<!-- footer 영역 -->
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
     <script>
         // 1. 부서 선택 시 해당 부서의 계정 목록을 불러오는 AJAX
         $('#deptSelect').on('change', function() {
