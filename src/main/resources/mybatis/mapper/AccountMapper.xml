@@ -3,7 +3,7 @@
 <mapper namespace="com.example.approval24.dao.AccountDAO">
 
 	<!-- 민원서식 카테고리 목록 -->
-	<select id="findById" resultType="AccountDTO"
+	<select id="findById" resultType="AccountDTO">
 		parameterType="long">
 		select
 		account_Id,
@@ -159,8 +159,6 @@
 	</set>
 	WHERE account_id = #{accountId}
 </update>
-
-</mapper>
 
 
 

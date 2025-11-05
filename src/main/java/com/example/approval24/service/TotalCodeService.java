@@ -34,10 +34,16 @@ public class TotalCodeService {
 	
 	// 코드 등록
 	public int TotalCodeInsert(TotalCodeDTO codeDTO) {
+		
+		// 코드 등록시 코드ID 중복체크
+		int count = totalCodeDAO.CountByCodeId(codeDTO.getCodeId());
+		if(count > 0) {
+			return -1;
+		}
 		return totalCodeDAO.TotalCodeInsert(codeDTO);
 	}
 	
-
+	
 
 	public List<TotalCodeDTO> getTotalCodeByGroupId(String groupId){
 	return totalCodeDAO.findCodesByGroupId(groupId);

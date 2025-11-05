@@ -7,6 +7,7 @@
 	select inst_id, inst_name, to_char(create_dt, 'yyyy-mm-dd') AS create_dt, to_char(update_dt, 'yyyy-mm-dd') AS update_dt, inst_address, inst_phone, inst_post, inst_head_name, inst_detail_address, del_yn
 	from t1000_institution
 	where del_yn='N'
+	order by create_dt DESC, update_dt DESC
 </select>
 
 <!-- 기관등록 -->

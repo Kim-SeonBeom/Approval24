@@ -21,4 +21,7 @@ public interface TotalCodeDAO {
 	
 	// 코드 등록
 	public int TotalCodeInsert(TotalCodeDTO codeDTO);
+	
+	// 등록시 코드ID 중복 체크
+	public int CountByCodeId(String codeId);
 }

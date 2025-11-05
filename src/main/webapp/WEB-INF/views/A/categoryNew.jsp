@@ -7,7 +7,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<title>공통코드 등록 | 결재24</title>
+<title>민원서식 등록 | 결재24</title>
 <style>
 /* 표 기반(딱딱한) 작성 레이아웃 */
 .kv-table th {
@@ -59,16 +59,8 @@
 
 					<!-- 상단 제목/버튼 -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-3">
-						<h1 class="h3 mb-0 text-gray-800">공통코드 등록</h1>
+						<h1 class="h3 mb-0 text-gray-800">민원서식 등록</h1>
 					</div>
-					<c:if test="${not empty errorMessage}">
-					    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-					        ${errorMessage}
-					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					            <span aria-hidden="true">&times;</span>
-					        </button>
-					    </div>
-					</c:if>
 
 					<!-- 카드 -->
 					<div class="card shadow mb-4">
@@ -80,14 +72,14 @@
 								<button type="button" class="btn btn-primary btn-sm" id="btnSaveTop">
 									<i class="fas fa-save mr-1"></i>등록
 								</button>
-								<a href="${pageContext.request.contextPath}/admin/totalcode" class="btn btn-danger btn-sm">취소</a>
+								<a href="${pageContext.request.contextPath}/admin/category" class="btn btn-danger btn-sm">취소</a>
 							</div>
 
 						</div>
 
 
 						<div class="card-body">
-							<form id="totalCodeInsertForm" action="/approval24/admin/totalcode/new" method="post">
+							<form id="categoryInsertForm" action="/approval24/admin/category/new" method="post">
 							
 
 								<div class="table-responsive">
@@ -99,23 +91,21 @@
 											<col style="width: 32%;">
 										</colgroup>
 										<tbody>
-										
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">코드그룹ID</th>
-												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">코드ID</th>
-												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" required></td>
-											</tr>
-
-											<tr>
-												<th>코드명</th>
-												<td colspan="3"><input type="tel" class="form-control form-control-sm"
-													name="codeName"></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">민원서식명</th>
+												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" required maxlength="200"></td>
 											</tr>
 											<tr>
-												<th>코드내용</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold">유형코드</th>
+												<td colspan="1"><input type="text" name="categoryCd" id="categoryCd" class="form-control form-control-sm" required maxlength="200"></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">처리소요일</th>
+												<td colspan="1"><input type="text" name="dueDt" id="dueDt" class="form-control form-control-sm" placeholder="숫자만 입력하세요." required maxlength="200"></td>
+											</tr>
+											
+											<tr>	
+												<th>민원서식 URL</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm"
-													name="codeDetail"></td>
+													name="categoryUrl"></td>
 											</tr>
 											<tr>
 											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
@@ -135,7 +125,6 @@
 											    </div>
 											  </td>
 											</tr>
-											
 										</tbody>
 									</table>
 								</div>
@@ -179,7 +168,7 @@ $(document).ready(function() {
     $('#btnSaveTop').on('click', function(e) {
         e.preventDefault();
         
-        const form = document.getElementById('totalCodeInsertForm');
+        const form = document.getElementById('categoryInsertForm');
         
         // 브라우저 기본 유효성 검사
         if (!form.checkValidity()) {
@@ -189,7 +178,7 @@ $(document).ready(function() {
 
         // 확인창 추가
         if (confirm('작성된 내용을 등록하시겠습니까?')) {
-            $('#totalCodeInsertForm').submit();
+            $('#categoryInsertForm').submit();
         } else {
             return false; // 취소 시 아무 동작도 안 함
         }

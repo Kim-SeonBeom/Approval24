@@ -14,6 +14,7 @@
 	join t2000_complain_category cc on cc.complain_category_id = ma.complain_category_id
 	join t1000_account a on a.account_id = ma.account_id
 	join t1000_user u on u.user_no = a.user_no 
+	order by ma.create_dt DESC, ma.update_dt DESC
 </select>
 
 <!-- 담당자배정 상세 -->
@@ -50,7 +51,12 @@
 	values (#{instId}, #{deptId}, #{complainCategoryId}, #{accountId}, #{createId})
 </insert>
 
-
+<!-- 담당자배정 로직 -->
+<select id="ManagerAccountId" parameterType="long" resultType="long">
+	select account_id
+	from t1500_manager_assignment
+	where complain_category_id=#{complainCategoryId}
+</select>
 
 
 </mapper>
