@@ -38,20 +38,30 @@ public class AccountService {
     private TotalCodeDAO codeDAO;
 
     //로그인 기능
-    public Long login(String loginId,String password) {
+    public AccountDTO login(String loginId, String password) {
         AccountDTO account = accountDAO.findByLogin(loginId);
         if (account == null) return null; 
-        else if(password != account.getPassword())
+        if (!password.equals(account.getPassword()))
         {
         	int cnt = account.getPwdFailCnt();
-        	cnt++; account.setPwdFailCnt(cnt);
-        	accountDAO.updateAccount(account);
-        	//...
-        }
-        else {
+        	if(cnt < 5) {
+        		cnt++; 
+        		account.setPwdFailCnt(cnt);
+        		accountDAO.updateAccount(account);
+        		account.setAccountStatusCd("mispassword");
+        	}else{
+        		account.setAccountStatusCd("B004");
+        		accountDAO.updateAccount(account);
+        	}
         	
         }
-        return account.getAccountId();
+        else {
+    		account.setPwdFailCnt(0);
+    		accountDAO.updateAccount(account);
+    	}
+        	account.setPassword(null);
+        	return account;
+       
     }
     
     // 해당 계정의 메뉴/권한 조회

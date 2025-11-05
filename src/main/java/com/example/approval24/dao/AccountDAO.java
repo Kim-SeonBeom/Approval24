@@ -19,7 +19,7 @@ public interface AccountDAO {
 
 	public AccountDTO findById(long accountId);
 	
-	public int updateAccount(AccountDTO account);
+	public void updateAccount(AccountDTO account);
 
 	void insert(AccountDTO accountDTO);
 	
