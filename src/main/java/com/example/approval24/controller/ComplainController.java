@@ -112,7 +112,7 @@ public class ComplainController {
 
 		UE1DTO ue1DTO = complainService.getUE1Info(complainId);
 		System.out.println(ue1DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", ue1DTO);
 
 		return "complain/regEditForm/ue1";
@@ -143,7 +143,7 @@ public class ComplainController {
 
 		UE2DTO ue2DTO = complainService.getUE2Info(complainId);
 		System.out.println("Get : " + ue2DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", ue2DTO);
 
 		return "complain/regEditForm/ue2";
@@ -174,7 +174,7 @@ public class ComplainController {
 
 		MT1DTO mt1DTO = complainService.getMT1Info(complainId);
 		System.out.println("Get : " + mt1DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", mt1DTO);
 
 		return "complain/regEditForm/mt1";
@@ -205,7 +205,7 @@ public class ComplainController {
 
 		MT2DTO mt2DTO = complainService.getMT2Info(complainId);
 		System.out.println("Get : " + mt2DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", mt2DTO);
 
 		return "complain/regEditForm/mt2";
@@ -237,7 +237,7 @@ public class ComplainController {
 
 		EM1DTO em1DTO = complainService.getEM1Info(complainId);
 		System.out.println("Get : " + em1DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em1DTO);
 
 		return "complain/regEditForm/em1";
@@ -269,7 +269,7 @@ public class ComplainController {
 
 		EM2DTO em2DTO = complainService.getEM2Info(complainId);
 		System.out.println("Get : " + em2DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em2DTO);
 
 		return "complain/regEditForm/em2";
@@ -301,7 +301,7 @@ public class ComplainController {
 
 		EM3DTO em3DTO = complainService.getEM3Info(complainId);
 		System.out.println("Get : " + em3DTO.toString());
-		model.addAttribute("user", complainuserDTO);
+		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em3DTO);
 
 		return "complain/regEditForm/em3";

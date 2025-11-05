@@ -195,7 +195,7 @@
 						<input type="hidden" name="complainId"
 							value="<c:out value='${detail.complainId}'/>"> <input
 							type="hidden" name="complainuserNo"
-							value="<c:out value='${user.complainuserNo}'/>">
+							value="<c:out value='${userInfo.complainuserNo}'/>">
 
 
 					</form>
