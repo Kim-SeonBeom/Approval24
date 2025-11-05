@@ -44,8 +44,9 @@
 		= CC.CODE_ID
 		AND CC.GROUP_ID = 'B0'
 		WHERE A.IS_SYSTEM = 'N'
-		AND A.INST_ID
-		= #{instId}
+		<if test="instId != null">
+		AND A.INST_ID = #{instId}
+		</if>
 		AND A.DEL_YN = 'N'
 		<if test="loginId != null and loginId != ''">
 			AND A.LOGIN_ID LIKE '%' || #{loginId} || '%'
@@ -64,6 +65,9 @@
 		</if>
 		<if test="endDate != null">
 			AND A.CREATE_DT &lt;= #{endDate}
+		</if>
+		<if test="accountId != null">
+			AND A.account_id = #{accountId}
 		</if>
 		ORDER BY A.CREATE_DT DESC
 	</select>
