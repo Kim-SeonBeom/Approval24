@@ -49,8 +49,17 @@
 					        </button>
 					    </div>
 					</c:if>
+					
+					<!-- 그룹 선택 -->
+                    <div class="ml-1">
+                       <select id="groupFilter" class="custom-select custom-select-sm form-control form-control-sm" style="width: 400px;">
+                          <option value="">전체 그룹</option>
+                          <!-- 옵션은 JS에서 테이블 데이터를 읽어 자동 생성 -->
+                       </select>
+                    </div>
+                    <br>
 
-					<!-- DataTales Example -->
+					<!-- 기관테이블 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 							<h6 class="m-0 font-weight-bold text-primary">기관 테이블</h6>
@@ -118,11 +127,54 @@
 	<!-- footer 영역 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
-	<script>
-		$("#instsCreate").on('click', function() {
-			window.location.href="${pageContext.request.contextPath}/admin/insts/new";
-		});
-	</script>
+<script>
+	$("#instsCreate").on('click', function() {
+		window.location.href="${pageContext.request.contextPath}/admin/insts/new";
+	});
+	
+    //그룹별 보기 스크립트
+    $(function() {
+       // 기존 데모 스크립트가 있으면 중복 초기화되지 않도록 확인
+       var table = $.fn.dataTable.isDataTable('#dataTable') ? $(
+             '#dataTable').DataTable() : $('#dataTable').DataTable({
+       // 필요시 옵션 (페이지 길이, 언어 등) 추가
+       // pageLength: 10,
+       // searching: true,
+       // order: []  // 초기 정렬 없애고 싶으면 주석 해제
+       });
+
+       // 1열(0-index) = 그룹코드 컬럼
+       var groupCol = table.column(0);
+       var $select = $('#groupFilter');
+
+       // 현재 테이블 데이터에서 고유 그룹코드 추출하여 옵션 자동 생성
+       // (Ajax가 아니라 서버 렌더 테이블일 때 유용)
+       var groups = groupCol.data().unique().sort().toArray();
+       groups.forEach(function(g) {
+          if (!g || typeof g !== 'string')
+             return;
+          $select.append('<option value="' + g + '">' + g + '</option>');
+       });
+
+       // 셀렉트 변경 시 해당 그룹만 정규식 완전일치로 필터
+       $select
+             .on('change',
+                   function() {
+                      var val = $(this).val();
+                      // 정규식 특수문자 이스케이프
+                      var esc = $.fn.dataTable.util.escapeRegex(val);
+                      groupCol.search(val ? '^' + esc + '$' : '',
+                            true, false).draw();
+                   });
+
+       // URL 파라미터로 기본 그룹 지정 가능 (?group=CODE 같은 형태)
+       var params = new URLSearchParams(location.search);
+       var defaultGroup = params.get('group');
+       if (defaultGroup && groups.includes(defaultGroup)) {
+          $select.val(defaultGroup).trigger('change');
+       }
+    });
+</script>
 
 </body>
 
