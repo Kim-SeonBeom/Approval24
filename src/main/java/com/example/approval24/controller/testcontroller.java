@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class testcontroller {
+	
+	@GetMapping("/user/userAppplication")
+	public String Application() {
+		return "userApplication";
+	}
 
 	@GetMapping("/tables")
 	public String tables() {
@@ -69,7 +74,13 @@ public class testcontroller {
 	public String authorityEdit() {
 		return "authorityEdit";
 	}
-
+	
+	//approvalLine
+	@GetMapping("/approvalLine")
+	public String approvalLine() {
+		return "D/approvalLine";
+	}
+	
 
 	@GetMapping("/division")
 	public String division() {

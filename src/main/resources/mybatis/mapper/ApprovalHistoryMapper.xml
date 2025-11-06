@@ -112,4 +112,79 @@
             AND SEQ_NO = #{seqNo}
     </update>
     
+    <select id="getHistoryIdByComplainIdAndSeqNo" resultType="ApprovalHistoryDTO">
+        SELECT 
+            *
+        FROM 
+            T2000_APPROVAL_HISTORY
+        WHERE 
+            complain_id = #{complainId}
+        AND 
+            seq_no = #{seqNo}
+    </select>
+    
+    <select id="getComplainManager" resultType="ApprovalHistoryDTO">
+        SELECT 
+            *
+        FROM 
+            approval_history
+        WHERE 
+            complain_id = #{complainId}
+        ORDER BY 
+            created_at ASC  
+        LIMIT 1
+    </select>
+    
+<select id="getHistoryIdByComplainId" resultType="ApprovalHistoryDTO">
+        
+        SELECT 
+            T1.COMPLAIN_ID,
+            T1.DELEGATE_ID,
+            T1.ACCOUNT_ID,
+            T1.APPROVAL_STATUS_CD,
+            T1.APPROVER_TYPE_CD,
+            T1.PROCESS_DT,
+            T1.APPROVAL_COMMENT,
+            T1.SEQ_NO,
+            T1.URL,
+            
+            T3.CATEGORY_CD,
+            
+            TC1.CODE_NAME AS CATEGORY_NAME,
+            
+            TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
+            
+            TC3.CODE_NAME AS APPROVER_TYPE_NAME
+            
+        FROM 
+            T2000_APPROVAL_HISTORY T1
+        
+        INNER JOIN 
+            T2000_COMPLAIN T2 
+            ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
+            
+        LEFT OUTER JOIN 
+            T2000_COMPLAIN_CATEGORY T3 
+            ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
+            
+        LEFT OUTER JOIN 
+            TOTAL_CODE TC1 
+            ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
+            
+        LEFT OUTER JOIN 
+            TOTAL_CODE TC2 
+            ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
+            
+        LEFT OUTER JOIN 
+            TOTAL_CODE TC3 
+            ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
+            
+        WHERE
+            T1.COMPLAIN_ID = #{complainId}
+            
+        ORDER BY 
+            T1.SEQ_NO ASC
+            
+    </select>
+    
 </mapper>
