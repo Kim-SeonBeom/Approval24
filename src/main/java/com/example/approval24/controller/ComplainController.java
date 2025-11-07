@@ -234,25 +234,39 @@ public class ComplainController {
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
 	@GetMapping("/em1/{complainId}")
 	public String emptyWork(@PathVariable int complainId, Model model,HttpSession session,HttpServletRequest req) {
-		//저장된 페이지별 권한불러오기
+		System.out.println("!!!!!!!!!!!!!!!!!controller입니다.");
+		
         MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
 
         // 권한 확인 (Null 체크 필수!)
         if (pageAuth != null) {
+            System.out.println("**** [Auth Check] 현재 메뉴: " + pageAuth.getMenuName());
+            System.out.println("**** [Auth Check] 읽기 권한: " + pageAuth.getReadYn());
+            System.out.println("**** [Auth Check] 수정 권한: " + pageAuth.getUpdateYn());
+            System.out.println("**** [Auth Check] 등록 권한: " + pageAuth.getCreateYn());
+            System.out.println("**** [Auth Check] 승인 권한: " + pageAuth.getApproveYn());
+            System.out.println("**** [Auth Check] 삭제 권한: " + pageAuth.getDeleteYn());
+
+
+
         } else {
             System.out.println("**** [Auth Check] 이 URL에 대한 메뉴 권한 정보를 찾을 수 없습니다.");
 
         }
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
-
+		System.out.println("****민원내용 확인 = " + complainDTO.toString());
+		
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
+		System.out.println("****민원인정보 확인 = " + complainuserDTO.toString());
 
 		EM1DTO em1DTO = complainService.getEM1Info(complainId);
+		System.out.println("****GET EM1정보 확인 : " + em1DTO.toString());
 		
 		model.addAttribute("complainInfo", complainDTO);
 		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em1DTO);
+		System.out.println("!!!!!!!!!!!!!!!!!controller 끝입니다.");
 
 		return "complain/regEditForm/em1";
 

@@ -157,21 +157,30 @@
 							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>
 							<div>
-								<button type="button" class="btn btn-secondary" id="btnApprovalLine">
-									<i class="fas fa-edit mr-1"></i>결재선설정
-								</button>
-								<button type="button" class="btn btn-light" id="btnSave">
-									<i class="fas fa-edit mr-1"></i>수정
-								</button>
-								<button type="button" class="btn btn-primary" id="btnApprove">
-									<i class="fas fa-edit mr-1"></i>승인
-								</button>
-								<button type="button" class="btn btn-danger" id="btnReject">
-									<i class="fas fa-edit mr-1"></i>반려
-								</button>
-								<button type="button" class="btn btn-warning" id="btnComplainCancel">
-									<i class="fas fa-edit mr-1"></i>취하
-								</button>
+								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
+									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
+										<i class="fas fa-edit mr-1"></i>결재선설정
+									</button>
+
+								</c:if>
+								<c:if test="${pageAuth.updateYn == 'Y'}">
+									<button type="button" class="btn btn-light" id="btnSave">
+										<i class="fas fa-edit mr-1"></i>수정
+									</button>
+									<button type="button" class="btn btn-warning" id="btnComplainCancle">
+										<i class="fas fa-edit mr-1"></i>취하
+									</button>
+
+								</c:if>
+
+								<c:if test="${pageAuth.approveYn == 'Y'}">
+									<button type="button" class="btn btn-primary" id="btnApprove">
+										<i class="fas fa-edit mr-1"></i>승인
+									</button>
+									<button type="button" class="btn btn-danger" id="btnReject">
+										<i class="fas fa-edit mr-1"></i>반려
+									</button>
+								</c:if>
 							</div>
 						</div>
 						<input type="hidden" name="complainId" value="<c:out value='${detail.complainId}'/>"> <input type="hidden" name="complainuserNo" value="<c:out value='${userInfo.complainuserNo}'/>">
