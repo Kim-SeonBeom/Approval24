@@ -16,12 +16,16 @@
             U.CREATE_DT,
             U.UPDATE_DT,
             U.CREATE_ID,
-            U.UPDATE_ID
+            U.UPDATE_ID,
+            U.INST_ID
         FROM T1000_USER U
         LEFT JOIN TOTAL_CODE C
             ON U.USER_POSITION_CD = C.CODE_ID
             AND C.GROUP_ID = 'A0'
         WHERE 1=1
+        <if test="instId != null and instId != ''">
+            AND U.INST_ID LIKE = #{instId}
+        </if>
         <if test="userName != null and userName != ''">
             AND U.USER_NAME LIKE '%' || #{userName} || '%'
         </if>
@@ -51,7 +55,8 @@
             U.CREATE_DT,
             U.UPDATE_DT,
             U.CREATE_ID,
-            U.UPDATE_ID
+            U.UPDATE_ID,
+            U.INST_ID
         FROM T1000_USER U
         LEFT JOIN TOTAL_CODE C
             ON U.USER_POSITION_CD = C.CODE_ID
@@ -62,10 +67,10 @@
     <insert id="insertUser" parameterType="UserDTO" useGeneratedKeys="true" keyProperty="userNo">
         INSERT INTO T1000_USER (
             USER_RESIDENT_NO, USER_NAME, USER_EMAIL, USER_TEL, USER_PHONE, USER_POSITION_CD,
-            DEL_YN, CREATE_DT, CREATE_ID
+            DEL_YN, CREATE_DT, CREATE_ID, INST_ID
         ) VALUES (
             #{userResidentNo}, #{userName}, #{userEmail}, #{userTel}, #{userPhone}, #{userPositionCd},
-            'N', SYSDATE, #{createId}
+            'N', SYSDATE, #{createId}, #{instId}
         )
     </insert>
 
@@ -78,7 +83,8 @@
             USER_PHONE = #{userPhone},
             USER_POSITION_CD = #{userPositionCd},
             DEL_YN = #{delYn, jdbcType=CHAR},    UPDATE_DT = SYSDATE,
-            UPDATE_ID = #{updateId}
+            UPDATE_ID = #{updateId},
+            INST_ID = #{instID}
         WHERE USER_NO = #{userNo}
     </update>
 
@@ -88,7 +94,7 @@
             DEL_YN = 'Y',
             UPDATE_ID= #{updateId},
             UPDATE_DT = SYSDATE
-            WHERE USER_NO = #{userNo}
+       WHERE USER_NO = #{userNo}
           AND DEL_YN = 'N'
     </update>
 

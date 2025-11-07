@@ -1,6 +1,7 @@
 package com.example.approval24.controller;
 
 import com.example.approval24.domain.DeptInstDTO;
+import com.example.approval24.domain.InstDTO;
 import com.example.approval24.domain.TotalCodeDTO;
 import com.example.approval24.service.AccountService;
 import com.example.approval24.service.DeptService;
@@ -30,8 +31,14 @@ public class CommonController {
 	private DeptService deptServie;
 	@Autowired
 	private TotalCodeService codeService;
+	
+	// 기관 전체 목록
+	@GetMapping("/insts")
+	public ResponseEntity<List<InstDTO>> getInstitutions(){
+		return ResponseEntity.ok(deptServie.getAllInst());
+	}
 
-    //이 계정이 속한 기관에 대한 부서 목록
+    //기관에 대한 부서 목록
     @GetMapping("/depts")
     public ResponseEntity<List<DeptInstDTO>> getDepartmentList(HttpSession session) {
         Long userId = (Long) session.getAttribute("user");

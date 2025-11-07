@@ -37,9 +37,11 @@ public class BookmarkService {
         int mainResult = bookmarkDAO.insertBookmark(bookmark);
         if (mainResult > 0 && bookmark.getApprovers() != null && !bookmark.getApprovers().isEmpty()) {
             Long generatedBookmarkId = bookmark.getBookmarkId();
+            Long seqNo = (long) 1;
             
             for (Approver approver : bookmark.getApprovers()) {
                 approver.setBookmarkId(generatedBookmarkId);
+                approver.setSeqNo(seqNo);
             }
             
             bookmarkDAO.insertApprovers(bookmark.getApprovers()); 
@@ -80,21 +82,20 @@ public class BookmarkService {
             return 0;
         }
         
-        // 1. 기존 상세 결재자 전체 물리적 삭제
-        int deleteCount = bookmarkDAO.deleteApproversByBookmarkId(bookmarkId);
+        Long seqNo = (long) 1;
+        bookmarkDAO.deleteApproversByBookmarkId(bookmarkId);
         
-        int insertCount = 0;
-        
-        // 2. 새로운 결재 경로가 있다면 등록
         if (newApprovers != null && !newApprovers.isEmpty()) {
             for (Approver approver : newApprovers) {
                 approver.setBookmarkId(bookmarkId);
+                approver.setSeqNo(seqNo);
             }
             bookmarkDAO.insertApprovers(newApprovers);
-            insertCount = newApprovers.size();
         }
-
-        return insertCount;
+        
+        Map<String, Object> params = new HashMap<>();
+        params.put("bookmarkId", bookmarkId);
+        return bookmarkDAO.updateBookmark(params);
     }
     
     /** (선택적) 개별 결재자 속성 수정 - 기존 updateApprover와 동일 

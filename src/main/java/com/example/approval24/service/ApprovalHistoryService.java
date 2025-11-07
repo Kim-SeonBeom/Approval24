@@ -54,6 +54,7 @@ public class ApprovalHistoryService {
         	if(nextApprovalData == null) {
         		ComplainDTO complainDTO = complainDAO.findById(complainId);
         		complainDTO.setComplainStatusCd("D003"); //민원 처리 완료
+        		complainDAO.updateStatusByComplainId(complainId, codeId);
         	}
         	else {
         		nextApprovalData.setApprovalStatusCd("E001"); // 결재
@@ -66,7 +67,9 @@ public class ApprovalHistoryService {
         	nextApprovalData = approvalHistoryDAO.getComplainManager(complainId);
         	nextApprovalData.setApprovalStatusCd("E001"); // 결재
         	approvalHistoryDAO.insertApprovalHistory(nextApprovalData);
-        	
+        	ComplainDTO complainDTO = complainDAO.findById(complainId);
+    		complainDTO.setComplainStatusCd("D005"); //반려
+    		complainDAO.updateStatusByComplainId(complainId, codeId);
         	return result;
         } 
         else {

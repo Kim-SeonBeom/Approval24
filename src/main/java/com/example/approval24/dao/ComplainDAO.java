@@ -3,6 +3,7 @@ package com.example.approval24.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.approval24.domain.ComplainDTO;
 
@@ -18,5 +19,6 @@ public interface ComplainDAO {
 
 	public List<ComplainDTO> findByCategoryId(long complainCategoryId);
 	
+	public int updateStatusByComplainId(@Param("complainID") long complainId, @Param("codeId") String codeId);
 	
 }
