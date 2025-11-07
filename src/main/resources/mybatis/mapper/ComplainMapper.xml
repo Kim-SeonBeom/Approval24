@@ -70,7 +70,6 @@
 	<select id="findById" parameterType="long"
 		resultType="ComplainDTO">
 		select * from t2000_complain where complain_id = #{complainId}
-
 	</select>
 	
 	<select id="findByCategoryId" parameterType="long" resultType="ComplainDTO">
@@ -94,5 +93,13 @@
 		on c.complainuser_no = r.complainuser_no
 	 where c.complain_category_id = #{complainCategoryId}
 	</select>
+	
+	<update id="updateStatusByComplainId" >
+		UPDATE t2000_complain
+		SET
+			complain_status_cd = #{codeId}
+		WHERE
+			complain_id = #{complainID}
+	</update>
 
 </mapper>

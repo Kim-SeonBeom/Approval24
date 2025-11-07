@@ -18,6 +18,8 @@ public class UserDTO {
     private Date updateDt;         // 수정일
     private Long createId;         // 생성자 ID
     private Long updateId;         // 수정자 ID
+    private Long instId;		   //기관 ID
     
+    //추가사항
     private String userPositionName; //직급 이름
 }

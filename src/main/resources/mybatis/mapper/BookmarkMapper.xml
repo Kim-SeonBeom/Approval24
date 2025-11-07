@@ -51,7 +51,7 @@
         WHERE BOOKMARK_ID = #{bookmarkId} AND DEL_YN = 'N'
     </select>
 
-    <insert id="insertBookmark" parameterType="com.example.approval24.domain.BookmarkDTO">
+    <insert id="insertBookmark" parameterType="BookmarkDTO">
         <selectKey keyProperty="bookmarkId" resultType="long" order="BEFORE">
             SELECT T2000_BOOKMARK_SEQ.NEXTVAL FROM DUAL
         </selectKey>

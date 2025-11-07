@@ -10,25 +10,19 @@ import com.example.approval24.domain.BookmarkDTO.Approver;
 
 @Mapper
 public interface BookmarkDAO {
+    List<BookmarkDTO.Approver> selectApproversByBookmarkId(@Param("bookmarkId") long bookmarkId);
 
-    // 계정별 전체 북마크 조회
-    List<BookmarkDTO> findByAccountId(@Param("accountId") Long accountId);
+    List<BookmarkDTO> findByAccountId(@Param("accountId") long accountId);
 
-    // 단일 북마크 조회 (상세 결재자 포함)
-    BookmarkDTO findById(@Param("bookmarkId") Long bookmarkId);
+    BookmarkDTO findById(@Param("bookmarkId") long bookmarkId);
 
-    // 북마크 등록 (상세 결재자 리스트 포함)
-    int insertBookmark(BookmarkDTO bookmark);
+    int insertBookmark(BookmarkDTO bookmarkDTO);
 
-    // 북마크 이름 수정 / 삭제
-    int updateBookmark(@Param("params") Map<String, Object> params);
+    int updateBookmark(Map<String, Object> params);
 
-    // 특정 북마크 내 결재자 수정
-    int updateApprover(@Param("params") Map<String, Object> params);
-    
-    // 특정 북마크 결재자 일괄 등록
-    void insertApprovers(List<Approver> approvers);
-    
-    // 북마크 디테일 삭제
-    int deleteApproversByBookmarkId(Long bookmarkId);
+    int updateApprover(Map<String, Object> params);
+
+    int insertApprovers(List<BookmarkDTO.Approver> list);
+
+    int deleteApproversByBookmarkId(@Param("bookmarkId") long bookmarkId);
 }

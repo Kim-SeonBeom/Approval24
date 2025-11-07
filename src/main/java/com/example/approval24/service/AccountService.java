@@ -124,5 +124,9 @@ public class AccountService {
 		return accountDAO.findByAccountIdAndDeptIdAndInstId(accountId);
 	}
 
+	public int countAccountsByFilter(Map<String, Object> params) {
+		return accountDAO.countAccountsByFilter(params);
+	}
+
 }
 

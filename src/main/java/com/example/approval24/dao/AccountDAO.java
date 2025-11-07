@@ -32,6 +32,7 @@ public interface AccountDAO {
   
   List<AccountDTO> findByAccountIdAndDeptIdAndInstId(long accountId);
 
+  int countAccountsByFilter(Map<String, Object> params);
 }
 
 
