@@ -2,9 +2,11 @@ package com.example.approval24.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class MenuVO {
     private Long menuId;           // 메뉴 ID
     private String menuName;       // 메뉴 이름

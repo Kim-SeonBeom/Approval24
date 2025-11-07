@@ -33,6 +33,35 @@
 					<h1 class="h3 mb-2 text-gray-800">${title }</h1>
 					<br>
 
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">검색 및 필터링</h6>
+						</div>
+						<div class="card-body">
+							<form id="userFilterForm" action="${pageContext.request.contextPath}/user/list" method="get">
+								<div class="form-row align-items-end">
+
+									<div class="col-md-3 mb-3">
+										<label for="complainCategory">민원서식</label> <input type="text" class="form-control" id="userNameFilter" name="userName" value="${filter.userName}" placeholder="이름 입력">
+									</div>
+									<div class="col-md-3 mb-3">
+										<label for="complainUserName">신청자</label> <input type="email" class="form-control" id="userEmailFilter" name="userEmail" value="${filter.userEmail}" placeholder="이메일 입력">
+									</div>
+									<div class="col-md-3 mb-3">
+										<label for="manager">담당자</label> <input type="email" class="form-control" id="userEmailFilter" name="userEmail" value="${filter.userEmail}" placeholder="이메일 입력">
+									</div>
+									<div class="col-md-3 mb-3">
+										<label for="compainStatus">상태</label> <input type="email" class="form-control" id="userEmailFilter" name="userEmail" value="${filter.userEmail}" placeholder="이메일 입력">
+									</div>
+
+									<div class="col-md-2 mb-3">
+										<button class="btn btn-primary btn-block" type="submit">검색</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">

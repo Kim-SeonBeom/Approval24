@@ -2,6 +2,9 @@ package com.example.approval24.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +22,7 @@ import com.example.approval24.domain.EM2DTO;
 import com.example.approval24.domain.EM3DTO;
 import com.example.approval24.domain.MT1DTO;
 import com.example.approval24.domain.MT2DTO;
+import com.example.approval24.domain.MenuVO;
 import com.example.approval24.domain.UE1DTO;
 import com.example.approval24.domain.UE2DTO;
 import com.example.approval24.service.CategoryService;
@@ -48,7 +52,7 @@ public class ComplainController {
 		List<ComplainDTO> myWorkList = complainService.getMyWorkList(accountId);
 
 		model.addAttribute("myWorkList", myWorkList);
-		
+
 		return "myWork";
 	}
 
@@ -77,7 +81,6 @@ public class ComplainController {
 	// ,HttpSession session(여기서 현재 로그인id가져오기)
 	) {
 //		System.out.println("controller in");
-		
 
 		String title = "접수 민원 목록";
 		List<ComplainDTO> complainList = complainService.complainList(accountId);
@@ -230,13 +233,24 @@ public class ComplainController {
 
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
 	@GetMapping("/em1/{complainId}")
-	public String emptyWork(@PathVariable int complainId, Model model) {
+	public String emptyWork(@PathVariable int complainId, Model model,HttpSession session,HttpServletRequest req) {
+		//저장된 페이지별 권한불러오기
+        MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+
+        // 권한 확인 (Null 체크 필수!)
+        if (pageAuth != null) {
+        } else {
+            System.out.println("**** [Auth Check] 이 URL에 대한 메뉴 권한 정보를 찾을 수 없습니다.");
+
+        }
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
+
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
 
 		EM1DTO em1DTO = complainService.getEM1Info(complainId);
-		System.out.println("Get : " + em1DTO.toString());
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em1DTO);
 
