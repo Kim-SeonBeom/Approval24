@@ -21,6 +21,7 @@ import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
+import com.example.approval24.domain.ComplainFilterDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.EM1DTO;
 import com.example.approval24.domain.EM2DTO;
@@ -339,15 +340,25 @@ public class ComplainService {
 	}
 
 	public List<ComplainDTO> complainsByCategory(String categoryUrl) {
-//		System.out.println("service input");
+		System.out.println("service input");
 		CategoryDTO categoryDTO = categoryDAO.findByCategoryUrl(categoryUrl);
+		System.out.println(categoryDTO);
 
 		List<ComplainDTO> complainList = complainDAO.findByCategoryId(categoryDTO.getComplainCategoryId());
-//		System.out.println("***" + complainList);
-//		System.out.println("service out");
+		System.out.println("service out");
 
 		return complainList;
 
 	}
+	
+	//페이징처리를 위한 카테고리별 complain개수(Filter 적용)
+	public int countComplains(ComplainFilterDTO filter) {
+		 return complainDAO.countByFilter(filter);
+	}
+	
+	//카테고리별 complain목록(Filter 적용)
+    public List<ComplainDTO> searchComplains(ComplainFilterDTO filter) {
+        return complainDAO.findByFilter(filter); 
+    }
 
 }

@@ -45,61 +45,203 @@
 		resultType="ComplainDTO">
 		SELECT
 		c.complain_id,
-		to_char(c.rcpt_dt, 'YYYY-MM-DD') as rcptDt,
+		to_char(c.rcpt_dt, 'YYYY-MM-DD') as
+		rcptDt,
 		to_char(c.deadline_dt, 'YYYY-MM-DD') as deadlineDt,
 		c.complain_Category_Id,
 		c.complain_status_cd,
 		u.user_name,g.category_name,r.complainuser_name,g.category_url
-		FROM t2000_complain c
+		FROM
+		t2000_complain c
 		JOIN t1000_department_work d
 		ON
-		d.complain_category_id = c.complain_category_id
+		d.complain_category_id =
+		c.complain_category_id
 		JOIN t1000_account a
-		ON 
-		a.dept_id = d.department_id
+		ON
+		a.dept_id =
+		d.department_id
 		join t1000_user u
 		on a.user_no = u.user_no
-		join t2000_complain_category g
-		on g.complain_category_id = c.complain_category_id
+		join
+		t2000_complain_category g
+		on g.complain_category_id =
+		c.complain_category_id
 		join t2000_complain_user r
-		on c.complainuser_no = r.complainuser_no
+		on c.complainuser_no =
+		r.complainuser_no
 		WHERE a.account_id =
 		#{accountId}
 	</select>
 
 	<select id="findById" parameterType="long"
 		resultType="ComplainDTO">
-		select * from t2000_complain where complain_id = #{complainId}
+		select * from t2000_complain where complain_id =
+		#{complainId}
 	</select>
-	
-	<select id="findByCategoryId" parameterType="long" resultType="ComplainDTO">
+
+	<select id="findByCategoryId" parameterType="long"
+		resultType="ComplainDTO">
 		SELECT
 		c.complain_id,
-		to_char(c.rcpt_dt, 'YYYY-MM-DD')  as rcptDt,
-		to_char(c.deadline_dt, 'YYYY-MM-DD')  as deadlineDt,
-		c.complain_Category_Id,
+		TO_CHAR(c.rcpt_dt, 'YYYY-MM-DD') AS
+		rcptDt,
+		TO_CHAR(c.deadline_dt, 'YYYY-MM-DD') AS deadlineDt,
+		c.complain_category_id,
 		c.complain_status_cd,
-		u.user_name,g.category_name,r.complainuser_name,g.category_url
-		FROM t2000_complain c
-		JOIN t1000_department_work d
-		ON d.complain_category_id = c.complain_category_id
-		JOIN t1000_account a
-		ON a.dept_id = d.department_id
-		join t1000_user u
-		on a.user_no = u.user_no
-		join t2000_complain_category g
-		on g.complain_category_id = c.complain_category_id
-		join t2000_complain_user r
-		on c.complainuser_no = r.complainuser_no
-	 where c.complain_category_id = #{complainCategoryId}
+		g.category_name,
+		g.category_url,
+		r.complainuser_name,
+		c.account_id,
+		u.user_name
+		FROM
+		t2000_complain c
+		JOIN t2000_complain_category g
+		ON
+		g.complain_category_id = c.complain_category_id
+		JOIN
+		t2000_complain_user r
+		ON r.complainuser_no = c.complainuser_no
+		LEFT JOIN
+		t1000_account a
+		ON a.account_id = c.account_id
+		LEFT JOIN t1000_user u
+		ON
+		u.user_no = a.user_no
+		WHERE c.complain_category_id =
+		#{complainCategoryId}
 	</select>
-	
-	<update id="updateStatusByComplainId" >
+
+	<update id="updateStatusByComplainId">
 		UPDATE t2000_complain
 		SET
-			complain_status_cd = #{codeId}
+		complain_status_cd =
+		#{codeId}
 		WHERE
-			complain_id = #{complainID}
+		complain_id = #{complainID}
 	</update>
+
+
+	<select id="countByFilter" parameterType="ComplainFilterDTO"
+		resultType="int">
+
+		SELECT COUNT(*)
+		FROM t2000_complain c
+		JOIN t2000_complain_category g ON
+		g.complain_category_id =
+		c.complain_category_id
+		JOIN t2000_complain_user
+		r ON r.complainuser_no = c.complainuser_no
+		LEFT JOIN t1000_account a ON
+		a.account_id = c.account_id
+		LEFT JOIN t1000_user u ON u.user_no =
+		a.user_no
+		WHERE c.complain_category_id = #{complainCategoryId}
+
+		<if test="status != null and status != ''">
+			AND c.complain_status_cd = #{status}
+		</if>
+
+		<if test="complainUserName != null and complainUserName != ''">
+			AND r.complainuser_name LIKE '%' || #{complainUserName} ||
+			'%'
+		</if>
+
+		<if test="manager != null and manager != ''">
+			AND u.user_name LIKE '%' || #{manager} || '%'
+		</if>
+
+		<if
+			test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			<choose>
+				<when test="dateType == 'deadlineDt'">
+				<![CDATA[
+					AND c.deadline_dt >= TO_DATE(#{startDate},
+					'YYYY-MM-DD')
+					AND c.deadline_dt < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+					]]>
+				</when>
+				<otherwise>
+				<![CDATA[
+					AND c.rcpt_dt >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+					AND
+					c.rcpt_dt < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+					]]>
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+
+	<!--Filter 적용한 목록 조회 -->
+	<select id="findByFilter" parameterType="ComplainFilterDTO"
+		resultType="ComplainDTO">
+
+		SELECT
+		c.complain_id,
+		TO_CHAR(c.rcpt_dt, 'YYYY-MM-DD') AS rcptDt,
+		TO_CHAR(c.deadline_dt, 'YYYY-MM-DD') AS deadlineDt,
+		c.complain_category_id,
+		c.complain_status_cd,
+		g.category_name,
+		g.category_url,
+		r.complainuser_name,
+		c.account_id,
+		u.user_name
+		FROM
+		t2000_complain c
+		JOIN t2000_complain_category g ON
+		g.complain_category_id =
+		c.complain_category_id
+		JOIN t2000_complain_user
+		r ON r.complainuser_no = c.complainuser_no
+		LEFT JOIN t1000_account a ON
+		a.account_id = c.account_id
+		LEFT JOIN t1000_user u ON u.user_no =
+		a.user_no
+		WHERE c.complain_category_id = #{complainCategoryId}
+
+
+		<if test="status != null and status != ''">
+			AND c.complain_status_cd = #{status}
+		</if>
+
+
+		<if test="complainUserName != null and complainUserName != ''">
+			AND r.complainuser_name LIKE '%' ||
+			#{complainUserName} ||
+			'%'
+		</if>
+
+
+		<if test="manager != null and manager != ''">
+			AND u.user_name LIKE '%' || #{manager} ||
+			'%'
+		</if>
+
+
+		<if
+			test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			<choose>
+				<when test="dateType == 'deadlineDt'">
+				<![CDATA[
+					AND c.deadline_dt >= TO_DATE(#{startDate},'YYYY-MM-DD')
+					AND c.deadline_dt < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+					]]>
+				</when>
+				<otherwise>
+				<![CDATA[
+					AND c.rcpt_dt >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+					AND
+					c.rcpt_dt < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+					]]>
+				</otherwise>
+			</choose>
+		</if>
+
+		ORDER BY c.complain_id DESC
+		OFFSET #{offset} ROWS FETCH NEXT #{size}
+		ROWS ONLY
+
+	</select>
 
 </mapper>

@@ -47,7 +47,7 @@
 
 					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/em1/${detail.complainId}">
 
-						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
+						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex align-items-center">

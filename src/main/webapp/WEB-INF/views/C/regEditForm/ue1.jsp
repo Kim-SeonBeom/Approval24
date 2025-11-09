@@ -53,7 +53,7 @@
 					</c:if>
 
 					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/ue1/${detail.complainId}">
-						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
+						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
 						<!-- B. 이전 직장 정보 -->
 						<div class="card shadow mb-4">
@@ -224,7 +224,7 @@
 
 						<!-- 하단 버튼 -->
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
+							<a href="${pageContext.request.contextPath}/complain/ue1" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
 							</a>
 							<div>
 								<button type="button" class="btn btn-primary" id="btnUpdate">

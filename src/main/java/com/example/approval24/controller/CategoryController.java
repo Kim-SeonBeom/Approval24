@@ -24,7 +24,7 @@ public class CategoryController {
 	@GetMapping("/category")
 	public String categoryList(Model model) {
 		model.addAttribute("getAllCategoryList", categoryService.getCategoryList());
-		return "A/category";
+		return "A/category"; 
 	}
 	
 	// 민원서식 상세

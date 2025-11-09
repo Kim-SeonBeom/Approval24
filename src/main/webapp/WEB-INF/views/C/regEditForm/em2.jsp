@@ -50,7 +50,7 @@
 						action="${pageContext.request.contextPath}/em2/${detail.complainId}">
 
 						<%@ include
-							file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
+							file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex align-items-center">

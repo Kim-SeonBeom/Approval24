@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('#submitModal').modal('show');
 	});
 
-	/** 모달 확인 버튼 -> 실제 제출 * */
+	//모달 확인 버튼 -> 실제 제출 
 	$confirmBtn.on('click', function() {
 		if (pendingAction) {
 			$form.attr('action', pendingAction);
