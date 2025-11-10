@@ -78,7 +78,7 @@ public class ApprovalHistoryService {
     }
 
 
-    @Transactional 
+    @Transactional  
     public void createApprovalLine(Long loginId, Long complainId,String url, List<ApprovalHistoryDTO> approvalLine) {
         
         if (complainId == null || approvalLine == null || approvalLine.isEmpty()) {

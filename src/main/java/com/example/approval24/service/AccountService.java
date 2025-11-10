@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.approval24.dao.AccountDAO;
 import com.example.approval24.dao.AuthorityAccountDAO;
@@ -123,9 +124,17 @@ public class AccountService {
 	public List<AccountDTO> myTeamAccountList(long accountId){
 		return accountDAO.findByAccountIdAndDeptIdAndInstId(accountId);
 	}
-
+	
+	// 카운트
 	public int countAccountsByFilter(Map<String, Object> params) {
 		return accountDAO.countAccountsByFilter(params);
+	}
+	
+	@Transactional
+	public void updateAccountList(List<AccountDTO> accountList) {
+		for(AccountDTO account : accountList) {
+			accountDAO.updateAccount(account);
+		}
 	}
 
 }

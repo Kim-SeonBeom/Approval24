@@ -65,10 +65,10 @@
 	                    <td>${bm.delYn}</td>
 	                    <td>
 	                        <%-- 상세 페이지 이동 링크 --%>
-	                        <a href="/bookmark/${bm.bookmarkId}">상세</a>
+	                        <a href="/approval24/bookmark/${bm.bookmarkId}">상세</a>
 	                        
 	                        <%-- 삭제 처리 (실제로는 update로 delYn을 'Y'로 변경) --%>
-	                        <form action="/bookmark/update" method="post" style="display:inline;" onsubmit="return confirm('정말로 삭제(비활성화)하시겠습니까?');">
+	                        <form action="/approval24/bookmark/update" method="post" style="display:inline;" onsubmit="return confirm('정말로 삭제(비활성화)하시겠습니까?');">
 	                            <input type="hidden" name="bookmarkId" value="${bm.bookmarkId}">
 	                            <input type="hidden" name="delYn" value="Y">
 	                            <button type="submit" class="action-link">삭제</button>

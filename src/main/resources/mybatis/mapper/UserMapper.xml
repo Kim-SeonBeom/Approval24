@@ -2,44 +2,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.approval24.dao.UserDAO">
 
-    <select id="findUsersByFilter" parameterType="UserDTO" resultType="UserDTO">
-        SELECT
-            U.USER_NO,
-            U.USER_RESIDENT_NO,
-            U.USER_NAME,
-            U.USER_EMAIL,
-            U.USER_TEL,
-            U.USER_PHONE,
-            U.USER_POSITION_CD,
-            C.CODE_NAME AS USER_POSITION_NAME,
-            U.DEL_YN,
-            U.CREATE_DT,
-            U.UPDATE_DT,
-            U.CREATE_ID,
-            U.UPDATE_ID,
-            U.INST_ID
-        FROM T1000_USER U
-        LEFT JOIN TOTAL_CODE C
-            ON U.USER_POSITION_CD = C.CODE_ID
-            AND C.GROUP_ID = 'A0'
-        WHERE 1=1
-        <if test="instId != null and instId != ''">
-            AND U.INST_ID LIKE = #{instId}
-        </if>
-        <if test="userName != null and userName != ''">
-            AND U.USER_NAME LIKE '%' || #{userName} || '%'
-        </if>
-        <if test="userEmail != null and userEmail != ''">
-            AND U.USER_EMAIL LIKE '%' || #{userEmail} || '%'
-        </if>
-        <if test="delYn != null and delYn != ''">
-            AND U.DEL_YN = #{delYn}
-        </if>
-        <if test="userPositionCd != null and userPositionCd != ''">
-            AND U.USER_POSITION_CD = #{userPositionCd}
-        </if>
-        ORDER BY U.CREATE_DT DESC
-    </select>
+<select id="findUsersByFilter" parameterType="map" resultType="UserDTO">
+    SELECT * FROM (
+        SELECT 
+            T.*, 
+            ROWNUM AS RNUM 
+        FROM (
+            SELECT
+                U.USER_NO,
+                U.USER_RESIDENT_NO,
+                U.USER_NAME,
+                U.USER_EMAIL,
+                U.USER_TEL,
+                U.USER_PHONE,
+                U.USER_POSITION_CD,
+                C.CODE_NAME AS USER_POSITION_NAME,
+                U.DEL_YN,
+                U.CREATE_DT,
+                U.UPDATE_DT,
+                U.CREATE_ID,
+                U.UPDATE_ID,
+                U.INST_ID
+            FROM T1000_USER U
+            LEFT JOIN TOTAL_CODE C
+                ON U.USER_POSITION_CD = C.CODE_ID
+                AND C.GROUP_ID = 'A0'
+            WHERE 1=1
+            <if test="instId != null and instId != ''">
+                AND U.INST_ID = #{instId} 
+            </if>
+            <if test="userName != null and userName != ''">
+                AND U.USER_NAME LIKE '%' || #{userName} || '%'
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                AND U.USER_EMAIL LIKE '%' || #{userEmail} || '%'
+            </if>
+            <if test="delYn != null and delYn != ''">
+                AND U.DEL_YN = #{delYn}
+            </if>
+            <if test="userPositionCd != null and userPositionCd != ''">
+                AND U.USER_POSITION_CD = #{userPositionCd}
+            </if>
+            ORDER BY U.CREATE_DT DESC
+        ) T
+    )
+    <if test="startRow != null and startRow != '' and endRow != null and endRow != ''">
+    WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+    </if>
+</select>
+
+<select id="countUsersByFilter" parameterType="map" resultType="int">
+    SELECT 
+        COUNT(*)
+    FROM T1000_USER U
+    LEFT JOIN TOTAL_CODE C
+        ON U.USER_POSITION_CD = C.CODE_ID
+        AND C.GROUP_ID = 'A0'
+    WHERE 1=1
+    <if test="instId != null and instId != ''">
+        AND U.INST_ID = #{instId} 
+    </if>
+    <if test="userName != null and userName != ''">
+        AND U.USER_NAME LIKE '%' || #{userName} || '%'
+    </if>
+    <if test="userEmail != null and userEmail != ''">
+        AND U.USER_EMAIL LIKE '%' || #{userEmail} || '%'
+    </if>
+    <if test="delYn != null and delYn != ''">
+        AND U.DEL_YN = #{delYn}
+    </if>
+    <if test="userPositionCd != null and userPositionCd != ''">
+        AND U.USER_POSITION_CD = #{userPositionCd}
+    </if>
+</select>
 
     <select id="findByResidentNo" parameterType="String" resultType="UserDTO">
         SELECT
@@ -62,6 +97,29 @@
             ON U.USER_POSITION_CD = C.CODE_ID
             AND C.GROUP_ID = 'A0'
         WHERE U.USER_RESIDENT_NO = #{userResidentNo}
+    </select>
+    
+        <select id="findByUserNo" parameterType="Long" resultType="UserDTO">
+        SELECT
+            U.USER_NO,
+            U.USER_RESIDENT_NO,
+            U.USER_NAME,
+            U.USER_EMAIL,
+            U.USER_TEL,
+            U.USER_PHONE,
+            U.USER_POSITION_CD,
+            C.CODE_NAME AS USER_POSITION_NAME,
+            U.DEL_YN,
+            U.CREATE_DT,
+            U.UPDATE_DT,
+            U.CREATE_ID,
+            U.UPDATE_ID,
+            U.INST_ID
+        FROM T1000_USER U
+        LEFT JOIN TOTAL_CODE C
+            ON U.USER_POSITION_CD = C.CODE_ID
+            AND C.GROUP_ID = 'A0'
+        WHERE U.USER_NO = #{userNo}
     </select>
     
     <insert id="insertUser" parameterType="UserDTO" useGeneratedKeys="true" keyProperty="userNo">
