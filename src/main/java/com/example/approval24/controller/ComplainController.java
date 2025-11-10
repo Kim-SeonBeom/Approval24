@@ -79,21 +79,40 @@ public class ComplainController {
 		return "redirect:/";
 
 	}
-
+	
+	//민원 접수 목록(filter 적용)
 	@GetMapping("/list")
-	public String complainList(Model model, HttpSession session) {
+	public String complainList(Model model, ComplainFilterDTO filter, HttpSession session) {
 //		System.out.println("controller in");
 		Long accountId = (Long) session.getAttribute("user");
-
 		String title = "접수 민원 목록";
-		List<ComplainDTO> complainList = complainService.complainList(accountId);
-		System.out.println("확인 = " + complainList.toString());
-		model.addAttribute("complainList", complainList);
-		model.addAttribute("title", title);
+		
+		//계정이 속한 부서의 민원서식목록(id, name)
+		List<CategoryDTO> categoryList = categoryService.getCategoryListByAccountId(accountId);
+		model.addAttribute("title", title);													//제목
+		model.addAttribute("categoryList",categoryList);									//계정이 속한 부서의 민원서식목록
+
+		// 초기 진입(검색 없음)
+		if (filter.isEmptyFilter()) {
+			model.addAttribute("complainList", java.util.Collections.emptyList());			//빈  민원목록
+			model.addAttribute("filter", filter);											//필터
+			return "C/complainListMydept";
+		}
+		
+		//필터조건에 맞는 리스트 찾기
+		int totalCount = complainService.countComplainsByDept(filter, accountId);
+		List<ComplainDTO> complainList = complainService.complainListByDept(filter, accountId);
+	 
+		model.addAttribute("categoryList",categoryList);								//계정이 속한 부서의 민원서식목록
+		model.addAttribute("complainList", complainList);								//민원 목록
+		model.addAttribute("filter", filter); 											//filter 조건
+		model.addAttribute("totalCount", totalCount); 									//총 개수
+		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));	//토탈페이지개수
+
 //		System.out.println(complainList.toString());
 //		System.out.println("contorller out");
 
-		return "/C/complainList";
+		return "/C/complainListMydept";
 
 	}
 
@@ -116,16 +135,14 @@ public class ComplainController {
 		// 검색 결과
 		int totalCount = complainService.countComplains(filter);
 		List<ComplainDTO> complainList = complainService.searchComplains(filter);
-
-		System.out.println("****확인입니다.");
-		System.out.println(complainList.toString());
-
-		model.addAttribute("complainList", complainList);
-		model.addAttribute("categoryUrl", categoryUrl);
-		model.addAttribute("title", categoryService.getCategoryName(categoryUrl));
-		model.addAttribute("filter", filter);
-		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));
+	
+		model.addAttribute("complainList", complainList);							//민원목록
+		model.addAttribute("categoryUrl", categoryUrl);								//카테고리url
+		model.addAttribute("title", categoryService.getCategoryName(categoryUrl)); 	//민원서식명(카테고리명)
+		model.addAttribute("filter", filter); 										//filter 조건
+		model.addAttribute("totalCount", totalCount); 								//총 개수
+		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));	//토탈페이지개수
+		
 
 		return "C/complainList";
 	}
@@ -133,13 +150,12 @@ public class ComplainController {
 	// 실업자취업훈련비 대부신청
 	@GetMapping("/ue1/{complainId}")
 	public String trainingLoan(@PathVariable long complainId, Model model) {
-		System.out.println("ue1 controller진입");
+
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
+
 
 		UE1DTO ue1DTO = complainService.getUE1Info(complainId);
-		System.out.println(ue1DTO.toString());
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", ue1DTO);
 
@@ -150,11 +166,9 @@ public class ComplainController {
 	public String submitTrainingLoan(@PathVariable long complainId, UE1DTO ue1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
+
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(ue1DTO);
 		complainService.saveue1(ue1DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
@@ -167,10 +181,8 @@ public class ComplainController {
 	public String report(@PathVariable long complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
 
 		UE2DTO ue2DTO = complainService.getUE2Info(complainId);
-		System.out.println("Get : " + ue2DTO.toString());
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", ue2DTO);
 
@@ -181,11 +193,8 @@ public class ComplainController {
 	public String submitreport(@PathVariable long complainId, UE2DTO ue2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(ue2DTO);
 		complainService.saveue2(ue2DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
@@ -198,10 +207,8 @@ public class ComplainController {
 	public String tempWorker(@PathVariable long complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
 
 		MT1DTO mt1DTO = complainService.getMT1Info(complainId);
-		System.out.println("Get : " + mt1DTO.toString());
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", mt1DTO);
 
@@ -212,11 +219,8 @@ public class ComplainController {
 	public String submitTempWorker(@PathVariable long complainId, MT1DTO mt1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(mt1DTO);
 		complainService.savemt1(mt1DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
@@ -229,10 +233,8 @@ public class ComplainController {
 	public String noInsurance(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
 
 		MT2DTO mt2DTO = complainService.getMT2Info(complainId);
-		System.out.println("Get : " + mt2DTO.toString());
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", mt2DTO);
 
@@ -244,11 +246,8 @@ public class ComplainController {
 	public String submitNoInsurance(@PathVariable long complainId, MT2DTO mt2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(mt2DTO);
 		complainService.savemt2(mt2DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
@@ -259,7 +258,6 @@ public class ComplainController {
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
 	@GetMapping("/em1/{complainId}")
 	public String emptyWork(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
-		System.out.println("!!!!!!!!!!!!!!!!!controller입니다.");
 
 		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
 
@@ -277,19 +275,15 @@ public class ComplainController {
 
 		}
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
-		System.out.println("****민원내용 확인 = " + complainDTO.toString());
 
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println("****민원인정보 확인 = " + complainuserDTO.toString());
 
 		EM1DTO em1DTO = complainService.getEM1Info(complainId);
-		System.out.println("****GET EM1정보 확인 : " + em1DTO.toString());
 
 		model.addAttribute("complainInfo", complainDTO);
 		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em1DTO);
-		System.out.println("!!!!!!!!!!!!!!!!!controller 끝입니다.");
 
 		return "C/regEditForm/em1";
 
@@ -299,11 +293,8 @@ public class ComplainController {
 	public String submitEmptyWork(@PathVariable long complainId, EM1DTO em1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(em1DTO);
 		complainService.saveem1(em1DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
@@ -316,10 +307,8 @@ public class ComplainController {
 	public String youthChallange(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
 
 		EM2DTO em2DTO = complainService.getEM2Info(complainId);
-		System.out.println("Get : " + em2DTO.toString());
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em2DTO);
 
@@ -331,11 +320,8 @@ public class ComplainController {
 	public String submitYouthChallange(@PathVariable long complainId, EM2DTO em2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(em2DTO);
 		complainService.saveem2(em2DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
@@ -348,10 +334,8 @@ public class ComplainController {
 	public String graduateProgram(@PathVariable int complainId, Model model) {
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
-		System.out.println(complainuserDTO.toString());
 
 		EM3DTO em3DTO = complainService.getEM3Info(complainId);
-		System.out.println("Get : " + em3DTO.toString());
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em3DTO);
 
@@ -363,11 +347,8 @@ public class ComplainController {
 	public String submitGraduateProgram(@PathVariable long complainId, EM3DTO em3DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("post 진입");
-		System.out.println(complainuserDTO);
 		complainuserService.saveComplainuser(complainuserDTO);
 
-		System.out.println(em3DTO);
 		complainService.saveem3(em3DTO);
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
