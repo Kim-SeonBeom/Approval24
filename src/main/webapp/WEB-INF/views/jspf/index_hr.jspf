@@ -127,19 +127,26 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" width="100%" cellspacing="0">
-                                        <tbody>
+										<tbody>
+										<thead>
+											<tr>
+											<th>제목</th>
+											<th>등록일</th>
+											<th>조회수</th>
+										<thead>
+									</thead>
                                             <c:forEach var="notice" items="${noticeList}">
-                                                <tr class="clickable-row" 
-                                                    data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" 
-                                                    style="cursor: pointer;">
-                                                    <td>${notice.title}</td>
-                                                    <td>
-                                                        <fmt:formatDate value="${notice.createDt}" pattern="yyyy'년 'MM'월 'dd'일'" />
-                                                    </td>
-                                                    <td>${notice.viewCount}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
+												<tr class="clickable-row"
+													data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}"
+													style="cursor: pointer;">
+													<td>${notice.title}</td>
+													<td><fmt:formatDate value="${notice.createDt}"
+															pattern="yyyy'년 'MM'월 'dd'일'" /></td>
+													<td>${notice.viewCount}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+										
                                     </table>
                                 </div>
                                 <a href="/approval24/notice">공지사항 조회 →</a>

@@ -60,7 +60,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/account/list?approvalStatusCd=E001" class="ml-4">대기중인 결재 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/ApprovalHistory/list?approvalStatusCd=E001" class="ml-4">대기중인 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                     <a href="${pageContext.request.contextPath}/account/list?approvalStatusCd=E002" class="ml-4">승인한 결재 조회 →</a>
+                                     <a href="${pageContext.request.contextPath}/ApprovalHistory/list?approvalStatusCd=E002" class="ml-4">승인한 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -98,7 +98,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                      <a href="${pageContext.request.contextPath}/account/list?approvalStatusCd=E003" class="ml-4">반려한 결재 조회 →</a>
+                                      <a href="${pageContext.request.contextPath}/ApprovalHistory/list?approvalStatusCd=E003" class="ml-4">반려한 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -114,6 +114,12 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" width="100%" cellspacing="0">
+                                    	<thead>
+											<tr>
+											<th>제목</th>
+											<th>등록일</th>
+											<th>조회수</th>
+										<thead>
                                         <tbody>
                                             <c:forEach var="notice" items="${noticeList}">
                                                 <tr class="clickable-row" 
