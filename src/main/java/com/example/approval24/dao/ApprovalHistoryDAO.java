@@ -24,4 +24,6 @@ public interface ApprovalHistoryDAO {
 	ApprovalHistoryDTO getComplainManager(Long complainId);
 	
 	List<ApprovalHistoryDTO> getHistoryIdByComplainId(Long complainId);
+	
+	int countMyApprovalHistoryList(Map<String, Object> params);
 }

@@ -1,207 +1,171 @@
 <%@page pageEncoding="UTF-8"%>
-<!-- Page Wrapper -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <div id="wrapper">
 
-	<!-- Sidebar -->
-	<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
-	<!-- End of Sidebar -->
+    <%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
 
-	<!-- Content Wrapper -->
-	<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" class="d-flex flex-column">
 
-		<!-- Main Content -->
-		<div id="content">
+        <div id="content">
 
-			<!-- Topbar -->
-			<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
-			<!-- End of Topbar -->
+            <%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
-			<!-- Begin Page Content -->
-			<div class="container-fluid">
+            <div class="container-fluid">
 
-				<!-- Page Heading -->
-				<div class="d-sm-flex align-items-center justify-content-between mb-4">
-					<h1 class="h3 mb-0 text-gray-800">인사 팀</h1>
-					<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-				</div>
-				
-				<!-- Content Row -->
-                    <div class="row">
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                전체 직원</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1,247</div>
-                                        </div>
-                                        <div class="col-auto">
-                                        	<i class="fas fa-users fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Page Title -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">인사 팀</h1>
+                </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                활성 계정</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1,198</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-shield-alt fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Main Row -->
+                <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">승인 대기
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">12</div>
+                    <!-- Left Stats Column -->
+                    <div class="col-xl-4 col-lg-5 mb-4 d-flex flex-column">
+
+                        <div class="row flex-grow-1">
+
+                            <!-- 전체 계정 -->
+                            <div class="col-6 mb-4 d-flex">
+                                <div class="card border-left-primary shadow h-100 flex-fill py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    기관내 전체 계정
                                                 </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${total}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                           <a href="${pageContext.request.contextPath}/account/list" class="ml-4">전체 계정 조회 →</a>
+                                </div>
+                            </div>
+
+                            <!-- 활성 계정 -->
+                            <div class="col-6 mb-4 d-flex">
+                                <div class="card border-left-success shadow h-100 flex-fill py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    활성 계정
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${enableAccount}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <img src="${pageContext.request.contextPath}/resources/assets/img/enable-icon.svg"
+                                                     style="width: 40px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    	<a href="${pageContext.request.contextPath}/account/list?accountStatusCd=B002" class="ml-4">활성화 계정 조회 →</a>
+                                    	
+                                </div>
+                            </div>
+
+                            <!-- 승인 대기 -->
+                            <div class="col-6 mb-4 d-flex">
+                                <div class="card border-left-info shadow h-100 flex-fill py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                    승인 대기
+                                                </div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${waitingAccount}</div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            <div class="col-auto">
+                                                <img src="${pageContext.request.contextPath}/resources/assets/img/waiting-icon.svg"
+                                                     style="width: 40px;">
+                                            </div>
                                         </div>
                                     </div>
+                                    <a href="${pageContext.request.contextPath}/account/list?accountStatusCd=B001" class="ml-4">대기 계정 조회 →</a>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                비활성 계정</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">37</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                            <!-- 잠긴 계정 -->
+                            <div class="col-6 mb-4 d-flex">
+                                <div class="card border-left-warning shadow h-100 flex-fill py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    잠긴 계정
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${lockAccount}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <img src="${pageContext.request.contextPath}/resources/assets/img/lock-icon.svg"
+                                                     style="width: 45px;">
+                                            </div>
                                         </div>
                                     </div>
+                                    <a href="${pageContext.request.contextPath}/account/list?accountStatusCd=B005" class="ml-4">잠긴 계정 조회 →</a>
                                 </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Right Notice List -->
+          			<div class="col-xl-8 col-lg-7 mb-4 d-flex">
+                        <div class="card shadow mb-4 flex-fill">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                        <tbody>
+                                            <c:forEach var="notice" items="${noticeList}">
+                                                <tr class="clickable-row" 
+                                                    data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" 
+                                                    style="cursor: pointer;">
+                                                    <td>${notice.title}</td>
+                                                    <td>
+                                                        <fmt:formatDate value="${notice.createDt}" pattern="yyyy'년 'MM'월 'dd'일'" />
+                                                    </td>
+                                                    <td>${notice.viewCount}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a href="/approval24/notice">공지사항 조회 →</a>
                             </div>
                         </div>
                     </div>
 
+                </div><!-- End Row -->
 
-				<!-- Content Row -->
+            </div><!-- End Container-fluid -->
 
-				<div class="row">
+        </div><!-- End Content -->
 
-					<!-- Pie Chart -->
-					<div class="col-xl-4 col-lg-4">
-						<div class="card shadow mb-4">
-							<!-- Card Header - Dropdown -->
-							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								<h6 class="m-0 font-weight-bold text-primary">부서별 민원현황</h6>
-							</div>
-							<!-- Card Body -->
-							<div class="card-body">
-								<div class="chart-pie pt-1 pb-1">
-									<canvas id="myPieChart"></canvas>
-								</div>
-								<div class="mt-４ text-center small">
-									<span class="mr-2"> <i class="fas fa-circle text-primary"></i> 실업급여팀
-									</span> <span class="mr-2"> <i class="fas fa-circle text-success"></i> 취업지원팀
-									</span> <span class="mr-2"> <i class="fas fa-circle text-info"></i> 출산휴가팀
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>행정 &copy; 결재24 2025</span>
+                </div>
+            </div>
+        </footer>
 
-					<!-- Content Column -->
-					<div class="col-lg-8 mb-5">
+    </div><!-- End Content-wrapper -->
 
-						<!-- DataTables Example -->
-						<div class="card shadow mb-4">
-							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
-							</div>
-							<div class="card-body">
-								<div class="table-responsive" style="margin-top:6px;">
-									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<tbody>
-											<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-												<td>[공지] 10월 20일(월) 시스템 정기 점검 안내</td>
-												<td>2025-10-10</td>
-											</tr>
-											<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-												<td>[업데이트] 실업급여 신청서 양식이 새롭게 변경되었습니다.</td>
-												<td>2025-10-12</td>
-											</tr>
-											<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-												<td>[알림] 홈페이지 접속 지연 현상 해결 및 복구 완료 안내</td>
-												<td>2025-10-13</td>
-											</tr>
-											<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-												<td>[공지] 실업급여 관련 상담센터 운영시간 단축 안내 (09:00~17:00)</td>
-												<td>2025-10-14</td>
-											</tr>
-											<tr class="clickable-row" data-href="/approval24/notice/detail" style="cursor: pointer;">
-												<td>[안내] 11월 공휴일(개천절, 한글날) 고객센터 휴무 일정 공지</td>
-												<td>2025-10-15</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div style="margin-top: 6px; margin-buttom: 3px;">
-								<a href="/approval24/notice">공지사항 조회하기 &rarr;</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /.container-fluid -->
+</div><!-- End Wrapper -->
 
-		</div>
-		<!-- End of Main Content -->
-
-		<!-- Footer -->
-		<footer class="sticky-footer bg-white">
-			<div class="container my-auto">
-				<div class="copyright text-center my-auto">
-					<span>Copyright &copy; Your Website 2021</span>
-				</div>
-			</div>
-		</footer>
-		<!-- End of Footer -->
-
-	</div>
-	<!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
 </a>

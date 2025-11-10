@@ -47,7 +47,7 @@ public class LoginController {
         	int failCnt = accountDTO.getPwdFailCnt();
         	 model.addAttribute("error", " 비밀번호를 "+ failCnt +" 회 잘못 입력 하였습니다.(최대 5회)");
         	 return "login";
-        }else if ("B004".equals(status)) {
+        }else if ("B005".equals(status)) {
             model.addAttribute("error", "계정이 비밀번호 5회 오류로 인해 잠금되었습니다.");
             return "login";
         }

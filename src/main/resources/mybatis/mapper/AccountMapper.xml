@@ -4,7 +4,6 @@
 
 	<!-- 민원서식 카테고리 목록 -->
 	<select id="findById" resultType="AccountDTO">
-		parameterType="long">
 		select
 		account_Id,
 		user_no,
@@ -61,8 +60,8 @@
               <if test="deptId != null">
                 AND A.DEPT_ID = #{deptId}
               </if>
-              <if test="accountStatus != null and accountStatus != ''">
-                AND A.ACCOUNT_STATUS_CD = #{accountStatus}
+              <if test="accountStatusCd!= null and accountStatusCd != ''">
+                AND A.ACCOUNT_STATUS_CD = #{accountStatusCd}
               </if>
               <if test="startDate != null">
                 AND A.CREATE_DT &gt;= #{startDate}
@@ -73,7 +72,9 @@
             ORDER BY A.CREATE_DT DESC
         ) T
     )
+    <if test="startRow != null and endRow !=null">
     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+    </if>
 </select>
 
 <select id="countAccountsByFilter" parameterType="map" resultType="int">
@@ -102,8 +103,8 @@
       <if test="deptId != null">
         AND A.DEPT_ID = #{deptId}
       </if>
-      <if test="accountStatus != null and accountStatus != ''">
-        AND A.ACCOUNT_STATUS_CD = #{accountStatus}
+      <if test="accountStatusCd != null and accountStatusCd != ''">
+        AND A.ACCOUNT_STATUS_CD = #{accountStatusCd}
       </if>
       <if test="startDate != null">
         AND A.CREATE_DT &gt;= #{startDate}

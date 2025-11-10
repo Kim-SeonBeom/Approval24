@@ -25,6 +25,7 @@ public class UserInfoControllerAdvice {
 
         // 세션에서 로그인 정보 확인
         Long userId = (Long) session.getAttribute("user");
+        System.out.println(userId);
         if (userId == null) {
             return; 
         }

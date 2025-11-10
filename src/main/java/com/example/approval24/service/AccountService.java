@@ -44,7 +44,7 @@ public class AccountService {
         		accountDAO.updateAccount(account);
         		account.setAccountStatusCd("mispassword");
         	}else{
-        		account.setAccountStatusCd("B004");
+        		account.setAccountStatusCd("B005");
         		accountDAO.updateAccount(account);
         	}
         	
