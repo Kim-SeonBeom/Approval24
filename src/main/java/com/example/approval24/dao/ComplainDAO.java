@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.approval24.domain.ComplainDTO;
+import com.example.approval24.domain.ComplainFilterDTO;
 
 @Mapper
 public interface ComplainDAO {
@@ -13,12 +14,18 @@ public interface ComplainDAO {
 	
 	public int registComplain(ComplainDTO complainDTO);
 
-	public List<ComplainDTO> findByDeptOfAccountId(long accountId);
+	public List<ComplainDTO> findByDeptOfAccountIdAndFilter(@Param("filter")ComplainFilterDTO filter, @Param("accountId")long accountId);
+	
+	public int countByDeptOfAccountIdAndFilter(@Param("filter")ComplainFilterDTO filter, @Param("accountId")long accountId);
 	
 	public ComplainDTO findById(long complainId);
 
 	public List<ComplainDTO> findByCategoryId(long complainCategoryId);
 	
 	public int updateStatusByComplainId(@Param("complainID") long complainId, @Param("codeId") String codeId);
+
+	public int countByFilter(ComplainFilterDTO filter);
+	
+	public List<ComplainDTO> findByFilter(ComplainFilterDTO filter);
 	
 }

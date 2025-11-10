@@ -21,6 +21,7 @@ import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
 import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
+import com.example.approval24.domain.ComplainFilterDTO;
 import com.example.approval24.domain.ComplainRegDTO;
 import com.example.approval24.domain.EM1DTO;
 import com.example.approval24.domain.EM2DTO;
@@ -123,48 +124,43 @@ public class ComplainService {
 		complainDTO.setReceiverAccountId(receiverAccountId);
 
 		int result = complainDAO.registComplain(complainDTO);
-		if (result == 1) {
+	/*	if (result == 1) {
 			System.out.println("민원 등록 성공");
 		} else {
 			System.out.println("민원 등록 실패");
-		}
+		}*/
 
 	}
+	// 페이징처리를 위한 "민원 접수 목록"  개수(Filter 적용)
+	public int countComplainsByDept(ComplainFilterDTO filter,long accountId) {
+		 return complainDAO.countByDeptOfAccountIdAndFilter(filter, accountId);
+	}
+	
 
-	public List<ComplainDTO> complainList(long accountId) {
-//		System.out.println("service input");
+	
+	//민원 접수 목록 
+	public List<ComplainDTO> complainListByDept(ComplainFilterDTO filter, long accountId) {
 
-		List<ComplainDTO> complainList = complainDAO.findByDeptOfAccountId(accountId);
-//		System.out.println("***" + complainList);
-//		System.out.println("service out");
-
-		return complainList;
+		return complainDAO.findByDeptOfAccountIdAndFilter(filter, accountId);
 	}
 
 	public ComplainDTO getComplainInfo(long complainId) {
 
-		ComplainDTO dto = complainDAO.findById(complainId);
-
-		return dto;
+		return complainDAO.findById(complainId);
 	}
 	
 	//ue1 메서드
 	public UE1DTO getUE1Info(long complainId) {
-		System.out.println("getUE1Info 진입");
 
 		int count = ue1DAO.existByComplainId(complainId);
 		if (count > 0) {
-			System.out.println("등록된 민원존재");
 
 			return ue1DAO.findByComplainId(complainId);
 			
 		} else {
-			System.out.println("등록된 민원 없음");
 			UE1DTO ue1dto = new UE1DTO();
 			ue1dto.setComplainId(complainId);
 			ue1DAO.insertInfo(ue1dto);
-			System.out.println("민원 생성");
-			System.out.println(ue1dto.toString());
 			return ue1dto;
 		}
 	}
@@ -181,17 +177,13 @@ public class ComplainService {
 
 		int count = ue2DAO.existByComplainId(complainId);
 		if (count > 0) {
-			System.out.println("등록된 민원존재");
 
 			return ue2DAO.findByComplainId(complainId);
 			
 		} else {
-			System.out.println("등록된 민원 없음");
 			UE2DTO ue2dto = new UE2DTO();
 			ue2dto.setComplainId(complainId);
 			ue2DAO.insertInfo(ue2dto);
-			System.out.println("민원 생성");
-			System.out.println(ue2dto.toString());
 			return ue2dto; 
 		}
 	}
@@ -206,17 +198,13 @@ public class ComplainService {
 
 		int count = mt1DAO.existByComplainId(complainId);
 		if (count > 0) {
-			System.out.println("등록된 민원존재");
 
 			return mt1DAO.findByComplainId(complainId);
 			
 		} else {
-			System.out.println("등록된 민원 없음");
 			MT1DTO mt1dto = new MT1DTO();
 			mt1dto.setComplainId(complainId);
 			mt1DAO.insertInfo(mt1dto);
-			System.out.println("민원 생성");
-			System.out.println(mt1dto.toString());
 			return mt1dto; 
 		}
 	}
@@ -231,17 +219,13 @@ public class ComplainService {
 
 		int count = mt2DAO.existByComplainId(complainId);
 		if (count > 0) {
-			System.out.println("등록된 민원존재");
 
 			return mt2DAO.findByComplainId(complainId);
 			
 		} else {
-			System.out.println("등록된 민원 없음");
 			MT2DTO mt2dto = new MT2DTO();
 			mt2dto.setComplainId(complainId);
 			mt2DAO.insertInfo(mt2dto);
-			System.out.println("민원 생성");
-			System.out.println(mt2dto.toString());
 			return mt2dto;  
 		}
 	}
@@ -254,21 +238,16 @@ public class ComplainService {
 	
 	//em1 메서드
 		public EM1DTO getEM1Info(long complainId) {
-			System.out.println("서비스진입");
 
 			int count = em1DAO.existByComplainId(complainId);
 			if (count > 0) {
-				System.out.println("등록된 민원존재");
 
 				return em1DAO.findByComplainId(complainId);
 				
 			} else {
-				System.out.println("등록된 민원 없음");
 				EM1DTO em1dto = new EM1DTO();
 				em1dto.setComplainId(complainId);
 				em1DAO.insertInfo(em1dto);
-				System.out.println("민원 생성");
-				System.out.println(em1dto.toString());
 				return em1dto; 
 			}
 		}
@@ -283,21 +262,16 @@ public class ComplainService {
 	
 	//em2 메서드
 	public EM2DTO getEM2Info(long complainId) {
-		System.out.println("서비스진입");
 
 		int count = em2DAO.existByComplainId(complainId);
 		if (count > 0) {
-			System.out.println("등록된 민원존재");
 
 			return em2DAO.findByComplainId(complainId);
 			
 		} else {
-			System.out.println("등록된 민원 없음");
 			EM2DTO em2dto = new EM2DTO();
 			em2dto.setComplainId(complainId);
 			em2DAO.insertInfo(em2dto);
-			System.out.println("민원 생성");
-			System.out.println(em2dto.toString());
 			return em2dto; 
 		}
 	}
@@ -314,21 +288,16 @@ public class ComplainService {
 	
 	//em3 메서드
 	public EM3DTO getEM3Info(long complainId) {
-		System.out.println("서비스진입");
 
 		int count = em3DAO.existByComplainId(complainId);
 		if (count > 0) {
-			System.out.println("등록된 민원존재");
 
 			return em3DAO.findByComplainId(complainId);
 			
 		} else {
-			System.out.println("등록된 민원 없음");
 			EM3DTO em3dto = new EM3DTO();
 			em3dto.setComplainId(complainId);
 			em3DAO.insertInfo(em3dto);
-			System.out.println("민원 생성");
-			System.out.println(em3dto.toString());
 			return em3dto;  
 		}
 	}
@@ -339,15 +308,22 @@ public class ComplainService {
 	}
 
 	public List<ComplainDTO> complainsByCategory(String categoryUrl) {
-//		System.out.println("service input");
 		CategoryDTO categoryDTO = categoryDAO.findByCategoryUrl(categoryUrl);
 
 		List<ComplainDTO> complainList = complainDAO.findByCategoryId(categoryDTO.getComplainCategoryId());
-//		System.out.println("***" + complainList);
-//		System.out.println("service out");
 
 		return complainList;
 
 	}
+	
+	//페이징처리를 위한 카테고리별 complain개수(Filter 적용)
+	public int countComplains(ComplainFilterDTO filter) {
+		 return complainDAO.countByFilter(filter);
+	}
+	
+	//카테고리별 complain목록(Filter 적용)
+    public List<ComplainDTO> searchComplains(ComplainFilterDTO filter) {
+        return complainDAO.findByFilter(filter); 
+    }
 
 }

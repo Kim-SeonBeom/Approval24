@@ -50,17 +50,19 @@
 					    </div>
 					</c:if>
 					
-					<!-- 코드 테이블 조건 -->
+					<!-- 그룹 선택 -->
+                    <div class="ml-1">
+                       <select id="groupFilter" class="custom-select custom-select-sm form-control form-control-sm" style="width: 400px;">
+                          <option value="">전체 그룹</option>
+                          <!-- 옵션은 JS에서 테이블 데이터를 읽어 자동 생성 -->
+                       </select>
+                    </div>
+                    <br>
+					
+					<!-- 코드 테이블  -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 							<h6 class="m-0 font-weight-bold text-primary">담당자배정 테이블</h6>
-							<!-- 그룹 선택 -->
-	                        <div class="ml-4">
-	                           <select id="groupFilter" class="custom-select custom-select-sm form-control form-control-sm" style="min-width: 160px;">
-	                              <option value="">전체 그룹</option>
-	                              <!-- 옵션은 JS에서 테이블 데이터를 읽어 자동 생성 -->
-	                           </select>
-	                        </div>
 							<button class="btn btn-primary btn-sm" id="MACreate" style="font-size: 1rem; padding: 0.25rem 0.75rem;">+ 담당자 등록</button>
 						</div>
 						

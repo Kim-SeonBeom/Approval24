@@ -125,5 +125,8 @@ public class ApprovalHistoryService {
 	public List<ApprovalHistoryDTO> getApprovalHistoryByComplainId(Long complainId) {
 		return approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 	}
-    
+	
+	public int countMyAccountsByFilter(Map<String, Object> params) {
+		return approvalHistoryDAO.countMyApprovalHistoryList(params);
+	}
 }

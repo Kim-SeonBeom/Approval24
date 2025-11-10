@@ -58,7 +58,7 @@
 							</div>
 						</div>
 
-						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
+						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
 						<div class="d-flex justify-content-between mt-4">
 							<a href="${pageContext.request.contextPath}" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소

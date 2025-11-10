@@ -10,6 +10,9 @@ import com.example.approval24.domain.CategoryDTO;
 @Mapper
 public interface CategoryDAO {
 
+	// 현재 로그인한 아이디로 접수 할 수 있는 민원서식 목록
+	public List<CategoryDTO> findByAccountId(long accountId);
+	
 	// 민원서식 목록
 	public List<CategoryDTO> findAllCategories();
 	
@@ -31,5 +34,6 @@ public interface CategoryDAO {
 	
 	// 민원서식 수정, 삭제
 	public int CategoryUpd(CategoryDTO categoryDTO);
+
 	
 }

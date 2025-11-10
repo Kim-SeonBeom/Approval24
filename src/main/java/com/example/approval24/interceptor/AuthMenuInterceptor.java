@@ -1,7 +1,8 @@
 package com.example.approval24.interceptor;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,33 +15,37 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
-        HttpSession session = req.getSession(false);
+    	HttpSession session = req.getSession(false);
         if (session == null) return true;
 
         @SuppressWarnings("unchecked")
         List<MenuVO> authMenus = (List<MenuVO>) session.getAttribute("authMenus");
-        System.out.println("***()()()()()()()()()****");
-        if(authMenus == null) return true;
-        System.out.println(authMenus.toString());
         
+        if(authMenus == null || authMenus.isEmpty()) return true;
         
-        if (authMenus == null || authMenus.isEmpty()) return true;
+   
+        // 현재 URI
 
-        final String ctx = req.getContextPath();
-        final String uri = ctx != null && !ctx.isEmpty() && req.getRequestURI().startsWith(ctx)
-                ? req.getRequestURI().substring(ctx.length())
-                : req.getRequestURI();
-                System.out.println("uri확인 : " + uri);
+        final String uri = req.getRequestURI(); 
+        System.out.println("uri확인 : " + uri);
 
-        // 현재 페이지 메뉴권한 찾기
+        //현재 페이지 메뉴권한 찾기
         MenuVO pageAuth = authMenus.stream()
-                .filter(m -> m.getMenuUrl() != null)
-                .filter(m -> Objects.equals(m.getMenuUrl(), uri) || Objects.equals(m.getMenuUrl(), ctx + uri))
-                .findFirst()
-                .orElse(null);
- 
-        req.setAttribute("pageAuth", pageAuth);
+
+            .filter(m -> m.getMenuUrl() != null && !m.getMenuUrl().isEmpty() && uri.startsWith(m.getMenuUrl()))
+            
+            .max(Comparator.comparingInt(m -> m.getMenuUrl().length()))
+            .orElse(null);
         
+
+        if (pageAuth != null) {
+            System.out.println("**** 인터셉터: 현재 페이지 권한 찾음 = " + pageAuth.getMenuName());
+        } else {
+            System.out.println("**** 인터셉터: 현재 페이지 권한을 찾을 수 없음 (URI: " + uri + ")");
+        }
+            
+        // 찾은 권한 정보를 저장
+        req.setAttribute("pageAuth", pageAuth);
         
         return true;
     }

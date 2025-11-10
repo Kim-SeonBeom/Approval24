@@ -3,57 +3,81 @@
 <mapper namespace="com.example.approval24.dao.CategoryDAO">
 
 
-<!-- 민원서식 카테고리 목록 -->
-<select id="findAllCategories" resultType="CategoryDTO">
-   select
-	   cc.complain_category_id,
-	   cc.category_name,
-	   cc.category_cd,
-	   cc.due_dt,
-	   cc.category_url,
-	   cc.del_yn,
-	   t.code_id,
-	   t.code_name
-   from t2000_complain_category cc
-   left join total_code t on t.code_id=cc.category_cd
-</select>
-
-
-<!-- 민원서식별 처리기한 조회 -->
-<select id="findDueDtById" resultType="int"
-   parameterType="long">
-   select
-   due_dt
-   from t2000_complain_category
-   where complain_category_id = #{complainCategoryId}
-</select>
-	
-<!-- URL로 findByCategoryUrl 찾기-->
-<select id="findByCategoryUrl" resultType="CategoryDTO"
-	parameterType="String">
-	select	*
-	from t2000_complain_category
-	where category_Url = #{categoryUrl}
-</select>
-
-<!-- 특정 부서의 매핑 민원서식 -->
-<select id="findCategoryByDept" parameterType="Long" resultType="CategoryDTO">
-	select cc.complain_category_id, cc.category_name
-	from t1000_department_work dw
-	join t2000_complain_category cc
-	on cc.complain_category_id = dw.complain_category_id
-	where dw.department_id=#{deptId}
-	order by cc.category_name
-</select>
-
-
-<!-- 민원서식 상세 -->
-<select id="CategoryInfo" parameterType="long" resultType="CategoryDTO">
-	select 
+	<!-- 현재 접속한 아이디로 접수할 수 있는 카테고리 목록 -->
+	<select id="findByAccountId" resultType="CategoryDTO"
+		parameterType="long">
+		select
 		cc.complain_category_id,
 		cc.category_name,
 		cc.category_cd,
-		to_char(cc.create_dt, 'YYYY-MM-DD') AS create_dt,
+		cc.due_dt,
+		cc.category_url,
+		cc.del_yn,
+		t.code_id,
+		t.code_name
+		from t2000_complain_category cc
+		left join total_code t on t.code_id=cc.category_cd
+		where cc.del_yn = 'N'
+		and cc.complain_category_id in(
+		select d.complain_category_id
+		from t1000_account a
+		join t1000_department_work d on d.department_id=a.dept_Id
+		where account_id = #{accountId})
+	</select>
+
+	<!-- 민원서식 카테고리 목록 -->
+	<select id="findAllCategories" resultType="CategoryDTO">
+		select
+		cc.complain_category_id,
+		cc.category_name,
+		cc.category_cd,
+		cc.due_dt,
+		cc.category_url,
+		cc.del_yn,
+		t.code_id,
+		t.code_name
+		from t2000_complain_category cc
+		left join total_code t on t.code_id=cc.category_cd
+	</select>
+
+
+	<!-- 민원서식별 처리기한 조회 -->
+	<select id="findDueDtById" resultType="int" parameterType="long">
+		select
+		due_dt
+		from t2000_complain_category
+		where complain_category_id = #{complainCategoryId}
+	</select>
+
+	<!-- URL로 findByCategoryUrl 찾기 -->
+	<select id="findByCategoryUrl" resultType="CategoryDTO"
+		parameterType="String">
+		select *
+		from t2000_complain_category
+		where category_Url = #{categoryUrl}
+	</select>
+
+	<!-- 특정 부서의 매핑 민원서식 -->
+	<select id="findCategoryByDept" parameterType="Long"
+		resultType="CategoryDTO">
+		select cc.complain_category_id, cc.category_name
+		from t1000_department_work dw
+		join t2000_complain_category cc
+		on cc.complain_category_id = dw.complain_category_id
+		where dw.department_id=#{deptId}
+		order by cc.category_name
+	</select>
+
+
+	<!-- 민원서식 상세 -->
+	<select id="CategoryInfo" parameterType="long"
+		resultType="CategoryDTO">
+		select
+		cc.complain_category_id,
+		cc.category_name,
+		cc.category_cd,
+		to_char(cc.create_dt, 'YYYY-MM-DD') AS
+		create_dt,
 		to_char(cc.update_dt, 'YYYY-MM-DD') AS update_dt,
 		cc.due_dt,
 		cc.create_id,
@@ -62,27 +86,29 @@
 		cc.category_url,
 		t.code_id,
 		t.code_name
-	from t2000_complain_category cc
-	left join total_code t on t.code_id=cc.category_cd
-	where complain_category_id=#{complainCategoryId}
-</select>
+		from t2000_complain_category cc
+		left join total_code t on t.code_id=cc.category_cd
+		where complain_category_id=#{complainCategoryId}
+	</select>
 
-<!-- 민원서식 등록 -->
-<insert id="CategoryInsert" parameterType="CategoryDTO">
-	insert into t2000_complain_category(category_name, category_cd, create_dt, due_dt, create_id, del_yn, category_url)
-	values(#{categoryName}, #{categoryCd}, SYSDATE, #{dueDt}, #{createId}, #{delYn}, #{categoryUrl})
-</insert>
+	<!-- 민원서식 등록 -->
+	<insert id="CategoryInsert" parameterType="CategoryDTO">
+		insert into t2000_complain_category(category_name, category_cd, create_dt,
+		due_dt, create_id, del_yn, category_url)
+		values(#{categoryName}, #{categoryCd}, SYSDATE, #{dueDt}, #{createId}, #{delYn},
+		#{categoryUrl})
+	</insert>
 
-<!-- 민원서식 수정, 삭제 -->
-<update id="CategoryUpd" parameterType="CategoryDTO">
-	update t2000_complain_category
-	set 
+	<!-- 민원서식 수정, 삭제 -->
+	<update id="CategoryUpd" parameterType="CategoryDTO">
+		update t2000_complain_category
+		set
 		update_dt=SYSDATE,
 		update_id=#{updateId},
 		due_dt=#{dueDt},
 		del_yn=#{delYn},
 		category_url=#{categoryUrl}
-	where complain_category_id=#{complainCategoryId}
-</update>
+		where complain_category_id=#{complainCategoryId}
+	</update>
 
 </mapper>

@@ -47,7 +47,7 @@
 
 					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/ue2/${detail.complainId}">
 
-						<%@ include file="/WEB-INF/views/complain/regEditForm/complainUserInfo.jsp"%>
+						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
 
 						<div class="card shadow mb-4">
