@@ -21,4 +21,5 @@ public class ApprovalHistoryDTO {
     private String approverTypeName;    // 결재자 이름 접수자,담당자,승인자,반려자 등등..
     private String categoryCd;        
     private String categoryName;
+    private String userName;
 }

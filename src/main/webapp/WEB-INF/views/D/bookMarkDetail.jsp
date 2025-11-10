@@ -23,7 +23,7 @@
         <p><strong>생성일:</strong> ${bookmark.createDt}</p>
         
         <%-- 1. 북마크 이름 수정 폼 --%>
-        <form action="/bookmark/update" method="post" style="display:inline;">
+        <form action="/approval24/bookmark/update" method="post" style="display:inline;">
             <input type="hidden" name="bookmarkId" value="${bookmark.bookmarkId}">
             <label for="newName">북마크 이름 수정:</label>
             <input type="text" id="newName" name="bookmarkName" value="${bookmark.bookmarkName}" required>
@@ -31,7 +31,7 @@
         </form>
         
         <%-- 2. 북마크 논리적 삭제 폼 --%>
-        <form action="/bookmark/update" method="post" style="display:inline; margin-left: 15px;" 
+        <form action="/approval24/bookmark/update" method="post" style="display:inline; margin-left: 15px;" 
               onsubmit="return confirm('정말 이 북마크를 삭제하시겠습니까? (논리적 삭제)');">
             <input type="hidden" name="bookmarkId" value="${bookmark.bookmarkId}">
             <input type="hidden" name="delYn" value="Y"> <button type="submit" style="background-color: #ffcccc;">북마크 삭제</button>
@@ -42,7 +42,7 @@
     <div class="section">
         <h3>결재자 목록 수정 (교체)</h3>
         
-        <form action="/bookmark/approver/replace" method="post" id="approverUpdateForm">
+        <form action="/approval24/bookmark/approver/replace" method="post" id="approverUpdateForm">
             <input type="hidden" name="bookmarkId" value="${bookmark.bookmarkId}">
             
             <table id="approverTable">
@@ -82,7 +82,7 @@
         </form>
     </div>
     
-    <p style="margin-top: 30px;"><a href="/bookmark/list">목록으로 돌아가기</a></p>
+    <p style="margin-top: 30px;"><a href="/approval24/bookmark/list">목록으로 돌아가기</a></p>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

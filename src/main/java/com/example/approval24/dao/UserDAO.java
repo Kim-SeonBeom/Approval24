@@ -1,6 +1,7 @@
 package com.example.approval24.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,7 +12,7 @@ import com.example.approval24.domain.UserDTO;
 public interface UserDAO {
 
     // 조건 검색 + 전체 조회 통합 (필터링 포함)
-    List<UserDTO> findUsersByFilter(UserDTO filter);
+    List<UserDTO> findUsersByFilter(Map<String, Object> params);
 
     // 주민번호로 단건 조회
     UserDTO findByResidentNo(String userResidentNo);
@@ -24,4 +25,8 @@ public interface UserDAO {
 
     // 논리 삭제 (DEL_YN = 'Y')
     int deleteUser(@Param("userNo")Long userNo,@Param("updateId") Long updateId);
+
+	int countUsersByFilter(Map<String, Object> params);
+
+	UserDTO findByUserNo(Long userNo);
 }
