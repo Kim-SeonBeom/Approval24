@@ -77,8 +77,6 @@
     )
     <if test="startRow != null and endRow != null">
 
-    <if test="startRow != null and endRow !=null">
-
     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
     </if>
 </select>
