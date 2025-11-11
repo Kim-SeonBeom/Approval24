@@ -12,6 +12,7 @@ import com.example.approval24.dao.ApprovalHistoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.ComplainDTO;
+import com.example.approval24.domain.ComplainFilterDTO;
 
 @Service
 public class ApprovalHistoryService {
@@ -46,15 +47,24 @@ public class ApprovalHistoryService {
         Long nextSeq = approvalData.getSeqNo() + 1;
         Long complainId = approvalData.getComplainId();
         String codeId = approvalData.getApprovalStatusCd();
-        // 다음 결재자 가져오기
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
         		complainId, nextSeq);
+        
+        
         if ("E002".equals(codeId)) { // 승인 로직
         	result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
         	if(nextApprovalData == null) {
-        		ComplainDTO complainDTO = complainDAO.findById(complainId);
-        		complainDTO.setComplainStatusCd("D003"); //민원 처리 완료
-        		complainDAO.updateStatusByComplainId(complainId, codeId);
+        		if(approvalData.getApproverTypeCd().equals("F004")) { // 승인자면..
+        			complainDAO.updateStatusByComplainId(complainId, "D006"); // 민원 승인
+        		}
+        		else {
+        			throw new IllegalArgumentException("승인자가 아닙니다.");
+        		}
+        	}
+        	else if(approvalData.getApproverTypeCd().equals("F002")) { // 담당자면
+    			complainDAO.updateStatusByComplainId(complainId, "D003"); // 결재중
+        		nextApprovalData.setApprovalStatusCd("E001"); // 결재
+        		approvalHistoryDAO.updateApprovalHistoryStatus(nextApprovalData);
         	}
         	else {
         		nextApprovalData.setApprovalStatusCd("E001"); // 결재
@@ -62,19 +72,29 @@ public class ApprovalHistoryService {
         	}
         	return result;
         } 
+        
         else if ("E003".equals(codeId)) { // 반려 로직
         	result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
         	nextApprovalData = approvalHistoryDAO.getComplainManager(complainId);
         	nextApprovalData.setApprovalStatusCd("E001"); // 결재
         	approvalHistoryDAO.insertApprovalHistory(nextApprovalData);
-        	ComplainDTO complainDTO = complainDAO.findById(complainId);
-    		complainDTO.setComplainStatusCd("D005"); //반려
-    		complainDAO.updateStatusByComplainId(complainId, codeId);
+    		complainDAO.updateStatusByComplainId(complainId, "D005");//반려
         	return result;
         } 
+        else if ("E005".equals(codeId)) { // 취하 로직
+        	if(approvalData.getApproverTypeCd().equals("F002")) {
+        		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
+        		complainDAO.updateStatusByComplainId(complainId, "D004"); // 민원 취하
+        		return result;
+        	}
+        	else {
+        		throw new IllegalArgumentException("취하는 담당자만 가능합니다.");
+        	}
+        }
         else {
             throw new IllegalArgumentException("처리할 수 없는 결재 상태 코드입니다: " + codeId);
         }
+        
     }
 
 
@@ -85,6 +105,23 @@ public class ApprovalHistoryService {
             throw new IllegalArgumentException("민원 ID 또는 결재 라인 정보가 유효하지 않습니다.");
         }
         
+
+		ComplainDTO complainDto = complainDAO.findById(complainId);
+		
+		if (complainDto == null) {
+		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
+		}
+
+        
+        if (complainDto.getComplainStatusCd().equals("D004")) {
+        	throw new IllegalArgumentException("이미 취하한 민원입니다.");
+        }
+        else if (complainDto.getComplainStatusCd().equals("D005")) {
+        	throw new IllegalArgumentException("이미 반려된 민원입니다.");
+        }
+        else if (complainDto.getComplainStatusCd().equals("D006")) {
+        	throw new IllegalArgumentException("이미 승인된 민원입니다.");
+        }
         
         for (int i = 0; i < approvalLine.size(); i++) {
             ApprovalHistoryDTO dto = approvalLine.get(i);

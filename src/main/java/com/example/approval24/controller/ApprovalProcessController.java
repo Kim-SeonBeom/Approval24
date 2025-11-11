@@ -48,7 +48,7 @@ public class ApprovalProcessController {
         
         try {
 
-            historyService.createApprovalLine(loggedInUserId, complainId,url, approvalLine);
+            historyService.createApprovalLine(loggedInUserId, complainId, url, approvalLine);
             
             // 4. 성공 응답
             response.put("success", true);
@@ -91,9 +91,9 @@ public class ApprovalProcessController {
         }
 
         // 권한 체크 
-        if (!loggedInUserId.equals(approvalData.getAccountId())) {
+        if (!loggedInUserId.equals(approvalData.getAccountId()) || !loggedInUserId.equals(approvalData.getDelegateId())) {
             response.put("success", false);
-            response.put("message", "해당 결재를 처리할 권한이 없습니다.");
+            response.put("message", "해당 결재를 처리할 계정이 아닙니다.");
             return ResponseEntity.status(403).body(response);
         }
         
