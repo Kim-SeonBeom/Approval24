@@ -10,7 +10,7 @@ public class NoticeDTO {
 	private String title;
 	private String content;	
 	private long noticeId;
-	private long categoryCd;
+	private String categoryCd;
 	private String userName;
 	private Date createDt;
 	private Date updateDt;

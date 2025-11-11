@@ -46,12 +46,13 @@ public class DeptService {
 
     // 부서 수정: 기본정보 업데이트 + 매핑(삭제 후 재등록 - 원래 물리삭제가 아닌 논리삭제여야 됨. 리팩토링 필요)
     @Transactional
-    public int updateDept(long deptId, String deptName, String deptPhone, List<Long> instIds) {
+    public int updateDept(long deptId, String deptName, String deptPhone, String delYn, List<Long> instIds) {
         // 부서 기본 정보 업데이트
         DeptDTO dto = new DeptDTO();
         dto.setDeptId(deptId);
         dto.setDeptName(deptName);
         dto.setDeptPhone(deptPhone);
+        dto.setDelYn(delYn);
         int a = deptdao.updateDept(dto);
 
         // 기존 매핑 삭제
@@ -99,4 +100,16 @@ public class DeptService {
 	public List<DeptInstDTO> deptByInst(Long instId) {
 		return deptinstdao.findDeptByInst(instId);
 	}
+	
+	//페이징처리를 위한 카테고리별 dept개수(Filter 적용)
+		public int countDepts(DeptDTO filter) {
+			 return deptdao.countByFilter(filter);
+		}
+		
+	//카테고리별 기관목록(Filter 적용)
+    public List<DeptDTO> searchDepts(DeptDTO filter) {
+        return deptdao.findByFilter(filter); 
+    }
+	
+	
 }

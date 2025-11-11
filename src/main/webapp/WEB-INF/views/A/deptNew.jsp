@@ -48,7 +48,7 @@
 
             <div class="card-body">
               <!-- 부서 등록 폼 -->
-              <form id="deptInsertForm" action="/approval24/admin/dept/new" method="post">
+              <form id="deptInsertForm" action="/approval24/dept/new" method="post">
 
                 <div class="table-responsive">
                   <table class="table table-bordered table-sm kv-table">
@@ -74,23 +74,15 @@
                         </td>
                       </tr>
 
-                      <!-- 연락처 / 등록일(표시용) -->
+                      <!-- 연락처 -->
                       <tr>
                         <th scope="col" class="text-dark bg-light font-weight-bold">연락처</th>
-                        <td>
+                        <td colspan="3">
                           <input type="tel"
                                  name="deptPhone"
                                  id="deptPhone"
                                  class="form-control form-control-sm"
                                  placeholder="010-xxxx-xxxx" />
-                        </td>
-                        <th>등록일</th>
-                        <td>
-                          <!-- 표시용(서버에서 SYSDATE로 처리한다면 disabled로 전송 제외) -->
-                          <input type="date"
-                                 class="form-control"
-                                 value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>"
-                                 disabled />
                         </td>
                       </tr>
 
@@ -120,7 +112,7 @@
           </div>
         <!-- 하단 버튼 -->
 		<div class="d-flex justify-content-between mt-4">
-			<a href="${pageContext.request.contextPath}/admin/dept" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+			<a href="${pageContext.request.contextPath}/dept" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 		</div>
 
         </div>

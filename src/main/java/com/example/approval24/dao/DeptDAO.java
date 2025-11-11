@@ -22,5 +22,11 @@ public interface DeptDAO {
 	
 	// 부서 등록
 	public int insertDept(DeptDTO dto);
+	
+	// 검색에 해당되는 목록 개수
+	public int countByFilter(DeptDTO filter);
+		
+	// 검색 조건
+	public List<DeptDTO> findByFilter(DeptDTO filter);
 
 }

@@ -78,7 +78,7 @@
 
 
 						<div class="card-body">
-							<form id="managerAssignmentForm" action="/approval24/admin/MA/new" method="post">
+							<form id="managerAssignmentForm" action="/approval24/MA/new" method="post">
 							
 
 								<div class="table-responsive">
@@ -151,35 +151,11 @@
 
 												<th scope="col" class="text-dark bg-light font-weight-bold">사용자이름</th>
 												<td colspan="1">
-												  <select name="userName" id="userName" class="form-control form-control-sm">
-												    <option value="">-- 사용자이름 --</option>
-												    <c:forEach var="account" items="${accountByDept}">
-												      <option value="${account.accountId}"
-												        <c:if test="${MAInfo.accountId == account.accountId}">selected="selected"</c:if>>
-												        ${account.userName}
-												      </option>
-												    </c:forEach>
-												  </select>
+												  <input type="text" name="userName" id="userName"
+												         class="form-control form-control-sm"
+												         placeholder="사용자 이름 입력"
+												         value="<c:out value='${MAInfo.userName}'/>">
 												</td>
-											</tr>
-
-											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
-											  <td colspan="6">
-											    <div class="d-flex align-items-center" style="gap:16px;">
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
-											        <input type="radio" id="delYnN" name="delYn" value="N"
-											          <c:if test="${MAInfo.delYn == 'N'}">checked="checked"</c:if> />
-											        <span class="ml-1">사용</span>
-											      </label>
-											
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
-											        <input type="radio" id="delYnY" name="delYn" value="Y"
-											          <c:if test="${MAInfo.delYn == 'Y'}">checked="checked"</c:if> />
-											        <span class="ml-1">삭제</span>
-											      </label>
-											    </div>
-											  </td>
 											</tr>
 										</tbody>
 
@@ -192,7 +168,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 				</div>
 				<!-- /.container-fluid -->
@@ -258,23 +234,18 @@ $(function() {
     const $dept = $('#deptId').empty()
                  .append('<option value="">-- 부서 선택 --</option>');
 
-    // 기관 미선택 시 클리어하고 종료
+    // 기관 미선택 시 하위 초기화 후 종료
+    $('#complainCategoryId').empty().append('<option value="">-- 민원서식 선택 --</option>');
+    $('#accountId').empty().append('<option value="">-- 로그인계정 선택 --</option>');
+    $('#userName').val(''); // ← input 초기화
+
     if (!instId) return;
 
-    $.getJSON(ctx + '/admin/MA/depts', { inst_id: instId })
+    $.getJSON(ctx + '/MA/depts', { inst_id: instId })
       .done(function (list) {
-        if (!list || !list.length) {
-          // 예: $('#deptMsg').text('부서 없음');
-          return;
-        }
-        list.forEach(function (d) {
+        (list || []).forEach(function (d) {
           $dept.append($('<option>', { value: d.deptId, text: d.deptName }));
         });
-
-        // 기관 변경 시, 하위 셀렉트 초기화
-        $('#complainCategoryId').empty().append('<option value="">-- 민원서식 선택 --</option>');
-        $('#accountId').empty().append('<option value="">-- 로그인계정 선택 --</option>');
-        $('#userName').empty().append('<option value="">-- 사용자이름 --</option>');
       })
       .fail(function (xhr, status, err) {
         console.error('부서 로드 실패:', status, err, xhr.responseText);
@@ -287,7 +258,7 @@ $(function() {
     const deptId = $(this).val();
 
     // 서식
-    $.getJSON(ctx + '/admin/MA/categories', { dept_id: deptId })
+    $.getJSON(ctx + '/MA/categories', { dept_id: deptId })
       .done(function (list) {
         const $cat = $('#complainCategoryId').empty()
                       .append('<option value="">-- 민원서식 선택 --</option>');
@@ -299,28 +270,21 @@ $(function() {
         console.error('category fail', s, e, xhr.responseText);
       });
 
-    // 계정(로그인ID + 사용자이름 둘 다) 로드
-    $.getJSON(ctx + '/admin/MA/accounts', { dept_id: deptId })
+    // 계정(로그인ID)
+    $.getJSON(ctx + '/MA/accounts', { dept_id: deptId })
       .done(function (list) {
         const $acc  = $('#accountId').empty()
                        .append('<option value="">-- 로그인계정 선택 --</option>');
-        const $user = $('#userName').empty()
-                       .append('<option value="">-- 사용자이름 --</option>');
 
         (list || []).forEach(function (a) {
-          // 로그인ID 셀렉트
           $acc.append($('<option>', {
             value: a.accountId,
-            text: a.loginId
-          }));
-          // 사용자이름 셀렉트
-          $user.append($('<option>', {
-            value: a.accountId,
-            text: a.userName
+            text:  a.loginId,
+            'data-username': a.userName
           }));
         });
 
-        // 부서 바뀌면 두 셀렉트 동기 초기화
+        // 부서 바뀌면 초기화
         $('#accountId').val('');
         $('#userName').val('');
       })
@@ -329,13 +293,12 @@ $(function() {
       });
   });
 
-  // 두 셀렉트 동기화 (같은 accountId 사용)
+  // 계정 선택 → userName input에 실제 사용자이름 채우기
   $('#accountId').on('change', function() {
-    $('#userName').val($(this).val());
+    const uname = $('#accountId option:selected').data('username') || '';
+    $('#userName').val(uname);
   });
-  $('#userName').on('change', function() {
-    $('#accountId').val($(this).val());
-  });
+
 });
 
 </script>

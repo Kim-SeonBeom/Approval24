@@ -25,7 +25,7 @@
     values (
         #{instName},
         SYSDATE,
-        SYSDATE,      
+        #{updateDt},  
         #{instAddress},
         #{instPhone},
         #{instPost},
@@ -56,7 +56,7 @@
 
 <!-- 기관조회(상세) -->
 <select id="getInstById" parameterType="long" resultType="InstDTO">
-	select inst_id, inst_name, to_char(create_dt, 'yyyy-mm-dd') AS create_dt, to_char(update_dt, 'yyyy-mm-dd') AS update_dt, inst_address, inst_phone, inst_post, inst_head_name, inst_detail_address
+	select inst_id, inst_name, to_char(create_dt, 'yyyy-mm-dd') AS create_dt, to_char(update_dt, 'yyyy-mm-dd') AS update_dt, inst_address, inst_phone, inst_post, inst_head_name, inst_detail_address, del_yn
 	from t1000_institution
 	where inst_id=#{instId}
 </select>
@@ -67,4 +67,112 @@
 	from t1000_institution
 	where del_yn = 'N'
 </select>
+
+
+<!-- Filter 적용한 목록 조회 -->
+<select id="findByFilter" parameterType="InstDTO" resultType="InstDTO">
+  SELECT
+    inst_id,
+    inst_name,
+    to_char(create_dt, 'YYYY-MM-DD') AS create_dt,
+    to_char(update_dt, 'YYYY-MM-DD') AS update_dt,
+    inst_address,
+    inst_detail_address,
+    inst_phone,
+    inst_post,
+    inst_head_name,
+    del_yn
+  FROM t1000_institution i
+  <where>
+    <!-- delYn 정확 일치 -->
+    <if test="delYn != null and delYn != ''">
+      AND del_yn = #{delYn}
+    </if>
+
+    <!-- 기관명 LIKE -->
+    <if test="instName != null and instName != ''">
+      AND inst_name LIKE '%' || #{instName} || '%'
+    </if>
+
+    <!-- 대표자명 LIKE -->
+    <if test="instHeadName != null and instHeadName != ''">
+      AND inst_head_name LIKE '%' || #{instHeadName} || '%'
+    </if>
+
+    <!-- 주소 LIKE -->
+    <if test="instAddress != null and instAddress != ''">
+      AND inst_address LIKE '%' || #{instAddress} || '%'
+    </if>
+
+    <!-- 기간 필터: dateType='createDt' or 'updateDt' 일 때만 적용 -->
+    <if test="dateType != null and dateType != '' 
+              and createDt != null and createDt != '' 
+              and updateDt != null and updateDt != ''">
+      <choose>
+        <when test="dateType == 'createDt'">
+          <![CDATA[
+            AND create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'updateDt'">
+          <![CDATA[
+            AND update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+      </choose>
+    </if>
+  </where>
+
+  <!-- 정렬: dateType 지정 시 해당 일자 내림차순, 아니면 ID 내림차순 -->
+  <choose>
+    <when test="dateType == 'createDt'">ORDER BY create_dt DESC, inst_id DESC</when>
+    <when test="dateType == 'updateDt'">ORDER BY update_dt DESC, inst_id DESC</when>
+    <otherwise>ORDER BY inst_id DESC</otherwise>
+  </choose>
+
+  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+</select>
+
+
+<!-- 페이징용 전체 건수 -->
+<select id="countByFilter" parameterType="InstDTO" resultType="int">
+  SELECT COUNT(1)
+  FROM t1000_institution i
+  <where>
+    <if test="delYn != null and delYn != ''">
+      AND i.del_yn = #{delYn}
+    </if>
+    <if test="instName != null and instName != ''">
+      AND i.inst_name LIKE '%' || #{instName} || '%'
+    </if>
+    <if test="instHeadName != null and instHeadName != ''">
+      AND i.inst_head_name LIKE '%' || #{instHeadName} || '%'
+    </if>
+    <if test="instAddress != null and instAddress != ''">
+      AND ( i.inst_address LIKE '%' || #{instAddress} || '%'
+         OR i.inst_detail_address LIKE '%' || #{instAddress} || '%' )
+    </if>
+    <if test="dateType != null and dateType != '' 
+              and createDt != null and createDt != '' 
+              and updateDt != null and updateDt != ''">
+      <choose>
+        <when test="dateType == 'createDt'">
+          <![CDATA[
+            AND i.create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND i.create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'updateDt'">
+          <![CDATA[
+            AND i.update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND i.update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+         </when>
+       </choose>
+     </if>
+   </where>
+</select>
+
 </mapper>

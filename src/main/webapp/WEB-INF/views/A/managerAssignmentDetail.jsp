@@ -76,7 +76,7 @@
 
 						<div class="card-body">
 						
-							<form id="managerAssignmentForm" action="/approval24/admin/MA/update" method="post">
+							<form id="managerAssignmentForm" action="/approval24/MA/update" method="post">
                                 
                                 <input type="hidden" name="instId" value="${MAInfo.instId}">
                                 <input type="hidden" name="deptId" value="${MAInfo.deptId}">
@@ -95,24 +95,30 @@
 										<tbody>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">기관명</th>
-												<td colspan="3"><input type="text" name="instName" id="instName" class="form-control form-control-sm" value="${MAInfo.instName}" required></td>
+												<td colspan="3"><input type="text" name="instName" id="instName" class="form-control form-control-sm" readonly value="${MAInfo.instName}" required></td>
 											</tr>
 											
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">부서명</th>
-												<td colspan="3"><input type="text" name="deptName" id="deptName" class="form-control form-control-sm" value="${MAInfo.deptName}" required></td>
+												<td colspan="3"><input type="text" name="deptName" id="deptName" class="form-control form-control-sm" readonly value="${MAInfo.deptName}" required></td>
 											</tr>
 											
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">민원서식명</th>
-												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" value="${MAInfo.categoryName}" required></td>
+												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" readonly value="${MAInfo.categoryName}" required></td>
 											</tr>
 											
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">계정ID</th>
-												<td colspan="1"><input type="text" name="accountId" id="accountId" class="form-control form-control-sm" value="${MAInfo.accountId}" required maxlength="200"></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">로그인ID</th>
+												<td colspan="1"><input type="text" name="accountId" id="accountId" class="form-control form-control-sm" readonly value="${MAInfo.loginId}" required maxlength="200"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">사용자이름</th>
-												<td colspan="1"><input type="text" name="userName" id="userName" class="form-control form-control-sm" value="${MAInfo.userName}" required></td>
+												<td colspan="1"><input type="text" name="userName" id="userName" class="form-control form-control-sm" readonly value="${MAInfo.userName}" required></td>
+											</tr>
+											<tr>
+												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${MAInfo.createDt}" required></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${MAInfo.updateDt}" required></td>
 											</tr>
 
 											<tr>
@@ -141,7 +147,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 				</div>
 				</div>
@@ -163,55 +169,36 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-$(function() {
-	  // 폼 객체 및 URL 정의
-	  const $updateForm = $('#managerAssignmentForm');
-	  const updateActionUrl = $updateForm.attr('action'); // 초기 action
+$(document).ready(function () {
 
-	  // 항상 잠가둘 필드(selector)
-	  const EXCLUDED = '#instName, #deptName, #categoryName, #accountId, #userName';
+	  // 폼 & URL 
+	  const $updateForm = $('#managerAssignmentForm');           // 폼 id 확인
+	  const updateActionUrl = $updateForm.attr('action'); // "/approval24/MA/update"
 
-	  // 텍스트형 입력은 readonly로 제어
-	  const $updatableInputs = $updateForm
-	    .find('input[type="text"], input[type="tel"], textarea')
-	    .not(':button, :hidden')
-	    .not(EXCLUDED);
+	  $('#btnUpdateTop').on('click', function (e) {
+	    e.preventDefault();
 
-	  // 선택형 입력은 disabled로 제어
-	  const $choiceInputs = $updateForm
-	    .find('input[type="radio"], input[type="checkbox"], select')
-	    .not(EXCLUDED);
+	    const formEl = $updateForm.get(0);
 
-	  // 1) 초기 잠금
-	  $updatableInputs.prop('readonly', true);
-	  $choiceInputs.prop('disabled', true);
-
-	  // 항상 잠금: EXCLUDED
-	  if (EXCLUDED) {
-	    $updateForm.find(EXCLUDED).prop('readonly', true).prop('disabled', true);
-	  }
-
-	  // 2) 수정/저장 버튼
-	  $('#btnUpdateTop').on('click', function () {
-	    const $btn = $(this);
-	    const isEditing = $btn.data('editing') === true;
-
-	    if (!isEditing) {
-	      // 편집 가능 상태로 전환 (EXCLUDED는 계속 잠금)
-	      $updatableInputs.prop('readonly', false);
-	      $updatableInputs.prop('disabled', false);
-	      $choiceInputs.prop('disabled', false);
-
-	      $btn.html('<i class="fas fa-save mr-1"></i>저장')
-	          .removeClass('btn-primary').addClass('btn-success')
-	          .data('editing', true);
-	    } else {
-	      if (confirm('수정된 내용을 저장하시겠습니까?')) {
-	        // disabled는 전송되지 않으므로 제출 직전에 해제
-	        $updateForm.find(':disabled').prop('disabled', false);
-	        $updateForm.attr('action', updateActionUrl).submit();
-	      }
+	    // 1) 브라우저 기본 유효성 검사
+	    if (formEl && !formEl.checkValidity()) {
+	      formEl.reportValidity();
+	      return;
 	    }
+
+	    // 2) 사용자 확인
+	    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+	      return;
+	    }
+
+	    // 3) 업데이트 URL로 고정
+	    $updateForm.attr('action', updateActionUrl);
+
+	    // 4) disabled 된 필드는 전송되지 않으므로 모두 활성화
+	    $updateForm.find(':input:disabled').prop('disabled', false);
+
+	    // 5) 제출
+	    $updateForm.submit();
 	  });
 	});
 </script>

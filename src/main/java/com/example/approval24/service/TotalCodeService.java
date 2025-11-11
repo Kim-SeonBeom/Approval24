@@ -43,10 +43,22 @@ public class TotalCodeService {
 		return totalCodeDAO.TotalCodeInsert(codeDTO);
 	}
 	
-	
-
 	public List<TotalCodeDTO> getTotalCodeByGroupId(String groupId){
-	return totalCodeDAO.findCodesByGroupId(groupId);
+		return totalCodeDAO.findCodesByGroupId(groupId);
 	}
+	
+	//페이징처리를 위한 카테고리별 totalCode개수(Filter 적용)
+	public int countCodes(TotalCodeDTO filter) {
+		 return totalCodeDAO.countByFilter(filter);
+	}
+	
+	//카테고리별 totalCode목록(Filter 적용)
+    public List<TotalCodeDTO> searchCodes(TotalCodeDTO filter) {
+        return totalCodeDAO.findByFilter(filter); 
+    }
+    
+    public boolean existsByCodeId(String codeId) {
+        return totalCodeDAO.countByCodeId(codeId) > 0;
+    }
 
 }

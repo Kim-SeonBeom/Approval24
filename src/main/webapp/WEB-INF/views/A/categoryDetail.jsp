@@ -76,7 +76,7 @@
 
 						<div class="card-body">
 						
-							<form id="categoryUpdateForm" action="/approval24/admin/category/update" method="post">
+							<form id="categoryUpdateForm" action="/approval24/category/update" method="post">
                                 
                                 <input type="hidden" name="complainCategoryId" value="${categoryInfo.complainCategoryId}" id="complainCategoryIdValue">
                                 
@@ -93,74 +93,73 @@
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">민원서식명</th>
 												<td colspan="3">
-												  <c:choose>
-												    <c:when test="${not empty categoryInfo.codeName}">
 												      <input type="text" 
 												             name="codeName" 
 												             id="codeName" 
 												             class="form-control form-control-sm" 
-												             value="${categoryInfo.codeName}">
-												    </c:when>
-												
-												    <c:otherwise>
-												      <input type="text" 
-												             name="categoryName" 
-												             id="categoryName" 
-												             class="form-control form-control-sm" 
-												             value="${categoryInfo.categoryName}">
-												    </c:otherwise>
-												  </c:choose>
+												             value="${categoryInfo.codeName}"
+												             readonly>
 												</td>
 											</tr>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">유형코드</th>
 												<td colspan="1">
-												  <c:choose>
-												    <c:when test="${not empty categoryInfo.codeId}">
 												      <input type="text" 
 												             name="codeId" 
 												             id="codeId" 
-												             class="form-control form-control-sm readonly-box"
+												             class="form-control form-control-sm"
 												             value="${categoryInfo.codeId}" 
 												             readonly>
-												    </c:when>
-												
-												    <c:otherwise>
-												      <input type="text" 
-												             name="categoryCd" 
-												             id="categoryCd" 
-												             class="form-control form-control-sm readonly-box"
-												             value="${categoryInfo.categoryCd}" 
-												             readonly>
-												      <script>
-													    alert("공통코드로 등록되어 있지 않습니다.");
-													  </script>
-												    </c:otherwise>
-												  </c:choose>
 												</td>
 												
 												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
-												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" value="${categoryInfo.createDt}" required></td>
+												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${categoryInfo.createDt}" required></td>
 											</tr>
 											
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">처리소요일</th>
 												<td colspan="1"><input type="text" name="dueDt" id="dueDt" class="form-control form-control-sm" value="${categoryInfo.dueDt}" required maxlength="200"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
-												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" value="${categoryInfo.updateDt}" required></td>
+												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${categoryInfo.updateDt}" required></td>
 											</tr>
 
 											
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">생성자ID</th>
-												<td colspan="1"><input type="text" name="createId" id="createId" class="form-control form-control-sm" value="${categoryInfo.createId}" required maxlength="200"></td>
+												<td colspan="1"><input type="text" name="createId" id="createId" class="form-control form-control-sm" readonly value="${categoryInfo.createId}" required maxlength="200"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">수정자ID</th>
-												<td colspan="1"><input type="text" name="updateId" id="updateId" class="form-control form-control-sm" value="${categoryInfo.updateId}" required></td>
+												<td colspan="1"><input type="text" name="updateId" id="updateId" class="form-control form-control-sm" readonly value="${categoryInfo.updateId}" required></td>
 											</tr>
 											<tr>	
 												<th>민원서식 URL</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${categoryInfo.categoryUrl}"
 													name="categoryUrl"></td>
+											</tr>
+											<tr>
+											  <th class="text-dark bg-light font-weight-bold">소속 부서명</th>
+											  <td colspan="6">
+											    <div style="display:flex; flex-wrap:wrap; gap:8px 16px; line-height:1.8;">
+											      <c:forEach var="dept" items="${getAllDept}">
+											        <c:set var="isChecked" value="false"/>
+											        <c:forEach var="m" items="${deptByCategoryList}">
+											          <c:if test="${m.deptId == dept.deptId}">
+											            <c:set var="isChecked" value="true"/>
+											          </c:if>
+											        </c:forEach>
+											
+											        <label class="d-inline-flex align-items-center mb-1">
+											          <input
+											            type="checkbox"
+											            name="deptIds"
+											            value="${dept.deptId}"
+											            class="mr-1"
+											            <c:if test="${isChecked}">checked="checked"</c:if>
+											          />
+											          ${dept.deptName}
+											        </label>
+											      </c:forEach>
+											    </div>
+											  </td>
 											</tr>
 											<tr>
 											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
@@ -188,7 +187,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/category" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/category" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 				</div>
 				</div>
@@ -210,52 +209,38 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-$(function() {
-	  // 폼 객체 및 URL 정의
-	  const $updateForm = $('#categoryUpdateForm');
-	  const updateActionUrl = $updateForm.attr('action');         // 초기 action
+$(document).ready(function () {
 
-	  // 항상 잠가둘 필드(selector): groupId만 비활성화
-	  const EXCLUDED = '#createDt, #updateDt, #createId, #updateId, #codeId, #codeName, #categoryId, #categoryName';
-	   
-	  // 텍스트형 입력은 readonly로 제어
-	  const $updatableInputs = $updateForm
-	    .find('input[type="text"], input[type="tel"], textarea')
-	    .not(':button, :hidden')
-	    .not(EXCLUDED);
+	  // 폼 & URL 
+	  const $updateForm = $('#categoryUpdateForm');           // 폼 id 확인
+	  const updateActionUrl = $updateForm.attr('action'); // "/approval24/category/update"
 
-	  // 선택형 입력은 disabled로 제어
-	  const $choiceInputs = $updateForm
-	    .find('input[type="radio"], input[type="checkbox"], select')
-	    .not(EXCLUDED);
+	  $('#btnUpdateTop').on('click', function (e) {
+	    e.preventDefault();
 
-	  // 1) 초기 잠금
-	  $updatableInputs.prop('readonly', true);
-	  $choiceInputs.prop('disabled', true);
+	    const formEl = $updateForm.get(0);
 
-	  // 항상 잠금: groupId
-	  $updateForm.find(EXCLUDED).prop('readonly', true).prop('disabled', true);
-
-	  // 2) 수정/저장 버튼
-	  $('#btnUpdateTop').on('click', function () {
-	    const $btn = $(this);
-	    const isReadonly = $updatableInputs.first().prop('readonly');
-
-	    if (isReadonly) {
-	      // 편집 가능 상태로 전환 (EXCLUDED는 제외되어 계속 잠김)
-	      $updatableInputs.prop('readonly', false);
-	      $updatableInputs.prop('disabled', false);
-	      $choiceInputs.prop('disabled', false);
-
-	      $btn.html('<i class="fas fa-save mr-1"></i>저장')
-	          .removeClass('btn-primary').addClass('btn-success');
-	    } else {
-	      if (confirm('수정된 내용을 저장하시겠습니까?')) {
-	        $updateForm.attr('action', updateActionUrl).submit();
-	      }
+	    // 1) 브라우저 기본 유효성 검사
+	    if (formEl && !formEl.checkValidity()) {
+	      formEl.reportValidity();
+	      return;
 	    }
+
+	    // 2) 사용자 확인
+	    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+	      return;
+	    }
+
+	    // 3) 업데이트 URL로 고정
+	    $updateForm.attr('action', updateActionUrl);
+
+	    // 4) disabled 된 필드는 전송되지 않으므로 모두 활성화
+	    $updateForm.find(':input:disabled').prop('disabled', false);
+
+	    // 5) 제출
+	    $updateForm.submit();
 	  });
-});
+	});
 </script>
 
 </body>
