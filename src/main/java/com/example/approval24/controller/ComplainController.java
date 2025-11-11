@@ -174,7 +174,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/ue1/" + complainId;
+		return "redirect:/complain/category/ue1/" + complainId;
 	}
 
 	// 실업인정신청
@@ -205,7 +205,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/ue2/" + complainId;
+		return "redirect:/complain/category/ue2/" + complainId;
 	}
 
 	// 기간제 파견근로자 출산 전후 휴가 급여신청
@@ -236,7 +236,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/mt1/" + complainId;
+		return "redirect:/complain/category/mt1/" + complainId;
 	}
 
 	// 고용보험 미적용자 출산 급여 신청
@@ -268,7 +268,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/mt2/" + complainId;
+		return "redirect:/complain/category/mt2/" + complainId;
 	}
 
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
@@ -315,7 +315,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/em1/" + complainId;
+		return "redirect:/complain/category/em1/" + complainId;
 	}
 
 	// 청년 도전 사업 지원 신청
@@ -347,7 +347,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/em2/" + complainId;
+		return "redirect:/complain/category/em2/" + complainId;
 	}
 
 	// 졸업생 특화 프로그램 신청
@@ -379,7 +379,7 @@ public class ComplainController {
 
 		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
-		return "redirect:/em3/" + complainId;
+		return "redirect:/complain/category/em3/" + complainId;
 	}
 
 }

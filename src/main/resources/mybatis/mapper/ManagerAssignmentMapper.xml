@@ -23,7 +23,8 @@
 		   ma.dept_id, d.dept_name,
 		   ma.complain_category_id, cc.category_name,
 		   ma.account_id, a.login_id, u.user_name,
-		   ma.del_yn
+		   ma.del_yn, TO_CHAR(ma.create_dt, 'YYYY-MM-DD') AS create_dt,
+		   TO_CHAR(ma.update_dt, 'YYYY-MM-DD') AS update_dt
 	from t1500_manager_assignment ma
 	join t1000_institution i on i.inst_id = ma.inst_id
 	join t1000_department d on d.dept_id = ma.dept_id
@@ -47,8 +48,8 @@
 
 <!-- 담당자배정 등록 -->
 <insert id="ManagerAssignmentInsert" parameterType="ManagerAssignmentDTO">
-	insert into t1500_manager_assignment(inst_id, dept_id, complain_category_id, account_id, create_id)
-	values (#{instId}, #{deptId}, #{complainCategoryId}, #{accountId}, #{createId})
+	insert into t1500_manager_assignment(inst_id, dept_id, complain_category_id, account_id, create_id, create_dt)
+	values (#{instId}, #{deptId}, #{complainCategoryId}, #{accountId}, #{createId}, SYSDATE)
 </insert>
 
 <!-- 담당자배정 로직 -->
@@ -57,6 +58,166 @@
 	from t1500_manager_assignment
 	where complain_category_id=#{complainCategoryId}
 </select>
+
+<!-- Filter 적용한 목록 조회 -->
+<select id="findByFilter" parameterType="ManagerAssignmentDTO" resultType="ManagerAssignmentDTO">
+  SELECT
+    ma.inst_id,
+    ma.dept_id,
+    ma.complain_category_id,
+    ma.account_id,
+    
+    i.inst_name,
+    d.dept_name,
+    cc.category_name,
+    a.login_id,
+    u.user_name,
+
+    ma.del_yn               AS delYn,
+    TO_CHAR(ma.create_dt, 'YYYY-MM-DD') AS createDt,
+    TO_CHAR(ma.update_dt, 'YYYY-MM-DD') AS updateDt
+  FROM t1500_manager_assignment ma
+  JOIN t1000_institution       i  ON i.inst_id = ma.inst_id
+  JOIN t1000_department        d  ON d.dept_id = ma.dept_id
+  JOIN t2000_complain_category cc ON cc.complain_category_id = ma.complain_category_id
+  JOIN t1000_account           a  ON a.account_id = ma.account_id
+  JOIN t1000_user              u  ON u.user_no = a.user_no
+  <where>
+    <!-- 삭제여부: 'ALL'이면 조건 미적용 -->
+    <if test="delYn != null and delYn != '' and delYn != 'ALL'">
+      AND ma.del_yn = #{delYn}
+    </if>
+
+    <!-- ID 검색 (정확 일치) -->
+    <if test="instId != null and instId != 0">
+      AND ma.inst_id = #{instId}
+    </if>
+    <if test="deptId != null and deptId != 0">
+      AND ma.dept_id = #{deptId}
+    </if>
+    <if test="complainCategoryId != null and complainCategoryId != 0">
+      AND ma.complain_category_id = #{complainCategoryId}
+    </if>
+    <if test="accountId != null and accountId != 0">
+      AND ma.account_id = #{accountId}
+    </if>
+
+    <!-- 이름/문자 검색 (LIKE) -->
+    <if test="instName != null and instName != ''">
+      AND i.inst_name LIKE '%' || #{instName} || '%'
+    </if>
+    <if test="deptName != null and deptName != ''">
+      AND d.dept_name LIKE '%' || #{deptName} || '%'
+    </if>
+    <if test="categoryName != null and categoryName != ''">
+      AND cc.category_name LIKE '%' || #{categoryName} || '%'
+    </if>
+    <if test="loginId != null and loginId != ''">
+      AND a.login_id LIKE '%' || #{loginId} || '%'
+    </if>
+    <if test="userName != null and userName != ''">
+      AND u.user_name LIKE '%' || #{userName} || '%'
+    </if>
+
+    <!-- 기간 필터 -->
+    <if test="dateType != null and dateType != '' 
+              and createDt != null and createDt != '' 
+              and updateDt != null and updateDt != ''">
+      <choose>
+        <when test="dateType == 'createDt'">
+          <![CDATA[
+            AND ma.create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND ma.create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'updateDt'">
+          <![CDATA[
+            AND ma.update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND ma.update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+      </choose>
+    </if>
+  </where>
+
+  <!-- 정렬 규칙: dateType 지정 시 해당 일자 우선, 아니면 생성/수정일 내림차순 -->
+  <choose>
+    <when test="dateType == 'createDt'">ORDER BY ma.create_dt DESC, ma.update_dt DESC, ma.inst_id DESC</when>
+    <when test="dateType == 'updateDt'">ORDER BY ma.update_dt DESC, ma.create_dt DESC, ma.inst_id DESC</when>
+    <otherwise>ORDER BY ma.create_dt DESC, ma.update_dt DESC, ma.inst_id DESC</otherwise>
+  </choose>
+
+  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+</select>
+
+
+<!-- 담당자배정 개수 (Filter 적용) -->
+<select id="countByFilter" parameterType="ManagerAssignmentDTO" resultType="int">
+  SELECT COUNT(1)
+  FROM t1500_manager_assignment ma
+  JOIN t1000_institution       i  ON i.inst_id = ma.inst_id
+  JOIN t1000_department        d  ON d.dept_id = ma.dept_id
+  JOIN t2000_complain_category cc ON cc.complain_category_id = ma.complain_category_id
+  JOIN t1000_account           a  ON a.account_id = ma.account_id
+  JOIN t1000_user              u  ON u.user_no = a.user_no
+  <where>
+    <!-- 삭제여부: 'ALL'이면 조건 미적용 -->
+    <if test="delYn != null and delYn != '' and delYn != 'ALL'">
+      AND ma.del_yn = #{delYn}
+    </if>
+    <!-- ID 검색 (정확 일치) -->
+    <if test="instId != null and instId != 0">
+      AND ma.inst_id = #{instId}
+    </if>
+    <if test="deptId != null and deptId != 0">
+      AND ma.dept_id = #{deptId}
+    </if>
+    <if test="complainCategoryId != null and complainCategoryId != 0">
+      AND ma.complain_category_id = #{complainCategoryId}
+    </if>
+    <if test="accountId != null and accountId != 0">
+      AND ma.account_id = #{accountId}
+    </if>
+
+    <!-- 이름/문자 검색 (LIKE) -->
+    <if test="instName != null and instName != ''">
+      AND i.inst_name LIKE '%' || #{instName} || '%'
+    </if>
+    <if test="deptName != null and deptName != ''">
+      AND d.dept_name LIKE '%' || #{deptName} || '%'
+    </if>
+    <if test="categoryName != null and categoryName != ''">
+      AND cc.category_name LIKE '%' || #{categoryName} || '%'
+    </if>
+    <if test="loginId != null and loginId != ''">
+      AND a.login_id LIKE '%' || #{loginId} || '%'
+    </if>
+    <if test="userName != null and userName != ''">
+      AND u.user_name LIKE '%' || #{userName} || '%'
+    </if>
+
+    <!-- 기간 필터: dateType = 'createDt' | 'updateDt' -->
+    <if test="dateType != null and dateType != '' 
+              and createDt != null and createDt != '' 
+              and updateDt != null and updateDt != ''">
+      <choose>
+        <when test="dateType == 'createDt'">
+          <![CDATA[
+            AND ma.create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND ma.create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'updateDt'">
+          <![CDATA[
+            AND ma.update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND ma.update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+      </choose>
+    </if>
+  </where>
+</select>
+
 
 
 </mapper>

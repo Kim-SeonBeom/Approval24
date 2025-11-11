@@ -22,7 +22,6 @@ public interface CategoryDAO {
 	// URL로 findByCategoryUrl 찾기
 	public CategoryDTO findByCategoryUrl(String categoryUrl);
 	
-	
 	// 특정 부서의 매핑 민원서식
 	public List<CategoryDTO> findCategoryByDept(Long deptId);
 	
@@ -34,6 +33,15 @@ public interface CategoryDAO {
 	
 	// 민원서식 수정, 삭제
 	public int CategoryUpd(CategoryDTO categoryDTO);
+	
+	
+	
+	// 검색에 해당되는 목록 개수
+	public int countByFilter(CategoryDTO filter);
+	
+	// 검색 조건
+	public List<CategoryDTO> findByFilter(CategoryDTO filter);
+	
 
 	
 }

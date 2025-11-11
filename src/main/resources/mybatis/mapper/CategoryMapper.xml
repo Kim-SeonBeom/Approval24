@@ -37,7 +37,7 @@
 		t.code_id,
 		t.code_name
 		from t2000_complain_category cc
-		left join total_code t on t.code_id=cc.category_cd
+		join total_code t on t.code_id=cc.category_cd
 	</select>
 
 
@@ -76,8 +76,7 @@
 		cc.complain_category_id,
 		cc.category_name,
 		cc.category_cd,
-		to_char(cc.create_dt, 'YYYY-MM-DD') AS
-		create_dt,
+		to_char(cc.create_dt, 'YYYY-MM-DD') AS create_dt,
 		to_char(cc.update_dt, 'YYYY-MM-DD') AS update_dt,
 		cc.due_dt,
 		cc.create_id,
@@ -93,10 +92,12 @@
 
 	<!-- 민원서식 등록 -->
 	<insert id="CategoryInsert" parameterType="CategoryDTO">
-		insert into t2000_complain_category(category_name, category_cd, create_dt,
-		due_dt, create_id, del_yn, category_url)
-		values(#{categoryName}, #{categoryCd}, SYSDATE, #{dueDt}, #{createId}, #{delYn},
-		#{categoryUrl})
+		<selectKey keyProperty="complainCategoryId" resultType="long" order="BEFORE">
+	    	SELECT SEQ_T2000_COMPLAIN_CATEGORY.NEXTVAL FROM DUAL
+	    </selectKey>
+		insert into t2000_complain_category(complain_category_id, category_name, category_cd, create_dt,
+		due_dt, create_id, category_url)
+		values(#{complainCategoryId}, #{categoryName}, #{categoryCd}, SYSDATE, #{dueDt}, #{createId}, #{categoryUrl})
 	</insert>
 
 	<!-- 민원서식 수정, 삭제 -->
@@ -110,5 +111,125 @@
 		category_url=#{categoryUrl}
 		where complain_category_id=#{complainCategoryId}
 	</update>
+	
+	
+	<!-- 민원서식 카테고리 목록 (Filter + Paging) -->
+	<select id="findByFilter" parameterType="CategoryDTO" resultType="CategoryDTO">
+	  SELECT
+	    cc.complain_category_id,
+	    cc.category_name,
+	    cc.category_cd,
+	    cc.due_dt,
+	    cc.category_url,
+	    cc.del_yn,
+	    TO_CHAR(cc.create_dt, 'YYYY-MM-DD') AS create_dt,
+	    TO_CHAR(cc.update_dt, 'YYYY-MM-DD') AS update_dt,
+	    t.code_id,
+	    t.code_name
+	  FROM t2000_complain_category cc
+	  JOIN total_code t
+	    ON t.code_id = cc.category_cd
+	  <where>
+	    <!-- 삭제여부 정확 일치 -->
+	    <if test="delYn != null and delYn != ''">
+	      AND cc.del_yn = #{delYn}
+	    </if>
+	
+	    <!-- 카테고리명 LIKE -->
+	    <if test="categoryName != null and categoryName != ''">
+	      AND cc.category_name LIKE '%' || #{categoryName} || '%'
+	    </if>
+	
+	    <!-- 서식코드(categoryCd) LIKE -->
+	    <if test="categoryCd != null and categoryCd != ''">
+	      AND cc.category_cd LIKE '%' || #{categoryCd} || '%'
+	    </if>
+	
+	    <!-- URL LIKE -->
+	    <if test="categoryUrl != null and categoryUrl != ''">
+	      AND cc.category_url LIKE '%' || #{categoryUrl} || '%'
+	    </if>
+	
+	    <!-- 기간 필터: dateType 에 따라 createDt/updateDt 중 선택 -->
+	    <if test="dateType != null and dateType != '' 
+	              and createDt != null and createDt != '' 
+	              and updateDt != null and updateDt != ''">
+	      <choose>
+	        <when test="dateType == 'createDt'">
+	          <![CDATA[
+	            AND cc.create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+	            AND cc.create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+	          ]]>
+	        </when>
+	        <when test="dateType == 'updateDt'">
+	          <![CDATA[
+	            AND cc.update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+	            AND cc.update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+	          ]]>
+	        </when>
+	      </choose>
+	    </if>
+	    
+	    <if test="dueStart != null and dueEnd != null">
+	      AND cc.due_dt BETWEEN #{dueStart} AND #{dueEnd}
+	    </if>
+	  </where>
+	
+	  <!-- 정렬 규칙: dateType 있으면 해당일자 우선, 없으면 PK 내림차순 -->
+	  <choose>
+	    <when test="dateType == 'createDt'"> ORDER BY cc.create_dt DESC, cc.complain_category_id DESC</when>
+	    <when test="dateType == 'updateDt'"> ORDER BY cc.update_dt DESC, cc.complain_category_id DESC</when>
+	    <otherwise>                          ORDER BY cc.complain_category_id DESC</otherwise>
+	  </choose>
+	
+	  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+	</select>
+	
+	
+	<!-- 페이징용 전체 건수 -->
+	<select id="countByFilter" parameterType="CategoryDTO" resultType="int">
+	  SELECT COUNT(1)
+	  FROM t2000_complain_category cc
+	  JOIN total_code t
+	    ON t.code_id = cc.category_cd
+	  <where>
+	    <if test="delYn != null and delYn != ''">
+	      AND cc.del_yn = #{delYn}
+	    </if>
+	    <if test="categoryName != null and categoryName != ''">
+	      AND cc.category_name LIKE '%' || #{categoryName} || '%'
+	    </if>
+	    <if test="categoryCd != null and categoryCd != ''">
+	      AND cc.category_cd LIKE '%' || #{categoryCd} || '%'
+	    </if>
+	    <if test="categoryUrl != null and categoryUrl != ''">
+	      AND cc.category_url LIKE '%' || #{categoryUrl} || '%'
+	    </if>
+	    <if test="dateType != null and dateType != '' 
+	              and createDt != null and createDt != '' 
+	              and updateDt != null and updateDt != ''">
+	      <choose>
+	        <when test="dateType == 'createDt'">
+	          <![CDATA[
+	            AND cc.create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+	            AND cc.create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+	          ]]>
+	        </when>
+	        <when test="dateType == 'updateDt'">
+	          <![CDATA[
+	            AND cc.update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+	            AND cc.update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+	          ]]>
+	        </when>
+	      </choose>
+	    </if>
+	    
+	    <if test="dueStart != null and dueEnd != null">
+	      AND cc.due_dt BETWEEN #{dueStart} AND #{dueEnd}
+	    </if>
+	  </where>
+	</select>
+	
+	
 
 </mapper>

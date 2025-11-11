@@ -46,7 +46,7 @@
 						<h1 class="h3 mb-0 text-gray-800">고용보험 미적용자 출산(유산･사산) 급여 신청서</h1>
 					</div>
 
-					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/mt2/${detail.complainId}">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/complain/category/mt2/${detail.complainId}">
 
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 

@@ -53,7 +53,7 @@
 						</div>
 					</c:if>
 
-					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/mt1/${detail.complainId}">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/complain/category/mt1/${detail.complainId}">
 
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
