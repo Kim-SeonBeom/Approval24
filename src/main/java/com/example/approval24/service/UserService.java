@@ -1,6 +1,7 @@
 package com.example.approval24.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class UserService {
     }
 
     // 사용자 목록 조회 (필터링 포함)
-    public List<UserDTO> getUsers(UserDTO filter) {
-        return userDAO.findUsersByFilter(filter);
+    public List<UserDTO> getUsers(Map<String, Object> params) {
+        return userDAO.findUsersByFilter(params);
     }
 
     // 2. 사용자 상세 조회 (주민번호 기준)
@@ -49,7 +50,7 @@ public class UserService {
         return userDAO.insertUser(user);
     }
 
-    // 4. 사용자 정보 수정
+    // 4. 사용자 정보 수정 
     @Transactional
     public int updateUserInfo(UserDTO user) {
         return userDAO.updateUser(user);
@@ -60,4 +61,12 @@ public class UserService {
     public int deactivateUser(Long userNo,Long updateId) {
         return userDAO.deleteUser(userNo,updateId);
     }
+
+	public int countUsersByFilter(Map<String, Object> params) {
+		return userDAO.countUsersByFilter(params);
+	}
+
+	public UserDTO getUserDetailByUserNo(Long userNo) {
+		return userDAO.findByUserNo(userNo);
+	}
 }

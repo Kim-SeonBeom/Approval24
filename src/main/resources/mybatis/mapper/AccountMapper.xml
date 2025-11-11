@@ -47,6 +47,9 @@
               <if test="instId != null">
                 AND A.INST_ID = #{instId}
               </if>
+              <if test="userNo != null">
+                AND A.USER_NO = #{userNo}
+              </if>
               AND A.DEL_YN = 'N'
               <if test="accountId != null">
                 AND A.ACCOUNT_ID = #{accountId}
@@ -72,7 +75,8 @@
             ORDER BY A.CREATE_DT DESC
         ) T
     )
-    <if test="startRow != null and endRow !=null">
+    <if test="startRow != null and endRow != null">
+
     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
     </if>
 </select>

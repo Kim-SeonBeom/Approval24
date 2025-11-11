@@ -52,7 +52,7 @@
 						</div>
 					</c:if>
 
-					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/ue1/${detail.complainId}">
+					<form id="loanApplyForm" method="post" action="${pageContext.request.contextPath}/complain/category/ue1/${detail.complainId}">
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
 						<!-- B. 이전 직장 정보 -->
@@ -224,15 +224,35 @@
 
 						<!-- 하단 버튼 -->
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/complain/ue1" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
+							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>
 							<div>
-								<button type="button" class="btn btn-primary" id="btnUpdate">
-									<i class="fas fa-edit mr-1"></i>수정
-								</button>
+								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
+									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
+										<i class="fas fa-edit mr-1"></i>결재선설정
+									</button>
+
+								</c:if>
+								<c:if test="${pageAuth.updateYn == 'Y'}">
+									<button type="button" class="btn btn-light" id="btnSave">
+										<i class="fas fa-edit mr-1"></i>수정
+									</button>
+									<button type="button" class="btn btn-warning" id="btnComplainCancle">
+										<i class="fas fa-edit mr-1"></i>취하
+									</button>
+
+								</c:if>
+
+								<c:if test="${pageAuth.approveYn == 'Y'}">
+									<button type="button" class="btn btn-primary" id="btnApprove">
+										<i class="fas fa-edit mr-1"></i>승인
+									</button>
+									<button type="button" class="btn btn-danger" id="btnReject">
+										<i class="fas fa-edit mr-1"></i>반려
+									</button>
+								</c:if>
 							</div>
 						</div>
-
 
 						<input type="hidden" name="complainId" value="<c:out value='${detail.complainId}'/>"> <input type="hidden" name="complainuserNo" value="<c:out value='${userInfo.complainuserNo}'/>">
 					</form>
@@ -241,13 +261,30 @@
 
 			<!-- footer -->
 			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-			<!--페이지 전용 js -->
-			<script src="${pageContext.request.contextPath}/resources/assets/js/complain/ue1.js"></script>
+
 
 		</div>
 	</div>
 
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
+	<!--페이지 전용 js -->
+	<script>
+		const authData = {
+			// 페이지 권한
+			canUpdate : '${pageAuth.updateYn}' === 'Y',
+			canApprove : '${pageAuth.approveYn}' === 'Y',
+
+			// 담당자 아이디 체크
+			complainAccountId : '${complainInfo.accountId}',
+
+			// 현재 로그인한 사용자 정보
+			sessionAccountId : '${sessionScope.user}'
+		};
+		// "취하" & "결재선설정" 권한
+		const canCancelOrSetLine = authData.canApprove
+				&& (authData.complainAccountId === authData.sessionAccountId);
+	</script>
+	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/ue1.js"></script>
 
 	<!-- Submit Modal -->
 	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">

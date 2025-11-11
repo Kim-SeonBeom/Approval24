@@ -1,94 +1,103 @@
-function setDisabled($els, isDisabled) {
-	$els.prop('disabled', isDisabled).toggleClass('readonly-box', isDisabled);
-}
-function clearVals($els) {
-	$els.val('');
-}
+document.addEventListener('DOMContentLoaded', function() {
+	// form & buttons
+	let isEditMode = false;
+	const $form = $('#submitForm');
+	const $confirmBtn = $('#btnSubmitConfirm'); // 모달 "제출" 버튼
+	const $userAddressBtn = $('#btnAddressSearch');
+	const complainId = $form.find('input[name="complainId"]').val();
 
-document
-		.addEventListener(
-				'DOMContentLoaded',
-				function() {
-					// form & buttons
-					let isEditMode = false;
-					const $form = $('#submitForm');
-					const $updateBtn = $('#btnUpdate'); // "수정↔저장" 토글 버튼
-					const $confirmBtn = $('#btnSubmitConfirm'); // 모달 "제출" 버튼
-					const $userAddressBtn = $('#btnAddressSearch');
+	// 버튼 캐시
+	const $btnApprovalLine = $('#btnApprovalLine');
+	const $btnSave = $('#btnSave');
+	const $btnApprove = $('#btnApprove');
+	const $btnReject = $('#btnReject');
+	const $btnCancel = $('#btnComplainCancel');
 
-					// controls
-					const $textInputs = $form.find([ 'input[type=text]',
-							'input[type=tel]', 'input[type=email]',
-							'input[type=number]', 'input[type=date]',
-							'input[type=time]', 'input[type=datetime-local]',
-							'input[type=url]', 'input[type=search]',
-							'input[type=password]', 'textarea' ].join(','));
-					const $choiceInputs = $form
-							.find('select, input[type=checkbox], input[type=radio], input[type=file]');
+	// 어떤 버튼으로 모달을 띄웠는지 구분용
+	let pendingAction = null;
 
-					// 항상 잠금 유지(있을 때만)
-					const $fixedReadonly = $([ '#complainuserResiNoFront',
-							'#complainuserResiNoBack', '#complainuserPost',
-							'#complainuserAddress' ].join(','));
+	// 결재선버튼 클릭
+	$btnApprovalLine.on('click', function() {
+		if (!canCancelOrSetLine) {
+			alert('결재선을 설정할 권한이 없거나 본인이 신청한 민원이 아닙니다.');
+			return;
+		}
 
-					// ===== 편집 모드 토글 =====
-					function setEditMode(isEdit) {
+		// 결재선버튼 클릭시 팝업버튼 구현하면됩니다<<<<<시작
 
-						isEditMode = isEdit;
-						// 전체 활성/비활성
-						setDisabled($textInputs, !isEdit);
-						setDisabled($choiceInputs, !isEdit);
-						if ($userAddressBtn.length)
-							$userAddressBtn.prop('disabled', !isEdit);
+		alert("결재선 설정 팝업 로직 구현");
 
-						// 항상 잠금 유지
-						setDisabled($fixedReadonly, true);
+		// 결재선버튼 클릭시 팝업버튼 구현하면됩니다<<<<<끝
+	});
 
-						// 버튼 라벨/스타일 토글
-						if (isEdit) {
-							$updateBtn.html(
-									'<i class="fas fa-save mr-1"></i>저장')
-									.removeClass('btn-primary').addClass(
-											'btn-success');
-						} else {
-							$updateBtn.html(
-									'<i class="fas fa-edit mr-1"></i>수정')
-									.removeClass('btn-success').addClass(
-											'btn-primary');
-						}
+	// 저장 버튼 클릭
+	$btnSave.on('click', function() {
+		if (!authData.canUpdate) {
+			alert('수정 권한이 없습니다.');
+			return;
+		}
 
-					}
+		if ($form[0].checkValidity && !$form[0].checkValidity()) {
+			if ($form[0].reportValidity)
+				$form[0].reportValidity();
+			return;
+		}
+		// 저장 할때 url 경로
+		pendingAction = `/approval24/complain/category/em2/${complainId}`; // 기본 저장 경로
+		$('#submitModalLabel').text('저장');
+		$('.modal-body').text('입력하신 내용으로 신청서를 저장할까요?');
+		$('#submitModal').modal('show');
+	});
 
-					// 초기: 보기 모드(모두 잠금)
-					setEditMode(false);
+	// 승인 버튼 클릭
+	$btnApprove.on('click', function() {
+		if (!authData.canApprove) {
+			alert('승인 권한이 없습니다.');
+			return;
+		}
 
-					// 수정/저장 토글 클릭
-					$updateBtn.on('click',
-							function() {
-								const isViewLocked = $textInputs.first().prop(
-										'disabled'); // 보기 모드면 true
-								if (isViewLocked) {
-									// 수정 모드 진입
-									setEditMode(true);
-									return;
-								}
-								// 저장 시: 필수 검증 -> 모달 열기
-								if ($form[0].checkValidity
-										&& !$form[0].checkValidity()) {
-									if ($form[0].reportValidity)
-										$form[0].reportValidity();
-									return;
-								}
-								$('#submitModal').modal('show');
-							});
+		// 승인 할때 url 경로
+		pendingAction = `/approval24/em2/${complainId}/approve`;
+		$('#submitModalLabel').text('승인');
+		$('.modal-body').text('이 신청서를 승인하시겠습니까?');
+		$('#submitModal').modal('show');
+	});
 
-					// 모달 "제출" -> 실제 submit
-					$confirmBtn.on('click', function() {
-						// disabled는 전송 안 되므로 일시 해제
-						setDisabled($textInputs, false);
-						setDisabled($choiceInputs, false);
+	// 반려 버튼 클릭
+	$btnReject.on('click', function() {
 
-						$form.trigger('submit');
-					});
+		if (!authData.canApprove) {
+			alert('승인 권한이 없습니다.');
+			return;
+		}
 
-				});
+		// 반려 할때 url 경로
+		pendingAction = `/approval24/em2/${complainId}/reject`;
+		$('#submitModalLabel').text('반려');
+		$('.modal-body').text('이 신청서를 반려하시겠습니까?');
+		$('#submitModal').modal('show');
+	});
+
+	// 취하 버튼 클릭
+	$btnCancel.on('click', function() {
+		if (!canCancelOrSetLine) {
+			alert('민원을 취하할 권한이 없거나 본인이 신청한 민원이 아닙니다.');
+			return;
+		}
+		// 취하 할때 url 경로
+		pendingAction = `/approval24/em2/${complainId}/cancel`;
+		$('#submitModalLabel').text('취하');
+		$('.modal-body').text('신청서를 취하하시겠습니까?');
+		$('#submitModal').modal('show');
+	});
+
+	// 모달 "제출" -> 실제 submit
+	$confirmBtn.on('click', function() {
+		// disabled는 전송 안 되므로 일시 해제
+		setDisabled($textInputs, false);
+		setDisabled($choiceInputs, false);
+
+		$form.trigger('submit');
+	});
+
+});

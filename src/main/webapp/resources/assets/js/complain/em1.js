@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const $btnReject = $('#btnReject');
 	const $btnCancel = $('#btnComplainCancel');
 
-	// 권한 리스트
+	
 
 
 	// 어떤 버튼으로 모달을 띄웠는지 구분용
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 		// 저장 할때 url 경로
-		pendingAction = `/approval24/em1/${complainId}`; // 기본 저장 경로
+		pendingAction = `/approval24/complain/category/em1/${complainId}`; // 기본 저장 경로
 		$('#submitModalLabel').text('저장');
 		$('.modal-body').text('입력하신 내용으로 신청서를 저장할까요?');
 		$('#submitModal').modal('show');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		
 		// 승인 할때 url 경로
-		pendingAction = `/approval24/em1/${complainId}/approve`;
+		pendingAction = `/approval24/complain/category/em1/${complainId}/approve`;
 		$('#submitModalLabel').text('승인');
 		$('.modal-body').text('이 신청서를 승인하시겠습니까?');
 		$('#submitModal').modal('show');
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		
 		// 반려 할때 url 경로
-		pendingAction = `/approval24/em1/${complainId}/reject`;
+		pendingAction = `/approval24/complain/category/em1/${complainId}/reject`;
 		$('#submitModalLabel').text('반려');
 		$('.modal-body').text('이 신청서를 반려하시겠습니까?');
 		$('#submitModal').modal('show');
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 		// 취하 할때 url 경로
-		pendingAction = `/approval24/em1/${complainId}/cancel`;
+		pendingAction = `/approval24/complain/category/em1/${complainId}/cancel`;
 		$('#submitModalLabel').text('취하');
 		$('.modal-body').text('신청서를 취하하시겠습니까?');
 		$('#submitModal').modal('show');

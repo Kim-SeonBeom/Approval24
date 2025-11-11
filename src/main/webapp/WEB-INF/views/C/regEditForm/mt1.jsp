@@ -53,7 +53,7 @@
 						</div>
 					</c:if>
 
-					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/mt1/${detail.complainId}">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/complain/category/mt1/${detail.complainId}">
 
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 
@@ -77,7 +77,8 @@
 												<td><input type="date" class="form-control" name="birthDt" id="birthDt" value="<fmt:formatDate value='${detail.birthDt}' pattern='yyyy-MM-dd'/>" /></td>
 
 												<th>영아의 주민등록번호</th>
-												<td><input type="text" class="form-control" name="infantRrnFront" id="infantRrnFront" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="생년월일 6자리" style="width: 40%; display: inline-block;"value="<c:out value='${detail.infantRrnFront}'/>"> <span class="mx-1">-</span> <input type="password" class="form-control" name="infantRrnBack" id="infantRrnBack" maxlength="7" inputmode="numeric" pattern="[0-9]*" placeholder="뒤 7자리" style="width: 50%; display: inline-block;" value="<c:out value='${detail.infantRrnBack}'/>"></td>
+												<td><input type="text" class="form-control" name="infantRrnFront" id="infantRrnFront" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="생년월일 6자리" style="width: 40%; display: inline-block;" value="<c:out value='${detail.infantRrnFront}'/>"> <span class="mx-1">-</span> <input type="password" class="form-control" name="infantRrnBack" id="infantRrnBack" maxlength="7" inputmode="numeric" pattern="[0-9]*" placeholder="뒤 7자리"
+													style="width: 50%; display: inline-block;" value="<c:out value='${detail.infantRrnBack}'/>"></td>
 											</tr>
 
 											<tr>
@@ -87,7 +88,7 @@
 														<input class="form-check-input" type="radio" name="multipleBirthYn" id="multipleBirthYnY" value="Y" ${detail.multipleBirthYn == 'Y' ? 'checked' : ''}> <label class="form-check-label" for="multipleBirthYnY">예</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="multipleBirthYn" id="multipleBirthYnN" value="N"  ${detail.multipleBirthYn != 'Y' ? 'checked' : ''}> <label class="form-check-label" for="multipleBirthYnN">아니오</label>
+														<input class="form-check-input" type="radio" name="multipleBirthYn" id="multipleBirthYnN" value="N" ${detail.multipleBirthYn != 'Y' ? 'checked' : ''}> <label class="form-check-label" for="multipleBirthYnN">아니오</label>
 													</div>
 												</td>
 
@@ -125,9 +126,9 @@
 										<tbody>
 											<tr>
 												<th>근로 계약 시작일</th>
-												<td><input type="date" class="form-control" name="contractStartDt" id="contractStartDt" value="<fmt:formatDate value='${detail.contractStartDt}' pattern='yyyy-MM-dd'/>"/></td>
+												<td><input type="date" class="form-control" name="contractStartDt" id="contractStartDt" value="<fmt:formatDate value='${detail.contractStartDt}' pattern='yyyy-MM-dd'/>" /></td>
 												<th>근로 계약 만료일</th>
-												<td><input type="date" class="form-control" name="contractEndDt" id="contractEndDt" value="<fmt:formatDate value='${detail.contractEndDt}' pattern='yyyy-MM-dd'/>"/></td>
+												<td><input type="date" class="form-control" name="contractEndDt" id="contractEndDt" value="<fmt:formatDate value='${detail.contractEndDt}' pattern='yyyy-MM-dd'/>" /></td>
 											</tr>
 											<tr>
 												<th>출산 전후 휴가 기간</th>
@@ -156,19 +157,19 @@
 										<tbody>
 											<tr>
 												<th>이번 회차 신청 시작일</th>
-												<td><input type="date" class="form-control" name="currentApplStartDt" id="currentApplStartDt"  value="<fmt:formatDate value='${detail.currentApplStartDt}' pattern='yyyy-MM-dd'/>"/></td>
+												<td><input type="date" class="form-control" name="currentApplStartDt" id="currentApplStartDt" value="<fmt:formatDate value='${detail.currentApplStartDt}' pattern='yyyy-MM-dd'/>" /></td>
 												<th>이번 회차 신청 종료일</th>
-												<td><input type="date" class="form-control" name="currentApplEndDt" id="currentApplEndDt"  value="<fmt:formatDate value='${detail.currentApplEndDt}' pattern='yyyy-MM-dd'/>"/></td>
+												<td><input type="date" class="form-control" name="currentApplEndDt" id="currentApplEndDt" value="<fmt:formatDate value='${detail.currentApplEndDt}' pattern='yyyy-MM-dd'/>" /></td>
 											</tr>
 											<tr>
 												<th>예금주</th>
 												<td><input type="text" class="form-control" name="accountHolderNm" value="<c:out value='${detail.accountHolderNm}'/>" /></td>
 												<th>은행명</th>
-												<td><input type="text" class="form-control" name="bankNm"  value="<c:out value='${detail.bankNm}'/>"/></td>
+												<td><input type="text" class="form-control" name="bankNm" value="<c:out value='${detail.bankNm}'/>" /></td>
 											</tr>
 											<tr>
 												<th>계좌번호</th>
-												<td colspan="3"><input type="text" class="form-control" name="paymentAccountNo"  value="<c:out value='${detail.paymentAccountNo}'/>"/></td>
+												<td colspan="3"><input type="text" class="form-control" name="paymentAccountNo" value="<c:out value='${detail.paymentAccountNo}'/>" /></td>
 											</tr>
 										</tbody>
 									</table>
@@ -206,7 +207,7 @@
 												<th>소득 종류</th>
 												<td colspan="3">
 													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="incomeType" id="incomeTypeBiz" value="사업소득"  ${detail.incomeType == '사업소득' ? 'checked' : ''}> <label class="form-check-label" for="incomeTypeBiz">사업소득</label>
+														<input class="form-check-input" type="radio" name="incomeType" id="incomeTypeBiz" value="사업소득" ${detail.incomeType == '사업소득' ? 'checked' : ''}> <label class="form-check-label" for="incomeTypeBiz">사업소득</label>
 													</div>
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio" name="incomeType" id="incomeTypeWork" value="근로소득" ${detail.incomeType == '근로소득' ? 'checked' : ''}> <label class="form-check-label" for="incomeTypeWork">근로소득</label>
@@ -223,7 +224,7 @@
 
 											<tr>
 												<th>근로 기간(시간/일수 등)</th>
-												<td colspan="3"><input type="text" class="form-control" name="workHours" id="workHours"  value="<c:out value='${detail.workHours}'/>" placeholder="예: 주 15시간, 총 160시간, 30일 등"></td>
+												<td colspan="3"><input type="text" class="form-control" name="workHours" id="workHours" value="<c:out value='${detail.workHours}'/>" placeholder="예: 주 15시간, 총 160시간, 30일 등"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -233,12 +234,33 @@
 
 
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소
+							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>
 							<div>
-								<button type="button" class="btn btn-primary" id="btnUpdate">
-									<i class="fas fa-edit mr-1"></i>수정
-								</button>
+								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
+									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
+										<i class="fas fa-edit mr-1"></i>결재선설정
+									</button>
+
+								</c:if>
+								<c:if test="${pageAuth.updateYn == 'Y'}">
+									<button type="button" class="btn btn-light" id="btnSave">
+										<i class="fas fa-edit mr-1"></i>수정
+									</button>
+									<button type="button" class="btn btn-warning" id="btnComplainCancle">
+										<i class="fas fa-edit mr-1"></i>취하
+									</button>
+
+								</c:if>
+
+								<c:if test="${pageAuth.approveYn == 'Y'}">
+									<button type="button" class="btn btn-primary" id="btnApprove">
+										<i class="fas fa-edit mr-1"></i>승인
+									</button>
+									<button type="button" class="btn btn-danger" id="btnReject">
+										<i class="fas fa-edit mr-1"></i>반려
+									</button>
+								</c:if>
 							</div>
 						</div>
 
@@ -251,14 +273,31 @@
 
 
 			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-			<!--페이지 전용 js -->
-			<script src="${pageContext.request.contextPath}/resources/assets/js/complain/mt1.js"></script>
+
 		</div>
 		<!-- /#content-wrapper -->
 	</div>
 	<!-- /#wrapper -->
 
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
+	<!--페이지 전용 js -->
+	<script>
+		const authData = {
+			// 페이지 권한
+			canUpdate : '${pageAuth.updateYn}' === 'Y',
+			canApprove : '${pageAuth.approveYn}' === 'Y',
+
+			// 담당자 아이디 체크
+			complainAccountId : '${complainInfo.accountId}',
+
+			// 현재 로그인한 사용자 정보
+			sessionAccountId : '${sessionScope.user}'
+		};
+		// "취하" & "결재선설정" 권한
+		const canCancelOrSetLine = authData.canApprove
+				&& (authData.complainAccountId === authData.sessionAccountId);
+	</script>
+	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/mt1.js"></script>
 
 	<!-- Submit Modal -->
 	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">

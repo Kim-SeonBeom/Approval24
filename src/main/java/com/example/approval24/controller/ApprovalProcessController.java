@@ -67,6 +67,7 @@ public class ApprovalProcessController {
         }
     }
     
+    // 결재 진행
     @PostMapping("/process")
     public ResponseEntity<Map<String, Object>> processApproval(
             @RequestBody ApprovalHistoryDTO approvalData, 
@@ -117,6 +118,7 @@ public class ApprovalProcessController {
         }
     }
     
+    // 내역 조회
     @GetMapping("/line")
     public ResponseEntity<?> getApprovalLine(@RequestParam Long complainId) {
 
@@ -129,7 +131,6 @@ public class ApprovalProcessController {
 
         try {
             List<ApprovalHistoryDTO> approvalHistoryList = historyService.getApprovalHistoryByComplainId(complainId);
-
             return ResponseEntity.ok(approvalHistoryList);
 
         } catch (IllegalArgumentException e) {

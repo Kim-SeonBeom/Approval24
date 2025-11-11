@@ -41,18 +41,29 @@
     document.addEventListener('DOMContentLoaded', function () {
         // 이 페이지의 실제 폼/버튼 id로 매칭
         const $form = $('#loanApplyForm');
-        const $updateBtn = $('#btnUpdate');
         const $confirmBtn = $('#btnSubmitConfirm'); // 모달의 "저장" 버튼
         const $userAddressBtn = $('#btnAddressSearch');
         const $trainAddressBtn = $('#btnSearchTrainAddress');
         
-        //수혜여부에 따른 YN체크를 위한 선언
+    	// 버튼 캐시
+    	const $btnApprovalLine = $('#btnApprovalLine');
+    	const $btnSave = $('#btnSave');
+    	const $btnApprove = $('#btnApprove');
+    	const $btnReject = $('#btnReject');
+    	const $btnCancel = $('#btnComplainCancel');
+
+        
+        
+        // 수혜여부에 따른 YN체크를 위한 선언
         const benefitY = document.getElementById("benefitY");
         const benefitN = document.getElementById("benefitN");
         const subsidyAmt = document.getElementById("subsidyAmt");
         const submitBtn = document.getElementById("btnSubmitConfirm");
         
-        //수혜여부에 따른 수혜금액 전송
+        const complainId = $form.find('input[name="complainId"]').val();
+
+        
+        // 수혜여부에 따른 수혜금액 전송
         function toggleSubsidyAmt() {
           if (benefitN.checked) {
             subsidyAmt.value = "0";
@@ -66,88 +77,99 @@
         
         if (benefitY) benefitY.addEventListener('change', toggleSubsidyAmt);
         if (benefitN) benefitN.addEventListener('change', toggleSubsidyAmt);
+        toggleSubsidyAmt();
 
-        // 텍스트형(읽기전용 제어), 선택형(비활성 제어)
-        const $textInputs = $form.find([
-          'input[type=text]',
-          'input[type=tel]',
-          'input[type=email]',
-          'input[type=number]',
-          'input[type=date]',
-          'input[type=time]',
-          'input[type=datetime-local]',
-          'input[type=url]',
-          'input[type=search]',
-          'input[type=password]',
-          'textarea'
-        ].join(','));
 
         const $choiceInputs = $form.find('select, input[type=checkbox], input[type=radio], input[type=file]');
 
-        function setEditMode(isEdit) {
-          $textInputs.prop('readonly', !isEdit).toggleClass('readonly-box', !isEdit);
-          $choiceInputs.prop('disabled', !isEdit);
-          if ($userAddressBtn.length) $userAddressBtn.prop('disabled', !isEdit);
-          if ($trainAddressBtn.length) $trainAddressBtn.prop('disabled', !isEdit);
-          
-          $('#complainuserResiNoFront,#complainuserResiNoBack, #complainuserPost,#complainuserAddress ,#trainPost, #trainInstAddr')
-          .prop('readonly', true).addClass('readonly-box');
+    	// 어떤 버튼으로 모달을 띄웠는지 구분용
+    	let pendingAction = null;
 
-          
+    	// 결재선버튼 클릭
+    	$btnApprovalLine.on('click', function() {
+    		if (!canCancelOrSetLine) {
+    			alert('결재선을 설정할 권한이 없거나 본인이 신청한 민원이 아닙니다.');
+    			return;
+    		}
 
-          if (isEdit) {
-        	toggleSubsidyAmt();
-            $updateBtn.html('<i class="fas fa-save mr-1"></i>저장')
-                      .removeClass('btn-primary').addClass('btn-success');
-          } else {
-              if (subsidyAmt) {
-                  subsidyAmt.readOnly = true;
-                  subsidyAmt.classList.add('readonly-box');
-                }
-            $updateBtn.html('<i class="fas fa-edit mr-1"></i>수정')
-                      .removeClass('btn-success').addClass('btn-primary');
-          }
-        }
+    		// 결재선버튼 클릭시 팝업버튼 구현하면됩니다<<<<<시작
 
-        // 최초: 보기 모드
-        setEditMode(false);
+    		alert("결재선 설정 팝업 로직 구현");
 
-        // 수정/저장 버튼 클릭
-        $updateBtn.on('click', function () {
-          const readOnlyNow = $textInputs.first().prop('readonly');
+    		// 결재선버튼 클릭시 팝업버튼 구현하면됩니다<<<<<끝
+    	});
 
-          if (readOnlyNow) {
-            //수정 모드 진입
-            setEditMode(true);
-            return;
-          }
+    	// 저장 버튼 클릭
+    	$btnSave.on('click', function() {
+    		if (!authData.canUpdate) {
+    			alert('수정 권한이 없습니다.');
+    			return;
+    		}
 
-          //저장 전 모달로 확인
-          if (!$form[0].checkValidity()) {
-            $form[0].reportValidity?.();
-            return;
-          }
-          $('#submitModal').modal('show');
-        });
+    		if ($form[0].checkValidity && !$form[0].checkValidity()) {
+    			if ($form[0].reportValidity)
+    				$form[0].reportValidity();
+    			return;
+    		}
+    		// 저장 할때 url 경로
+    		pendingAction = `/approval24/complain/category/ue1/${complainId}`; // 기본 저장 경로
+    		$('#submitModalLabel').text('저장');
+    		$('.modal-body').text('입력하신 내용으로 신청서를 저장할까요?');
+    		$('#submitModal').modal('show');
+    	});
 
-        // 모달에서 "저장" 확정
-        $confirmBtn.on('click', function () {
-          // disabled는 전송이 안 되므로 제출 직전 잠깐 활성화
-          $choiceInputs.prop('disabled', false);
-          if ($userAddressBtn.length) $userAddressBtn.prop('disabled', false);
-          if ($trainAddressBtn.length) $trainAddressBtn.prop('disabled', false);
+    	// 승인 버튼 클릭
+    	$btnApprove.on('click', function() {
+    		if (!authData.canApprove) {
+    			alert('승인 권한이 없습니다.');
+    			return;
+    		}
 
-          $form.trigger('submit');
-        });
-        
-        // 제출 직전에도 안전하게 0 보정
-        submitBtn.addEventListener("click", function () {
-          if (benefitN.checked) {
-            subsidyAmt.value = "0";
-          }
-        });
-      
-      });
+    		// 승인 할때 url 경로
+    		pendingAction = `/approval24/ue1/${complainId}/approve`;
+    		$('#submitModalLabel').text('승인');
+    		$('.modal-body').text('이 신청서를 승인하시겠습니까?');
+    		$('#submitModal').modal('show');
+    	});
+
+    	// 반려 버튼 클릭
+    	$btnReject.on('click', function() {
+
+    		if (!authData.canApprove) {
+    			alert('승인 권한이 없습니다.');
+    			return;
+    		}
+
+    		// 반려 할때 url 경로
+    		pendingAction = `/approval24/ue1/${complainId}/reject`;
+    		$('#submitModalLabel').text('반려');
+    		$('.modal-body').text('이 신청서를 반려하시겠습니까?');
+    		$('#submitModal').modal('show');
+    	});
+
+    	// 취하 버튼 클릭
+    	$btnCancel.on('click', function() {
+    		if (!canCancelOrSetLine) {
+    			alert('민원을 취하할 권한이 없거나 본인이 신청한 민원이 아닙니다.');
+    			return;
+    		}
+    		// 취하 할때 url 경로
+    		pendingAction = `/approval24/ue1/${complainId}/cancel`;
+    		$('#submitModalLabel').text('취하');
+    		$('.modal-body').text('신청서를 취하하시겠습니까?');
+    		$('#submitModal').modal('show');
+    	});
+
+    	// 모달 "제출" -> 실제 submit
+    	$confirmBtn.on('click', function() {
+    		// disabled는 전송 안 되므로 일시 해제
+    		setDisabled($textInputs, false);
+    		setDisabled($choiceInputs, false);
+
+    		$form.trigger('submit');
+    	});
+       
+      }); 
 
 
 function openTrainPostcode() {
@@ -157,10 +179,10 @@ function openTrainPostcode() {
 			const addr = data.userSelectedType === 'R' ? data.roadAddress
 					: data.jibunAddress;
 
-			// 우편번호 
+			// 우편번호
 			document.getElementById('trainPost').value = data.zonecode;
 
-			// 기본 주소 
+			// 기본 주소
 			document.getElementById('trainInstAddr').value = addr;
 
 			// 상세 주소 입력창에 포커스
