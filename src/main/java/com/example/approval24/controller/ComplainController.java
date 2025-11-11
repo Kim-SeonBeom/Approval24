@@ -83,7 +83,6 @@ public class ComplainController {
 	//민원 접수 목록(filter 적용)
 	@GetMapping("/list")
 	public String complainList(Model model, ComplainFilterDTO filter, HttpSession session) {
-//		System.out.println("controller in");
 		Long accountId = (Long) session.getAttribute("user");
 		String title = "접수 민원 목록";
 		
@@ -109,8 +108,6 @@ public class ComplainController {
 		model.addAttribute("totalCount", totalCount); 									//총 개수
 		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));	//토탈페이지개수
 
-//		System.out.println(complainList.toString());
-//		System.out.println("contorller out");
 
 		return "/C/complainListMydept";
 
@@ -148,21 +145,25 @@ public class ComplainController {
 	}
 
 	// 실업자취업훈련비 대부신청
-	@GetMapping("/ue1/{complainId}")
-	public String trainingLoan(@PathVariable long complainId, Model model) {
-
+	@GetMapping("/category/ue1/{complainId}")
+	public String trainingLoan(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
+		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+		
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 
 
 		UE1DTO ue1DTO = complainService.getUE1Info(complainId);
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", ue1DTO);
 
 		return "C/regEditForm/ue1";
 	}
 
-	@PostMapping("/ue1/{complainId}")
+	@PostMapping("/category/ue1/{complainId}")
 	public String submitTrainingLoan(@PathVariable long complainId, UE1DTO ue1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
@@ -177,19 +178,24 @@ public class ComplainController {
 	}
 
 	// 실업인정신청
-	@GetMapping("/ue2/{complainId}")
-	public String report(@PathVariable long complainId, Model model) {
+	@GetMapping("/category/ue2/{complainId}")
+	public String report(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
+		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+		
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 
 		UE2DTO ue2DTO = complainService.getUE2Info(complainId);
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", ue2DTO);
 
 		return "C/regEditForm/ue2";
 	}
 
-	@PostMapping("/ue2/{complainId}")
+	@PostMapping("/category/ue2/{complainId}")
 	public String submitreport(@PathVariable long complainId, UE2DTO ue2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
@@ -203,19 +209,24 @@ public class ComplainController {
 	}
 
 	// 기간제 파견근로자 출산 전후 휴가 급여신청
-	@GetMapping("/mt1/{complainId}")
-	public String tempWorker(@PathVariable long complainId, Model model) {
+	@GetMapping("/category/mt1/{complainId}")
+	public String tempWorker(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
+		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+		
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 
 		MT1DTO mt1DTO = complainService.getMT1Info(complainId);
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", mt1DTO);
 
 		return "C/regEditForm/mt1";
 	}
 
-	@PostMapping("/mt1/{complainId}")
+	@PostMapping("/category/mt1/{complainId}")
 	public String submitTempWorker(@PathVariable long complainId, MT1DTO mt1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
@@ -229,12 +240,17 @@ public class ComplainController {
 	}
 
 	// 고용보험 미적용자 출산 급여 신청
-	@GetMapping("/mt2/{complainId}")
-	public String noInsurance(@PathVariable int complainId, Model model) {
+	@GetMapping("/category/mt2/{complainId}")
+	public String noInsurance(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
+		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+		
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 
 		MT2DTO mt2DTO = complainService.getMT2Info(complainId);
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", mt2DTO);
 
@@ -242,7 +258,7 @@ public class ComplainController {
 
 	}
 
-	@PostMapping("/mt2/{complainId}")
+	@PostMapping("/category/mt2/{complainId}")
 	public String submitNoInsurance(@PathVariable long complainId, MT2DTO mt2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
@@ -256,7 +272,7 @@ public class ComplainController {
 	}
 
 	// 청년 빈 일자리 취업지원 특화 프로그램 수당 지급신청
-	@GetMapping("/em1/{complainId}")
+	@GetMapping("/category/em1/{complainId}")
 	public String emptyWork(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
 
 		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
@@ -289,7 +305,7 @@ public class ComplainController {
 
 	}
 
-	@PostMapping("/em1/{complainId}")
+	@PostMapping("/category/em1/{complainId}")
 	public String submitEmptyWork(@PathVariable long complainId, EM1DTO em1DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
@@ -303,12 +319,17 @@ public class ComplainController {
 	}
 
 	// 청년 도전 사업 지원 신청
-	@GetMapping("/em2/{complainId}")
-	public String youthChallange(@PathVariable int complainId, Model model) {
+	@GetMapping("/category/em2/{complainId}")
+	public String youthChallange(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
+		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+		
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 
 		EM2DTO em2DTO = complainService.getEM2Info(complainId);
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em2DTO);
 
@@ -316,7 +337,7 @@ public class ComplainController {
 
 	}
 
-	@PostMapping("/em2/{complainId}")
+	@PostMapping("/category/em2/{complainId}")
 	public String submitYouthChallange(@PathVariable long complainId, EM2DTO em2DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 
@@ -330,12 +351,17 @@ public class ComplainController {
 	}
 
 	// 졸업생 특화 프로그램 신청
-	@GetMapping("/em3/{complainId}")
-	public String graduateProgram(@PathVariable int complainId, Model model) {
+	@GetMapping("/category/em3/{complainId}")
+	public String graduateProgram(@PathVariable int complainId, Model model, HttpSession session, HttpServletRequest req) {
+		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
+		
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
 
 		EM3DTO em3DTO = complainService.getEM3Info(complainId);
+		
+		model.addAttribute("complainInfo", complainDTO);
+		model.addAttribute("pageAuth", pageAuth);
 		model.addAttribute("userInfo", complainuserDTO);
 		model.addAttribute("detail", em3DTO);
 
@@ -343,7 +369,7 @@ public class ComplainController {
 
 	}
 
-	@PostMapping("/em3/{complainId}")
+	@PostMapping("/category/em3/{complainId}")
 	public String submitGraduateProgram(@PathVariable long complainId, EM3DTO em3DTO, ComplainuserDTO complainuserDTO,
 			RedirectAttributes redirectAttributes) {
 

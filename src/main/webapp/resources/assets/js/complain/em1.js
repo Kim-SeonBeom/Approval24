@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const $btnReject = $('#btnReject');
 	const $btnCancel = $('#btnComplainCancel');
 
-	// 권한 리스트
+	
 
 
 	// 어떤 버튼으로 모달을 띄웠는지 구분용

@@ -20,20 +20,24 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
 
         @SuppressWarnings("unchecked")
         List<MenuVO> authMenus = (List<MenuVO>) session.getAttribute("authMenus");
+        System.out.println("authMenus 확인");
+        System.out.println(authMenus.toString());
         
         if(authMenus == null || authMenus.isEmpty()) return true;
         
    
-        // 현재 URI
+        // 컨텍스트 포함한 채로 그대로 사용 (예: "/approval24/complain/category/mt1/81")
+        String uri = req.getRequestURI();
+        System.out.println("URI 확인 : " + uri);
 
-        final String uri = req.getRequestURI(); 
-        System.out.println("uri확인 : " + uri);
-
-        //현재 페이지 메뉴권한 찾기
+        // menuUrl(null 제외) 중에서 가장 긴 prefix 매칭 선택
         MenuVO pageAuth = authMenus.stream()
-
-            .filter(m -> m.getMenuUrl() != null && !m.getMenuUrl().isEmpty() && uri.startsWith(m.getMenuUrl()))
-            
+            .filter(m -> m != null && m.getMenuUrl() != null && !m.getMenuUrl().isEmpty())
+            .filter(m -> {
+                String base = m.getMenuUrl(); // 예: "/approval24/complain/category/mt1"
+                // 세그먼트 경계 고려: 완전일치 또는 "/..."로 이어질 때만 인정
+                return uri.equals(base) || uri.startsWith(base + "/");
+            })
             .max(Comparator.comparingInt(m -> m.getMenuUrl().length()))
             .orElse(null);
         
