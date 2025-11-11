@@ -66,7 +66,7 @@
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
 												<!-- 나중에 로그인 정보를 가져와 해당 유저의 insert -->
-												<td><input type="text" class="form-control form-control-sm" value="${sessionScope.authUser.userName}"  readonly>
+												<td><input type="text" class="form-control form-control-sm" value="${loginuserName}"  readonly>
 														<input type="hidden" name="updateId" value="${sessionScope.authUser.accountId}"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
 												<td>
