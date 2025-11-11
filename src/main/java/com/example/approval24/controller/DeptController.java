@@ -8,21 +8,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.approval24.domain.DeptDTO;
 import com.example.approval24.service.DeptService;
 @Controller
-@RequestMapping("/admin")
 public class DeptController {
 	@Autowired
 	DeptService deptService;
 	
 	// 부서목록
 	@GetMapping("/dept")
-	public String deptList(Model model) {
-		model.addAttribute("getAllDeptList", deptService.getAllDept());
+	public String deptList(DeptDTO filter, Model model) {
+		
+		// 최초 징비 (빈 리스트)
+		if (filter.isEmptyFilter()) {
+			model.addAttribute("deptList", Collections.emptyList());
+			model.addAttribute("filter", filter);
+			model.addAttribute("totalCount", 0);
+			model.addAttribute("totalPages", 0);
+			return "A/dept";
+		}
+		// 조건 검색
+		int totalCount = deptService.countDepts(filter);
+		List<DeptDTO> deptList = deptService.searchDepts(filter);
+		
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount /filter.getSize()));
 		return "A/dept";
 	}
 	
@@ -41,19 +56,20 @@ public class DeptController {
 	public String deptUpdate(@RequestParam("deptId") long deptId,
 							 @RequestParam("deptName") String deptName,
 							 @RequestParam(value="deptPhone", required=false) String deptPhone,
+							 @RequestParam(value="delYn") String delYn,
 							 @RequestParam(value="instIds", required=false) List<Long> instIds,
 							 RedirectAttributes rttr) {
 		
 		List<Long> safeInstIds = (instIds == null) ? Collections.emptyList() : instIds;
 		
-		long result = deptService.updateDept(deptId, deptName, deptPhone, safeInstIds);
+		long result = deptService.updateDept(deptId, deptName, deptPhone, delYn, safeInstIds);
 		
 		if(result > 0) {
 			rttr.addFlashAttribute("updMessage", "부서 정보가 성공적으로 수정되었습니다.");
 		} else {
 			rttr.addFlashAttribute("updMessage", "부서 정보 수정에 실패했습니다.");
 		}
-		return "redirect:/admin/dept/detail?dept_id=" + deptId;
+		return "redirect:/dept/detail?dept_id=" + deptId;
 	}
 	
 	// 부서 삭제
@@ -66,7 +82,7 @@ public class DeptController {
 		} else {
 			rttr.addFlashAttribute("delMessage", "부서 정보 삭제에 실패했습니다.");
 		}
-		return "redirect:/admin/dept";
+		return "redirect:/dept";
 	}
 	
 	// 부서 등록
@@ -90,7 +106,7 @@ public class DeptController {
 			rttr.addFlashAttribute("insertMessage", "부서 정보 등록에 실패했습니다.");
 		}
 		
-		return "redirect:/admin/dept";
+		return "redirect:/dept";
 		
 	}
 }

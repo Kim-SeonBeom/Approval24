@@ -22,4 +22,10 @@ public interface ManagerAssignmentDAO {
 	
 	// 담당자배정 로직
 	public long ManagerAccountId(long complainCategoryId);
+	
+	// 검색에 해당되는 목록 개수
+	public int countByFilter(ManagerAssignmentDTO filter);
+	
+	// 검색 조건
+	public List<ManagerAssignmentDTO> findByFilter(ManagerAssignmentDTO filter);
 }

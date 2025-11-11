@@ -39,8 +39,8 @@
 
 <!-- 코드 등록 -->
 <insert id="TotalCodeInsert" parameterType="TotalCodeDTO">
-	insert into total_code(group_id, code_id, code_name, code_detail, del_yn)
-	values (#{groupId}, #{codeId}, #{codeName}, #{codeDetail}, #{delYn})
+	insert into total_code(group_id, code_id, code_name, code_detail)
+	values (#{groupId}, #{codeId}, #{codeName}, #{codeDetail})
 </insert>
 
 <!-- 등록시 코드ID 중복 체크 -->
@@ -50,6 +50,74 @@
 	where code_id=#{codeId}
 </select>
 
+
+<!-- Filter 적용한 목록 조회 -->
+<select id="findByFilter" parameterType="TotalCodeDTO" resultType="TotalCodeDTO">
+  SELECT
+    group_id,
+    code_id,
+	code_name,
+	code_detail,
+    del_yn
+  FROM total_code
+  <where>
+    <!-- delYn 정확 일치 -->
+    <if test="delYn != null and delYn != '' and delYn != 'ALL'">
+      AND del_yn = #{delYn}
+    </if>
+
+    <!-- 코드명 LIKE -->
+    <if test="codeName != null and codeName != ''">
+      AND code_name LIKE '%' || #{codeName} || '%'
+    </if>
+    
+    <!-- groupId LIKE -->
+    <if test="groupId != null and groupId != ''">
+    	AND group_id LIKE '%' || #{groupId} || '%'
+    </if>
+    
+    <!-- codeId LIKE -->
+    <if test="codeId != null and codeId != ''">
+    	AND code_id LIKE '%' || #{codeId} || '%'
+    </if>
+    
+    <!-- codeDetail LIKE -->
+    <if test="codeDetail != null and codeDetail != ''">
+    	AND code_Detail LIKE '%' || #{codeDetail} || '%'
+    </if>
+  </where>
+
+  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+</select>
+
+
+<!-- 페이징용 전체 건수 -->
+<select id="countByFilter" parameterType="TotalCodeDTO" resultType="int">
+  SELECT COUNT(1)
+  FROM total_code
+  <where>
+    <if test="delYn != null and delYn != '' and delYn != 'ALL'">
+      AND del_yn = #{delYn}
+    </if>
+    <if test="codeName != null and codeName != ''">
+      AND code_name LIKE '%' || #{codeName} || '%'
+    </if>
+    <if test="groupId != null and groupId != ''">
+      AND group_id LIKE '%' || #{groupId} || '%'
+    </if>
+    <if test="codeId != null and codeId != ''">
+      AND code_id LIKE '%' || #{codeId} || '%'
+    </if>
+    <if test="codeDetail != null and codeDetail != ''">
+    	AND code_Detail LIKE '%' || #{codeDetail} || '%'
+    </if>
+   </where>
+</select>
+
+
+<select id="countByCodeId" resultType="int">
+  SELECT COUNT(*) FROM total_code WHERE code_id = #{codeId}
+</select>
 
 
 

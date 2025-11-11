@@ -20,4 +20,10 @@ public interface InstDAO {
 	
 	// 기관명 리스트
 	public List<InstDTO> getAllInstName();
+	
+	// 검색에 해당되는 목록 개수
+	public int countByFilter(InstDTO filter);
+	
+	// 검색 조건
+	public List<InstDTO> findByFilter(InstDTO filter);
 }

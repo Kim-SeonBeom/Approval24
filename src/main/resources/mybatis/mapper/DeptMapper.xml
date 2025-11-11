@@ -22,7 +22,8 @@
 	update t1000_department
 	set dept_name=#{deptName},
 		update_dt=SYSDATE,
-		dept_phone=#{deptPhone}
+		dept_phone=#{deptPhone},
+		del_yn=#{delYn}
 	where dept_id=#{deptId}
 </update>
 
@@ -49,17 +50,98 @@
 
 <!-- 부서 등록 -->
 <insert id="insertDept" parameterType="DeptDTO">
-  insert into t1000_department (
-    dept_name, create_dt, update_dt, dept_phone
-  ) VALUES (
-    #{deptName}, SYSDATE, SYSDATE, #{deptPhone}
-  )
-  <!-- 같은 세션에서 직후에 CURRVAL 조회 → 방금 생성된 PK 획득 -->
-  <selectKey keyProperty="deptId" resultType="long" order="AFTER">
-    SELECT APPROVE.ISEQ$$_81303.CURRVAL FROM DUAL
-  </selectKey>
+	<selectKey keyProperty="deptId" resultType="long" order="BEFORE">
+    	SELECT SEQ_T1000_INSTITUTION_DEPARTMENT.NEXTVAL FROM DUAL
+    </selectKey>
+    
+    insert into t1000_department (dept_id, dept_name, create_dt, update_dt, dept_phone)
+    VALUES (#{deptId}, #{deptName}, SYSDATE, SYSDATE, #{deptPhone})
 </insert>
 
+<!-- Filter 적용한 목록 조회 -->
+<select id="findByFilter" parameterType="DeptDTO" resultType="DeptDTO">
+  SELECT
+    dept_id,
+    dept_name,
+    to_char(create_dt, 'YYYY-MM-DD') AS create_dt,
+    to_char(update_dt, 'YYYY-MM-DD') AS update_dt,
+    dept_phone,
+    del_yn
+  FROM t1000_department d
+  <where>
+    <!-- delYn 정확 일치 -->
+    <if test="delYn != null and delYn != ''">
+      AND del_yn = #{delYn}
+    </if>
+
+    <!-- 부서명 LIKE -->
+    <if test="deptName != null and deptName != ''">
+      AND dept_name LIKE '%' || #{deptName} || '%'
+    </if>
+
+    <!-- 기간 필터: dateType='createDt' or 'updateDt' 일 때만 적용 -->
+    <if test="dateType != null and dateType != '' 
+              and createDt != null and createDt != '' 
+              and updateDt != null and updateDt != ''">
+      <choose>
+        <when test="dateType == 'createDt'">
+          <![CDATA[
+            AND create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'updateDt'">
+          <![CDATA[
+            AND update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+      </choose>
+    </if>
+  </where>
+
+  <!-- 정렬: dateType 지정 시 해당 일자 내림차순, 아니면 ID 내림차순 -->
+  <choose>
+    <when test="dateType == 'createDt'">ORDER BY create_dt DESC, dept_id DESC</when>
+    <when test="dateType == 'updateDt'">ORDER BY update_dt DESC, dept_id DESC</when>
+    <otherwise>ORDER BY dept_id DESC</otherwise>
+  </choose>
+
+  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+</select>
+
+
+<!-- 페이징용 전체 건수 -->
+<select id="countByFilter" parameterType="DeptDTO" resultType="int">
+  SELECT COUNT(1)
+  FROM t1000_department d
+  <where>
+    <if test="delYn != null and delYn != ''">
+      AND d.del_yn = #{delYn}
+    </if>
+    <if test="deptName != null and deptName != ''">
+      AND d.dept_name LIKE '%' || #{deptName} || '%'
+    </if>
+    <if test="dateType != null and dateType != '' 
+              and createDt != null and createDt != '' 
+              and updateDt != null and updateDt != ''">
+      <choose>
+        <when test="dateType == 'createDt'">
+          <![CDATA[
+            AND d.create_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND d.create_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'updateDt'">
+          <![CDATA[
+            AND d.update_dt >= TO_DATE(#{createDt}, 'YYYY-MM-DD')
+            AND d.update_dt <  TO_DATE(#{updateDt}, 'YYYY-MM-DD') + 1
+          ]]>
+         </when>
+       </choose>
+     </if>
+   </where>
+</select>
 
 
 

@@ -68,10 +68,6 @@
 								<button type="button" class="btn btn-primary btn-sm" id="btnUpdateTop">
 									<i class="fas fa-edit mr-1"></i>수정
 								</button>
-								<button type="button" class="btn btn-danger btn-sm ml-2" id="btnDeleteTop">
-								    <i class="fas fas-trash-alt mr-1"></i>삭제
-								</button>
-								
 							</div>
 
 						</div>
@@ -79,7 +75,7 @@
 
 						<div class="card-body">
 						
-							<form id="deptUpdateForm" action="/approval24/admin/dept/update" method="post">
+							<form id="deptUpdateForm" action="/approval24/dept/update" method="post">
                                 
                                 <input type="hidden" name="deptId" value="${deptInfo.deptId}" id="deptIdValue">
                                 
@@ -96,10 +92,6 @@
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">부서명</th>
 												<td colspan="1"><input type="text" name="deptName" id="deptName" class="form-control form-control-sm" value="${deptInfo.deptName}" required maxlength="200"></td>
-											<tr>
-												<th>부서 연락처</th>
-												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${deptInfo.deptPhone}"
-													name="deptPhone"></td>
 											</tr>
 											<tr>
 											  <th class="text-dark bg-light font-weight-bold">소속 기관명</th>
@@ -127,8 +119,36 @@
 											    </div>
 											  </td>
 											</tr>
-
-
+											<tr>
+												<th>부서 연락처</th>
+												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${deptInfo.deptPhone}"
+													name="deptPhone"></td>
+											</tr>
+											<tr>
+												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${deptInfo.createDt}" required></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${deptInfo.updateDt}" required></td>
+											</tr>
+											<tr>
+											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <td colspan="6">
+											    <div class="d-flex align-items-center" style="gap:16px;">
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
+											        <input type="radio" id="delYnN" name="delYn" value="N"
+											          <c:if test="${deptInfo.delYn == 'N'}">checked="checked"</c:if> />
+											        <span class="ml-1">사용</span>
+											      </label>
+											
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
+											        <input type="radio" id="delYnY" name="delYn" value="Y"
+											          <c:if test="${deptInfo.delYn == 'Y'}">checked="checked"</c:if> />
+											        <span class="ml-1">삭제</span>
+											      </label>
+											    </div>
+											  </td>
+											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -137,7 +157,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/dept" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/dept" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 
 				</div>
@@ -161,70 +181,35 @@
 
 <script>
 $(document).ready(function () {
-	  const $updateForm = $('#deptUpdateForm');
-	  const updateActionUrl = $updateForm.attr('action');
-	  const deleteActionUrl = '/approval24/admin/dept/delete';
 
-	  // 입력군을 역할별로 분리
-	  // - 텍스트계: readonly로 제어 (text/password/number/email/date 등 + textarea)
-	  // - 선택계:  disabled로 제어 (select/checkbox/radio/file)
-	  const $textInputs = $updateForm.find(
-	    'input:not([type=button]):not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]), textarea'
-	  );
-	  const $choiceInputs = $updateForm.find('select, input[type=checkbox], input[type=radio], input[type=file]');
-	  const $addressButton = $('#btnSearchAddress');
+	  // 폼 & URL 
+	  const $updateForm = $('#deptUpdateForm');           // 폼 id 확인
+	  const updateActionUrl = $updateForm.attr('action'); // "/approval24/dept/update"
 
-	  function setEditMode(isEdit) {
-	    // readonly 토글
-	    $textInputs.prop('readonly', !isEdit);
+	  $('#btnUpdateTop').on('click', function (e) {
+	    e.preventDefault();
 
-	    // disabled 토글
-	    $choiceInputs.prop('disabled', !isEdit);
+	    const formEl = $updateForm.get(0);
 
-	    // 주소검색 버튼 등: disabled 토글
-	    if ($addressButton.length) $addressButton.prop('disabled', !isEdit);
-
-	    const $btn = $('#btnUpdateTop');
-	    if (isEdit) {
-	      $btn.html('<i class="fas fa-save mr-1"></i>저장')
-	          .removeClass('btn-primary').addClass('btn-success');
-	    } else {
-	      $btn.html('<i class="fas fa-edit mr-1"></i>수정')
-	          .removeClass('btn-success').addClass('btn-primary');
+	    // 1) 브라우저 기본 유효성 검사
+	    if (formEl && !formEl.checkValidity()) {
+	      formEl.reportValidity();
+	      return;
 	    }
-	  }
 
-	  // 2) 초기 상태
-	  setEditMode(false);
-
-	  // 3) 수정/저장 토글
-	  $('#btnUpdateTop').on('click', function () {
-	    const isReadOnlyNow = $textInputs.first().prop('readonly'); // 현재 읽기전용이면 수정모드로
-	    if (isReadOnlyNow) {
-	      // 수정 모드 진입
-	      setEditMode(true);
-	    } else {
-	      // 저장
-	      if (confirm('수정된 내용을 저장하시겠습니까?')) {
-	        $choiceInputs.prop('disabled', false);
-	        if ($addressButton.length) $addressButton.prop('disabled', false);
-
-	        $updateForm.attr('action', updateActionUrl);
-	        $updateForm.submit();
-	      }
+	    // 2) 사용자 확인
+	    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+	      return;
 	    }
-	  });
 
-	  // 4) 삭제
-	  $('#btnDeleteTop').on('click', function () {
-	    if (confirm('정말로 이 기관을 삭제하시겠습니까? 삭제된 데이터는 복구되지 않습니다.')) {
-	      $textInputs.prop('readonly', true);
-	      $choiceInputs.prop('disabled', true);
-	      if ($addressButton.length) $addressButton.prop('disabled', true);
+	    // 3) 업데이트 URL로 고정
+	    $updateForm.attr('action', updateActionUrl);
 
-	      $updateForm.attr('action', deleteActionUrl);
-	      $updateForm.submit();
-	    }
+	    // 4) disabled 된 필드는 전송되지 않으므로 모두 활성화
+	    $updateForm.find(':input:disabled').prop('disabled', false);
+
+	    // 5) 제출
+	    $updateForm.submit();
 	  });
 	});
 
@@ -247,26 +232,6 @@ function openDaumPostcode() {
         }
     }).open();
 }
-
-
-//2. 폼 제출 로직 (btnUpdateTop)
-//- 버튼이 폼 외부에 있으므로, 클릭 시 명시적으로 폼 제출
-$(document).ready(function() {
-
-// 폼 외부에 있는 등록 버튼 클릭 시 폼 제출
-$('#btnUpdateTop').on('click', function(e) {
-  
-  if (!form.checkValidity()) {
-       // 유효성 검사 실패 시 브라우저가 기본 동작을 수행하고 제출 중단
-       return; 
-  }
-  
-  // 폼 제출
-  $('#').submit();
-});
-});
-
-
 </script>
 
 </body>

@@ -1,5 +1,6 @@
 package com.example.approval24.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,33 +8,51 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.approval24.dao.InstDAO;
 import com.example.approval24.domain.InstDTO;
+import com.example.approval24.service.InstService;
 
 @Controller
-@RequestMapping("/admin")
 public class InstController {
 	@Autowired
 	InstDAO dao;
 	
+	@Autowired
+	InstService instService;
+	
 	// 기관목록
 	@GetMapping("/insts")
-	public String insts(Model model) {
-		List<InstDTO> getAllList = dao.getAllInst(); 
-		model.addAttribute("getAllList",getAllList);
+	public String insts(InstDTO filter, Model model) {
+		
+		// 최초 진입 (빈 리스트)
+		if (filter.isEmptyFilter()) {
+			model.addAttribute("instList", Collections.emptyList());
+			model.addAttribute("filter", filter);
+			model.addAttribute("totalCount", 0);
+			model.addAttribute("totalPages", 0);
+			return "A/insts";
+		}
+		
+		// 조건 검색
+		int totalCount = instService.countInsts(filter);
+		List<InstDTO> instList = instService.searchInsts(filter);
+		
+		model.addAttribute("instList", instList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));
 		return "A/insts";
 	}
+	
 	
 	// 기관등록
 	@GetMapping("/insts/new")
 	public String instsNew() {
 	    return "A/instsNew"; 
 	}
-	
 	
 	@PostMapping("/insts/new")
 	public String insertInst(InstDTO instDTO, RedirectAttributes rttr) {
@@ -46,7 +65,7 @@ public class InstController {
 	        rttr.addFlashAttribute("insertMessage", "기관 정보 등록에 실패했습니다.");
 	    }
 	    
-	    return "redirect:/admin/insts";
+	    return "redirect:/insts";
 	}
 	
 	// 기관상세
@@ -69,7 +88,7 @@ public class InstController {
 	    }
 	    
 	    
-	    return "redirect:/admin/insts/detail?inst_id=" + instDTO.getInstId();
+	    return "redirect:/insts/detail?inst_id=" + instDTO.getInstId();
 	}
 	
 	// 기관삭제
@@ -82,7 +101,7 @@ public class InstController {
 		} else {
 			rttr.addFlashAttribute("delMessage", "기관 정보 삭제에 실패했습니다.");
 		}
-		return "redirect:/admin/insts";
+		return "redirect:/insts";
 	}
 
 }

@@ -191,6 +191,8 @@
 				</div>
 				<!-- /.container-fluid -->
 				<jsp:include page="../../D/approvalLineEditor.jsp" />
+				
+				<jsp:include page="../../D/approvalLine.jsp" />
 
 			</div>
 			<!-- /#content -->

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,15 +21,31 @@ import com.example.approval24.domain.ManagerAssignmentDTO;
 import com.example.approval24.service.ManagerAssignmentService;
 
 @Controller
-@RequestMapping("/admin")
 public class ManagerAssignmentController {
 	@Autowired
 	ManagerAssignmentService MAService;
 	
 	// 담당자배정 목록 (id에 따른 name 가져오기)
 	@GetMapping("/MA")
-	public String MAList(Model model) {
-		model.addAttribute("getAllMAList", MAService.getAllManagerAssignment());
+	public String mangerAssignment(ManagerAssignmentDTO filter, Model model) {
+		
+		// 최초 진입 (빈 리스트)
+		if (filter.isEmptyFilter()) {
+			model.addAttribute("MAList", Collections.emptyList());
+			model.addAttribute("filter", filter);
+			model.addAttribute("totalCount", 0);
+			model.addAttribute("totalPages", 0);
+			return "A/managerAssignment";
+		}
+		
+		// 조건 검색
+		int totalCount = MAService.countMA(filter);
+		List<ManagerAssignmentDTO> MAList = MAService.searchMA(filter);
+		
+		model.addAttribute("MAList", MAList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));
 		return "A/managerAssignment";
 	}
 	
@@ -63,14 +78,15 @@ public class ManagerAssignmentController {
 		}
 		
 		managerDTO.setUpdateId(id);
-		
+		System.out.println(managerDTO);
 		int result = MAService.ManagerAssignmentUpd(managerDTO);
+		
 		if(result > 0) {
 			rttr.addFlashAttribute("updMessage", "담당자배정 정보가 성공적으로 변경되었습니다.");
 		} else {
 			rttr.addFlashAttribute("updMessage", "담당자배정 정보 변경에 실패하였습니다.");
 		}
-		return "redirect:/admin/MA/detail"
+		return "redirect:/MA/detail"
 	     + "?inst_id=" + managerDTO.getInstId()
 	     + "&dept_id=" + managerDTO.getDeptId()
 	     + "&complain_category_id=" + managerDTO.getComplainCategoryId()
@@ -132,7 +148,7 @@ public class ManagerAssignmentController {
 			rttr.addFlashAttribute("insertMessage", "담당자배정 등록에 실패했습니다.");
 		}
 		
-		return "redirect:/admin/MA";
+		return "redirect:/MA";
 	}
 	
 }
