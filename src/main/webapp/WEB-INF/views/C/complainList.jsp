@@ -131,7 +131,7 @@
 										</thead>
 										<tbody>
 											<c:forEach var="item" items="${complainList}" varStatus="status">
-												<tr class="clickable-row" data-href="${pageContext.request.contextPath}/complain/${categoryUrl}/${item.complainId}" style="cursor: pointer;">
+												<tr class="clickable-row" data-href="${pageContext.request.contextPath}/complain/category/${categoryUrl}/${item.complainId}" style="cursor: pointer;">
 													<td>${(filter.page - 1) * filter.size + status.index + 1}</td>
 													<td>${item.complainId}</td>
 													<td>${item.categoryName}</td>
