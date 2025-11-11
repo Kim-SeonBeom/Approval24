@@ -86,7 +86,7 @@
 
 
 						<div class="card-body">
-							<form id="totalCodeInsertForm" action="/approval24/admin/totalcode/new" method="post">
+							<form id="totalCodeInsertForm" action="/approval24/totalcode/new" method="post">
 							
 
 								<div class="table-responsive">
@@ -116,24 +116,6 @@
 												<td colspan="3"><input type="tel" class="form-control form-control-sm"
 													name="codeDetail"></td>
 											</tr>
-											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
-											  <td colspan="6">
-											    <div class="d-flex align-items-center" style="gap:16px;">
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
-											        <input type="radio" id="delYnN" name="delYn" value="N"
-											          <c:if test="N">checked="checked"</c:if> />
-											        <span class="ml-1">사용</span>
-											      </label>
-											
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
-											        <input type="radio" id="delYnY" name="delYn" value="Y"
-											          <c:if test="Y">checked="checked"</c:if> />
-											        <span class="ml-1">삭제</span>
-											      </label>
-											    </div>
-											  </td>
-											</tr>
 											
 										</tbody>
 									</table>
@@ -145,7 +127,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/totalcode" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/totalcode" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 
 				</div>

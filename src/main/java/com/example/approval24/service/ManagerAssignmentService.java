@@ -1,4 +1,4 @@
-package com.example.approval24.service;
+	package com.example.approval24.service;
 
 import java.util.List;
 
@@ -38,9 +38,15 @@ public class ManagerAssignmentService {
 	AccountDAO accountdao;
 	
 	// 담당자배정 목록 (id에 따른 name 가져오기)
-	public List<ManagerAssignmentDTO> getAllManagerAssignment() {
-		return MAdao.getAllManagerAssignment();
+	//페이징처리를 위한 카테고리별 담당자배정개수(Filter 적용)
+	public int countMA(ManagerAssignmentDTO filter) {
+		 return MAdao.countByFilter(filter);
 	}
+	
+	//카테고리별 담당자배정목록(Filter 적용)
+    public List<ManagerAssignmentDTO> searchMA(ManagerAssignmentDTO filter) {
+        return MAdao.findByFilter(filter); 
+    }
 	
 	// 담당자배정 상세 (기관, 부서, 민원서식, 계정 id 받기)
 	public ManagerAssignmentDTO ManagerAssignmentInfo(ManagerAssignmentDTO managerDTO) {
@@ -62,22 +68,22 @@ public class ManagerAssignmentService {
     	}
     }
     
-    // 전체 기관 리스트
+    // 전체 기관 리스트(등록)
     public List<InstDTO> getAllInst() {
     	return instdao.getAllInst();
     }
     
-    // 특정 기관의 매핑 부서
+    // 특정 기관의 매핑 부서(등록)
     public List<DeptInstDTO> findDeptByInst(Long instId) {
     	return deptinstdao.findDeptByInst(instId);
     }
     
-    // 특정 부서의 매핑 민원서식
+    // 특정 부서의 매핑 민원서식(등록)
     public List<CategoryDTO> findCategoryByDept(Long deptId) {
     	return categorydao.findCategoryByDept(deptId);
     }
     
-    // 특정 부서에 따른 매핑 계정
+    // 특정 부서에 따른 매핑 계정(등록)
     public List<AccountDTO> findAccountByDept(Long deptId) {
     	return accountdao.findAccountByDept(deptId);
     }

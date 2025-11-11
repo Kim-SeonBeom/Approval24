@@ -78,7 +78,7 @@
 
 
 						<div class="card-body">
-							<form id="categoryInsertForm" action="/approval24/admin/category/new" method="post">
+							<form id="categoryInsertForm" action="/approval24/category/new" method="post">
 							
 
 								<div class="table-responsive">
@@ -106,24 +106,23 @@
 												<td colspan="3"><input type="tel" class="form-control form-control-sm"
 													name="categoryUrl"></td>
 											</tr>
-											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
-											  <td colspan="6">
-											    <div class="d-flex align-items-center" style="gap:16px;">
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
-											        <input type="radio" id="delYnN" name="delYn" value="N"
-											          <c:if test="N">checked="checked"</c:if> />
-											        <span class="ml-1">사용</span>
-											      </label>
-											
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
-											        <input type="radio" id="delYnY" name="delYn" value="Y"
-											          <c:if test="Y">checked="checked"</c:if> />
-											        <span class="ml-1">삭제</span>
-											      </label>
-											    </div>
-											  </td>
-											</tr>
+											<!-- 소속 부서 체크박스 -->
+						                      <tr>
+						                        <th class="text-dark bg-light font-weight-bold">소속 부서</th>
+						                        <td colspan="3">
+						                          <div style="display:flex; flex-wrap:wrap; gap:8px 16px; line-height:1.8;">
+						                            <c:forEach var="dept" items="${getAllDept}">
+						                              <label class="d-inline-flex align-items-center mb-1">
+						                                <input type="checkbox"
+						                                       name="deptIds"
+						                                       value="${dept.deptId}"
+						                                       class="mr-1" />
+						                                ${dept.deptName}
+						                              </label>
+						                            </c:forEach>
+						                          </div>
+						                        </td>
+						                      </tr>
 										</tbody>
 									</table>
 								</div>
@@ -134,7 +133,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/category" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/category" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 				</div>
 				<!-- /.container-fluid -->
@@ -166,25 +165,52 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 <script>
-$(document).ready(function() {
-    $('#btnSaveTop').on('click', function(e) {
-        e.preventDefault();
-        
-        const form = document.getElementById('categoryInsertForm');
-        
-        // 브라우저 기본 유효성 검사
-        if (!form.checkValidity()) {
-            form.reportValidity(); 
-            return; 
-        }
 
-        // 확인창 추가
-        if (confirm('작성된 내용을 등록하시겠습니까?')) {
-            $('#categoryInsertForm').submit();
+$(document).ready(function() {
+
+  // 저장 버튼 클릭
+  $('#btnSaveTop').on('click', function(e) {
+    e.preventDefault();
+
+    const form = document.getElementById('categoryInsertForm');
+    const code = $('#categoryCd').val().trim();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    if (!code) {
+      alert('유형코드를 입력하세요.');
+      $('#categoryCd').focus();
+      return;
+    }
+
+    if (!confirm('작성된 내용을 등록하시겠습니까?')) {
+      return;
+    }
+
+    // 공통코드 존재 여부 AJAX 확인
+    $.ajax({
+      url: '/approval24/totalcode/check', // Controller에서 codeId 존재 여부 리턴하는 매핑
+      type: 'GET',
+      data: { codeId: code },
+      success: function(exists) {
+        if (exists) {
+          // 존재하면 등록 수행
+          $('#categoryInsertForm')[0].submit();
         } else {
-            return false; // 취소 시 아무 동작도 안 함
+          // 없으면 경고창
+          alert('입력한 유형코드는 공통코드에 존재하지 않습니다.');
+          $('#categoryCd').focus();
         }
+      },
+      error: function() {
+        alert('코드 확인 중 오류가 발생했습니다.');
+      }
     });
+  });
+
 });
 </script>
 

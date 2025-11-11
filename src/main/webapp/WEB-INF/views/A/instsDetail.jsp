@@ -68,10 +68,6 @@
 								<button type="button" class="btn btn-primary btn-sm" id="btnUpdateTop">
 									<i class="fas fa-edit mr-1"></i>수정
 								</button>
-								<button type="button" class="btn btn-danger btn-sm ml-2" id="btnDeleteTop">
-								    <i class="fas fas-trash-alt mr-1"></i>삭제
-								</button>
-								
 							</div>
 
 						</div>
@@ -79,7 +75,7 @@
 
 						<div class="card-body">
 						
-							<form id="instUpdateForm" action="/approval24/admin/insts/update" method="post">
+							<form id="instUpdateForm" action="/approval24/insts/update" method="post">
                                 
                                 <input type="hidden" name="instId" value="${inst.instId}" id="instIdValue">
                                 
@@ -128,6 +124,30 @@
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${inst.instPhone}"
 													name="instPhone"></td>
 											</tr>
+											<tr>
+												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${inst.createDt}" required></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${inst.updateDt}" required></td>
+											</tr>
+											<tr>
+											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <td colspan="6">
+											    <div class="d-flex align-items-center" style="gap:16px;">
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
+											        <input type="radio" id="delYnN" name="delYn" value="N"
+											          <c:if test="${inst.delYn == 'N'}">checked="checked"</c:if> />
+											        <span class="ml-1">사용</span>
+											      </label>
+											
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
+											        <input type="radio" id="delYnY" name="delYn" value="Y"
+											          <c:if test="${inst.delYn == 'Y'}">checked="checked"</c:if> />
+											        <span class="ml-1">삭제</span>
+											      </label>
+											    </div>
+											  </td>
+											</tr>
 										</tbody>
 									</table>
 								</div>
@@ -136,7 +156,7 @@
 					</div>
 				<!-- 하단 버튼 -->
 				<div class="d-flex justify-content-between mt-4">
-					<a href="${pageContext.request.contextPath}/admin/insts" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+					<a href="${pageContext.request.contextPath}/insts" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 				</div>
 			</div>
 		</div>
@@ -158,65 +178,39 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-$(document).ready(function() {
-    
-    // 폼 객체 및 URL 정의
-    const $updateForm = $('#instUpdateForm');
-    const updateActionUrl = $updateForm.attr('action'); // 초기 action: "/approval24/admin/insts/update"
-    const deleteActionUrl = '/approval24/admin/insts/delete'; // 삭제 URL
-    
-    // 폼 내의 모든 입력 필드 (type=button, type=hidden 제외)
-    const $updatableInputs = $updateForm.find(':input').not(':button, :hidden');
-    const $addressButton = $('#btnSearchAddress'); // 주소 검색 버튼
-    
-    // 1. 초기 상태 설정
-    
-    // 폼 입력 필드를 기본적으로 readonly 설정
-    $updatableInputs.prop('readonly', true);
- 	// 주소 검색 버튼 비활성화
-    $addressButton.prop('disabled', true);
-    
-    
-    // 2. 수정/저장 버튼 로직 (btnUpdateTop)
-    $('#btnUpdateTop').on('click', function () {
-        const $btn = $(this);
-        const isReadonly = $updatableInputs.first().prop('readonly');
+$(document).ready(function () {
 
-        if (isReadonly) {
-            $updatableInputs.prop('readonly', false);
-            $updatableInputs.prop('disabled', false); // disabled 상태 해제 (삭제 로직이 걸었을 경우 대비)
-            $addressButton.prop('disabled', false); 
+  // 폼 & URL 
+  const $updateForm = $('#instUpdateForm');           // 폼 id 확인
+  const updateActionUrl = $updateForm.attr('action'); // "/approval24/insts/update"
 
-            $btn.html('<i class="fas fa-save mr-1"></i>저장');
-            $btn.removeClass('btn-primary').addClass('btn-success');
-            
-        } else {
+  $('#btnUpdateTop').on('click', function (e) {
+    e.preventDefault();
 
-            if (confirm('수정된 내용을 저장하시겠습니까?')) {
-                // **폼 action을 항상 UPDATE URL로 재설정 후 제출합니다. (삭제 로직이 action을 변경했을 수 있기 때문)
-                $updateForm.attr('action', updateActionUrl);
-                $updateForm.submit();
-            }
-        }
-    });
+    const formEl = $updateForm.get(0);
 
-    // 3. 삭제 버튼 로직 (btnDeleteTop)
-    $('#btnDeleteTop').on('click', function() {
-        
-        if (confirm('정말로 이 기관을 삭제하시겠습니까? 삭제된 데이터는 복구되지 않습니다.')) {
-            
-            // **instId를 제외한 모든 입력 필드를 비활성화 (삭제에는 instId만 필요하며, 불필요한 필드 전송 방지)
-            $updatableInputs.prop('disabled', true);
-            
-            // 폼의 action을 삭제 URL로 변경
-            $updateForm.attr('action', deleteActionUrl);
-            
-            // 폼 제출 (POST /approval24/admin/insts/delete 호출)
-            $updateForm.submit();
-        }
-    });
+    // 1) 브라우저 기본 유효성 검사
+    if (formEl && !formEl.checkValidity()) {
+      formEl.reportValidity();
+      return;
+    }
 
+    // 2) 사용자 확인
+    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+      return;
+    }
+
+    // 3) 업데이트 URL로 고정
+    $updateForm.attr('action', updateActionUrl);
+
+    // 4) disabled 된 필드는 전송되지 않으므로 모두 활성화
+    $updateForm.find(':input:disabled').prop('disabled', false);
+
+    // 5) 제출
+    $updateForm.submit();
+  });
 });
+
 
 // 1. Daum Postcode API 함수 (openDaumPostcode)
 function openDaumPostcode() {
@@ -236,8 +230,6 @@ function openDaumPostcode() {
         }
     }).open();
 }
-
 </script>
-
 </body>
 </html>
