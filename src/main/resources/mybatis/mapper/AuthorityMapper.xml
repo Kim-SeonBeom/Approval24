@@ -106,4 +106,92 @@
         WHERE AUTHORITY_ID = #{authorityId}
     </update>
 
+
+<!-- 목록 조회 (필터 + 페이징) -->
+<select id="findByFilter" parameterType="AuthorityDTO" resultType="AuthorityDTO">
+  SELECT
+    authority_id,
+    authority_name,
+    create_dt,
+    update_dt,
+    create_id,
+    update_id,
+    del_yn,
+    is_system
+  FROM t3000_authority
+  <where>
+    <!-- delYn 정확 일치 -->
+    <if test="delYn != null and delYn != ''">
+      AND del_yn = #{delYn}
+    </if>
+
+    <!-- 권한명 LIKE -->
+    <if test="authorityName != null and authorityName != ''">
+      AND authority_name LIKE '%' || #{authorityName} || '%'
+    </if>
+
+    <!-- 시스템 여부 정확 일치(Y/N 등) -->
+    <if test="isSystem != null and isSystem != ''">
+      AND is_system = #{isSystem}
+    </if>
+
+    <!-- 기간 필터: dateType = 'createDt' or 'updateDt' -->
+    <if test="dateType != null and dateType != '' 
+              and createDt != null 
+              and updateDt != null">
+      <choose>
+        <when test="dateType == 'createDt'">
+          AND create_dt &gt;= #{createDt,jdbcType=TIMESTAMP}
+          AND create_dt &lt;  (#{updateDt,jdbcType=TIMESTAMP} + 1)
+        </when>
+        <when test="dateType == 'updateDt'">
+          AND update_dt &gt;= #{createDt,jdbcType=TIMESTAMP}
+          AND update_dt &lt;  (#{updateDt,jdbcType=TIMESTAMP} + 1)
+        </when>
+      </choose>
+    </if>
+  </where>
+
+  <!-- 정렬: dateType 지정 시 해당 일자 내림차순, 아니면 ID 내림차순 -->
+  <choose>
+    <when test="dateType == 'createDt'">ORDER BY create_dt DESC, authority_id DESC</when>
+    <when test="dateType == 'updateDt'">ORDER BY update_dt DESC, authority_id DESC</when>
+    <otherwise>ORDER BY authority_id DESC</otherwise>
+  </choose>
+
+  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+</select>
+
+
+<!-- 페이징용 전체 건수 -->
+<select id="countByFilter" parameterType="AuthorityDTO" resultType="int">
+  SELECT COUNT(1)
+  FROM t3000_authority
+  <where>
+    <if test="delYn != null and delYn != ''">
+      AND del_yn = #{delYn}
+    </if>
+    <if test="authorityName != null and authorityName != ''">
+      AND authority_name LIKE '%' || #{authorityName} || '%'
+    </if>
+    <if test="isSystem != null and isSystem != ''">
+      AND is_system = #{isSystem}
+    </if>
+    <if test="dateType != null and dateType != '' 
+              and createDt != null 
+              and updateDt != null">
+      <choose>
+        <when test="dateType == 'createDt'">
+          AND create_dt &gt;= #{createDt,jdbcType=TIMESTAMP}
+          AND create_dt &lt;  (#{updateDt,jdbcType=TIMESTAMP} + 1)
+        </when>
+        <when test="dateType == 'updateDt'">
+          AND update_dt &gt;= #{createDt,jdbcType=TIMESTAMP}
+          AND update_dt &lt;  (#{updateDt,jdbcType=TIMESTAMP} + 1)
+        </when>
+      </choose>
+    </if>
+  </where>
+</select>
+  
 </mapper>

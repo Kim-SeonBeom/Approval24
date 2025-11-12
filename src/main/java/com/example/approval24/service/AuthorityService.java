@@ -166,4 +166,16 @@ public class AuthorityService {
         return deptDAO.getAllDept();
     }
     
+    
+    
+	//페이징처리를 위한 카테고리별 Authority개수(Filter 적용)
+	public int countAuthority(AuthorityDTO filter) {
+		 return authorityDAO.countByFilter(filter);
+	}
+	
+	//카테고리별 권한목록(Filter 적용)
+    public List<AuthorityDTO> searchAuthority(AuthorityDTO filter) {
+        return authorityDAO.findByFilter(filter); 
+    }
+    
 }

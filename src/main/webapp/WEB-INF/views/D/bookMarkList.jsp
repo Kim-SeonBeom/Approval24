@@ -90,13 +90,6 @@ a.bookmark-link:hover {
 			</div>
 			<!-- End of Main Content -->
 
-			<footer class="sticky-footer bg-white">
-				<div class="container my-auto">
-					<div class="copyright text-center my-auto">
-						<span>행정 &copy; 결재24 2025</span>
-					</div>
-				</div>
-			</footer>
 		</div>
 		<!-- End of Content Wrapper -->
 	</div>
