@@ -89,9 +89,6 @@
     </if>
 
     <!-- ID 검색 (정확 일치) -->
-    <if test="instId != null and instId != 0">
-      AND ma.inst_id = #{instId}
-    </if>
     <if test="deptId != null and deptId != 0">
       AND ma.dept_id = #{deptId}
     </if>
@@ -166,9 +163,6 @@
       AND ma.del_yn = #{delYn}
     </if>
     <!-- ID 검색 (정확 일치) -->
-    <if test="instId != null and instId != 0">
-      AND ma.inst_id = #{instId}
-    </if>
     <if test="deptId != null and deptId != 0">
       AND ma.dept_id = #{deptId}
     </if>
