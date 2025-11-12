@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,10 +89,24 @@ public class BookmarkController {
         return accountService.getAccountsByFilter(filter);
     }    
     
+    
     @PostMapping("/create")
-    public String create(@ModelAttribute BookmarkDTO bookmark) {
-        // 북마크 메인 및 상세 결재자 등록
-        bookmarkService.insertBookmark(bookmark);
+    public String create(@ModelAttribute BookmarkDTO bookmark, HttpSession session, RedirectAttributes redirectAttrs) {
+        Long userId = (Long) session.getAttribute("user");
+        if (userId == null) {
+            redirectAttrs.addFlashAttribute("errorMsg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
+        bookmark.setAccountId(userId);
+
+        try {
+            bookmarkService.insertBookmark(bookmark);
+        } catch (IllegalArgumentException e) {
+            redirectAttrs.addFlashAttribute("errorMsg", e.getMessage());
+            return "redirect:/bookmark/create"; 
+        }
+
         return "redirect:/bookmark/list";
     }
 

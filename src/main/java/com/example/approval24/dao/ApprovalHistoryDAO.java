@@ -10,10 +10,8 @@ import com.example.approval24.domain.ApprovalHistoryDTO;
 
 @Mapper
 public interface ApprovalHistoryDAO {
-	List<ApprovalHistoryDTO> selectMyApprovalHistoryList(
-		    @Param("accountId") Long accountId,
-		    @Param("filterMap") Map<String, Object> filterMap
-		);
+	List<ApprovalHistoryDTO> selectMyApprovalHistoryList(Map<String, Object> filterMap);
+	
 	int updateApprovalHistoryStatus(ApprovalHistoryDTO approvalHistoryDTO);
 	
 	int insertApprovalHistory(ApprovalHistoryDTO approvalHistoryDTO);
@@ -25,5 +23,5 @@ public interface ApprovalHistoryDAO {
 	
 	List<ApprovalHistoryDTO> getHistoryIdByComplainId(Long complainId);
 	
-	int countMyApprovalHistoryList(Map<String, Object> params);
+	int countMyApprovalHistoryList(Map<String, Object> filterMap);
 }

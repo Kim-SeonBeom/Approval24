@@ -30,19 +30,50 @@ public class BookmarkService {
     }
 
     // 북마크 등록 
-    @Transactional 
+    @Transactional
     public int insertBookmark(BookmarkDTO bookmark) {
+        if (bookmark == null) {
+            throw new IllegalArgumentException("북마크 정보가 null입니다.");
+        }
+
+        List<Approver> approvers = bookmark.getApprovers();
+        Long accountId = bookmark.getAccountId();
+
+        if (approvers == null || approvers.size() <= 2) {
+            throw new IllegalArgumentException("결재선은 최소 3명 이상 지정해야 합니다.");
+        }
         
+        // 북마크 메인 정보 삽입
         int mainResult = bookmarkDAO.insertBookmark(bookmark);
-        if (mainResult > 0 && bookmark.getApprovers() != null && !bookmark.getApprovers().isEmpty()) {
+        
+        if (mainResult > 0) {
             Long generatedBookmarkId = bookmark.getBookmarkId();
             Long seqNo = (long) 1;
             
-            for (Approver approver : bookmark.getApprovers()) {
+            for (int i = 0; i < approvers.size(); i++) {
+                Approver approver = approvers.get(i);
+                
+                if (approver == null) {
+                	throw new IllegalArgumentException("결재선 리스트에 null 객체가 포함되어 있습니다. (순서: " + (i+1) + ")");
+                }
+                
                 approver.setBookmarkId(generatedBookmarkId);
-                approver.setSeqNo(seqNo);
+                approver.setSeqNo(seqNo++);
+                
+                // 결재선 타입 지정
+                if (i == 0) {
+                    approver.setApproverTypeCd("F002");    // 첫 번째 (기안자/시작)
+                    if(accountId.equals(approver.getApproverId())) {
+                    	throw new IllegalArgumentException("첫번째는 본인 계정을 등록해야 합니다");
+                    }
+                } else if (i == (approvers.size() -1)) {
+                    approver.setApproverTypeCd("F004");    // 마지막 (최종 결재자)
+                } else {
+                    approver.setApproverTypeCd("F003");    // 중간 (중간 결재자)
+                }
             }
             
+            // 결재선 정보 일괄 삽입
             bookmarkDAO.insertApprovers(bookmark.getApprovers()); 
         }
 

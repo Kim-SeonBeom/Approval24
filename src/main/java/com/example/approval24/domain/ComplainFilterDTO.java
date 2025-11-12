@@ -16,7 +16,10 @@ public class ComplainFilterDTO {
     private String manager;
 
     private int page = 1;          
-    private int size = 10;         
+    private int size = 10;   
+    
+    //추가사항
+    private long instId;
 
     public int getOffset() {
         return (page - 1) * size;
