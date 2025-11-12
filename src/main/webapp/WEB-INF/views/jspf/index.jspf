@@ -113,23 +113,23 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" width="100%" cellspacing="0">
-                                    	<thead>
+                                    <table class="table table-bordered table-hover table-sm text-center align-middle">
+                                    	<thead class="thead-light">
 											<tr>
-											<th>제목</th>
-											<th>등록일</th>
-											<th>조회수</th>
+											<th class="text-center">제목</th>
+											<th class="text-center">등록일</th>
+											<th class="text-center">조회수</th>
 										<thead>
                                         <tbody>
                                             <c:forEach var="notice" items="${noticeList}">
                                                 <tr class="clickable-row" 
                                                     data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" 
                                                     style="cursor: pointer;">
-                                                    <td>${notice.title}</td>
-                                                    <td>
+                                                    <td class="text-left">${notice.title}</td>
+                                                    <td class="text-center">
                                                         <fmt:formatDate value="${notice.createDt}" pattern="yyyy'년 'MM'월 'dd'일'" />
                                                     </td>
-                                                    <td>${notice.viewCount}</td>
+                                                    <td class="text-center">${notice.viewCount}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

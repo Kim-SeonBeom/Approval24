@@ -33,7 +33,7 @@ public class AccountService {
 
     //로그인 기능
     public AccountDTO login(String loginId, String password) {
-        AccountDTO account = accountDAO.findByLogin(loginId);
+        AccountDTO account = accountDAO.checkByLogin(loginId);
         if (account == null) return null;
         boolean check = BCryptUtil.matches(password, account.getPassword());
         if (!check)
@@ -47,12 +47,29 @@ public class AccountService {
         	}else{
         		account.setAccountStatusCd("B005");
         		accountDAO.updateAccount(account);
+        		account.setAccountStatusCd("lockaccount");
         	}
         	
         }
         else {
+        	if(account.getAccountStatusCd().equals("B002")) {
     		account.setPwdFailCnt(0);
     		accountDAO.updateAccount(account);
+        	}
+        	else if(account.getAccountStatusCd().equals("B001")) {
+        		account.setAccountStatusCd("waitaccount");
+        	}
+        	else if(account.getAccountStatusCd().equals("B003")) {
+        		account.setAccountStatusCd("backaccount");
+        	}
+        	else if(account.getAccountStatusCd().equals("B004")) {
+        		account.setAccountStatusCd("noneaccount");
+        	}
+        	else if(account.getAccountStatusCd().equals("B005")) {
+        		account.setAccountStatusCd("lockaccount");
+        	}else {
+        		return account;
+        	}
     	}
         	account.setPassword(null);
         	return account;
