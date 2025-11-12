@@ -1,6 +1,7 @@
 package com.example.approval24.service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +64,7 @@ public class SignUpService {
 			accountDTO.setDeptId(deptId );
 		
 			accountDAO.insert(accountDTO);
-			
-			AccountDTO account = accountDAO.findByLogin((String)m.get("loginId"));
+			AccountDTO account = accountDAO.checkByLogin((String)m.get("loginId"));
 			newAccountId = account.getAccountId();
 		}
 		
