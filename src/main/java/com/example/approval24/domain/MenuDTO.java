@@ -20,4 +20,10 @@ public class MenuDTO {
     private String delYn;          // DEL_YN
     
     private String parentMenuName; //부모 이름
+    
+    private String startRow;  // 시작페에지(페이징처리)
+    private String endRow;   // 끝페이지(페이징처리)
+
+    
+
 }

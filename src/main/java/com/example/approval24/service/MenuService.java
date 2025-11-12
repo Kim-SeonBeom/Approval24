@@ -1,6 +1,7 @@
 package com.example.approval24.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,16 @@ public class MenuService {
     // 메뉴 삭제 (논리 삭제)
     public void deleteMenu(Long menuId) {
         menuDAO.deleteMenu(menuId);
+    }
+    
+    // 메뉴 조회 페이징용
+    public int findCountAll() {
+    	return menuDAO.findCountAll();
+    }
+    
+    // 메뉴 필터
+    public List<MenuDTO>findfilterMenu(Map<String, Object> filterMap){
+    	return menuDAO.findfilterMenu(filterMap);
+    	
     }
 }

@@ -4,6 +4,7 @@
 <html>
 <head>
     <%@ include file="/WEB-INF/views/common/header.jsp"%>
+    <title>메뉴목록</title>
 </head>
 <body id="page-top">
 
@@ -39,31 +40,30 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
+                            <table class="table table-bordered table-hover table-sm text-center align-middle">
+                                <thead class="thead-light">
                                     <tr>
-                                        <th>메뉴ID</th>
-                                        <th>메뉴명</th>
-                                        <th>URL</th>
-                                        <th>부모메뉴ID</th>
-                                        <th>SEQ</th>
-                                        <th>관리</th>
+                                    	<th class="text-center">번호</th>
+                                        <th class="text-center">메뉴ID</th>
+                                        <th class="text-center">메뉴명</th>
+                                        <th class="text-center">URL</th>
+                                        <th class="text-center">상위관리 번호</th>
+                                        <th class="text-center">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="menu" items="${menus}">
+                                    <c:forEach var="menu" items="${menus}" varStatus="status">
                                         <tr>
-                                            <td>${menu.menuId}</td>
-                                            <td>
+                                       		<td>${pageInfo.startRow + status.index}</td>
+                                            <td width="100px">${menu.menuId}</td>
+                                            <td class="text-left" width="500px">
                                                 <a href="${pageContext.request.contextPath}/menu/detail/${menu.menuId}">
                                                     ${menu.menuName}
                                                 </a>
                                             </td>
-                                            <td>${menu.menuUrl}</td>
+                                            <td class="text-left">${menu.menuUrl}</td>
                                             <td>${menu.parentMenuId}</td>
-                                            <td>${menu.seq}</td>
                                             <td>
-                                                <a class="btn btn-sm btn-warning" href="${pageContext.request.contextPath}/menu/edit/${menu.menuId}">수정</a>
                                                 <form action="${pageContext.request.contextPath}/menu/delete/${menu.menuId}" method="post" style="display:inline">
                                                     <button type="submit" class="btn btn-sm btn-danger">삭제</button>
                                                 </form>
@@ -73,6 +73,40 @@
                                 </tbody>
                             </table>
                         </div>
+                        <input type="hidden" name="page" value="${page}" /> <input type="hidden" name="size" value="${size}" />
+                        
+                        <!-- 📄 페이지네이션 -->
+                        <div class="d-flex justify-content-center">
+                            <ul class="pagination">
+                                <c:url var="baseUrl" value="/menu/list" />
+                                
+                                <!-- 이전 블록 -->
+                                <c:if test="${pageInfo.startPage > 1}">
+                                    <li class="page-item">
+                                        <a href="${baseUrl}?page=${pageInfo.startPage - 1}&pageSize=${pageInfo.pageSize}" class="page-link" aria-label="Previous Block">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                                <!-- 페이지 번호 -->
+                                <c:forEach begin="${pageInfo.startPage}" end="${pageInfo.endPage}" var="pageNum">
+                                    <li class="page-item <c:if test='${pageInfo.page eq pageNum}'>active</c:if>">
+                                        <a href="${baseUrl}?page=${pageNum}&pageSize=${pageInfo.pageSize}" class="page-link">${pageNum}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <!-- 다음 블록 -->
+                                <c:if test="${pageInfo.endPage < pageInfo.totalPages}">
+                                    <li class="page-item">
+                                        <a href="${baseUrl}?page=${pageInfo.endPage + 1}&pageSize=${pageInfo.pageSize}" class="page-link" aria-label="Next Block">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -85,6 +119,14 @@
         <!-- Footer -->
         <%@ include file="/WEB-INF/views/common/footer.jsp"%>
         <!-- End of Footer -->
+        
+        <footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>행정 &copy; 결재24 2025</span>
+					</div>
+				</div>
+			</footer>
 
     </div>
     <!-- End of Content Wrapper -->
@@ -103,6 +145,12 @@
     $("#menuCreate").on('click', function() {
         window.location.href='${pageContext.request.contextPath}/menu/create';
     });
+    document.addEventListener('click', function(e) {
+		const tr = e.target.closest('.clickable-row');
+		if (tr && tr.dataset.href) {
+			window.location.href = tr.dataset.href;
+		}
+	});
 </script>
 
 </body>
