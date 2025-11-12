@@ -78,7 +78,7 @@
 
 
 						<div class="card-body">
-							<form id="instInsertForm" action="/approval24/admin/insts/new" method="post">
+							<form id="instInsertForm" action="/approval24/insts/new" method="post">
 							
 
 								<div class="table-responsive">
@@ -139,7 +139,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/insts" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/insts" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 
 				</div>

@@ -45,7 +45,7 @@
 						<h1 class="h3 mb-0 text-gray-800">실업인정 신청</h1>
 					</div>
 
-					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/ue2/${detail.complainId}">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/complain/category/ue2/${detail.complainId}">
 
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 

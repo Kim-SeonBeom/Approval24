@@ -23,7 +23,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <img src="${pageContext.request.contextPath}/resources/assets/img/work24.png" width="40">
             </div>
-            <div class="sidebar-brand-text mx-3">결재24</div>
+            <div class="sidebar-brand-text ml-2 h-1"  style="font-size: 1.2rem;" >민원처리 시스템</div>
         </a>
     </div>
 
@@ -45,7 +45,7 @@
             String dataToggle = childMenus.isEmpty() ? "" : "collapse";
     %>
         <li class="nav-item">
-            <a class="nav-link" href="<%= parent.getMenuUrl() != null ? parent.getMenuUrl() : "#" %>" 
+            <a class="nav-link collapsed" href="<%= parent.getMenuUrl() != null ? parent.getMenuUrl() : "#" %>" 
                data-toggle="<%= dataToggle %>" 
                data-target="<%= dataTarget %>" 
                aria-expanded="false" aria-controls="collapse<%= parent.getMenuId() %>">
@@ -93,3 +93,5 @@
         });
     });
 </script>
+<!-- sidebar dropdown 고정 -->
+<script src="${pageContext.request.contextPath}/resources/assets/js/sidebar.js"></script>

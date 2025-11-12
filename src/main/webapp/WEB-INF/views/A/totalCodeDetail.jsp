@@ -76,10 +76,7 @@
 
 						<div class="card-body">
 						
-							<form id="totalCodeUpdateForm" action="/approval24/admin/totalcode/update" method="post">
-                                
-                                <input type="hidden" name="codeId" value="${codeInfo.codeId}" id="codeIdValue">
-                                
+							<form id="totalCodeUpdateForm" action="/approval24/totalcode/update" method="post">
                                 
 								<div class="table-responsive">
 									<table class="table table-bordered table-sm kv-table">
@@ -92,9 +89,9 @@
 										<tbody>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">코드그룹ID</th>
-												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" value="${codeInfo.groupId}" required maxlength="200"></td>
+												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" readonly value="${codeInfo.groupId}" required maxlength="200"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">코드ID</th>
-												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" value="${codeInfo.codeId}" required></td>
+												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" readonly value="${codeInfo.codeId}" required></td>
 											</tr>
 
 											<tr>
@@ -133,7 +130,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/totalcode" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/totalcode" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 				</div>
 				</div>
@@ -155,52 +152,38 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-$(function() {
-	  // 폼 객체 및 URL 정의
-	  const $updateForm = $('#totalCodeUpdateForm');
-	  const updateActionUrl = $updateForm.attr('action');         // 초기 action
+$(document).ready(function () {
 
-	  // 항상 잠가둘 필드(selector): groupId만 비활성화
-	  const EXCLUDED = '#groupId, #codeId';
+	  // 폼 & URL 
+	  const $updateForm = $('#totalCodeUpdateForm');           // 폼 id 확인
+	  const updateActionUrl = $updateForm.attr('action'); // "/approval24/totalcode/update"
 
-	  // 텍스트형 입력은 readonly로 제어
-	  const $updatableInputs = $updateForm
-	    .find('input[type="text"], input[type="tel"], textarea')
-	    .not(':button, :hidden')
-	    .not(EXCLUDED);
+	  $('#btnUpdateTop').on('click', function (e) {
+	    e.preventDefault();
 
-	  // 선택형 입력은 disabled로 제어
-	  const $choiceInputs = $updateForm
-	    .find('input[type="radio"], input[type="checkbox"], select')
-	    .not(EXCLUDED);
+	    const formEl = $updateForm.get(0);
 
-	  // 1) 초기 잠금
-	  $updatableInputs.prop('readonly', true);
-	  $choiceInputs.prop('disabled', true);
-
-	  // 항상 잠금: groupId
-	  $updateForm.find(EXCLUDED).prop('readonly', true).prop('disabled', true);
-
-	  // 2) 수정/저장 버튼
-	  $('#btnUpdateTop').on('click', function () {
-	    const $btn = $(this);
-	    const isReadonly = $updatableInputs.first().prop('readonly');
-
-	    if (isReadonly) {
-	      // 편집 가능 상태로 전환 (EXCLUDED는 제외되어 계속 잠김)
-	      $updatableInputs.prop('readonly', false);
-	      $updatableInputs.prop('disabled', false);
-	      $choiceInputs.prop('disabled', false);
-
-	      $btn.html('<i class="fas fa-save mr-1"></i>저장')
-	          .removeClass('btn-primary').addClass('btn-success');
-	    } else {
-	      if (confirm('수정된 내용을 저장하시겠습니까?')) {
-	        $updateForm.attr('action', updateActionUrl).submit();
-	      }
+	    // 1) 브라우저 기본 유효성 검사
+	    if (formEl && !formEl.checkValidity()) {
+	      formEl.reportValidity();
+	      return;
 	    }
+
+	    // 2) 사용자 확인
+	    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+	      return;
+	    }
+
+	    // 3) 업데이트 URL로 고정
+	    $updateForm.attr('action', updateActionUrl);
+
+	    // 4) disabled 된 필드는 전송되지 않으므로 모두 활성화
+	    $updateForm.find(':input:disabled').prop('disabled', false);
+
+	    // 5) 제출
+	    $updateForm.submit();
 	  });
-});
+	});
 </script>
 
 </body>

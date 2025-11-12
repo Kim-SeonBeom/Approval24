@@ -44,7 +44,7 @@
 						<h1 class="h3 mb-0 text-gray-800">청년도전지원사업 신청서</h1>
 					</div>
 
-					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/em2/${detail.complainId}">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/complain/category/em2/${detail.complainId}">
 
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 

@@ -112,7 +112,7 @@
     			return;
     		}
     		// 저장 할때 url 경로
-    		pendingAction = `/approval24/ue1/${complainId}`; // 기본 저장 경로
+    		pendingAction = `/approval24/complain/category/ue1/${complainId}`; // 기본 저장 경로
     		$('#submitModalLabel').text('저장');
     		$('.modal-body').text('입력하신 내용으로 신청서를 저장할까요?');
     		$('#submitModal').modal('show');

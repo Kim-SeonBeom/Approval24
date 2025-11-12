@@ -28,11 +28,6 @@ public class testcontroller {
 		return "account";
 	}
 
-	@GetMapping("/mypage")
-	public String mypage() {
-		return "mypage";
-	}
-
 	@GetMapping("/application")
 	public String application() {
 		return "application";
@@ -90,12 +85,6 @@ public class testcontroller {
 	@GetMapping("/division/detail")
 	public String divisionDetail() {
 		return "divisionDetail";
-	}
-	
-	@GetMapping("/totalcode")
-	public String totalcode()	{
-		
-		return "totalcode";
 	}
 
 }

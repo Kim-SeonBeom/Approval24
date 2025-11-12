@@ -13,10 +13,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.example.approval24.domain.AccountDTO;
+import com.example.approval24.domain.AuthorityDTO;
 import com.example.approval24.domain.NoticeDTO;
+import com.example.approval24.domain.TotalCodeDTO;
+import com.example.approval24.domain.UserDTO;
 import com.example.approval24.service.AccountService;
 import com.example.approval24.service.ApprovalHistoryService;
+import com.example.approval24.service.AuthorityService;
 import com.example.approval24.service.NoticeService;
+import com.example.approval24.service.TotalCodeService;
+import com.example.approval24.service.UserService;
 
 
 
@@ -32,6 +39,15 @@ public class MainPageController {
 	
 	@Autowired
 	private ApprovalHistoryService accountHistoryService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private TotalCodeService totalCodeService;
+	
+	@Autowired
+	private AuthorityService authorityService;
 	
 	
 	@GetMapping("/")
@@ -98,6 +114,29 @@ public class MainPageController {
 		// -------------공통 끝----------------
 		return "index";
 	}
-
+	
+	@GetMapping("/mypage")
+	public String mypage(HttpSession session, Model model) {
+		long accountId = (long) session.getAttribute("user");
+		// userNo
+		Map<String, Object> filter = new HashMap<>();
+		filter.put("accountId", accountId);
+		// account info
+		List<AccountDTO> account = accountService.getAccountsByFilter(filter);
+		AccountDTO accountDto = account.get(0);
+		// userinfo
+		UserDTO userinfo = userService.getUserDetailByUserNo(accountDto.getUserNo());
+		model.addAttribute("userinfo", userinfo);
+		String CodeId = userinfo.getUserPositionCd();
+		// 직책 이름
+		TotalCodeDTO totalinfo = totalCodeService.TotalCodeInfo(CodeId);
+		model.addAttribute("totalinfo", totalinfo);
+		
+		
+		// 계정 권한정보
+		List<AuthorityDTO> authAccountDto =authorityService.findByAccountId(accountId);
+		model.addAttribute("authList",authAccountDto);
+		return "mypage";
+	}
 
 }

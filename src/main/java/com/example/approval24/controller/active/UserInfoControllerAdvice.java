@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
 
+import com.example.approval24.dao.InstDAO;
 import com.example.approval24.domain.AccountDTO;
+import com.example.approval24.domain.InstDTO;
 import com.example.approval24.service.AccountService;
 
 @ControllerAdvice
@@ -19,6 +21,9 @@ public class UserInfoControllerAdvice {
 
     @Autowired
     private AccountService accountService;
+    
+    @Autowired
+    private InstDAO instDAO;
 
     @ModelAttribute
     public void addLoginUserInfo(HttpSession session, Model model) {
@@ -38,11 +43,14 @@ public class UserInfoControllerAdvice {
         if (dtoList == null || dtoList.isEmpty()) {
             return;
         }
+ 
 
         AccountDTO userInfo = dtoList.get(0);
         if(userId != userInfo.getAccountId()) {
         	return;
         }
+        InstDTO instDTO = instDAO.getInstById(userInfo.getInstId());
+        model.addAttribute("logininstName", instDTO.getInstName());
         model.addAttribute("loginuserName", userInfo.getUserName());
         model.addAttribute("logindeptName", userInfo.getDeptName());
     }

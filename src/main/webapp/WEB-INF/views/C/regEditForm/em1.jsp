@@ -45,7 +45,7 @@
 						<h1 class="h3 mb-0 text-gray-800">「청년 빈 일자리 취업지원 특화 프로그램」 수당 지급 신청</h1>
 					</div>
 
-					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/em1/${detail.complainId}">
+					<form id="submitForm" method="post" action="${pageContext.request.contextPath}/complain/category/em1/${detail.complainId}">
 
 						<%@ include file="/WEB-INF/views/C/regEditForm/complainUserInfo.jsp"%>
 

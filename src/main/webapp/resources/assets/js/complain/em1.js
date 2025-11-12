@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     // ===== 기존 코드 그대로 유지 =====
     const $form = $('#submitForm'); 
     const $confirmBtn = $('#btnSubmitConfirm');
@@ -149,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 페이지 로드 시 결재 내역 불러오기
     loadApprovalLine();
+
 });
 
 function openBizPostcode() {

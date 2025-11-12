@@ -121,7 +121,7 @@
 		complain_id = #{complainID}
 	</update>
 
-
+	<!--Filter 적용한 목록 개수 -->
 	<select id="countByFilter" parameterType="ComplainFilterDTO"
 		resultType="int">
 

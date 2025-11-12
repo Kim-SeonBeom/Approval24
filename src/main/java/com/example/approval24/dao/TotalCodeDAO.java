@@ -24,4 +24,12 @@ public interface TotalCodeDAO {
 	
 	// 등록시 코드ID 중복 체크
 	public int CountByCodeId(String codeId);
+	
+	// 검색에 해당되는 목록 개수
+	public int countByFilter(TotalCodeDTO filter);
+	
+	// 검색 조건
+	public List<TotalCodeDTO> findByFilter(TotalCodeDTO filter);
+	
+	public int countByCodeId(String codeId);
 }

@@ -78,8 +78,8 @@
 
 
 						<div class="card-body">
-							<form id="managerAssignmentForm" action="/approval24/admin/MA/new" method="post">
-							
+							<form id="managerAssignmentForm" action="/approval24/MA/new" method="post">
+							<input type="hidden" id="instId" name="instId" value="${instName.instId}">
 
 								<div class="table-responsive">
 									<table class="table table-bordered table-sm kv-table">
@@ -93,18 +93,9 @@
 											<tr>
 											  <th class="text-dark bg-light font-weight-bold">기관명</th>
 											  <td colspan="3">
-											    <select name="instId" id="instId" class="form-control form-control-sm">
-											      <option value="">-- 기관 선택 --</option>
-											      <c:forEach var="inst" items="${getAllInst}">
-											        <option value="${inst.instId}"
-											          <c:if test="${MAInfo.instId == inst.instId}">selected="selected"</c:if>>
-											          ${inst.instName}
-											        </option>
-											      </c:forEach>
-											    </select>
+											  	<input type="text" name="instName" id="instName" class="form-control form-control-sm" value="${instName.instName}" readonly>
 											  </td>
 											</tr>
-											
 											<tr>
 											  <th class="text-dark bg-light font-weight-bold">부서명</th>
 											  <td colspan="3">
@@ -151,35 +142,11 @@
 
 												<th scope="col" class="text-dark bg-light font-weight-bold">사용자이름</th>
 												<td colspan="1">
-												  <select name="userName" id="userName" class="form-control form-control-sm">
-												    <option value="">-- 사용자이름 --</option>
-												    <c:forEach var="account" items="${accountByDept}">
-												      <option value="${account.accountId}"
-												        <c:if test="${MAInfo.accountId == account.accountId}">selected="selected"</c:if>>
-												        ${account.userName}
-												      </option>
-												    </c:forEach>
-												  </select>
+												  <input type="text" name="userName" id="userName"
+												         class="form-control form-control-sm"
+												         placeholder="사용자 이름 입력"
+												         value="<c:out value='${MAInfo.userName}'/>">
 												</td>
-											</tr>
-
-											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
-											  <td colspan="6">
-											    <div class="d-flex align-items-center" style="gap:16px;">
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
-											        <input type="radio" id="delYnN" name="delYn" value="N"
-											          <c:if test="${MAInfo.delYn == 'N'}">checked="checked"</c:if> />
-											        <span class="ml-1">사용</span>
-											      </label>
-											
-											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
-											        <input type="radio" id="delYnY" name="delYn" value="Y"
-											          <c:if test="${MAInfo.delYn == 'Y'}">checked="checked"</c:if> />
-											        <span class="ml-1">삭제</span>
-											      </label>
-											    </div>
-											  </td>
 											</tr>
 										</tbody>
 
@@ -192,7 +159,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/admin/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
 					</div>
 				</div>
 				<!-- /.container-fluid -->
@@ -226,117 +193,94 @@
 
 
 <script>
-$(document).ready(function() {
-    $('#btnSaveTop').on('click', function(e) {
-        e.preventDefault();
-        
-        const form = document.getElementById('managerAssignmentForm');
-        
-        // 브라우저 기본 유효성 검사
-        if (!form.checkValidity()) {
-            form.reportValidity(); 
-            return; 
-        }
+$(function () {
+	  const ctx = '${pageContext.request.contextPath}';
+	  const $dept = $('#deptId');
+	  const $cat  = $('#complainCategoryId');
+	  const $acc  = $('#accountId');
 
-        // 확인창 추가
-        if (confirm('작성된 내용을 등록하시겠습니까?')) {
-            $('#managerAssignmentForm').submit();
-        } else {
-            return false; // 취소 시 아무 동작도 안 함
-        }
-    });
-});
+	  function loadDepts(instId, preselectDeptId) {
+	    $dept.empty().append('<option value="">-- 부서 선택 --</option>');
+	    $cat.empty().append('<option value="">-- 민원서식 선택 --</option>');
+	    $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
+	    $('#userName').val('');
 
+	    if (!instId) return;
 
-$(function() {
-  const ctx = '${pageContext.request.contextPath}';
+	    $.getJSON(ctx + '/MA/depts', { inst_id: instId })
+	      .done(function (list) {
+	        (list || []).forEach(function (d) {
+	          const sel = (preselectDeptId && String(preselectDeptId) === String(d.deptId)) ? ' selected' : '';
+	          $dept.append('<option value="'+ d.deptId + '"' + sel + '>' + d.deptName + '</option>');
+	        });
 
-  // 기관 변경 → 부서 로드
-  $('#instId').on('change', function () {
-    const instId = $(this).val();
+	        // 수정모드에서 부서가 이미 정해져 있으면, 하위(서식/계정)도 이어서 채움
+	        if (preselectDeptId) {
+	          $dept.trigger('change');
+	        }
+	      })
+	      .fail(function (xhr, s, e) {
+	        console.error('부서 로드 실패:', s, e, xhr.responseText);
+	        alert('부서 목록을 불러오지 못했습니다.');
+	      });
+	  }
 
-    const $dept = $('#deptId').empty()
-                 .append('<option value="">-- 부서 선택 --</option>');
+	  // 초기 1회: hidden instId로 부서 로드
+	  const initInstId  = $('#instId').val();                  // hidden에서 읽음
+	  const initDeptId  = '${MAInfo != null ? MAInfo.deptId : ""}';
+	  const initCatId   = '${MAInfo != null ? MAInfo.complainCategoryId : ""}';
+	  const initAccId   = '${MAInfo != null ? MAInfo.accountId : ""}';
+	  const initUserName= '${MAInfo != null ? MAInfo.userName : ""}';
 
-    // 기관 미선택 시 클리어하고 종료
-    if (!instId) return;
+	  if (initInstId) {
+	    loadDepts(initInstId, initDeptId);
+	  }
 
-    $.getJSON(ctx + '/admin/MA/depts', { inst_id: instId })
-      .done(function (list) {
-        if (!list || !list.length) {
-          // 예: $('#deptMsg').text('부서 없음');
-          return;
-        }
-        list.forEach(function (d) {
-          $dept.append($('<option>', { value: d.deptId, text: d.deptName }));
-        });
+	  // 기존 부서 변경 → 서식/계정 로드
+	  $('#deptId').on('change', function () {
+	    const deptId = $(this).val();
 
-        // 기관 변경 시, 하위 셀렉트 초기화
-        $('#complainCategoryId').empty().append('<option value="">-- 민원서식 선택 --</option>');
-        $('#accountId').empty().append('<option value="">-- 로그인계정 선택 --</option>');
-        $('#userName').empty().append('<option value="">-- 사용자이름 --</option>');
-      })
-      .fail(function (xhr, status, err) {
-        console.error('부서 로드 실패:', status, err, xhr.responseText);
-        alert('부서 목록을 불러오지 못했습니다. (네트워크/권한/URL 확인)');
-      });
-  });
+	    // 서식
+	    $.getJSON(ctx + '/MA/categories', { dept_id: deptId })
+	      .done(function (list) {
+	        $cat.empty().append('<option value="">-- 민원서식 선택 --</option>');
+	        (list || []).forEach(function (c) {
+	          const sel = (initCatId && String(initCatId) === String(c.complainCategoryId)) ? ' selected' : '';
+	          $cat.append('<option value="'+ c.complainCategoryId + '"' + sel + '>' + c.categoryName + '</option>');
+	        });
+	      });
 
-  // 부서 변경 → 서식/계정 로드
-  $('#deptId').on('change', function () {
-    const deptId = $(this).val();
+	    // 계정
+	    $.getJSON(ctx + '/MA/accounts', { dept_id: deptId })
+	      .done(function (list) {
+	        $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
+	        (list || []).forEach(function (a) {
+	          const sel = (initAccId && String(initAccId) === String(a.accountId)) ? ' selected' : '';
+	          $acc.append('<option value="'+ a.accountId + '"' + sel + ' data-username="'+ (a.userName || '') +'">' + a.loginId + '</option>');
+	        });
 
-    // 서식
-    $.getJSON(ctx + '/admin/MA/categories', { dept_id: deptId })
-      .done(function (list) {
-        const $cat = $('#complainCategoryId').empty()
-                      .append('<option value="">-- 민원서식 선택 --</option>');
-        (list || []).forEach(function (c) {
-          $cat.append($('<option>', { value: c.complainCategoryId, text: c.categoryName }));
-        });
-      })
-      .fail(function (xhr, s, e) {
-        console.error('category fail', s, e, xhr.responseText);
-      });
+	        // 수정모드 유저명 세팅
+	        if (initUserName) {
+	          $('#userName').val(initUserName);
+	        } else {
+	          $('#userName').val($('#accountId option:selected').data('username') || '');
+	        }
+	      });
+	  });
 
-    // 계정(로그인ID + 사용자이름 둘 다) 로드
-    $.getJSON(ctx + '/admin/MA/accounts', { dept_id: deptId })
-      .done(function (list) {
-        const $acc  = $('#accountId').empty()
-                       .append('<option value="">-- 로그인계정 선택 --</option>');
-        const $user = $('#userName').empty()
-                       .append('<option value="">-- 사용자이름 --</option>');
+	  // 계정 선택 시 사용자명
+	  $('#accountId').on('change', function () {
+	    $('#userName').val($('#accountId option:selected').data('username') || '');
+	  });
 
-        (list || []).forEach(function (a) {
-          // 로그인ID 셀렉트
-          $acc.append($('<option>', {
-            value: a.accountId,
-            text: a.loginId
-          }));
-          // 사용자이름 셀렉트
-          $user.append($('<option>', {
-            value: a.accountId,
-            text: a.userName
-          }));
-        });
-
-        // 부서 바뀌면 두 셀렉트 동기 초기화
-        $('#accountId').val('');
-        $('#userName').val('');
-      })
-      .fail(function (xhr, s, e) {
-        console.error('account fail', s, e, xhr.responseText);
-      });
-  });
-
-  // 두 셀렉트 동기화 (같은 accountId 사용)
-  $('#accountId').on('change', function() {
-    $('#userName').val($(this).val());
-  });
-  $('#userName').on('change', function() {
-    $('#accountId').val($(this).val());
-  });
-});
+	  // 저장 버튼
+	  $('#btnSaveTop').on('click', function (e) {
+	    e.preventDefault();
+	    const form = document.getElementById('managerAssignmentForm');
+	    if (!form.checkValidity()) { form.reportValidity(); return; }
+	    if (confirm('작성된 내용을 등록하시겠습니까?')) $('#managerAssignmentForm').submit();
+	  });
+	});
 
 </script>
 

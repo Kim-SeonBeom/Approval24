@@ -1,112 +1,262 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<title>${bookmark.bookmarkName} 상세 정보</title>
+<meta charset="UTF-8">
+<title>${bookmark.bookmarkName}상세|결재24</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+.readonly-box {
+	background: #f8f9fc;
+}
 
-    <%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
+.list-equal {
+	max-height: 360px;
+	overflow: auto;
+}
+</style>
+</head>
+<body id="page-top">
 
-<div class="container-fluid mt-4">
-  <div class="row">
-    <!-- 왼쪽 부서/계정 트리 카드 -->
-    <div class="col-md-5">
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">부서 선택</h6>
-        </div>
-        <div class="card-body" id="deptTreeContainer">
-          <ul id="deptTree" class="list-group">
-            <!-- AJAX로 부서 목록 불러오기 -->
-          </ul>
-        </div>
-      </div>
-    </div>
+	<div id="wrapper">
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
 
-    <!-- 오른쪽 결재자 카드 -->
-    <div class="col-md-7">
-      <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-          <h6 class="m-0 font-weight-bold text-primary">결재자 목록</h6>
-          <button id="saveApprovers" class="btn btn-primary btn-sm">수정 반영</button>
-        </div>
-        <div class="card-body" id="approverCards">
-          <c:forEach var="appr" items="${bookmark.approvers}" varStatus="status">
-            <div class="card mb-2 approver-card" data-index="${status.index}">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>${appr.approverName} (${appr.deptName}) - ${appr.approverTypeCdName}</div>
-                <button type="button" class="btn btn-danger btn-sm remove-approver">X</button>
-              </div>
-              <input type="hidden" name="approvers[${status.index}].approverId" value="${appr.approverId}">
-              <input type="hidden" name="approvers[${status.index}].approverTypeCd" value="${appr.approverTypeCd}">
-            </div>
-          </c:forEach>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-  
-</div>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
-<script>
-$(document).ready(function(){
+				<div class="container-fluid">
+					<h1 class="h3 mb-3 text-gray-800">북마크 상세/수정</h1>
 
-  // 1. 부서 트리 AJAX 로드
-  $.getJSON('/approval24/api/common/depts', function(depts){
-    depts.forEach(function(dept){
-      let li = $('<li class="list-group-item dept-item"></li>').text(dept.deptName).data('dept', dept);
-      li.append('<ul class="list-group mt-1 accounts-list" style="display:none;"></ul>'); // 계정 서브리스트
-      $('#deptTree').append(li);
+					<form id="bookmarkUpdateForm" action="/approval24/bookmark/update" method="post">
+
+						<!-- 북마크 기본 정보 -->
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold text-primary">기본 정보</h6>
+								<div>
+									<button type="submit" class="btn btn-primary btn-sm">수정</button>
+									<button type="submit" name="delYn" value="Y">삭제</button>
+									<a href="/approval24/bookmark/list" class="btn btn-secondary btn-sm">목록</a>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="d-flex align-items-center mb-3">
+									<h5 class="mb-0 mr-4" style="width: 120px;">북마크 이름</h5>
+									<input type="text" class="form-control form-control-sm w-50" name="bookmarkName" value="${bookmark.bookmarkName}" required>
+								</div>
+								<input type="hidden" id="bookmarkId" name="bookmarkId" value="${bookmark.bookmarkId}"> <input type="hidden" id="accountId" name="accountId" value="${session.user}">
+							</div>
+						</div>
+
+						<!-- 좌우 2열: 계정 목록 / 선택된 결재 경로 -->
+						<div class="row">
+							<!-- 왼쪽: 부서 선택 + 계정 목록 -->
+							<div class="col-md-6 mb-3">
+								<div class="card h-100">
+									<div class="card-header py-2 d-flex align-items-center justify-content-between">
+										<strong>부서 선택</strong>
+										<select id="deptSelect" class="form-select text-dark w-auto" style="min-width: 260px; text-align: center; text-align-last: center;">
+											<option value="">-- 부서를 선택하세요 --</option>
+											<c:forEach var="dept" items="${depts}">
+												<option value="${dept.deptId}">${dept.deptName}</option>
+											</c:forEach>
+										</select>
+
+									</div>
+
+									<div class="card-body p-2">
+
+										<div id="accountList" class="list-equal d-flex justify-content-center align-items-center text-center">
+											<div class="text-muted small">부서를 선택하면 계정 목록이 표시됩니다.</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<!-- 오른쪽: 선택된 결재 경로 -->
+							<div class="col-md-6 mb-3">
+								<div class="card h-100">
+									<div class="card-header py-2 d-flex align-items-center justify-content-between">
+										<strong>선택된 결재 경로</strong>
+									</div>
+									<div class="card-body p-2 list-equal">
+										<div id="selectedApprovers">
+											<ul class="list-group" id="approverList">
+												<!-- 기존 결재자 선반영 -->
+												<c:forEach var="appr" items="${bookmark.approvers}" varStatus="st">
+													<li id="appr_${st.index+1}" class="list-group-item d-flex justify-content-between align-items-center" data-account-id="${appr.approverId}"><span class="text-dark fw-bold"> 순서 <span class="order">${st.index+1}</span> : ${appr.approverName} <small class="text-muted">(${appr.deptName})</small> <c:if test="${not empty appr.approverTypeCdName}">
+																<small class="text-muted">- ${appr.approverTypeCdName}</small>
+															</c:if>
+													</span>
+														<div class="d-flex align-items-center">
+															<input type="hidden" class="seq" name="approvers[${st.index}].seqNo" value="${st.index+1}"> <input type="hidden" class="hid-approverId" name="approvers[${st.index}].approverId" value="${appr.approverId}"> <input type="hidden" class="hid-type" name="approvers[${st.index}].approverTypeCd" value="${appr.approverTypeCd}"> <input type="hidden" class="hid-del" name="approvers[${st.index}].delYn" value="N">
+															<button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>
+														</div></li>
+												</c:forEach>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /#content -->
+
+			<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
+			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+		</div>
+		<!-- /#content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+	<script>
+  // ================= 공통 유틸 =================
+  function ensureApproverList() {
+    if ($('#approverList').length === 0) {
+      $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
+    }
+  }
+
+  function getSelectedIds() {
+    const set = new Set();
+    $('#approverList li').each(function () {
+      const id = String($(this).data('account-id'));
+      if (id) set.add(id);
+    });
+    return set;
+  }
+
+  function reindexApprovers() {
+    $('#approverList li').each(function (i) {
+      const order = i + 1;
+      $(this).attr('id', 'appr_' + order);
+      $(this).find('.order').text(order);
+      // hidden name 인덱스 재설정
+      $(this).find('input.seq')
+        .val(order)
+        .attr('name', `approvers[${i}].seqNo`);
+      $(this).find('input.hid-approverId')
+        .attr('name', `approvers[${i}].approverId`);
+      $(this).find('input.hid-type')
+        .attr('name', `approvers[${i}].approverTypeCd`);
+      $(this).find('input.hid-del')
+        .attr('name', `approvers[${i}].delYn`);
+    });
+  }
+
+  // ================= 왼쪽: 부서 선택 → 계정 목록 로드 =================
+  $('#deptSelect').on('change', function () {
+    const deptId = $(this).val();
+    if (!deptId) {
+      $('#accountList').empty();
+      return;
+    }
+    $.ajax({
+      url: '/approval24/bookmark/accounts',
+      type: 'POST',
+      data: { deptId: deptId },
+      dataType: 'json',
+      success: function (accounts) {
+        let html = '<ul class="list-group">';
+        const selectedIds = getSelectedIds();
+        if (accounts && accounts.length) {
+          $.each(accounts, function (i, acc) {
+            const disabled = selectedIds.has(String(acc.accountId));
+            const label = disabled ? '추가됨' : '추가';
+            const disAttr = disabled ? 'disabled' : '';
+            html += `
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="text-dark">
+                  ${acc.userName} <small class="text-muted">(${acc.deptName})</small>
+                </span>
+                <button type="button"
+                        class="btn btn-sm btn-outline-primary js-add-approver"
+                        data-id="${acc.accountId}"
+                        data-name="${acc.userName}"
+                        data-dept="${acc.deptName}"
+                        ${disAttr}>${label}</button>
+              </li>`;
+          });
+        } else {
+          html += '<li class="list-group-item text-muted">해당 부서에 활성 계정이 없습니다.</li>';
+        }
+        html += '</ul>';
+        $('#accountList').html(html);
+      },
+      error: function () {
+        alert('계정 목록을 불러오는 데 실패했습니다.');
+      }
     });
   });
 
-  // 2. 부서 클릭 → 계정 불러오기
-  $('#deptTree').on('click', '.dept-item', function(e){
-    e.stopPropagation(); // 부모 이벤트 방지
-    let $deptLi = $(this);
-    let dept = $deptLi.data('dept');
-    let $accountList = $deptLi.find('.accounts-list');
-    if ($accountList.children().length === 0){
-      $.getJSON('/approval24/api/common/accounts', {deptId: dept.deptId}, function(accounts){
-        accounts.forEach(function(acc){
-          let li = $('<li class="list-group-item list-group-item-action account-item"></li>').text(acc.userName);
-          li.data('acc', {id: acc.accountId, name: acc.userName, deptName: dept.deptName});
-          $accountList.append(li);
-        });
-      });
-    }
-    $accountList.toggle();
-  });
+  // ================= 결재자 추가/제거 =================
+  function addApprover(accountId, approverName, deptName) {
+    ensureApproverList();
+    if (getSelectedIds().has(String(accountId))) return;
 
-  // 3. 계정 클릭 → 오른쪽 카드로 추가
-  $('#deptTree').on('click', '.account-item', function(e){
-    e.stopPropagation();
-    let acc = $(this).data('acc');
-    let idx = $('#approverCards .approver-card').length;
-    let card = $(`
-      <div class="card mb-2 approver-card" data-index="${idx}">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>${acc.name} (${acc.deptName}) - 신규</div>
-          <button type="button" class="btn btn-danger btn-sm remove-approver">X</button>
+    const currentIdx = $('#approverList li').length; // 0-based
+    const order = currentIdx + 1;
+
+    const liHtml = `
+      <li id="appr_${order}" class="list-group-item d-flex justify-content-between align-items-center"
+          data-account-id="${accountId}">
+        <span class="text-dark fw-bold">
+          순서 <span class="order">${order}</span> : ${approverName}
+          <small class="text-muted">(${deptName || ''})</small>
+        </span>
+        <div class="d-flex align-items-center">
+          <input type="hidden" class="seq" name="approvers[${currentIdx}].seqNo" value="${order}">
+          <input type="hidden" class="hid-approverId" name="approvers[${currentIdx}].approverId" value="${accountId}">
+          <input type="hidden" class="hid-type" name="approvers[${currentIdx}].approverTypeCd" value="AP01">
+          <input type="hidden" class="hid-del"  name="approvers[${currentIdx}].delYn" value="N">
+          <button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>
         </div>
-        <input type="hidden" name="approvers[${idx}].approverId" value="${acc.id}">
-        <input type="hidden" name="approvers[${idx}].approverTypeCd" value="">
-      </div>
-    `);
-    $('#approverCards').append(card);
+      </li>`;
+    $('#approverList').append(liHtml);
+  }
+
+  // 왼쪽 계정 리스트: 추가
+  $('#accountList').on('click', '.js-add-approver', function () {
+    const $btn = $(this);
+    addApprover(String($btn.data('id')), $btn.data('name'), $btn.data('dept'));
+    $btn.prop('disabled', true).text('추가됨');
   });
 
-  // 4. 제거 버튼
-  $('#approverCards').on('click', '.remove-approver', function(){
-    $(this).closest('.approver-card').remove();
+  // 오른쪽: 제거
+  $('#selectedApprovers').on('click', '.js-remove-approver', function () {
+    const $li = $(this).closest('li');
+    const accountId = String($li.data('account-id'));
+    $li.remove();
+
+    // 동일 계정의 왼쪽 "추가" 버튼 다시 활성화
+    $('#accountList .js-add-approver[data-id="' + accountId + '"]')
+      .prop('disabled', false)
+      .text('추가');
+
+    reindexApprovers();
+
+    if ($('#approverList li').length === 0) {
+      $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
+    }
   });
 
-  // 5. 수정 반영 버튼
-  $('#saveApprovers').click(function(){
-    $('#approverUpdateForm').submit();
+  // 폼 제출 시 마지막 인덱스 정리(안전장치)
+  $('#bookmarkUpdateForm').on('submit', function () {
+    reindexApprovers();
   });
-});
 </script>
+
+</body>
+</html>

@@ -148,7 +148,7 @@
  	INSERT INTO t1000_account
  	(user_no, inst_id, dept_id, login_Id, password, account_status_cd)
  	VALUES
- 	(#{userNo},#{instId}, #{deptId}, #{loginId}, #{password}, 'B002')
+ 	(#{userNo},#{instId}, #{deptId}, #{loginId}, #{password}, 'B001')
 </insert>
 <!-- 로그인 -->
    <select id="findByLogin" parameterType="map" resultType="com.example.approval24.domain.AccountDTO">
@@ -208,4 +208,6 @@
 	</set>
 	WHERE account_id = #{accountId}
 </update>
+
+
 </mapper>
