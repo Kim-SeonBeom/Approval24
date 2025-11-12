@@ -136,6 +136,10 @@ public class AccountService {
 			accountDAO.updateAccount(account);
 		}
 	}
+	
+	public List<AccountDTO> accountsByInstDept(Long instId, Long deptId) {
+	    return accountDAO.findAccountsByInstAndDept(instId, deptId);
+	}
 
 }
 
