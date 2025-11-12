@@ -32,7 +32,7 @@
 				<div class="container-fluid">
 					<h1 class="h3 mb-3 text-gray-800">북마크 상세/수정</h1>
 
-					<form id="bookmarkUpdateForm" action="/approval24/bookmark/update" method="post">
+					<form id="bookmarkUpdateForm" action="/approval24/bookmark/approver/replace" method="post">
 
 						<!-- 북마크 기본 정보 -->
 						<div class="card shadow mb-4">
@@ -49,7 +49,7 @@
 									<h5 class="mb-0 mr-4" style="width: 120px;">북마크 이름</h5>
 									<input type="text" class="form-control form-control-sm w-50" name="bookmarkName" value="${bookmark.bookmarkName}" required>
 								</div>
-								<input type="hidden" id="bookmarkId" name="bookmarkId" value="${bookmark.bookmarkId}"> <input type="hidden" id="accountId" name="accountId" value="${session.user}">
+								<input type="hidden" id="bookmarkId" name="bookmarkId" value="${bookmark.bookmarkId}"> 
 							</div>
 						</div>
 
@@ -121,141 +121,198 @@
 
 	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 
-	<script>
-  // ================= 공통 유틸 =================
-  function ensureApproverList() {
-    if ($('#approverList').length === 0) {
-      $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
-    }
-  }
+<script>
+	// ================= 공통 유틸 =================
+	function ensureApproverList() {
+	    if ($('#approverList').length === 0) {
+	        $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
+	    }
+	}
 
-  function getSelectedIds() {
-    const set = new Set();
-    $('#approverList li').each(function () {
-      const id = String($(this).data('account-id'));
-      if (id) set.add(id);
-    });
-    return set;
-  }
+	function getSelectedIds() {
+	    const set = new Set();
+	    $('#approverList li').each(function () {
+	        const id = String($(this).data('account-id'));
+	        if (id && id !== 'undefined') set.add(id); // 안전한 체크
+	    });
+	    return set;
+	}
 
-  function reindexApprovers() {
-    $('#approverList li').each(function (i) {
-      const order = i + 1;
-      $(this).attr('id', 'appr_' + order);
-      $(this).find('.order').text(order);
-      // hidden name 인덱스 재설정
-      $(this).find('input.seq')
-        .val(order)
-        .attr('name', `approvers[${i}].seqNo`);
-      $(this).find('input.hid-approverId')
-        .attr('name', `approvers[${i}].approverId`);
-      $(this).find('input.hid-type')
-        .attr('name', `approvers[${i}].approverTypeCd`);
-      $(this).find('input.hid-del')
-        .attr('name', `approvers[${i}].delYn`);
-    });
-  }
+	function reindexApprovers() {
+	    console.log("Reindexing Started");
+	    
+	    $('#approverList li').each(function (i) { 
+	        const index = i; // 0-based index
+	        const order = i + 1; // 1-based order
 
-  // ================= 왼쪽: 부서 선택 → 계정 목록 로드 =================
-  $('#deptSelect').on('change', function () {
-    const deptId = $(this).val();
-    if (!deptId) {
-      $('#accountList').empty();
-      return;
-    }
-    $.ajax({
-      url: '/approval24/bookmark/accounts',
-      type: 'POST',
-      data: { deptId: deptId },
-      dataType: 'json',
-      success: function (accounts) {
-        let html = '<ul class="list-group">';
-        const selectedIds = getSelectedIds();
-        if (accounts && accounts.length) {
-          $.each(accounts, function (i, acc) {
-            const disabled = selectedIds.has(String(acc.accountId));
-            const label = disabled ? '추가됨' : '추가';
-            const disAttr = disabled ? 'disabled' : '';
-            html += `
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="text-dark">
-                  ${acc.userName} <small class="text-muted">(${acc.deptName})</small>
-                </span>
-                <button type="button"
-                        class="btn btn-sm btn-outline-primary js-add-approver"
-                        data-id="${acc.accountId}"
-                        data-name="${acc.userName}"
-                        data-dept="${acc.deptName}"
-                        ${disAttr}>${label}</button>
-              </li>`;
-          });
-        } else {
-          html += '<li class="list-group-item text-muted">해당 부서에 활성 계정이 없습니다.</li>';
-        }
-        html += '</ul>';
-        $('#accountList').html(html);
-      },
-      error: function () {
-        alert('계정 목록을 불러오는 데 실패했습니다.');
-      }
-    });
-  });
+	        // DOM 순서 및 텍스트 업데이트
+	        $(this).attr('id', 'appr_' + order);
+	        $(this).find('.order').text(order);
+	        
+	        const namePrefix = 'approvers[' + index + ']'; 
+	        
+	        // Hidden name 인덱스를 정확히 재설정
+	        $(this).find('input.seq').val(order).attr('name', namePrefix + '.seqNo');
+	        $(this).find('input.hid-approverId').attr('name', namePrefix + '.approverId');
+	        $(this).find('input.hid-type').attr('name', namePrefix + '.approverTypeCd');
+	        $(this).find('input.hid-del').attr('name', namePrefix + '.delYn');
+	    });
+	    console.log("Reindexing Finished");
+	}
 
-  // ================= 결재자 추가/제거 =================
-  function addApprover(accountId, approverName, deptName) {
-    ensureApproverList();
-    if (getSelectedIds().has(String(accountId))) return;
+	// ================= 왼쪽: 부서 선택 → 계정 목록 로드 =================
+	$('#deptSelect').on('change', function () {
+	    // 🚨 ReferenceError 해결: 여기서 deptId 변수 정의
+	    const deptId = $(this).val(); 
+	    
+	    if (!deptId) {
+	        $('#accountList').html('<div class="text-muted small">부서를 선택하면 계정 목록이 표시됩니다.</div>');
+	        return;
+	    }
+	    
+	    // 로딩 인디케이터 표시
+	    $('#accountList').html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
 
-    const currentIdx = $('#approverList li').length; // 0-based
-    const order = currentIdx + 1;
+	    $.ajax({
+	        url: '/approval24/bookmark/accounts',
+	        type: 'POST',
+	        data: { deptId: deptId }, 
+	        dataType: 'json',
+	        
+	        success: function (accounts) {
+	            let html = '<ul class="list-group">';
+	            const selectedIds = getSelectedIds();
+	            
+	            if (accounts && accounts.length) {
+	                
+	                // ⭐ jQuery $.each 대신 JS 표준 forEach를 사용하여 변수 참조 문제 해결
+	            	accounts.forEach(function (acc, i) { 
+	            	    
+	            	    let currentAccountId = acc.accountId; 
+	            	    const accountIdStr = (currentAccountId && currentAccountId > 0) 
+	            	                         ? String(currentAccountId) 
+	            	                         : ''; 
 
-    const liHtml = `
-      <li id="appr_${order}" class="list-group-item d-flex justify-content-between align-items-center"
-          data-account-id="${accountId}">
-        <span class="text-dark fw-bold">
-          순서 <span class="order">${order}</span> : ${approverName}
-          <small class="text-muted">(${deptName || ''})</small>
-        </span>
-        <div class="d-flex align-items-center">
-          <input type="hidden" class="seq" name="approvers[${currentIdx}].seqNo" value="${order}">
-          <input type="hidden" class="hid-approverId" name="approvers[${currentIdx}].approverId" value="${accountId}">
-          <input type="hidden" class="hid-type" name="approvers[${currentIdx}].approverTypeCd" value="AP01">
-          <input type="hidden" class="hid-del"  name="approvers[${currentIdx}].delYn" value="N">
-          <button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>
-        </div>
-      </li>`;
-    $('#approverList').append(liHtml);
-  }
+	            	    console.log(`[JS FOR EACH] Index ${i}: accountIdStr=${accountIdStr}`); 
+	            	    
+	            	    if (!accountIdStr) return; 
 
-  // 왼쪽 계정 리스트: 추가
-  $('#accountList').on('click', '.js-add-approver', function () {
-    const $btn = $(this);
-    addApprover(String($btn.data('id')), $btn.data('name'), $btn.data('dept'));
-    $btn.prop('disabled', true).text('추가됨');
-  });
+	            	    const disabled = selectedIds.has(accountIdStr); 
+	            	    const label = disabled ? '추가됨' : '추가';
+	            	    const disAttr = disabled ? 'disabled' : '';
+	            	    
+	            	    // ⭐⭐⭐ 데이터 바인딩 복원 ⭐⭐⭐
+	            	    html += `	                        
+	            	        <li class="list-group-item d-flex justify-content-between align-items-center">	                            
+	            	            <span class="text-dark">	
+	            	                ${acc.userName} <small class="text-muted">(${acc.deptName})</small>	                            
+	            	            </span>	                            
+	            	            <button type="button"	                                    
+	            	                    class="btn btn-sm btn-outline-primary js-add-approver"	                                    
+	            	                    data-id="${accountIdStr}"   	                                    
+	            	                    data-name="${acc.userName}"
+	            	                    data-dept="${acc.deptName}"
+	            	                    ${disAttr}>${label}</button>
+	            	        </li>`;
+	            	});
+	            } else {
+	                html += '<li class="list-group-item text-muted">해당 부서에 활성 계정이 없습니다.</li>';
+	            }
+	            
+	            html += '</ul>';
+	            $('#accountList').html(html);
+	        }, 
+	        
+	        error: function (xhr, status, error) {
+	            console.error("계정 목록 로드 실패:", status, error, xhr.responseText);
+	            alert('계정 목록을 불러오는 데 실패했습니다.');
+	        }
+	    }); 
+	});
 
-  // 오른쪽: 제거
-  $('#selectedApprovers').on('click', '.js-remove-approver', function () {
-    const $li = $(this).closest('li');
-    const accountId = String($li.data('account-id'));
-    $li.remove();
+	// ================= 결재자 추가/제거 =================
+	function addApprover(accountId, approverName, deptName) {
+	    ensureApproverList();
+	    const approverIdStr = String(accountId);
+	    if (getSelectedIds().has(approverIdStr)) return;
 
-    // 동일 계정의 왼쪽 "추가" 버튼 다시 활성화
-    $('#accountList .js-add-approver[data-id="' + accountId + '"]')
-      .prop('disabled', false)
-      .text('추가');
+		// 유효성 재확인
+		if (!approverIdStr || parseInt(approverIdStr) === 0 || approverIdStr === 'undefined') {
+    	    console.error("추가하려는 계정 ID가 유효하지 않습니다:", accountId);
+        	return; 
+    	}
+	
+	    const currentIdx = $('#approverList li').length; 
+	    const order = currentIdx + 1;
+	
+	    const liHtml = `
+	       <li id="appr_${order}" class="list-group-item d-flex justify-content-between align-items-center"
+	           data-account-id="${approverIdStr}">
+	         <span class="text-dark fw-bold">
+	           순서 <span class="order">${order}</span> : ${approverName}
+	           <small class="text-muted">(${deptName || ''})</small>
+	         </span>
+	         <div class="d-flex align-items-center">
+	                     <input type="hidden" class="seq" name="approvers[${currentIdx}].seqNo" value="${order}">
+	           <input type="hidden" class="hid-approverId" name="approvers[${currentIdx}].approverId" value="${approverIdStr}">
+	           <input type="hidden" class="hid-type" name="approvers[${currentIdx}].approverTypeCd" value="AP01">
+	           <input type="hidden" class="hid-del"  name="approvers[${currentIdx}].delYn" value="N">
+	           <button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>
+	         </div>
+	       </li>`;
+	    $('#approverList').append(liHtml);
+	}
 
-    reindexApprovers();
+	// 왼쪽 계정 리스트: 추가 (data-id 읽기 문제 최종 해결)
+	$('#accountList').on('click', '.js-add-approver', function () {
+	    const $btn = $(this);
+	    
+	    // ⭐ 최종 수정: .attr('data-id')를 사용하여 HTML 속성 값을 명시적으로 읽음
+	    const accountId = $btn.attr('data-id'); 
+	    
+	    console.log("Adding Approver, read accountId (ATTR):", accountId);
+	    
+	    // 유효성 검사
+	    if (!accountId || accountId.length === 0 || accountId === 'undefined') {
+	        console.error("Critical: accountId attribute missing or empty!");
+	        return; 
+	    }
+	    
+	    addApprover(String(accountId), $btn.data('name'), $btn.data('dept'));
+	    
+	    $btn.prop('disabled', true).text('추가됨');
+	});
 
-    if ($('#approverList li').length === 0) {
-      $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
-    }
-  });
+	// 오른쪽: 제거
+	$('#selectedApprovers').on('click', '.js-remove-approver', function () {
+	    const $li = $(this).closest('li');
+	    const accountId = String($li.data('account-id'));
+	    $li.remove();
 
-  // 폼 제출 시 마지막 인덱스 정리(안전장치)
-  $('#bookmarkUpdateForm').on('submit', function () {
-    reindexApprovers();
-  });
+	    // 동일 계정의 왼쪽 "추가" 버튼 다시 활성화
+	    $('#accountList .js-add-approver[data-id="' + accountId + '"]')
+	      .prop('disabled', false)
+	      .text('추가');
+
+	    reindexApprovers(); 
+
+	    if ($('#approverList li').length === 0) {
+	      $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
+	    }
+	});
+
+	// 폼 제출 시 마지막 인덱스 정리
+	$('#bookmarkUpdateForm').on('submit', function () {
+		reindexApprovers();
+	    
+	    const formData = new FormData(this);
+	    console.log("--- 폼 제출 데이터 확인 시작 ---");
+	    for (let [key, value] of formData.entries()) {
+	        console.log(key + ': ' + value);
+	    }
+	    console.log("--- 폼 제출 데이터 확인 종료 ---");
+	    // return true; // 실제 제출을 위해 주석 처리
+	});
 </script>
 
 </body>

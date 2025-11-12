@@ -63,7 +63,7 @@ public class BookmarkService {
                 // 결재선 타입 지정
                 if (i == 0) {
                     approver.setApproverTypeCd("F002");    // 첫 번째 (기안자/시작)
-                    if(accountId.equals(approver.getApproverId())) {
+                    if(!accountId.equals(approver.getApproverId())) {
                     	throw new IllegalArgumentException("첫번째는 본인 계정을 등록해야 합니다");
                     }
                 } else if (i == (approvers.size() -1)) {
@@ -106,32 +106,39 @@ public class BookmarkService {
     }
 
     // 특정 북마크의 결재자 목록 전체 교체 
+    // 특정 북마크의 결재자 목록 전체 교체 
     @Transactional
     public int replaceApprovers(Long bookmarkId, List<Approver> newApprovers) {
         if (bookmarkId == null) {
             return 0;
         }
         
-        Long seqNo = (long) 1;
+        // 1. 기존 결재자 삭제 (PK 충돌 방지)
         bookmarkDAO.deleteApproversByBookmarkId(bookmarkId);
         
+        // 2. 새로운 결재자 삽입 및 순번(SEQ_NO) 부여
         if (newApprovers != null && !newApprovers.isEmpty()) {
+            
+            // ⭐ 오류 수정: 순번을 1로 초기화
+            Long seqNo = 1L; 
+            
             for (Approver approver : newApprovers) {
                 approver.setBookmarkId(bookmarkId);
                 approver.setSeqNo(seqNo);
+                
+                // ⭐ 핵심 수정: 순번을 1씩 증가
+                seqNo++; 
             }
+            
+            // DTO에 순번과 ID가 제대로 세팅된 후 일괄 삽입
             bookmarkDAO.insertApprovers(newApprovers);
         }
         
+        // 3. 북마크 업데이트 (옵션: 갱신일자 업데이트 등)
         Map<String, Object> params = new HashMap<>();
         params.put("bookmarkId", bookmarkId);
-        return bookmarkDAO.updateBookmark(params);
+        
+        // updateBookmark는 업데이트된 행의 수를 반환할 것으로 예상
+        return bookmarkDAO.updateBookmark(params); 
     }
-    
-    /** (선택적) 개별 결재자 속성 수정 - 기존 updateApprover와 동일 
-    @Transactional
-    public int updateApproverAttribute(Map<String, Object> params) {
-        return bookmarkDAO.updateApprover(params);
-    }
-    */
 }

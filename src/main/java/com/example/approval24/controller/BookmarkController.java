@@ -41,6 +41,8 @@ public class BookmarkController {
     public String detail(@PathVariable Long bookmarkId, HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("user");
         Long instId = accountService.findInstIdByAccountId(userId);
+        List<DeptInstDTO> depts= deptService.deptByInst(instId);
+        model.addAttribute("depts", depts);
 
         BookmarkDTO bookmark = bookmarkService.findById(bookmarkId);
 
@@ -136,9 +138,12 @@ public class BookmarkController {
     
     /** 특정 북마크 내 결재자 목록 전체 교체 처리 (기존 updateApprover 대체) */
     @PostMapping("/approver/replace") // 엔드포인트 이름을 명확하게 변경 권장 (기존 /approver/update 유지도 가능)
-    public String replaceApprovers(@ModelAttribute BookmarkDTO bookmark, Model model) {
+    public String replaceApprovers(@ModelAttribute BookmarkDTO bookmark, Model model,HttpSession session) {
         // 클라이언트에서 BookmarkDTO 형태로 데이터(bookmarkId, approvers 리스트)를 전송한다고 가정
         Long bookmarkId = bookmark.getBookmarkId();
+        
+        Long userId = (Long) session.getAttribute("user");
+        bookmark.setAccountId(userId);
         
         if (bookmarkId == null) {
              model.addAttribute("error","북마크 ID가 누락되었습니다.");

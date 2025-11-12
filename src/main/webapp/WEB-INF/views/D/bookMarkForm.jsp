@@ -102,10 +102,11 @@
 
 								<div style="text-align: right;">
 									<button type="submit" class="btn btn-primary">북마크 저장</button>
-									<a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
+									
 								</div>
 							</div>
 					</form>
+					<a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
 				</div>
 				<!-- /.container-fluid -->
 			</div>
@@ -273,6 +274,10 @@ $('#selectedApprovers').on('click', '.js-remove-approver', function () {
     $('#selectedApprovers').empty();
   }
 });
+
+<c:if test="${not empty errorMsg}">
+alert('${errorMsg}');
+</c:if>
 	</script>
 </body>
 </html>
