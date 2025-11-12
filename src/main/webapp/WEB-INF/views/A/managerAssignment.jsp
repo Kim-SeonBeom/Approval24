@@ -105,7 +105,7 @@
 					        <label for="instName" class="col-sm-2 col-form-label font-weight-bold text-center">기관명</label>
 					        <div class="col-sm-10">
 					          <input type="text" class="form-control w-25" id="instName" name="instName"
-					                 value="${filter.instName}" placeholder="기관명 입력">
+					                 value="${instName.instName}" readonly>
 					        </div>
 					      </div>
 					
@@ -222,7 +222,7 @@
 					                        <c:if test='${not empty filter.createDt}'><c:param name='createDt' value='${filter.createDt}'/></c:if>
 					                        <c:if test='${not empty filter.updateDt}'><c:param name='updateDt' value='${filter.updateDt}'/></c:if>
 					                        <c:if test='${not empty filter.delYn}'><c:param name='delYn' value='${filter.delYn}'/></c:if>
-					                        <c:if test='${not empty filter.instName}'><c:param name='instName' value='${filter.instName}'/></c:if>
+					                        <c:if test='${not empty instName.instName}'><c:param name='instName' value='${instName.instName}'/></c:if>
 					                        <c:if test='${not empty filter.deptName}'><c:param name='deptName' value='${filter.deptName}'/></c:if>
 					                        <c:if test='${not empty filter.categoryName}'><c:param name='categoryName' value='${filter.categoryName}'/></c:if>
 					                        <c:if test='${not empty filter.loginId}'><c:param name='loginId' value='${filter.loginId}'/></c:if>
@@ -241,7 +241,7 @@
 					                          <c:if test='${not empty filter.createDt}'><c:param name='createDt' value='${filter.createDt}'/></c:if>
 					                          <c:if test='${not empty filter.updateDt}'><c:param name='updateDt' value='${filter.updateDt}'/></c:if>
 					                          <c:if test='${not empty filter.delYn}'><c:param name='delYn' value='${filter.delYn}'/></c:if>
-					                          <c:if test='${not empty filter.instName}'><c:param name='instName' value='${filter.instName}'/></c:if>
+					                          <c:if test='${not empty instName.instName}'><c:param name='instName' value='${instName.instName}'/></c:if>
 					                          <c:if test='${not empty filter.deptName}'><c:param name='deptName' value='${filter.deptName}'/></c:if>
 					                          <c:if test='${not empty filter.categoryName}'><c:param name='categoryName' value='${filter.categoryName}'/></c:if>
 					                          <c:if test='${not empty filter.loginId}'><c:param name='loginId' value='${filter.loginId}'/></c:if>
@@ -260,7 +260,7 @@
 					                        <c:if test='${not empty filter.createDt}'><c:param name='createDt' value='${filter.createDt}'/></c:if>
 					                        <c:if test='${not empty filter.updateDt}'><c:param name='updateDt' value='${filter.updateDt}'/></c:if>
 					                        <c:if test='${not empty filter.delYn}'><c:param name='delYn' value='${filter.delYn}'/></c:if>
-					                        <c:if test='${not empty filter.instName}'><c:param name='instName' value='${filter.instName}'/></c:if>
+					                        <c:if test='${not empty instName.instName}'><c:param name='instName' value='${instName.instName}'/></c:if>
 					                        <c:if test='${not empty filter.deptName}'><c:param name='deptName' value='${filter.deptName}'/></c:if>
 					                        <c:if test='${not empty filter.categoryName}'><c:param name='categoryName' value='${filter.categoryName}'/></c:if>
 					                        <c:if test='${not empty filter.loginId}'><c:param name='loginId' value='${filter.loginId}'/></c:if>

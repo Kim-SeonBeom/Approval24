@@ -1,111 +1,125 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-    <meta charset="UTF-8">
-    <title>북마크 등록</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .approver-box { border: 1px dashed #ccc; padding: 10px; margin-bottom: 10px; }
-        .approver-list-item { margin-top: 5px; border: 1px solid #eee; padding: 5px; }
-    </style>
+<meta charset="UTF-8">
+<title>북마크 등록</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+.approver-box {
+	border: 1px dashed #ccc;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.approver-list-item {
+	margin-top: 5px;
+	border: 1px solid #eee;
+	padding: 5px;
+}
+
+.readonly-box {
+	background: #f8f9fc;
+}
+</style>
 </head>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-	
+
 		<!-- Sidebar -->
 		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
-		
+
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
 				<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
-							<!-- Begin Page Content -->
+				<!-- Begin Page Content -->
 				<div class="container-fluid">
-				
-				<h1 class="h3 mb-2 text-gray-800">새 북마크 등록</h1>
 
-<!-- DataTales Example -->
-	<div class="card shadow mb-4">
-		<div class="card-header py-3 d-flex align-items-center justify-content-between">
-		<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">새 북마크 등록</h6>
-		</div>
-			<div class="card-body">
-    <form action="/approval24/bookmark/create" method="post" id="bookmarkForm">
-       <div class="d-flex align-items-center mb-3">
-        <p class="form-group m-0  me-3" >
-            <label for="bookmarkName">북마크 이름:</label>
-            <input type="text" id="bookmarkName" name="bookmarkName" required>
-        </p>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <p class="form-group m-0">
-            <label for="accountId">작성자 ID:</label>
-            <%-- 실제 환경에서는 세션에서 가져와 hidden 필드로 처리 --%>
-            <input type="number" id="accountId" name="accountId" value="${session.user}" readonly required> 
-        </p>
-        </div>
+					<h1 class="h3 mb-2 text-gray-800">새 북마크 등록</h1>
 
-        <div class="approver-box mb-3 border-dark border-2" >
-            <h3 class="mb-3">결재자 추가</h3>
-            <hr class="border-dark border-1 opacity-100">
-            
-            <%-- 1. 부서 선택 드롭다운 (Controller에서 받은 depts 사용) --%>
-            <div class="mb-3">
-            <label for="deptSelect" class="form-label">부서 선택:</label>
-            <select id="deptSelect" class="form-select w-auto d-inline-block text-dark">
-                <option value="">-- 부서를 선택하세요 --</option>
-                <c:forEach var="dept" items="${depts}">
-                    <option value="${dept.deptId}">${dept.deptName}</option>
-                </c:forEach>
-            </select>
-            </div>
-           
-            <%-- 2. 부서 선택에 따라 계정 목록이 동적으로 채워질 곳 --%>
-            <div id="accountList" style="margin-top: 10px;">
-                </div>
-              <hr class="border-dark border-1 opacity-100">
-            <%-- 3. 최종적으로 등록될 결재자 목록 --%>
-            <h5 style="margin-top: 20px;" class="text-dark fw-bold">선택된 결재 경로 (Approvers)</h5>
-            <div id="selectedApprovers">
-            </div>
-                </div>
-    
-		<div style="text-align: right;">
-        <button type="submit" class="btn btn-primary">북마크 저장</button>
-        <a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
-        </div>
-    </form>
-    </div>
-    </div>
-    
-    		</div>
+					<form action="/approval24/bookmark/create" method="post" id="bookmarkForm">
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold text-primary" style="line-height: 1.5;">새 북마크 등록</h6>
+							</div>
+							<div class="card-body">
+								<!-- 북마크 이름 입력 -->
+								<div class="d-flex align-items-center mb-3">
+									<h5 class="mb-0 mr-4" style="width: 120px;">북마크 이름</h5>
+									<input type="text" class="form-control form-control-sm w-50" name="bookmarkName" placeholder="북마크이름을 입력하세요" required>
+								</div>
+
+								<input type="hidden" id="accountId" name="accountId" value="${session.user}">
+
+								<!-- 부서 선택 -->
+								<div class="d-flex align-items-center mb-4">
+									<h5 class="mb-0 mr-4" style="width: 120px;">부서 선택</h5>
+									<select id="deptSelect" class="form-select text-dark w-auto" style="min-width: 260px; text-align: center; text-align-last: center;">
+										<option value="">-- 부서를 선택하세요 --</option>
+										<c:forEach var="dept" items="${depts}">
+											<option value="${dept.deptId}">${dept.deptName}</option>
+										</c:forEach>
+									</select>
+								</div>
+
+								<!-- 좌우 2열 영역 -->
+								<div class="row">
+									<!-- 왼쪽: 계정 목록 -->
+									<div class="col-md-6 mb-3">
+										<div class="card h-100">
+											<div class="card-header py-2">
+												<strong>계정 목록</strong>
+											</div>
+											<div class="card-body p-2">
+												<div id="accountList" class="overflow-auto" style="max-height: 360px;"></div>
+											</div>
+										</div>
+									</div>
+
+									<!-- 오른쪽: 선택된 결재 경로 -->
+									<div class="col-md-6 mb-3">
+										<div class="card h-100">
+											<div class="card-header py-2 d-flex align-items-center justify-content-between">
+												<strong>선택된 결재 경로</strong>
+												<!-- 선택사항: 전체 초기화 버튼 -->
+												<!-- <button type="button" class="btn btn-sm btn-outline-secondary" id="btnClearApprovers">초기화</button> -->
+											</div>
+											<div class="card-body p-2">
+												<div id="selectedApprovers">
+													<!-- JS에서 ul#approverList가 채워짐 -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div style="text-align: right;">
+									<button type="submit" class="btn btn-primary">북마크 저장</button>
+									<a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
+								</div>
+							</div>
+					</form>
+				</div>
 				<!-- /.container-fluid -->
-    			</div>
+			</div>
 			<!-- End of Main Content -->
 
-			<!-- Footer -->
-			<footer class="sticky-footer bg-white">
-				<div class="container my-auto">
-					<div class="copyright text-center my-auto">
-						<span>행정 &copy; 결재24 2025</span>
-					</div>
-				</div>
-			</footer>
-			<!-- End of Footer -->
-    
-    	</div>
+
+
+		</div>
 		<!-- End of Content Wrapper -->
-    
-    	</div>
+
+	</div>
 	<!-- End of Page Wrapper -->
-    
-    	<!-- Scroll to Top Button-->
+
+	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
 	</a>
 	<!-- Logout Modal-->
@@ -113,63 +127,152 @@
 
 	<!-- footer 영역 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-    <script>
-        // 1. 부서 선택 시 해당 부서의 계정 목록을 불러오는 AJAX
-        $('#deptSelect').on('change', function() {
-            var deptId = $(this).val();
-            if (deptId) {
-                $.ajax({
-                    url: '/approval24/bookmark/accounts', // 컨트롤러의 @PostMapping("/accounts") 매핑
-                    type: 'POST',
-                    data: { deptId: deptId },
-                    success: function(accounts) {
-                        var html = '<ul>';
-                        if (accounts.length > 0) {
-                            $.each(accounts, function(i, acc) {
-                                html += '<li class="approver-list-item text-dark">' + 
-                                        acc.userName + ' (' + acc.deptName + ') ' + 
-                                        '<button type="button" class="btn btn-secondary" onclick="addApprover(' + acc.accountId + ', \'' + acc.userName + '\')">추가</button>' +
-                                        '</li>';
-                            });
-                        } else {
-                            html += '<li>해당 부서에 활성 계정이 없습니다.</li>';
-                        }
-                        html += '</ul>';
-                        $('#accountList').html(html);
-                    },
-                    error: function() {
-                        alert('계정 목록을 불러오는 데 실패했습니다.');
-                    }
-                });
-            } else {
-                $('#accountList').empty();
-            }
-        });
+	<script>
+		// 1. 부서 선택 시 해당 부서의 계정 목록을 불러오는 AJAX
+		$('#deptSelect')
+				.on(
+						'change',
+						function() {
+							var deptId = $(this).val();
+							if (deptId) {
+								$
+										.ajax({
+											url : '/approval24/bookmark/accounts', // 컨트롤러의 @PostMapping("/accounts") 매핑
+											type : 'POST',
+											data : {
+												deptId : deptId
+											},
+											dataType: 'json',  
+											success : function(accounts) {
+												let html = '<ul class="list-group">';
+												 const selectedIds = getSelectedIds(); 
+												if (accounts.length > 0) {
+													$
+															.each(
+																	accounts,
+																	function(i,
+			 																acc) {
+																	      const disabled = selectedIds.has(String(acc.accountId));
+																	      const label = disabled ? '추가됨' : '추가';
+																	      const disAttr = disabled ? 'disabled' : '';
+																		
+																	      html += `
+																	          <li class="list-group-item d-flex justify-content-between align-items-center">
+																	            <span class="text-dark">
+																	              \${acc.userName} <small class="text-muted">(\${acc.deptName})</small>
+																	            </span>
+																	            <button type="button" class="btn btn-sm btn-outline-primary js-add-approver"
+																	                    data-id="\${acc.accountId}" data-name="\${acc.userName}" \${disAttr}>
+																	              \${label}
+																	            </button>
+																	          </li>`;
+																	}); 
+												} else {
+													html += '<li>해당 부서에 활성 계정이 없습니다.</li></ul>';
+												}
+												html += '</ul>';
+												$('#accountList').html(html);
+											},
+											error : function() {
+												alert('계정 목록을 불러오는 데 실패했습니다.');
+											}
+										});
+							} else {
+								$('#accountList').empty();
+							}
+						});
+		
+		function ensureApproverList() {
+			  if ($('#approverList').length === 0) {
+			    $('#selectedApprovers').html('<ul class="list-group" id="approverList"></ul>');
+			  }
+			}
 
-        // 2. '추가' 버튼 클릭 시 결재자 목록에 추가
-        var approverCount = 0; // 결재자 순번(seqNo)에 사용
-        function addApprover(accountId, approverName) {
-            approverCount++;
-            
-            // DTO 구조에 맞게 Hidden 필드와 표시 요소를 추가
-            var approverHtml = '<div id="appr_' + approverCount + '" class="border border-dark d-flex align-items-center justify-content-between mb-2 p-2 ">' +
-                                '<strong>순서 ' + approverCount + ' : ' + approverName + '</strong>' +
-                                // List<Approver> approvers[i].fieldName 형식으로 Spring이 바인딩
-                                '<input type="hidden" name="approvers[' + (approverCount - 1) + '].seqNo" value="' + approverCount + '">' +
-                                '<input type="hidden" name="approvers[' + (approverCount - 1) + '].approverId" value="' + accountId + '">' +
-                                '<input type="hidden" name="approvers[' + (approverCount - 1) + '].approverTypeCd" value="AP01">' + // 예시 코드
-                                '<input type="hidden" name="approvers[' + (approverCount - 1) + '].delYn" value="N">' +
-                                '<button type="button" class="btn btn-warning ml-4"onclick="removeApprover(' + approverCount + ')">제거</button>' +
-                                '</div>';
-            
-            $('#selectedApprovers').append(approverHtml);
-        }
+			function getSelectedIds() {
+			  const set = new Set();
+			  $('#approverList li').each(function() {
+			    const id = String($(this).data('account-id'));
+			    if (id) set.add(id);
+			  });
+			  return set;
+			}
 
-        // 3. 결재자 제거
-        function removeApprover(seq) {
-            $('#appr_' + seq).remove();
-            // 참고: 실제 운영 환경에서는 순번(seqNo)을 다시 매겨주는 로직이 필요할 수 있습니다.
-        }
-    </script>
+			function reindexApprovers() {
+			  $('#approverList li').each(function(i) {
+			    const order = i + 1;
+			    $(this).attr('id', 'appr_' + order);
+			    $(this).find('.order').text(order);
+			    // hidden name 인덱스 재설정
+			    $(this).find('input.seq')
+			      .val(order)
+			      .attr('name', `approvers[${i}].seqNo`);
+			    $(this).find('input.hid-approverId')
+			      .attr('name', `approvers[${i}].approverId`);
+			    $(this).find('input.hid-type')
+			      .attr('name', `approvers[${i}].approverTypeCd`);
+			    $(this).find('input.hid-del')
+			      .attr('name', `approvers[${i}].delYn`);
+			  });
+			}
+
+		// 2. '추가' 버튼 클릭 시 결재자 목록에 추가
+function addApprover(accountId, approverName) {
+  ensureApproverList();
+
+  // 이미 선택돼 있으면 무시
+  if (getSelectedIds().has(String(accountId))) return;
+
+  const currentIdx = $('#approverList li').length; // 0-based
+  const order = currentIdx + 1;
+
+  const liHtml = `
+    <li id="appr_\${order}" class="list-group-item d-flex justify-content-between align-items-center"
+        data-account-id="\${accountId}">
+      <span class="text-dark fw-bold">순서 <span class="order">\${order}</span> : \${approverName}</span>
+      <div class="d-flex align-items-center">
+        <input type="hidden" class="seq" name="approvers[\${currentIdx}].seqNo" value="\${order}">
+        <input type="hidden" class="hid-approverId" name="approvers[\${currentIdx}].approverId" value="\${accountId}">
+        <input type="hidden" class="hid-type" name="approvers[\${currentIdx}].approverTypeCd" value="AP01">
+        <input type="hidden" class="hid-del" name="approvers[\${currentIdx}].delYn" value="N">
+        <button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>
+      </div>
+    </li>`;
+
+  $('#approverList').append(liHtml);
+}
+
+// 계정 리스트 "추가" 버튼
+$('#accountList').on('click', '.js-add-approver', function () {
+  const accountId = String($(this).data('id'));
+  const approverName = $(this).data('name');
+
+  addApprover(accountId, approverName);
+
+  // 중복 추가 방지 (선택됨 표기)
+  $(this).prop('disabled', true).text('추가됨');
+});
+
+// ---------- 제거 ----------
+$('#selectedApprovers').on('click', '.js-remove-approver', function () {
+  const $li = $(this).closest('li');
+  const accountId = String($li.data('account-id'));
+
+  // li 제거
+  $li.remove();
+
+  // 같은 계정의 "추가" 버튼 다시 활성화
+  $('#accountList .js-add-approver[data-id="' + accountId + '"]')
+    .prop('disabled', false)
+    .text('추가');
+
+  // 순번/name 재정렬
+  reindexApprovers();
+
+  // 모두 없어지면 비우기(선택)
+  if ($('#approverList li').length === 0) {
+    $('#selectedApprovers').empty();
+  }
+});
+	</script>
 </body>
 </html>

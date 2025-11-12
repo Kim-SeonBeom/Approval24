@@ -23,4 +23,9 @@ public class InstService {
     public List<InstDTO> searchInsts(InstDTO filter) {
         return instDAO.findByFilter(filter); 
     }
+    
+    // 기관 상세
+    public InstDTO getInstById(long instId) {
+    	return instDAO.getInstById(instId);
+    }
 }
