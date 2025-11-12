@@ -11,6 +11,73 @@
 	WHERE T.del_yn = 'N'
 	ORDER BY T.notice_id DESC
 </select>
+<!-- 공지사항 필터 목록 -->
+<select id="noticeFilterList"  parameterType="NoticeFilterDTO" resultType="NoticeFilterDTO">
+	SELECT T.notice_id, T.title, T.category_cd, U.user_name, T.create_dt, T.view_count, T.del_yn, C.code_name AS categoryName
+	FROM t3000_notice T
+	JOIN T1000_account  A ON COALESCE(T.update_Id, T.create_id) = A.account_id
+	JOIN t1000_user U ON A.user_no = U.user_no
+	JOIN total_code C ON T.category_cd = C.code_id
+	JOIN t2000_complain_category CC ON T.category_cd = CC.category_cd
+	WHERE T.del_yn = 'N'
+				<if test="title != null and title !=''">
+				AND T.title = #{title}
+				</if>
+				<if test="userName != null and userName !=''">
+				AND U.user_name = #{userName}
+				</if>
+				<if test="categoryName != null and categoryName !=''">
+				AND C.code_name = #{categoryName}
+				</if>
+				<if test="complainCategoryId != null and complainCategoryId !=''">
+				AND CC.complain_category_id = #{complainCategoryId}
+				</if>
+             <if test="startDate != null  and endDate !=null and startDate !='' and endDate !=''">
+               <![CDATA[
+					AND T.create_dt >= TO_DATE(#{startDate},
+					'YYYY-MM-DD')
+					AND T.create_dt < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+					]]>
+              </if>
+
+    <if test="startRow != null and endRow != null">
+
+    WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+    </if>
+	ORDER BY T.create_dt DESC	
+</select>
+
+
+<!-- 공지사항 필터 목록 -->
+<select id="noticeCountFilter"  parameterType="map" resultType="int">
+	SELECT COUNT(*)
+	FROM t3000_notice T
+	JOIN T1000_account  A ON COALESCE(T.update_Id, T.create_id) = A.account_id
+	JOIN t1000_user U ON A.user_no = U.user_no
+	JOIN total_code C ON T.category_cd = C.code_id
+	JOIN t2000_complain_category CC ON T.category_cd = CC.category_cd
+	WHERE T.del_yn = 'N'
+				<if test="title != null and title !=''">
+				AND T.title = #{title}
+				</if>
+				<if test="userName != null and userName !=''">
+				AND U.user_name = #{userName}
+				</if>
+				<if test="categoryName != null and categoryName !=''">
+				AND C.code_name = #{categoryName}
+				</if>
+			<if test="complainCategoryId != null and complainCategoryId !=''">
+				AND CC.complain_category_id = #{complainCategoryId}
+				</if>
+	             <if test="startDate != null  and endDate !=null and startDate !='' and endDate !=''">
+                <![CDATA[
+					AND T.create_dt >= TO_DATE(#{startDate},
+					'YYYY-MM-DD')
+					AND T.create_dt < TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+					]]>
+              </if>
+ 
+</select>
 
 <!-- 공지사항 추가 -->
 <insert id="saveNotice"  parameterType="NoticeDTO">
