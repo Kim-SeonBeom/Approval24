@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.approval24.dao.AuthorityAccountDAO;
 import com.example.approval24.dao.AuthorityDAO;
 import com.example.approval24.dao.AuthorityDeptDAO;
 import com.example.approval24.dao.AuthorityMenuDAO;
 import com.example.approval24.dao.DeptDAO;
 import com.example.approval24.dao.MenuDAO;
+import com.example.approval24.domain.AuthorityAccountDTO;
 import com.example.approval24.domain.AuthorityDTO;
 import com.example.approval24.domain.AuthorityDeptDTO;
 import com.example.approval24.domain.AuthorityMenuDTO;
@@ -124,6 +126,10 @@ public class AuthorityService {
     // 권한-부서 조회
     public List<DeptDTO> getDepartmentsByAuthorityId(Long authorityId) {
         return authorityDeptDAO.getDeptsByAuthorityId(authorityId);
+    }
+    // 권한 ID로 권한 ID 리스트 조회
+    public List<AuthorityDTO> findByAccountId(Long accountId){
+    	return authorityDAO.findByAccountId(accountId);
     }
     
     @Transactional
