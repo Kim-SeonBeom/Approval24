@@ -26,6 +26,49 @@
         </foreach>
           AND m.DEL_YN = 'N'
     </select>
+    
+    <!-- 전체 메뉴 조회 카운트 -->
+    <select id="findCountAll" resultType="int">
+        SELECT COUNT(*)
+        FROM T3000_MENU
+        WHERE DEL_YN = 'N'
+    </select>
+    
+<!-- 메뉴 필터 조회 -->
+<select id="findfilterMenu" parameterType="map" resultType="com.example.approval24.domain.MenuDTO">
+    SELECT *
+    FROM (
+        SELECT 
+            T.*, 
+            ROWNUM AS RNUM
+        FROM (
+            SELECT
+                MENU_ID,
+                MENU_NAME,
+                MENU_URL,
+                PARENT_MENU_ID,
+                SEQ,
+                POPUP_YN,
+                CREATE_DT,
+                UPDATE_DT,
+                CREATE_ID,
+                UPDATE_ID,
+                DEL_YN
+            FROM T3000_MENU
+            <where>
+                DEL_YN = 'N'
+            </where>
+            ORDER BY SEQ
+        ) T
+        <if test="endRow != null">
+            WHERE ROWNUM &lt;= #{endRow}
+        </if>
+    )
+    <if test="startRow != null">
+        WHERE RNUM &gt;= #{startRow}
+    </if>
+</select>
+
 
     <!-- 전체 메뉴 조회 -->
     <select id="findAll" resultType="com.example.approval24.domain.MenuDTO">
