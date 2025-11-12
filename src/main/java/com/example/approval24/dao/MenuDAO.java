@@ -1,6 +1,7 @@
 package com.example.approval24.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,6 +16,12 @@ public interface MenuDAO {
 
     // 전체 메뉴 조회 (관리용)
     List<MenuDTO> findAll();
+    
+    // 메뉴 필터 조회
+    List<MenuDTO>findfilterMenu(Map<String, Object> filterMap);
+    
+    // 메뉴 전체 카운트
+    int findCountAll();
     
     // 메뉴 아이디로 조회
 	MenuDTO findById(Long menuId);

@@ -15,7 +15,9 @@ public interface AccountDAO {
     AccountDTO findByLogin(String loginId);
     
     List<AccountDTO> findAccountsByFilter(Map<String, Object> filterMap);
-
+    
+    public AccountDTO checkByLogin(String loginId);
+    
 	Long findInstIdByAccountId(Long accountId);
 
 	public AccountDTO findById(long accountId);

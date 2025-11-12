@@ -65,7 +65,7 @@
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
 												<!-- 나중에 로그인 정보를 가져와 해당 유저의 insert -->
-												<td><input type="text" class="form-control form-control-sm" value="${sessionScope.authUser.userName}"  readonly>
+												<td><input type="text" class="form-control form-control-sm" value="${loginuserName}"  readonly>
 														<input type="hidden" name="createId" value="${sessionScope.authUser.accountId}"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
 												<td>
@@ -143,15 +143,6 @@
 			</div>
 			<!-- End of Main Content -->
 
-			<!-- Footer -->
-			<footer class="sticky-footer bg-white">
-				<div class="container my-auto">
-					<div class="copyright text-center my-auto">
-						<span>행정 &copy; 결제24 2025</span>
-					</div>
-				</div>
-			</footer>
-			<!-- End of Footer -->
 
 		</div>
 		<!-- End of Content Wrapper -->

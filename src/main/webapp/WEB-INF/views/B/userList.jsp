@@ -104,41 +104,40 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>번호</th>
-                                        <th>이름</th>
-                                        <th>직급</th>
-                                        <th>이메일</th>
-                                        <th>연락처</th>
-                                        <th>등록일</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:choose>
-                                        <c:when test="${not empty users}">
-                                            <c:forEach var="user" items="${users}" varStatus="status">
-                                                <tr>
-                                                    <td>${pageInfo.startRow + status.index}</td>
-                                                    <td>
-                                                        <a href="/approval24/user/detail/${user.userNo}">
-                                                            <c:out value="${user.userName}" />
-                                                        </a>
-                                                    </td>
-                                                    <td><c:out value="${user.userPositionName}" /></td>
-                                                    <td><c:out value="${user.userEmail}" /></td>
-                                                    <td><c:out value="${user.userPhone}" /></td>
-                                                    <td><fmt:formatDate value="${user.createDt}" pattern="yyyy-MM-dd"/></td>
-                                                </tr>
-                                            </c:forEach>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <tr><td colspan="6" class="text-center">조회된 사용자 정보가 없습니다.</td></tr>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </tbody>
-                            </table>
+                            <table class="table table-bordered table-hover table-sm text-center align-middle">
+							  <thead class="thead-light">
+							    <tr>
+							      <th>번호</th>
+							      <th>이름</th>
+							      <th>직급</th>
+							      <th>이메일</th>
+							      <th>전화번호</th>
+							      <th>등록일</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <c:choose>
+							      <c:when test="${not empty users}">
+							        <c:forEach var="user" items="${users}" varStatus="status">
+							          <tr class="clickable-row"
+							              data-href="${pageContext.request.contextPath}/user/detail/${user.userNo}"
+							              style="cursor:pointer;">
+							            <td>${pageInfo.startRow + status.index + 1}</td>
+							            <td><c:out value="${user.userName}" /></td>
+							            <td><c:out value="${user.userPositionName}" /></td>
+							            <td><c:out value="${user.userEmail}" /></td>
+							            <td><c:out value="${user.userPhone}" /></td>
+							            <td><fmt:formatDate value="${user.createDt}" pattern="yyyy-MM-dd"/></td>
+							          </tr>
+							        </c:forEach>
+							      </c:when>
+							      <c:otherwise>
+							        <tr><td colspan="6" class="text-center text-muted">조회된 사용자 정보가 없습니다.</td></tr>
+							      </c:otherwise>
+							    </c:choose>
+							  </tbody>
+							</table>
+
                         </div>
                         
                         <!-- 📄 페이지네이션 -->
@@ -227,6 +226,15 @@
                 .catch(error => console.error('기관 목록 로드 오류:', error));
         }
     });
+    
+    
+	// 테이블 행 클릭 시 상세로 이동
+	document.addEventListener('click', function (e) {
+	  const tr = e.target.closest('.clickable-row');
+	  if (tr && tr.dataset.href) {
+	    location.href = tr.dataset.href;
+	  }
+	});
 </script>
 
 </body>

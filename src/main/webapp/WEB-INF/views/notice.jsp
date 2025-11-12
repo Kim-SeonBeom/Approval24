@@ -33,9 +33,19 @@
 					<h1 class="h3 mb-2 text-gray-800">공지사항</h1>
 					<br>
 									<div class="card shadow mb-4">
-						<div class="card-header py-3 d-flex justify-content-between align-items-center">
+						<div
+							class="card-header py-3 d-flex justify-content-between align-items-center">
 							<h6 class="m-0 font-weight-bold text-primary">검색 및 필터링</h6>
-							<button class="btn btn-primary btn-sm" type="submit" form="noticeFilterForm">검색</button>
+
+							<div>
+								<button class="btn btn-primary btn-sm" type="submit"
+									form="noticeFilterForm">검색</button>
+								
+								<c:if test="${logindeptName eq '인사과'}">
+								<button class="btn btn-success btn-sm ml-2" type="button"
+									onclick="location.href='${pageContext.request.contextPath}/notice/new'">추가</button>
+									</c:if>
+							</div>
 						</div>
 
 						<div class="card-body">
@@ -58,7 +68,7 @@
 										<div class="form-inline">
 											<!-- name/id 를 complainCategoryId 로 통일 -->
 											<select class="form-control mr-2" id="complainCategoryId" name="complainCategoryId" style="min-width: 220px;">
-												<option value="">민원 서식</option>
+												<option value="">전체</option>
 												<c:forEach var="list" items="${categoryList}">
 													<option value="${list.complainCategoryId}" <c:if test="${filter.complainCategoryId == list.complainCategoryId}">selected</c:if>>${list.categoryName}</option>
 												</c:forEach>
@@ -204,15 +214,6 @@
 			</div>
 			<!-- End of Main Content -->
 
-			<!-- Footer -->
-			<footer class="sticky-footer bg-white">
-				<div class="container my-auto">
-					<div class="copyright text-center my-auto">
-						<span>행정 &copy; 결재24 2025</span>
-					</div>
-				</div>
-			</footer>
-			<!-- End of Footer -->
 
 		</div>
 		<!-- End of Content Wrapper -->

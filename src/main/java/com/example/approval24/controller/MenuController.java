@@ -1,6 +1,7 @@
 package com.example.approval24.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.approval24.domain.MenuDTO;
+import com.example.approval24.domain.PageInfoVO;
 import com.example.approval24.service.MenuService;
 
 @Controller
@@ -19,8 +21,19 @@ public class MenuController {
 
     // 1️⃣ 전체 메뉴 목록 조회
     @GetMapping("/list")
-    public String listMenus(Model model) {
-        List<MenuDTO> menus = menuService.getAllMenus();
+    public String listMenus(Model model,
+    		@RequestParam Map<String, Object> filterMap, 
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        
+        int totalCount = menuService.findCountAll(); 
+        PageInfoVO pageInfo = new PageInfoVO(page, pageSize, totalCount);
+        filterMap.put("startRow", pageInfo.getStartRow());
+        filterMap.put("endRow",pageInfo.getEndRow()); 
+        
+        //filterMap 
+        List<MenuDTO> menus = menuService.findfilterMenu(filterMap);
+        model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("menus", menus);
         return "A/menuList"; 
     }
