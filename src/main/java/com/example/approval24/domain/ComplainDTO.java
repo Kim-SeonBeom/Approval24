@@ -47,4 +47,7 @@ public class ComplainDTO {
 
 	private long receiverAccountId; // 접수자 id
 
+	//추가사항
+	private long instId;
+	
 }

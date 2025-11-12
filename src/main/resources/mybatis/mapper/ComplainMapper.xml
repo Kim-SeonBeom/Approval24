@@ -274,7 +274,7 @@
 		WHERE acc.account_id = #{accountId}
 		)
 
-		AND c.complain_status_cd = 'B001'
+		AND c.complain_status_cd = 'D001'
 
 		<if test="filter.complainCategoryId != null">
 			AND c.complain_category_id = #{filter.complainCategoryId}
@@ -331,7 +331,7 @@
 		ON acc.dept_id = dw.department_id
 		WHERE acc.account_id = #{accountId}
 		)
-		AND c.complain_status_cd = 'B001'
+		AND c.complain_status_cd = 'D001'
 
 		<if test="filter.complainCategoryId != null">
 			AND c.complain_category_id = #{filter.complainCategoryId}
