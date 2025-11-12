@@ -24,10 +24,8 @@ public class ApprovalHistoryService {
     private ComplainDAO complainDAO;
 
     @Transactional(readOnly = true) 
-    public List<ApprovalHistoryDTO> getMyApprovalHistoryList(
-            Long accountId, 
-            Map<String, Object> filterMap) {
-        return approvalHistoryDAO.selectMyApprovalHistoryList(accountId, filterMap);
+    public List<ApprovalHistoryDTO> getMyApprovalHistoryList(Map<String, Object> filterMap) {
+        return approvalHistoryDAO.selectMyApprovalHistoryList(filterMap);
     }
     
 
@@ -163,7 +161,11 @@ public class ApprovalHistoryService {
 		return approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 	}
 	
-	public int countMyAccountsByFilter(Map<String, Object> params) {
-		return approvalHistoryDAO.countMyApprovalHistoryList(params);
+	
+	public int countMyApprovalHistoryList(Map<String, Object> filterMap) {
+
+		return approvalHistoryDAO.countMyApprovalHistoryList(filterMap);
 	}
+
+
 }

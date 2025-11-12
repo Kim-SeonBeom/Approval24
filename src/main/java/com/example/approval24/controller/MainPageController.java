@@ -84,12 +84,12 @@ public class MainPageController {
 		
 		// 내 전체 민원
 		filters.put("accountId", userId);
-		int myTotalApproval = accountHistoryService.countMyAccountsByFilter(filters);
+		int myTotalApproval = accountHistoryService.countMyApprovalHistoryList(filters);
 		model.addAttribute("totalApproval", myTotalApproval);
 		
 		// 결재 대기중인 내 민원(History 상태 결재)
 		filters.put("approvalStatusCd", "E001");
-		int myWaitingApproval = accountHistoryService.countMyAccountsByFilter(filters);
+		int myWaitingApproval = accountHistoryService.countMyApprovalHistoryList(filters);
 		model.addAttribute("waitingApproval", myWaitingApproval);
 		
 		
@@ -97,13 +97,13 @@ public class MainPageController {
 		filters.remove("approvalStatusCd");
 		// 승인
 		filters.put("approvalStatusCd", "E002");
-		int myRefuseApproval = accountHistoryService.countMyAccountsByFilter(filters);
+		int myRefuseApproval = accountHistoryService.countMyApprovalHistoryList(filters);
 		model.addAttribute("refuseApproval", myRefuseApproval);
 		
 		// 반려한 결재
 		filters.remove("approvalStatusCd");
 		filters.put("approvalStatusCd", "E003");
-		int myapprovalsInTransit = accountHistoryService.countMyAccountsByFilter(filters);
+		int myapprovalsInTransit = accountHistoryService.countMyApprovalHistoryList(filters);
 		model.addAttribute("approvalInTransit", myapprovalsInTransit);
 		// -------------일반 끝---------------
 		
