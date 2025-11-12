@@ -52,7 +52,7 @@
               </if>
               AND A.DEL_YN = 'N'
               <if test="accountId != null">
-                AND A.ACCOUNT_ID = #{accountId}
+              AND A.ACCOUNT_ID = #{accountId}
               </if>
               <if test="loginId != null and loginId != ''">
                 AND A.LOGIN_ID LIKE '%' || #{loginId} || '%'

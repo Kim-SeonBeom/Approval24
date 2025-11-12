@@ -27,31 +27,31 @@ public class UserInfoControllerAdvice {
 
     @ModelAttribute
     public void addLoginUserInfo(HttpSession session, Model model) {
+        Object userObj = session.getAttribute("user");
+        if (userObj == null) return;
 
-        // 세션에서 로그인 정보 확인
-        Long userId = (Long) session.getAttribute("user");
-        System.out.println(userId);
-        if (userId == null) {
-            return; 
+        Long userId;
+        try {
+            userId = Long.valueOf(String.valueOf(userObj));
+        } catch (NumberFormatException e) {
+            return;
         }
 
-        // DB에서 사용자 정보 조회
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("accountId", userId);
 
         List<AccountDTO> dtoList = accountService.getAccountsByFilter(filterMap);
-        if (dtoList == null || dtoList.isEmpty()) {
-            return;
-        }
- 
+        if (dtoList == null || dtoList.isEmpty()) return;
 
         AccountDTO userInfo = dtoList.get(0);
-        if(userId != userInfo.getAccountId()) {
-        	return;
-        }
+        if (!userId.equals(userInfo.getAccountId())) return;
+
         InstDTO instDTO = instDAO.getInstById(userInfo.getInstId());
-        model.addAttribute("logininstName", instDTO.getInstName());
+        if (instDTO != null) {
+            model.addAttribute("logininstName", instDTO.getInstName());
+        }
         model.addAttribute("loginuserName", userInfo.getUserName());
         model.addAttribute("logindeptName", userInfo.getDeptName());
     }
+
 }
