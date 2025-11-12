@@ -52,11 +52,17 @@
 	values (#{instId}, #{deptId}, #{complainCategoryId}, #{accountId}, #{createId}, SYSDATE)
 </insert>
 
-<!-- 담당자배정 로직 -->
+<!-- 담당자배정 로직 - 랜덤 1명 -->
 <select id="ManagerAccountId" parameterType="long" resultType="long">
-	select account_id
-	from t1500_manager_assignment
-	where complain_category_id=#{complainCategoryId}
+  SELECT account_id
+  FROM (
+    SELECT account_id
+    FROM t1500_manager_assignment
+    WHERE complain_category_id = #{complainCategoryId}
+      AND del_yn = 'N'
+    ORDER BY dbms_random.value
+  )
+  WHERE ROWNUM = 1
 </select>
 
 <!-- Filter 적용한 목록 조회 -->
