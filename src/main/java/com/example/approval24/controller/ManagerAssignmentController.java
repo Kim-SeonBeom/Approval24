@@ -18,6 +18,8 @@ import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.ManagerAssignmentDTO;
+import com.example.approval24.service.AccountService;
+import com.example.approval24.service.InstService;
 import com.example.approval24.service.ManagerAssignmentService;
 
 @Controller
@@ -25,14 +27,28 @@ public class ManagerAssignmentController {
 	@Autowired
 	ManagerAssignmentService MAService;
 	
+	@Autowired
+	AccountService accountService;
+	
+	@Autowired
+	InstService instService;
+	
 	// 담당자배정 목록 (id에 따른 name 가져오기)
 	@GetMapping("/MA")
-	public String mangerAssignment(ManagerAssignmentDTO filter, Model model) {
+	public String mangerAssignment(ManagerAssignmentDTO filter, Model model, HttpSession session) {
+		
+		Long id = (Long)session.getAttribute("user");
+		if (id == null) {
+            return "redirect:/login";
+        }
+		
+		long findInstId = accountService.findInstIdByAccountId(id);
 		
 		// 최초 진입 (빈 리스트)
 		if (filter.isEmptyFilter()) {
 			model.addAttribute("MAList", Collections.emptyList());
 			model.addAttribute("filter", filter);
+			model.addAttribute("instName", instService.getInstById(findInstId));
 			model.addAttribute("totalCount", 0);
 			model.addAttribute("totalPages", 0);
 			return "A/managerAssignment";
@@ -41,9 +57,9 @@ public class ManagerAssignmentController {
 		// 조건 검색
 		int totalCount = MAService.countMA(filter);
 		List<ManagerAssignmentDTO> MAList = MAService.searchMA(filter);
-		
 		model.addAttribute("MAList", MAList);
 		model.addAttribute("filter", filter);
+		model.addAttribute("instName", instService.getInstById(findInstId));
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));
 		return "A/managerAssignment";
@@ -97,8 +113,18 @@ public class ManagerAssignmentController {
 	// 담당자배정 등록
 	@GetMapping("/MA/new")
 	public String MANew(Model model, @RequestParam(value = "inst_id", required = false) Long instId,
-									 @RequestParam(value = "dept_id", required = false) Long deptId) {
-		model.addAttribute("getAllInst", MAService.getAllInst());
+									 @RequestParam(value = "dept_id", required = false) Long deptId,
+									 HttpSession session) {
+		
+		Long id = (Long) session.getAttribute("user");
+        if (id == null) {
+            return "redirect:/login";
+        }
+        
+        
+		long findInstId = accountService.findInstIdByAccountId(id);
+		
+		model.addAttribute("instName", instService.getInstById(findInstId));
 		model.addAttribute("deptByInst", MAService.findDeptByInst(instId));
 		model.addAttribute("categoryByDept", MAService.findCategoryByDept(deptId));
 		model.addAttribute("accountByDept", MAService.findAccountByDept(deptId));

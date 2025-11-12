@@ -23,7 +23,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <img src="${pageContext.request.contextPath}/resources/assets/img/work24.png" width="40">
             </div>
-            <div class="sidebar-brand-text mx-3">결재24</div>
+            <div class="sidebar-brand-text ml-2 h-1"  style="font-size: 1.2rem;" >민원처리 시스템</div>
         </a>
     </div>
 
