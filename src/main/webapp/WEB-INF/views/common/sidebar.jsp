@@ -45,7 +45,7 @@
             String dataToggle = childMenus.isEmpty() ? "" : "collapse";
     %>
         <li class="nav-item">
-            <a class="nav-link" href="<%= parent.getMenuUrl() != null ? parent.getMenuUrl() : "#" %>" 
+            <a class="nav-link collapsed" href="<%= parent.getMenuUrl() != null ? parent.getMenuUrl() : "#" %>" 
                data-toggle="<%= dataToggle %>" 
                data-target="<%= dataTarget %>" 
                aria-expanded="false" aria-controls="collapse<%= parent.getMenuId() %>">
@@ -93,3 +93,5 @@
         });
     });
 </script>
+<!-- sidebar dropdown 고정 -->
+<script src="${pageContext.request.contextPath}/resources/assets/js/sidebar.js"></script>
