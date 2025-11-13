@@ -248,8 +248,8 @@ public class ComplainService {
 		}
 
 		public void saveem1(EM1DTO em1dto) {
+			complainDAO.updateStatusByComplainId(em1dto.getComplainId(),"D002");
 			em1DAO.updateInfo(em1dto);
-
 		}
 	
 	
