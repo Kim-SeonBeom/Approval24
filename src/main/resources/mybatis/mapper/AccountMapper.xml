@@ -24,6 +24,7 @@
                 U.USER_NO,
                 U.USER_NAME, 
                 A.INST_ID,
+                I.INST_NAME,
                 A.DEPT_ID,
                 D.DEPT_NAME, 
                 A.LOGIN_ID,
@@ -40,6 +41,7 @@
             FROM t1000_account A
             JOIN t1000_user U ON A.USER_NO = U.USER_NO
             LEFT JOIN t1000_department D ON A.DEPT_ID = D.DEPT_ID
+            LEFT JOIN t1000_institution I ON A.INST_ID = I.INST_ID
             LEFT JOIN total_code CC
                 ON A.ACCOUNT_STATUS_CD = CC.CODE_ID
                AND CC.GROUP_ID = 'B0'

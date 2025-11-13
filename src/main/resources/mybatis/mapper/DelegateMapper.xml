@@ -48,7 +48,8 @@
 		to_char(p.start_dt,'YYYY-MM-DD') as startDt,
 		to_char(p.end_dt,'YYYY-MM-DD') as endDt,
 		p.proxy_comment,
-		p.seq_no
+		p.seq_no,
+		p.del_yn
 		FROM
 		T2000_PROXY p
 		join t1000_account a on p.delegate_id=a.account_id
@@ -65,7 +66,8 @@
 		start_dt=#{startDt},
 		end_dt=#{endDt},
 		proxy_comment=#{proxyComment},
-		update_dt=SYSDATE
+		update_dt=SYSDATE,
+		del_yn = #{delYn}
 		where seq_no=#{seqNo}
 		and abs_id=#{absId}
 	</update>
