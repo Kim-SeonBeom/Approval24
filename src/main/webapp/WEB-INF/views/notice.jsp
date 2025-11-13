@@ -140,7 +140,7 @@
 													data-href="${pageContext.request.contextPath}/notice/detail/${item.noticeId}"
 													style="cursor: pointer;">
 													<td>${(filter.page - 1) * filter.size + status.index + 1}</td>
-													<td class="text-left">${item.title}</td>
+													<td class="text-left pl-3">${item.title}</td>
 													<td class="text-left">${item.categoryName}</td>
 													<td>${item.userName}</td>
 													<td>${item.createDt}</td>

@@ -22,4 +22,5 @@ public class ApprovalHistoryDTO {
     private String categoryCd;        
     private String categoryName;
     private String userName;
+    
 }
