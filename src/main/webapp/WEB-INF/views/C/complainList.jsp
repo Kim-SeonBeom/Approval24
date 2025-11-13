@@ -143,7 +143,7 @@
 												<tr class="clickable-row" data-href="${pageContext.request.contextPath}/complain/category/${categoryUrl}/${item.complainId}" style="cursor: pointer;">
 													<td>${(filter.page - 1) * filter.size + status.index + 1}</td>
 													<td>${item.complainId}</td>
-													<td>${item.categoryName}</td>
+													<td class="text-left pl-3">${item.categoryName}</td>
 													<td>${item.complainuserName}</td>
 													<td>${item.userName}</td>
 													<td>

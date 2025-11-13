@@ -152,10 +152,10 @@
 					          <thead class="thead-light">
 					            <tr>
 					              <th style="width:60px;">번호</th>
-					              <th>코드그룹ID</th>
-					              <th>코드ID</th>
-					              <th>코드명</th>
-					              <th>코드내용</th>
+					              <th style="width:90px;">코드그룹ID</th>
+					              <th style="width:90px;">코드ID</th>
+					              <th style="width:150px;">코드명</th>
+					              <th style="width:200px;">코드내용</th>
 					              <th style="width:90px;">삭제여부</th>
 					            </tr>
 					          </thead>
@@ -167,8 +167,8 @@
 					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
 					                <td>${item.groupId}</td>
 					                <td>${item.codeId}</td>
-					                <td>${item.codeName}</td>
-					                <td>${item.codeDetail}</td>
+					                <td class="text-left pl-3">${item.codeName}</td>
+					                <td class="text-left pl-3">${item.codeDetail}</td>
 					                <td>
 					                  <c:choose>
 					                    <c:when test="${item.delYn == 'Y'}"><span class="badge badge-secondary">삭제</span></c:when>

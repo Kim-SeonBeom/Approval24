@@ -154,7 +154,7 @@
 					                  data-href="${pageContext.request.contextPath}/authority/detail/${item.authorityId}"
 					                  style="cursor:pointer;">
 					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
-					                <td>${item.authorityName}</td>
+					                <td class="text-left pl-3">${item.authorityName}</td>
 					                <td><fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd"/></td>
 					                <td><fmt:formatDate value="${item.updateDt}" pattern="yyyy-MM-dd"/></td>
 					                <td>${item.isSystem}</td>

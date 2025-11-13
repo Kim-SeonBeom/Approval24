@@ -81,7 +81,7 @@
 										<c:forEach var="am" items="${authorityMenus}" varStatus="loopStatus">
 											<tr>
 												<td>${am.menuId}</td>
-												<td class="text-left">${am.menuName}</td>
+												<td class="text-left pl-3">${am.menuName}</td>
 												<td><input type="checkbox" name="readYn" value="Y" ${am.readYn == 'Y' ? 'checked' : ''} form="updateForm_${loopStatus.index}"></td>
 												<td><input type="checkbox" name="createYn" value="Y" ${am.createYn == 'Y' ? 'checked' : ''} form="updateForm_${loopStatus.index}"></td>
 												<td><input type="checkbox" name="updateYn" value="Y" ${am.updateYn == 'Y' ? 'checked' : ''} form="updateForm_${loopStatus.index}"></td>
@@ -158,7 +158,7 @@
 													<tr>
 														<td><input type="checkbox" name="menuIds" value="${menu.menuId}"></td>
 														<td>${menu.menuId}</td>
-														<td class="text-left">${menu.menuName}</td>
+														<td class="text-left pl-3">${menu.menuName}</td>
 														<td><input type="checkbox" name="readYn_${menu.menuId}" value="Y"></td>
 														<td><input type="checkbox" name="createYn_${menu.menuId}" value="Y"></td>
 														<td><input type="checkbox" name="updateYn_${menu.menuId}" value="Y"></td>

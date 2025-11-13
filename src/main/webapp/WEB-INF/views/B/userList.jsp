@@ -125,7 +125,7 @@
 							            <td>${pageInfo.startRow + status.index}</td>
 							            <td><c:out value="${user.userName}" /></td>
 							            <td><c:out value="${user.userPositionName}" /></td>
-							            <td><c:out value="${user.userEmail}" /></td>
+							            <td class="text-left pl-3"><c:out value="${user.userEmail}" /></td>
 							            <td><c:out value="${user.userPhone}" /></td>
 							            <td><fmt:formatDate value="${user.createDt}" pattern="yyyy-MM-dd"/></td>
 							          </tr>

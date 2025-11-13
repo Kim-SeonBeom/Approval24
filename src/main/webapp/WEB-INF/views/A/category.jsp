@@ -188,7 +188,7 @@
 					                  data-href="${pageContext.request.contextPath}/category/detail?complain_category_id=${item.complainCategoryId}"
 					                  style="cursor:pointer;">
 					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
-					                <td>${item.codeName}</td>
+					                <td class="text-left pl-3">${item.codeName}</td>
 					                <td>${item.codeId}</td>
 					                <td>${item.dueDt}</td>
 					                <td>${item.categoryUrl}</td>

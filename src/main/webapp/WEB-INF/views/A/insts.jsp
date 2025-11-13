@@ -176,9 +176,9 @@
 					                  data-href="${pageContext.request.contextPath}/insts/detail?inst_id=${item.instId}"
 					                  style="cursor:pointer;">
 					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
-					                <td>${item.instName}</td>
+					                <td class="text-left pl-3">${item.instName}</td>
 					                <td>${item.instHeadName}</td>
-					                <td class="text-left">${item.instAddress} <c:if test="${not empty item.instDetailAddress}">, ${item.instDetailAddress}</c:if></td>
+					                <td class="text-left pl-3">${item.instAddress} <c:if test="${not empty item.instDetailAddress}">, ${item.instDetailAddress}</c:if></td>
 					                <td>${item.instPhone}</td>
 					                <td>${item.createDt}</td>
 					                <td>${item.updateDt}</td>
