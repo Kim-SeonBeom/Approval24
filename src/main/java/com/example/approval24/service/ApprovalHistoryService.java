@@ -118,6 +118,7 @@ public class ApprovalHistoryService {
         
         List<ApprovalHistoryDTO> checkList = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 		ComplainDTO complainDto = complainDAO.findById(complainId);
+		ApprovalHistoryDTO managerDTO = approvalHistoryDAO.getComplainManager(complainId);
 		
 		if (complainDto == null) {
 		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
@@ -136,6 +137,7 @@ public class ApprovalHistoryService {
         else if (complainDto.getComplainStatusCd().equals("D006")) {
         	throw new IllegalArgumentException("이미 승인된 민원입니다.");
         }
+        
         
         for (int i = 0; i < approvalLine.size(); i++) {
             ApprovalHistoryDTO dto = approvalLine.get(i);
