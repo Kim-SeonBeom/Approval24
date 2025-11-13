@@ -44,24 +44,21 @@
                                 <thead class="thead-light">
                                     <tr>
                                     	<th class="text-center">번호</th>
-                                        <th class="text-center">메뉴ID</th>
+                                        <th class="text-center">관리번호</th>
                                         <th class="text-center">메뉴명</th>
                                         <th class="text-center">URL</th>
-                                        <th class="text-center">상위관리 번호</th>
+                                        <th class="text-center">상위관리번호</th>
                                         <th class="text-center">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="menu" items="${menus}" varStatus="status">
-                                        <tr>
+                                      
+                                        <tr class="clickable-row" data-href="${pageContext.request.contextPath}/menu/detail/${menu.menuId}" style="cursor: pointer;">
                                        		<td>${pageInfo.startRow + status.index}</td>
                                             <td width="100px">${menu.menuId}</td>
-                                            <td class="text-left" width="500px">
-                                                <a href="${pageContext.request.contextPath}/menu/detail/${menu.menuId}">
-                                                    ${menu.menuName}
-                                                </a>
-                                            </td>
-                                            <td class="text-left">${menu.menuUrl}</td>
+                                            <td class="text-left pl-3">${menu.menuName}</td>
+                                            <td class="text-left pl-3">${menu.menuUrl}</td>
                                             <td>${menu.parentMenuId}</td>
                                             <td>
                                                 <form action="${pageContext.request.contextPath}/menu/delete/${menu.menuId}" method="post" style="display:inline">

@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="seq">**순서(SEQ)**</label>
+                                <label for="seq">정렬순서</label>
                                 <input type="number" class="form-control" id="seq" name="seq" 
                                         value="${menu != null ? menu.seq : '100'}"
                                         placeholder="0 이상의 정수만 입력"
