@@ -13,6 +13,7 @@ public class AccountDTO {
     private Long accountId;          // ACCOUNT_ID
     private Long userNo;             // USER_NO
     private Long instId;             // INST_ID
+    private String instName;
     private Long deptId;             // DEPT_ID
     private String loginId;          // LOGIN_ID
     private String password;         // PASSWORD

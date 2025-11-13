@@ -243,7 +243,7 @@
 			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 			<script>
 				$("#delegateCreate").on('click', function() {
-					window.location.href="${pageContext.request.contextPath}/delegate/new";
+					window.location.href="${pageContext.request.contextPath}/delegate/create";
 				});
 				
 

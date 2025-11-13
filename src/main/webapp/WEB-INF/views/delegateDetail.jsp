@@ -109,6 +109,25 @@
 												<th>종료일</th>
 												<td><input type="date" class="form-control" name="endDt" class="form-control" value="${detail.endDt}" /></td>
 											</tr>
+											<!-- 삭제여부 -->
+											<tr>
+											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <td colspan="6">
+											    <div class="d-flex align-items-center" style="gap:16px;">
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
+											        <input type="radio" id="delYnN" name="delYn" value="N"
+											          <c:if test="${detail.delYn == 'N'}">checked="checked"</c:if> />
+											        <span class="ml-1">사용</span>
+											      </label>
+											
+											      <label class="d-inline-flex align-items-center mb-0" for="delYnY">
+											        <input type="radio" id="delYnY" name="delYn" value="Y"
+											          <c:if test="${detail.delYn == 'Y'}">checked="checked"</c:if> />
+											        <span class="ml-1">삭제</span>
+											      </label>
+											    </div>
+											  </td>
+											</tr>
 
 
 										</tbody>

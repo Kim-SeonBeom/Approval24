@@ -59,7 +59,7 @@
                                 </colgroup>
                                 <tbody>
                                     <tr>
-                                        <th>사용자 번호 (PK)</th>
+                                        <th>사번</th>
                                         <td><input type="text" class="form-control" value="${user.userNo}" readonly></td>
                                         
                                         <th>주민등록번호</th>
@@ -99,7 +99,7 @@
                                         <td><input type="text" class="form-control" value="${user.updateId}" readonly></td>
                                     </tr>
                                     <tr>
-                                        <th>상태 (DEL_YN)</th>
+                                        <th>상태</th>
                                         <td colspan="3">
                                             <select class="custom-select form-control" name="delYn">
                                                 <option value="N" ${user.delYn eq 'N' ? 'selected' : ''}>활성</option>
@@ -113,7 +113,7 @@
 
                         <hr>
                         
-                        <h6 class="m-0 font-weight-bold text-primary mb-3">연결된 계정 목록 (상태 코드만 수정 가능)</h6>
+                        <h6 class="m-0 font-weight-bold text-primary mb-3">연결된 계정 목록</h6>
                         
                         <c:if test="${empty accountList}">
                             <div class="alert alert-info text-center" role="alert">
@@ -126,12 +126,13 @@
                                 <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>계정 ID</th>
+                                            <th style="width:60px;">번호</th>
                                             <th>로그인 ID</th>
                                             <th>기관 ID</th>
                                             <th>부서명</th>
-                                            <th>**계정 상태**</th> <th>생성일</th>
-                                            <th>DEL_YN</th>
+                                            <th>계정 상태</th>
+                                            <th>생성일</th>
+                                            <th>삭제여부</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -139,13 +140,13 @@
                                             <tr>
                                                 <td>
                                                     <input type="hidden" name="accountList[${status.index}].accountId" value="${account.accountId}">
-                                                    ${account.accountId}
+                                                    ${(filter.page - 1) * filter.size + status.index + 1}
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control" value="${account.loginId}" readonly>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="${account.instId}" readonly>
+                                                    <input type="text" class="form-control" value="${account.instName}" readonly>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control" value="${account.deptName}" readonly>
