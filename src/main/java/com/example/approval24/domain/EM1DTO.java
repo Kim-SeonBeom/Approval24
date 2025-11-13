@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EM1DTO {
-
 	private long complainId;
 	private String bizOwnerNm;
 	private String industryType;
