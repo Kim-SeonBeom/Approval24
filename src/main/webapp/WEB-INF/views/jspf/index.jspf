@@ -41,7 +41,7 @@
 											</div>
 										</div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/ApprovalHistory/list" class="ml-4">전체 결재 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/history/list" class="ml-4">전체 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -60,7 +60,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/ApprovalHistory/list?approvalStatusCd=E001" class="ml-4">대기중인 결재 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/history/list?approvalStatusCd=E001" class="ml-4">대기중인 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                     <a href="${pageContext.request.contextPath}/ApprovalHistory/list?approvalStatusCd=E002" class="ml-4">승인한 결재 조회 →</a>
+                                     <a href="${pageContext.request.contextPath}/history/list?approvalStatusCd=E002" class="ml-4">승인한 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -98,7 +98,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                      <a href="${pageContext.request.contextPath}/ApprovalHistory/list?approvalStatusCd=E003" class="ml-4">반려한 결재 조회 →</a>
+                                      <a href="${pageContext.request.contextPath}/history/list?approvalStatusCd=E003" class="ml-4">반려한 결재 조회 →</a>
                                 </div>
                             </div>
 
@@ -125,7 +125,7 @@
                                                 <tr class="clickable-row" 
                                                     data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}" 
                                                     style="cursor: pointer;">
-                                                    <td class="text-left">${notice.title}</td>
+                                                    <td class="text-left pl-3">${notice.title}</td>
                                                     <td class="text-center">
                                                         <fmt:formatDate value="${notice.createDt}" pattern="yyyy-MM-dd" />
                                                     </td>
