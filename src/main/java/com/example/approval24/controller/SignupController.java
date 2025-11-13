@@ -56,7 +56,13 @@ public class SignupController {
 	 // 회원가입
     @GetMapping("/Form")
     public String loginPage(Model model) {
-    	List<InstDTO> inst = instDAO.getAllInst();
+    	List<InstDTO> instList = instDAO.getAllInst();
+    	List<InstDTO> inst = new ArrayList<>();
+    	for (InstDTO instDto : instList) {
+    		if (!instDto.getInstName().equals("시스템관리")) {
+                inst.add(instDto);
+            }
+    	}
     	model.addAttribute("instList", inst);
         return "/B/signUp"; 
     }

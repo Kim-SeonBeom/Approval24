@@ -21,10 +21,10 @@
 	JOIN t2000_complain_category CC ON T.category_cd = CC.category_cd
 	WHERE T.del_yn = 'N'
 				<if test="title != null and title !=''">
-				AND T.title = #{title}
+				AND T.title LIKE '%' || #{title} || '%'
 				</if>
 				<if test="userName != null and userName !=''">
-				AND U.user_name = #{userName}
+				AND U.user_name LIKE '%' || #{userName} || '%'
 				</if>
 				<if test="categoryName != null and categoryName !=''">
 				AND C.code_name = #{categoryName}

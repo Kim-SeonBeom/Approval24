@@ -26,9 +26,7 @@ public class NoticeService {
 	
 	// 공지사항 등록
 	public int saveNotice(NoticeDTO noticeDTO) {
-		System.out.println("등록 서비스 시작");
 		int result = noticeDAO.saveNotice(noticeDTO);
-		System.out.println("등록 서비스 끝");
 		return result;
 	}
 	// 공지사항 수정
@@ -39,10 +37,8 @@ public class NoticeService {
 	
 	// 공지사항 디테일
 	public NoticeDTO getnoticeDetail(Long noticeId) {
-		System.out.println("서비스 시작");
 		NoticeDTO dto = noticeDAO.getnoticeDetail(noticeId);
 		System.out.println(dto.toString());
-		System.out.println("서비스 끝");
 		return noticeDAO.getnoticeDetail(noticeId);
 	}
 	
