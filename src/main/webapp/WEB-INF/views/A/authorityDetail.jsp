@@ -78,7 +78,7 @@
 									</thead>
 
 									<tbody>
-										<c:forEach var="am" items="${authorityMenus}">
+										<c:forEach var="am" items="${authorityMenus}" varStatus="loopStatus">
 											<tr>
 												<td>${am.menuId}</td>
 												<td class="text-left">${am.menuName}</td>

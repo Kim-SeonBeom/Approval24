@@ -153,7 +153,7 @@ public class AccountService {
 			accountDAO.updateAccount(account);
 		}
 	}
-	
+	// ajax
 	public List<AccountDTO> accountsByInstDept(Long instId, Long deptId) {
 	    return accountDAO.findAccountsByInstAndDept(instId, deptId);
 	}
