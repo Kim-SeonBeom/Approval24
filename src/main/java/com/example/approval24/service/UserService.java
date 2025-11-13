@@ -24,6 +24,18 @@ public class UserService {
     public List<UserDTO> getUsers(Map<String, Object> params) {
         return userDAO.findUsersByFilter(params);
     }
+    
+    //페이징처리를 위한 카테고리별 user개수(Filter 적용)
+  	public int countInsts(UserDTO filter) {
+  		 return userDAO.countByFilter(filter);
+  	}
+  	
+  	//카테고리별 유저목록(Filter 적용)
+	public List<UserDTO> searchInsts(UserDTO filter) {
+	    return userDAO.findByFilter(filter); 
+	}
+    
+    
 
     // 2. 사용자 상세 조회 (주민번호 기준)
     public UserDTO getUserDetailByResidentNo(String userResidentNo) {

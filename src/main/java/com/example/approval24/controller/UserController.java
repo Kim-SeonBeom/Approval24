@@ -1,6 +1,7 @@
 package com.example.approval24.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.approval24.domain.AccountDTO;
-import com.example.approval24.domain.PageInfoVO;
 import com.example.approval24.domain.TotalCodeDTO;
 import com.example.approval24.domain.UserDTO;
 import com.example.approval24.service.AccountService;
@@ -43,51 +43,50 @@ public class UserController {
     // 사용자 목록 조회 
     @GetMapping("/list")
     public String listUsers(
-            @RequestParam Map<String, Object> params, 
+    		@RequestParam(value = "createDt", required = false) String createDtStr,
+            @RequestParam(value = "updateDt", required = false) String updateDtStr,
+            /*@RequestParam Map<String, Object> params, 
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,*/
+            UserDTO filter,
             HttpSession session,
-            Model model
-    ) {
+            Model model) {
+    	
     	Long accountId = (Long) session.getAttribute("user");
     	if(accountId == null) {
             return "redirect:/login";
         }
     	
     	Long instId = accountService.findInstIdByAccountId(accountId);
-    	if(instId == null) {
+    	
+    	filter.setInstId(instId);
+    	/*if(instId == null) {
             model.addAttribute("error", "소속 기관을 찾을 수 없습니다.");
             return "common/errorPage"; 
         }
     	if(instId != 1) { //시스템 기관에 속해 있으면. 모든 기관을 보여줌
     		params.put("instId", instId);
-    	}
-        // 페이징 파라미터를 Map에 추가
-        params.put("page", page);
-        params.put("pageSize", pageSize);
-        
-        // 총 항목 수 조회
-        int totalCount = userService.countUsersByFilter(params); 
-        
-        // PageInfoVO 생성 
-        PageInfoVO pageInfo = new PageInfoVO(page, pageSize, totalCount);
-
-        // 오라클 RNUM을 위한 시작/종료 로우를 Map에 추가
-        params.put("startRow", pageInfo.getStartRow());
-        params.put("endRow", pageInfo.getEndRow());
-        
-        // 페이징된 목록 조회 (Map을 받아 필터 및 페이징 적용)
-        List<UserDTO> users = userService.getUsers(params);
-        
-        // Model에 데이터 담기
-        List<TotalCodeDTO> codes = codeService.getTotalCodeByGroupId("A0");
-        
-        model.addAttribute("users", users);
-        model.addAttribute("codes", codes);
-        model.addAttribute("pageInfo", pageInfo); 
-        model.addAttribute("params", params); 
-        model.addAttribute("loggedInInstId", instId);
-
+    	}*/
+    	
+    	filter.applyDateStrings(createDtStr, updateDtStr);
+    	
+    	// 최초 진입 (빈 리스트)
+		if (filter.isEmptyFilter()) {
+			model.addAttribute("userList", Collections.emptyList());
+			model.addAttribute("filter", filter);
+			model.addAttribute("totalCount", 0);
+			model.addAttribute("totalPages", 0);
+			return "B/userList";
+		}
+		
+		// 조건 검색
+		int totalCount = userService.countInsts(filter);
+		List<UserDTO> userList = userService.searchInsts(filter);
+		
+		model.addAttribute("userList", userList);
+		model.addAttribute("filter", filter);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / filter.getSize()));
         return "B/userList";
     }
 

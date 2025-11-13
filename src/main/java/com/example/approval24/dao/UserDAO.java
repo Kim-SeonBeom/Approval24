@@ -29,4 +29,10 @@ public interface UserDAO {
 	int countUsersByFilter(Map<String, Object> params);
 
 	UserDTO findByUserNo(Long userNo);
+	
+	// 검색에 해당되는 목록 개수
+	public int countByFilter(UserDTO filter);
+	
+	// 검색 조건
+	public List<UserDTO> findByFilter(UserDTO filter);
 }
