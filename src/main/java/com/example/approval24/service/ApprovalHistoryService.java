@@ -38,7 +38,6 @@ public class ApprovalHistoryService {
         
         int result = 0;
         
-        
         if (approvalData.getSeqNo() == null) {
         	throw new IllegalArgumentException("결재시도는 SEQ_NO가 필수입니다.");
         }
@@ -85,20 +84,15 @@ public class ApprovalHistoryService {
         
         else if ("E003".equals(codeId)) { // 반려 로직
         	if(approvalData.getApproverTypeCd().equals("F002")) { // 담당자면
-        		if(nextApprovalData == null){
-        			result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
-        			complainDAO.updateStatusByComplainId(complainId, "D005"); // 민원 반려
-        		}
-        	}
-        	else { // 검토자나 승인자가 반려하는 경우 담당자가 결재 상태여야함.
         		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
-        		nextApprovalData = approvalHistoryDAO.getComplainManager(complainId);
-                nextApprovalData.setApprovalStatusCd("E001"); // 결재
-                approvalHistoryDAO.insertApprovalHistory(nextApprovalData);
+        		complainDAO.updateStatusByComplainId(complainId, "D005"); // 민원 반려
         	}
-
+        	else { // 검토자나 승인자가 반려하는 경우 
+        		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
+        	}
         	return result;
         } 
+        
         else if ("E005".equals(codeId)) { // 취하 로직
         	if(approvalData.getApproverTypeCd().equals("F002")) { //담당자면
         		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
@@ -122,11 +116,15 @@ public class ApprovalHistoryService {
             throw new IllegalArgumentException("민원 ID 또는 결재 라인 정보가 유효하지 않습니다.");
         }
         
-
+        List<ApprovalHistoryDTO> checkList = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 		ComplainDTO complainDto = complainDAO.findById(complainId);
 		
 		if (complainDto == null) {
 		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
+		}
+		
+		if(loginId.equals((Long)complainDto.getAccountId())) {
+			throw new IllegalArgumentException("담당자 계정이 아닙니다.");
 		}
 		
 		if (complainDto.getComplainStatusCd().equals("D004")) {
@@ -157,10 +155,11 @@ public class ApprovalHistoryService {
             		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
-                approvalStatusCd = "E002";  //승인
-            } else if (i == 1) {
-                approvalStatusCd = "E001"; // 결재
-            }
+            	if(checkList != null) {
+            		continue;
+            	}
+                approvalStatusCd = "E001";  // 결재
+            } 
             else {
             	approvalStatusCd = "E004"; // 대기
             }
@@ -190,4 +189,22 @@ public class ApprovalHistoryService {
 	}
 
 
+	public boolean checkHistoryManager(long complainId, Long userId) {
+	    List<ApprovalHistoryDTO> list = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
+	    if (list == null || list.isEmpty()) return false;
+
+	    boolean hasUserE001 = false;  // 본인 E001 존재 여부
+	    boolean hasOtherE001 = false; // 다른 사람 E001 존재 여부
+
+	    for (ApprovalHistoryDTO dto : list) {
+	        if ("E001".equals(dto.getApprovalStatusCd())) {
+	            if (dto.getAccountId().equals(userId)) {
+	                hasUserE001 = true;   
+	            } else {
+	                hasOtherE001 = true;  
+	            }
+	        }
+	    }
+	    return hasUserE001 || !hasOtherE001;
+	}
 }

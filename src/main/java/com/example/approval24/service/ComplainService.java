@@ -321,4 +321,12 @@ public class ComplainService {
         return complainDAO.findByFilter(filter); 
     }
 
+	public void setComplainStatus(Long complainId, String codeId) {
+		complainDAO.updateStatusByComplainId(complainId, codeId);
+	}
+
+	public ComplainDTO getComplainById(long complainId)
+	{
+		return complainDAO.findById(complainId);
+	}
 }
