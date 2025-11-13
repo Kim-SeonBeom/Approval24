@@ -7,9 +7,6 @@ public class NoticeFilterDTO {
     private Long complainCategoryId;
     private String noticeId;
     private String categoryCd;
-
-    private String dateType;       
-    private String createDate;      
     
     private String createDt;     
     private String startDate;        

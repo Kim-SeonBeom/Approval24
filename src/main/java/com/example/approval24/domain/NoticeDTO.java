@@ -19,5 +19,6 @@ public class NoticeDTO {
 	private Long updateId;
 	private String popupYn;
 	private String delYn;
+    private Long complainCategoryId;
 
 }

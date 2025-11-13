@@ -40,15 +40,7 @@ public class NoticeController {
 		List<CategoryDTO> categoryList = categoryService.getCategoryList();
 		model.addAttribute("categoryList",categoryList);									//민원서식목록
 
-		// 초기 진입(검색 없음)
-		if (filter.isEmptyFilter()) {
-			model.addAttribute("noticeList", java.util.Collections.emptyList());			//빈  공지사항
-			model.addAttribute("filter", filter);											//필터
-			return "/notice";
-		}
-		
 		//필터조건에 맞는 리스트 찾기
-		System.out.println("리스트 찾기");
 		int totalCount = noticeService.noticeCountFilter(filter);
 		List<NoticeDTO> noticeList = noticeService.noticeFilterList(filter);
 		
@@ -67,7 +59,7 @@ public class NoticeController {
 	
 	@GetMapping("/notice/detail/{noticeId}")
 	public String noticeDetail(@PathVariable long noticeId, Model model) {
-		
+
 		NoticeDTO notice = noticeService.getnoticeDetail(noticeId);
 		
 		// 조회수 증가
@@ -77,12 +69,16 @@ public class NoticeController {
 	}
 
 	@GetMapping("/notice/new")
-	public String noticeWrite() {
+	public String noticeWrite(Model model) {
+		List<CategoryDTO> categoryList = categoryService.getCategoryList();
+		model.addAttribute("categoryList",categoryList);					
 		return "/noticeWrite";
 	}
 	
 	@PostMapping("/notice/save")
 	public String saveNotice(NoticeDTO notice) {
+		CategoryDTO dto= categoryService.CategoryInfo(notice.getComplainCategoryId());
+		notice.setCategoryCd(dto.getCategoryCd());
 		noticeService.saveNotice(notice);
 		return "redirect:/notice";
 	}
@@ -90,12 +86,16 @@ public class NoticeController {
 	@GetMapping("/notice/edit/{noticeId}")
 	public String editNotice(@PathVariable long noticeId, Model model) {
 		NoticeDTO notice = noticeService.getnoticeDetail(noticeId);
+		List<CategoryDTO> categoryList = categoryService.getCategoryList();
+		model.addAttribute("categoryList",categoryList);		
 		model.addAttribute("notice", notice);
 		return "/noticeEdit";
 	}
 	// 업데이트 반영
 	@PostMapping("/notice/update")
 	public String updateNotice(NoticeDTO notice) {
+		CategoryDTO dto= categoryService.CategoryInfo(notice.getComplainCategoryId());
+		notice.setCategoryCd(dto.getCategoryCd());
 		noticeService.updateNotice(notice);		
 		return "redirect:/notice/detail/" + notice.getNoticeId();
 	}

@@ -66,7 +66,7 @@
 												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
 												<!-- 나중에 로그인 정보를 가져와 해당 유저의 insert -->
 												<td><input type="text" class="form-control form-control-sm" value="${loginuserName}"  readonly>
-														<input type="hidden" name="createId" value="${sessionScope.authUser.accountId}"></td>
+														<input type="hidden" name="createId" value="${sessionScope.user}"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
 												<td>
 													<input type="text" class="form-control form-control-sm" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" readonly>
@@ -83,44 +83,16 @@
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold">카테고리 선택</th>
 												<td colspan="3">
-													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeAll" name="categoryCd" value="" class="custom-control-input"  > 
-														<label class="custom-control-label" for="typeAll">전체 공지</label>
-													</div>
-
-													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeSupport" name="categoryCd"class="custom-control-input" value="1" >
-														<label class="custom-control-label" for="typeSupport">취업지원</label>
-													</div>
-													
-													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeBaby" name="categoryCd"class="custom-control-input" value="2" >
-														<label class="custom-control-label" for="typeBaby">출산</label>
-													</div>
-													
-													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeLost" name="categoryCd"class="custom-control-input" value="3" >
-														<label class="custom-control-label" for="typeLost">실업자</label>
-													</div>
+												<select class="form-control mr-2" id="complainCategoryId" name="complainCategoryId" style="min-width: 220px;">
+													<option value="">전체</option>
+														<c:forEach var="list" items="${categoryList}">
+														<option value="${list.complainCategoryId}" <c:if test="${filter.complainCategoryId == list.complainCategoryId}">selected</c:if>>${list.categoryName}</option>
+													</c:forEach>
+												</select>
 													
 												</td>
 											</tr>
 											
-											<!-- 팝업 공지 유무 -->
-											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">공지구분</th>
-												<td colspan="3">
-													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typePopup" name="popupYn"class="custom-control-input" value="Y"> 
-														<label class="custom-control-label" for="typePopup">팝업 공지</label>
-													</div>
-
-													<div class="custom-control custom-radio custom-control-inline">
-														<input type="radio" id="typeNormal" name="popupYn"class="custom-control-input" value="N" checked>
-														<label class="custom-control-label" for="typeNormal">일반 공지</label>
-													</div>
-												</td>
-											</tr>
 											
 											
 										</tbody>
