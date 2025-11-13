@@ -85,12 +85,12 @@
 					          <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="delYn" id="delY" value="Y"
 					                   ${filter.delYn == 'Y' ? 'checked' : ''}>
-					            <label class="form-check-label" for="delY">Y</label>
+					            <label class="form-check-label" for="delY">삭제</label>
 					          </div>
 					          <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="delYn" id="delN" value="N"
 					                   ${filter.delYn == 'N' ? 'checked' : ''}>
-					            <label class="form-check-label" for="delN">N</label>
+					            <label class="form-check-label" for="delN">사용</label>
 					          </div>
 					          <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="delYn" id="delAll" value=""

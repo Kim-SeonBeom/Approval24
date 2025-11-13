@@ -28,17 +28,17 @@
 					<div class="d-sm-flex align-items-center mb-4">
 						<h1 class="mb-2 text-gray-800">권한 상세</h1>
 					</div>
-					<div class="card shadow mb-4" style="max-width: 600px;">
+					<div class="border-left-primary shadow mb-4" style="max-width: 600px;">
 						<div class="card-header py-3">
 							<div class="align-items-center mb-1">
 								<h5>
-									<strong>권한 번호 : </strong> ${authority.authorityId}
+									<strong class="text-primary">권한 번호 : </strong> ${authority.authorityId}
 								</h5>
 								<%-- <strong>설명:</strong> ${authority.description} <br> --%>
 							</div>
 							<div class="align-items-center mb-1">
 								<h5>
-									<strong>권한명 : </strong> ${authority.authorityName}
+									<strong  class="text-primary">권한명 : </strong> ${authority.authorityName}
 								</h5>
 							</div>
 						</div>

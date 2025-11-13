@@ -4,7 +4,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-
+<title>기관 목록</title>
 </head>
 
 <body id="page-top">
@@ -64,11 +64,11 @@
 					        <label class="col-sm-2 col-form-label font-weight-bold text-center">등록/수정일</label>
 					        <div class="col-sm-10">
 					          <div class="form-inline">
-					            <select class="form-control mr-2" id="dateType" name="dateType" style="width:120px;">
+					            <select class="form-control mr-2" id="dateType" name="dateType" style="width:130px;">
 					              <option value="createDt" ${filter.dateType == 'createDt' ? 'selected' : ''}>등록일</option>
 					              <option value="updateDt" ${filter.dateType == 'updateDt' ? 'selected' : ''}>수정일</option>
 					            </select>
-					            <input type="date" class="form-control mr-2" id="createDt" name="createDt"
+					            <input type="date" class="form-control mr-2 ml-3" id="createDt" name="createDt"
 					                   value="${filter.createDt}" style="width:180px;">
 					            <span class="mx-1">~</span>
 					            <input type="date" class="form-control ml-2" id="updateDt" name="updateDt"
@@ -84,12 +84,12 @@
 					          <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="delYn" id="delY" value="Y"
 					                   ${filter.delYn == 'Y' ? 'checked' : ''}>
-					            <label class="form-check-label" for="delY">Y</label>
+					            <label class="form-check-label" for="delY">삭제</label>
 					          </div>
 					          <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="delYn" id="delN" value="N"
 					                   ${filter.delYn == 'N' ? 'checked' : ''}>
-					            <label class="form-check-label" for="delN">N</label>
+					            <label class="form-check-label" for="delN">사용</label>
 					          </div>
 					          <div class="form-check form-check-inline">
 					            <input class="form-check-input" type="radio" name="delYn" id="delAll" value=""
