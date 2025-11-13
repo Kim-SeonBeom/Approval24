@@ -46,38 +46,194 @@
 							</button>
 						</div>
 					</c:if>
+					
+					<div class="card shadow mb-4">
+					  <div class="card-header py-3 d-flex justify-content-between align-items-center">
+					    <h6 class="m-0 font-weight-bold text-primary">검색 및 필터링</h6>
+					    <button class="btn btn-primary btn-sm" type="submit" form="delegateFilterForm">검색</button>
+					  </div>
+					
+					  <div class="card-body">
+					    <form id="delegateFilterForm" action="${pageContext.request.contextPath}/delegate" method="get">
+					      
+					      <!-- 1) 시작/종료일 검색 -->
+					      <div class="form-group row align-items-center mb-3">
+					        <label class="col-sm-2 col-form-label font-weight-bold text-center">시작/종료일</label>
+					        <div class="col-sm-10">
+					          <div class="form-inline">
+					            <select class="form-control mr-2" id="dateType" name="dateType" style="width:120px;">
+					              <option value="startDt" ${filter.dateType == 'startDt' ? 'selected' : ''}>시작일</option>
+					              <option value="endDt" ${filter.dateType == 'endDt' ? 'selected' : ''}>종료일</option>
+					            </select>
+					            <input type="date" class="form-control mr-2" id="startDt" name="startDt"
+					                   value="${filter.startDt}" style="width:180px;">
+					            <span class="mx-1">~</span>
+					            <input type="date" class="form-control ml-2" id="endDt" name="endDt"
+					                   value="${filter.endDt}" style="width:180px;">
+					          </div>
+					        </div>
+					      </div>
+					
+					      <!-- 2) 삭제여부 -->
+					      <div class="form-group row align-items-center mb-3">
+					        <label class="col-sm-2 col-form-label font-weight-bold text-center">삭제여부</label>
+					        <div class="col-sm-10">
+					          <div class="form-check form-check-inline">
+					            <input class="form-check-input" type="radio" name="delYn" id="delN" value="N"
+					                   ${filter.delYn == 'N' ? 'checked' : ''}>
+					            <label class="form-check-label" for="delN">사용</label>
+					          </div>
+					          <div class="form-check form-check-inline">
+					            <input class="form-check-input" type="radio" name="delYn" id="delY" value="Y"
+					                   ${filter.delYn == 'Y' ? 'checked' : ''}>
+					            <label class="form-check-label" for="delY">삭제</label>
+					          </div>
+					          <div class="form-check form-check-inline">
+					            <input class="form-check-input" type="radio" name="delYn" id="delAll" value=""
+					                   ${empty filter.delYn ? 'checked' : ''}>
+					            <label class="form-check-label" for="delAll">전체</label>
+					          </div>
+					        </div>
+					      </div>
+					
+					      <!-- 3) 대결자 -->
+					      <div class="form-group row align-items-center mb-3">
+					        <label for="delegateUserName" class="col-sm-2 col-form-label font-weight-bold text-center">대결자</label>
+					        <div class="col-sm-10">
+					          <input type="text" class="form-control w-25" id="delegateUserName" name="delegateUserName"
+					                 value="${filter.delegateUserName}" placeholder="대결자 입력">
+					        </div>
+					      </div>
+					
+					      <!-- 4) 사유 -->
+					      <div class="form-group row align-items-center mb-3">
+					        <label for="proxyComment" class="col-sm-2 col-form-label font-weight-bold text-center">사유</label>
+					        <div class="col-sm-10">
+					          <input type="text" class="form-control w-25" id="proxyComment" name="proxyComment"
+					                 value="${filter.proxyComment}" placeholder="사유 입력">
+					        </div>
+					      </div>
+					
+					      <!-- 페이징 -->
+					      <input type="hidden" name="page" id="page" value="${filter.page}">
+					      <input type="hidden" name="size" value="${filter.size}">
+					    </form>
+					  </div>
+					</div>
 
 					<div class="card shadow mb-4">
-						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">대결자 목록</h6>
-							<button class="btn btn-primary btn-sm" id="write" style="font-size: 1rem; padding: 0.25rem 0.75rem;">등록</button>
-
-						</div>
-						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-									<thead>
-										<tr>
-											<th>관리번호</th>
-											<th>대결자</th>
-											<th>시작일</th>
-											<th>종료일</th>
-											<th>사유</th>
-										</tr>
-									</thead>
-									<c:forEach var="item" items="${myDelegateList}">
-										<tr class="clickable-row" data-href="/approval24/delegate/${item.seqNo}" style="cursor: pointer;">
-											<td>${item.seqNo }</td>
-											<td>${item.delegateUserName}</td>
-											<td>${item.startDt}</td>
-											<td>${item.endDt}</td>
-											<td>${item.proxyComment}</td>
-										</tr>
-									</c:forEach>
-									</tbody>
-								</table>
-							</div>
-						</div>
+					  <div class="card-header py-3 d-flex align-items-center justify-content-between">
+					    <h6 class="m-0 font-weight-bold text-primary">대결자관리 목록</h6>
+					    <a class="btn btn-primary btn-sm" id="delegateCreate"
+					       href="${pageContext.request.contextPath}/delegate/new"
+					       style="font-size:1rem; padding:0.25rem 0.75rem;">+ 대결자 등록</a>
+					  </div>
+					
+					  <div class="card-body">
+					    <!-- 빈 상태 안내 -->
+					    <c:if test="${empty delegateList}">
+					      <div class="text-center text-muted py-4">
+					        검색 조건을 입력하고 <b>검색</b>을 눌러주세요.
+					      </div>
+					    </c:if>
+					
+					    <c:if test="${not empty delegateList}">
+					      <div class="mb-2 text-left text-muted">
+					        총 <b>${totalCount}</b>건
+					      </div>
+					
+					      <div class="table-responsive">
+					        <table class="table table-bordered table-hover table-sm text-center align-middle">
+					          <thead class="thead-light">
+					            <tr>
+					              <th style="width:60px;">번호</th>
+					              <th style="width:60px;">순번</th>
+					              <th style="width:150px;">대결자</th>
+					              <th style="width:120px;">시작일</th>
+					              <th style="width:120px;">종료일</th>
+					              <th>사유</th>
+					              <th style="width:90px;">삭제여부</th>
+					            </tr>
+					          </thead>
+					          <tbody>
+					            <c:forEach var="item" items="${delegateList}" varStatus="status">
+					              <tr class="clickable-row"
+					                  data-href="${pageContext.request.contextPath}/delegate/detail/${item.seqNo}"
+					                  style="cursor:pointer;">
+					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
+					                <td>${item.seqNo}</td>
+					                <td>${item.delegateUserName}</td>
+					                <td>${item.startDt}</td>
+					                <td>${item.endDt}</td>
+					                <td style="text-align:left;">${item.proxyComment}</td>
+					                <td>
+					                  <c:choose>
+					                    <c:when test="${item.delYn == 'Y'}"><span class="badge badge-secondary">삭제</span></c:when>
+					                    <c:when test="${item.delYn == 'N'}"><span class="badge badge-success">사용</span></c:when>
+					                    <c:otherwise><span class="badge badge-light">${item.delYn}</span></c:otherwise>
+					                  </c:choose>
+					                </td>
+					              </tr>
+					            </c:forEach>
+					          </tbody>
+					        </table>
+					      </div>
+					
+					      <!-- 페이지네이션 -->
+					      <c:set var="curr" value="${filter.page}" />
+					      <c:set var="last" value="${totalPages}" />
+					      <nav aria-label="Page navigation" class="mt-3">
+					        <ul class="pagination justify-content-center">
+					          <!-- Prev -->
+					          <li class="page-item ${curr <= 1 ? 'disabled' : ''}">
+					            <a class="page-link"
+					               href="<c:url value='/delegate'>
+					                        <c:param name='page' value='${curr-1}'/>
+					                        <c:param name='size' value='${filter.size}'/>
+					                        <c:if test='${not empty filter.dateType}'><c:param name='dateType' value='${filter.dateType}'/></c:if>
+					                        <c:if test='${not empty filter.startDt}'><c:param name='startDt' value='${filter.startDt}'/></c:if>
+					                        <c:if test='${not empty filter.endDt}'><c:param name='endDt' value='${filter.endDt}'/></c:if>
+					                        <c:if test='${not empty filter.delYn}'><c:param name='delYn' value='${filter.delYn}'/></c:if>
+					                        <c:if test='${not empty filter.delegateUserName}'><c:param name='delegateUserName' value='${filter.delegateUserName}'/></c:if>
+					                        <c:if test='${not empty filter.proxyComment}'><c:param name='proxyComment' value='${filter.proxyComment}'/></c:if>
+					                    </c:url>">이전</a>
+					          </li>
+					
+					          <!-- Pages -->
+					          <c:forEach begin="1" end="${last}" var="p">
+					            <li class="page-item ${p == curr ? 'active' : ''}">
+					              <a class="page-link"
+					                 href="<c:url value='/delegate'>
+					                        <c:param name='page' value='${p}'/>
+					                        <c:param name='size' value='${filter.size}'/>
+					                        <c:if test='${not empty filter.dateType}'><c:param name='dateType' value='${filter.dateType}'/></c:if>
+					                        <c:if test='${not empty filter.startDt}'><c:param name='startDt' value='${filter.startDt}'/></c:if>
+					                        <c:if test='${not empty filter.endDt}'><c:param name='endDt' value='${filter.endDt}'/></c:if>
+					                        <c:if test='${not empty filter.delYn}'><c:param name='delYn' value='${filter.delYn}'/></c:if>
+					                        <c:if test='${not empty filter.delegateUserName}'><c:param name='delegateUserName' value='${filter.delegateUserName}'/></c:if>
+					                        <c:if test='${not empty filter.proxyComment}'><c:param name='proxyComment' value='${filter.proxyComment}'/></c:if>
+					                      </c:url>">${p}</a>
+					            </li>
+					          </c:forEach>
+					
+					          <!-- Next -->
+					          <li class="page-item ${curr >= last ? 'disabled' : ''}">
+					            <a class="page-link"
+					               href="<c:url value='/delegate'>
+					                        <c:param name='page' value='${curr+1}'/>
+					                        <c:param name='size' value='${filter.size}'/>
+					                        <c:if test='${not empty filter.dateType}'><c:param name='dateType' value='${filter.dateType}'/></c:if>
+					                        <c:if test='${not empty filter.startDt}'><c:param name='startDt' value='${filter.startDt}'/></c:if>
+					                        <c:if test='${not empty filter.endDt}'><c:param name='endDt' value='${filter.endDt}'/></c:if>
+					                        <c:if test='${not empty filter.delYn}'><c:param name='delYn' value='${filter.delYn}'/></c:if>
+					                        <c:if test='${not empty filter.delegateUserName}'><c:param name='delegateUserName' value='${filter.delegateUserName}'/></c:if>
+					                        <c:if test='${not empty filter.proxyComment}'><c:param name='proxyComment' value='${filter.proxyComment}'/></c:if>
+					                    </c:url>">다음</a>
+					          </li>
+					        </ul>
+					      </nav>
+					    </c:if>
+					  </div>
 					</div>
 				</div>
 
@@ -86,12 +242,18 @@
 
 			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 			<script>
-				$("#write")
-						.on(
-								'click',
-								function() {
-									window.location.href = "${pageContext.request.contextPath}/delegate/new";
-								});
+				$("#delegateCreate").on('click', function() {
+					window.location.href="${pageContext.request.contextPath}/delegate/new";
+				});
+				
+
+				// 테이블 행 클릭 시 상세로 이동
+				document.addEventListener('click', function (e) {
+				  const tr = e.target.closest('.clickable-row');
+				  if (tr && tr.dataset.href) {
+				    location.href = tr.dataset.href;
+				  }
+				});
 			</script>
 
 		</div>

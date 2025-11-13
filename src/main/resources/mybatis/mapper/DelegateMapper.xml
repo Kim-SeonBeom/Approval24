@@ -19,8 +19,6 @@
 		join
 		t1000_user u on a.user_no=u.user_no
 		WHERE p.abs_id = #{accountId}
-		AND
-		p.DEL_YN = 'N'
 		and p.end_dt > SYSDATE
 		ORDER BY p.SEQ_NO
 	</select>
@@ -79,6 +77,142 @@
 		update_dt=SYSDATE
 		where seq_no=#{seqNo}
 	</update>
+	
+
+<!-- Filter 적용한 목록 조회 -->
+<select id="findByFilter" parameterType="DelegateDTO" resultType="DelegateDTO">
+  SELECT
+    p.abs_id,
+    p.delegate_id,
+    u.user_name AS delegateUserName,
+    TO_CHAR(p.start_dt,  'YYYY-MM-DD') AS startDt,
+    TO_CHAR(p.end_dt,    'YYYY-MM-DD') AS endDt,
+    p.proxy_comment,
+    p.seq_no,
+    p.del_yn,
+    TO_CHAR(p.create_dt, 'YYYY-MM-DD') AS createDt,
+    TO_CHAR(p.update_dt, 'YYYY-MM-DD') AS updateDt
+  FROM T2000_PROXY p
+  JOIN T1000_ACCOUNT a ON p.delegate_id = a.account_id
+  JOIN T1000_USER    u ON a.user_no    = u.user_no
+  <where>
+    <!-- 삭제여부 -->
+    <if test="delYn != null and delYn != ''">
+      AND p.del_yn = #{delYn}
+    </if>
+    
+    <if test="absId != null">
+      AND p.abs_id = #{absId}
+    </if>
+
+    <!-- 대결자 이름 LIKE : u.user_name 사용 -->
+    <if test="delegateUserName != null and delegateUserName != ''">
+      AND u.user_name LIKE '%' || #{delegateUserName} || '%'
+    </if>
+
+    <!-- 사유 LIKE -->
+    <if test="proxyComment != null and proxyComment != ''">
+      AND p.proxy_comment LIKE '%' || #{proxyComment} || '%'
+    </if>
+
+    <!-- 순번 (필요하면 사용) -->
+    <if test="seqNo != null and seqNo != ''">
+      AND p.seq_no = #{seqNo}
+    </if>
+
+    <!-- 기간 필터: startDt / endDt 전용 -->
+    <if test="dateType != null and dateType != '' 
+              and startDt != null and startDt != '' 
+              and endDt   != null and endDt   != ''">
+      <choose>
+        <when test="dateType == 'startDt'">
+          <![CDATA[
+            AND p.start_dt >= TO_DATE(#{startDt}, 'YYYY-MM-DD')
+            AND p.start_dt <  TO_DATE(#{endDt},   'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'endDt'">
+          <![CDATA[
+            AND p.end_dt >= TO_DATE(#{startDt}, 'YYYY-MM-DD')
+            AND p.end_dt <  TO_DATE(#{endDt},   'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+      </choose>
+    </if>
+  </where>
+
+  <!-- 정렬: 기간 기준 or 기본 -->
+  <choose>
+    <when test="dateType == 'startDt'">
+      ORDER BY p.start_dt DESC, p.abs_id DESC
+    </when>
+    <when test="dateType == 'endDt'">
+      ORDER BY p.end_dt DESC, p.abs_id DESC
+    </when>
+    <otherwise>
+      ORDER BY p.abs_id DESC
+    </otherwise>
+  </choose>
+
+  OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+</select>
+
+	
+	
+<!-- 페이징용 전체 건수 -->
+<select id="countByFilter" parameterType="DelegateDTO" resultType="int">
+  SELECT COUNT(1)
+  FROM T2000_PROXY p
+  JOIN T1000_ACCOUNT a ON p.delegate_id = a.account_id
+  JOIN T1000_USER    u ON a.user_no    = u.user_no
+  <where>
+    <!-- 삭제여부 -->
+    <if test="delYn != null and delYn != ''">
+      AND p.del_yn = #{delYn}
+    </if>
+    
+    <if test="absId != null">
+      AND p.abs_id = #{absId}
+    </if>
+
+    <!-- 대결자 이름 LIKE -->
+    <if test="delegateUserName != null and delegateUserName != ''">
+      AND u.user_name LIKE '%' || #{delegateUserName} || '%'
+    </if>
+
+    <!-- 사유 LIKE -->
+    <if test="proxyComment != null and proxyComment != ''">
+      AND p.proxy_comment LIKE '%' || #{proxyComment} || '%'
+    </if>
+
+    <!-- 순번 -->
+    <if test="seqNo != null and seqNo != ''">
+      AND p.seq_no = #{seqNo}
+    </if>
+
+    <!-- 기간 필터 (startDt / endDt 전용) -->
+    <if test="dateType != null and dateType != '' 
+              and startDt != null and startDt != '' 
+              and endDt   != null and endDt   != ''">
+      <choose>
+        <when test="dateType == 'startDt'">
+          <![CDATA[
+            AND p.start_dt >= TO_DATE(#{startDt}, 'YYYY-MM-DD')
+            AND p.start_dt <  TO_DATE(#{endDt},   'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+        <when test="dateType == 'endDt'">
+          <![CDATA[
+            AND p.end_dt >= TO_DATE(#{startDt}, 'YYYY-MM-DD')
+            AND p.end_dt <  TO_DATE(#{endDt},   'YYYY-MM-DD') + 1
+          ]]>
+        </when>
+      </choose>
+    </if>
+  </where>
+</select>
+
+
 
 
 
