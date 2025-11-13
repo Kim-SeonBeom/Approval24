@@ -42,5 +42,16 @@ public class DelegateService {
 		
 		return delegateDAO.deleteDelegate(seqNo);
 	}
+	
+	
+	//페이징처리를 위한 카테고리별 대결자(Filter 적용)
+	public int countDelegate(DelegateDTO filter) {
+		 return delegateDAO.countByFilter(filter);
+	}
+	
+	//카테고리별 기관목록(Filter 적용)
+    public List<DelegateDTO> searchDelegate(DelegateDTO filter) {
+        return delegateDAO.findByFilter(filter); 
+    }
 
 }

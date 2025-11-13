@@ -69,16 +69,13 @@
 								<button type="button" class="btn btn-primary btn-sm" id="btnUpdateTop">
 									<i class="fas fa-edit mr-1"></i>수정
 								</button>
-								<button type="button" class="btn btn-danger btn-sm ml-2" id="btnDeleteTop">
-									<i class="fas fas-trash-alt mr-1"></i>삭제
-								</button>
 
 							</div>
 
 						</div>
 
 						<div class="card-body">
-							<form id="submitForm" action="/approval24/delegate/${detail.seqNo}" method="post">
+							<form id="submitForm" action="/approval24/delegate/detail/${detail.seqNo}" method="post">
 								<div class="table-responsive">
 									<table class="table table-bordered table-sm kv-table">
 										<colgroup>
@@ -120,6 +117,9 @@
 							</form>
 						</div>
 					</div>
+					<div class="d-flex justify-content-between mt-4">
+						<a href="${pageContext.request.contextPath}/delegate" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록</a>
+					</div>
 
 				</div>
 			</div>
@@ -133,99 +133,37 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
-		$(document)
-				.ready(
-						function() {
-							const $updateForm = $('#submitForm');
-							const updateActionUrl = $updateForm.attr('action');
-							const deleteActionUrl = '/approval24/delegate/${detail.seqNo}/delete';
+	$(document).ready(function () {
 
-							const $textInputs = $updateForm
-									.find('input:not([type=button]):not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]), textarea');
-							const $choiceInputs = $updateForm
-									.find('select, input[type=checkbox], input[type=radio], input[type=file]');
-							const $addressButton = $('#btnSearchAddress');
+		  // 폼 & URL 
+		  const $updateForm = $('#submitForm');           // 폼 id 확인
+		  const updateActionUrl = $updateForm.attr('action');
 
-							function setEditMode(isEdit) {
+		  $('#btnUpdateTop').on('click', function (e) {
+		    e.preventDefault();
 
-								$textInputs.prop('readonly', !isEdit);
-								$choiceInputs.prop('disabled', !isEdit);
+		    const formEl = $updateForm.get(0);
 
-								const $btn = $('#btnUpdateTop');
-								if (isEdit) {
-									$btn
-											.html(
-													'<i class="fas fa-save mr-1"></i>저장')
-											.removeClass('btn-primary')
-											.addClass('btn-success');
-								} else {
-									$btn
-											.html(
-													'<i class="fas fa-edit mr-1"></i>수정')
-											.removeClass('btn-success')
-											.addClass('btn-primary');
-								}
-							}
+		    // 1) 브라우저 기본 유효성 검사
+		    if (formEl && !formEl.checkValidity()) {
+		      formEl.reportValidity();
+		      return;
+		    }
 
-							// 2) 초기 상태
-							setEditMode(false);
+		    // 2) 사용자 확인
+		    if (!confirm('수정된 내용을 저장하시겠습니까?')) {
+		      return;
+		    }
 
-							// 3) 수정/저장 토글
-							$('#btnUpdateTop').on(
-									'click',
-									function() {
-										const isReadOnlyNow = $textInputs
-												.first().prop('readonly'); // 현재 읽기전용이면 수정모드로
-										if (isReadOnlyNow) {
-											// 수정 모드 진입
-											setEditMode(true);
-										} else {
-											// 저장
-											if (confirm('수정된 내용을 저장하시겠습니까?')) {
-												$choiceInputs.prop('disabled',
-														false);
-												if ($addressButton.length)
-													$addressButton.prop(
-															'disabled', false);
+		    // 3) 업데이트 URL로 고정
+		    $updateForm.attr('action', updateActionUrl);
 
-												$updateForm.attr('action',
-														updateActionUrl);
-												$updateForm.submit();
-											}
-										}
-									});
+		    // 4) disabled 된 필드는 전송되지 않으므로 모두 활성화
+		    $updateForm.find(':input:disabled').prop('disabled', false);
 
-							// 4) 삭제
-							$('#btnDeleteTop').on(
-									'click',
-									function() {
-										if (confirm('대결자 지정을 삭제하시겠습니까?')) {
-											$textInputs.prop('readonly', true);
-											$choiceInputs
-													.prop('disabled', true);
-
-											$updateForm.attr('action',
-													deleteActionUrl);
-											$updateForm.submit();
-										}
-									});
-						});
-
-		//2. 폼 제출 로직 (btnUpdateTop)
-		//- 버튼이 폼 외부에 있으므로, 클릭 시 명시적으로 폼 제출
-		$(document).ready(function() {
-
-			// 폼 외부에 있는 등록 버튼 클릭 시 폼 제출
-			$('#btnUpdateTop').on('click', function(e) {
-
-				if (!form.checkValidity()) {
-					// 유효성 검사 실패 시 브라우저가 기본 동작을 수행하고 제출 중단
-					return;
-				}
-
-				// 폼 제출
-				$('#').submit();
-			});
+		    // 5) 제출
+		    $updateForm.submit();
+		  });
 		});
 	</script>
 
