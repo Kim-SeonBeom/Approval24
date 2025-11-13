@@ -10,6 +10,7 @@
         .sortable { cursor: pointer; }
         .sort-icon { margin-left: 5px; }
     </style>
+    <title>권한 목록</title>
 </head>
 <body id="page-top">
 
@@ -37,13 +38,14 @@
 					      <div class="form-group row align-items-center mb-3">
 					        <label class="col-sm-2 col-form-label font-weight-bold text-center">생성/수정일</label>
 					        <div class="col-sm-10">
-					          <div class="form-inline">
-					            <select class="form-control mr-2" id="dateType" name="dateType" style="width:120px;">
+					          <div class="form-inline" >
+					            <select class="form-control mr-2" id="dateType" name="dateType" style="width:130px;">
 					              <option value="createDt" ${filter.dateType == 'createDt' ? 'selected' : ''}>등록일</option>
 					              <option value="updateDt" ${filter.dateType == 'updateDt' ? 'selected' : ''}>수정일</option>
 					            </select>
-					            <input type="date" class="form-control mr-2" id="createDt" name="createDtStr"
+					            <input type="date" class="form-control mr-2 ml-3" id="createDt" name="createDtStr"
 								       value="<fmt:formatDate value='${filter.createDt}' pattern='yyyy-MM-dd'/>" style="width:180px;">
+								       <span class="mx-1">~</span>
 								<input type="date" class="form-control ml-2" id="updateDt" name="updateDtStr"
 								       value="<fmt:formatDate value='${filter.updateDt}' pattern='yyyy-MM-dd'/>" style="width:180px;">
 
@@ -81,12 +83,12 @@
 							    <div class="form-check form-check-inline">
 							      <input class="form-check-input" type="radio" name="isSystem" id="isSystemY" value="Y"
 							             ${filter.isSystem == 'Y' ? 'checked' : ''}>
-							      <label class="form-check-label" for="isSystemY">Y</label>
+							      <label class="form-check-label" for="isSystemY">시스템</label>
 							    </div>
 							    <div class="form-check form-check-inline">
 							      <input class="form-check-input" type="radio" name="isSystem" id="isSystemN" value="N"
 							             ${filter.isSystem == 'N' ? 'checked' : ''}>
-							      <label class="form-check-label" for="isSystemN">N</label>
+							      <label class="form-check-label" for="isSystemN">일반사용자</label>
 							    </div>
 							    <div class="form-check form-check-inline">
 							      <input class="form-check-input" type="radio" name="isSystem" id="isSystemAll" value=""

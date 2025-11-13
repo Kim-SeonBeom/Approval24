@@ -234,21 +234,21 @@
 
 								</c:if>
 								<c:if test="${pageAuth.updateYn == 'Y'}">
-									<button type="button" class="btn btn-light" id="btnSave">
+									<button type="button" class="btn btn-secondary" id="btnSave">
 										<i class="fas fa-edit mr-1"></i>수정
 									</button>
 									<button type="button" class="btn btn-warning" id="btnComplainCancel">
-										<i class="fas fa-edit mr-1"></i>취하
+										<i class="fas fa-times-circle mr-1"></i>취하
 									</button>
 
 								</c:if>
 
 								<c:if test="${pageAuth.approveYn == 'Y'}">
 									<button type="button" class="btn btn-primary" id="btnApprove">
-										<i class="fas fa-edit mr-1"></i>승인
+										<i class="fas fa-check-circle mr-1"></i>승인
 									</button>
 									<button type="button" class="btn btn-danger" id="btnReject">
-										<i class="fas fa-edit mr-1"></i>반려
+										<i class="fas fa-undo-alt mr-1"></i>반려
 									</button>
 								</c:if>
 							</div>

@@ -140,7 +140,7 @@
 													style="cursor: pointer;">
 													<td class="text-left">${notice.title}</td>
 													<td class="text-center"><fmt:formatDate value="${notice.createDt}"
-															pattern="yyyy'년 'MM'월 'dd'일'" /></td>
+															pattern="yyyy-MM-dd"/></td>
 													<td class="text-center">${notice.viewCount}</td>
 												</tr>
 											</c:forEach>
