@@ -127,7 +127,7 @@ public class ManagerAssignmentController {
 		model.addAttribute("instName", instService.getInstById(findInstId));
 		model.addAttribute("deptByInst", MAService.findDeptByInst(instId));
 		model.addAttribute("categoryByDept", MAService.findCategoryByDept(deptId));
-		model.addAttribute("accountByDept", MAService.findAccountByDept(deptId));
+		model.addAttribute("accountByInstDept", accountService.myTeamAccountList(findInstId));
 		return "A/managerAssignmentNew";
 	}
 	
@@ -149,12 +149,18 @@ public class ManagerAssignmentController {
         return MAService.findCategoryByDept(deptId);
     }
 
-    // 부서 → 계정(사용자)
+    // 기관부서 → 계정(사용자)
     @GetMapping(value = "/MA/accounts", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<AccountDTO> getAccountsByDept(@RequestParam("dept_id") Long deptId) {
-        if (deptId == null) return Collections.emptyList();
-        return MAService.findAccountByDept(deptId);
+    public List<AccountDTO> getAccountsByDept(@RequestParam("inst_id") Long instId,
+    										  @RequestParam("dept_id") Long deptId,
+    										  HttpSession session) {
+    	
+    	Long id = (Long) session.getAttribute("user");
+        
+		long findInstId = accountService.findInstIdByAccountId(id);
+        if (findInstId != instId) return Collections.emptyList();
+        return accountService.accountsByInstDept(instId, deptId);
     }
 	
 	@PostMapping("/MA/new")

@@ -61,13 +61,22 @@
 									<label class="col-sm-2 col-form-label font-weight-bold text-center">처리상태</label>
 									<div class="col-sm-10">
 										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="radio" name="status" id="status1" value="RCPT" ${filter.status == 'RCPT' ? 'checked' : ''}> <label class="form-check-label" for="status1">접수중</label>
+											<input class="form-check-input" type="radio" name="status" id="status1" value="D001" ${filter.status == 'D001' ? 'checked' : ''}> <label class="form-check-label" for="status1">접수</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="radio" name="status" id="status2" value="PROC" ${filter.status == 'PROC' ? 'checked' : ''}> <label class="form-check-label" for="status2">처리중</label>
+											<input class="form-check-input" type="radio" name="status" id="status2" value="D002" ${filter.status == 'D002' ? 'checked' : ''}> <label class="form-check-label" for="status2">등록</label>
 										</div>
 										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="radio" name="status" id="status3" value="DONE" ${filter.status == 'DONE' ? 'checked' : ''}> <label class="form-check-label" for="status3">처리완료</label>
+											<input class="form-check-input" type="radio" name="status" id="status3" value="D003" ${filter.status == 'D003' ? 'checked' : ''}> <label class="form-check-label" for="status3">처리중</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="status" id="status4" value="D004" ${filter.status == 'D004' ? 'checked' : ''}> <label class="form-check-label" for="status4">취하</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="status" id="status5" value="D005" ${filter.status == 'D005' ? 'checked' : ''}> <label class="form-check-label" for="status5">반려</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="status" id="status6" value="D006" ${filter.status == 'D006' ? 'checked' : ''}> <label class="form-check-label" for="status6">승인</label>
 										</div>
 										<div class="form-check form-check-inline">
 											<input class="form-check-input" type="radio" name="status" id="statusAll" value="" ${empty filter.status ? 'checked' : ''}> <label class="form-check-label" for="statusAll">전체</label>
@@ -139,17 +148,26 @@
 													<td>${item.userName}</td>
 													<td>
 														<!-- 상태 뱃지 간단 스타일 --> <c:choose>
-															<c:when test="${item.complainStatusCd == 'RCPT'}">
-																<span class="badge badge-info">접수중</span>
+															<c:when test="${item.complainStatusCd == 'D001'}">
+																<span class="badge badge-info">접수</span>
 															</c:when>
-															<c:when test="${item.complainStatusCd == 'PROC'}">
-																<span class="badge badge-warning">처리중</span>
+															<c:when test="${item.complainStatusCd == 'D002'}">
+																<span class="badge badge-success">등록</span>
 															</c:when>
-															<c:when test="${item.complainStatusCd == 'DONE'}">
-																<span class="badge badge-success">처리완료</span>
+															<c:when test="${item.complainStatusCd == 'D003'}">
+																<span class="badge badge-secondary">처리중</span>
+															</c:when>
+															<c:when test="${item.complainStatusCd == 'D004'}">
+																<span class="badge badge-warning">취하</span>
+															</c:when>
+															<c:when test="${item.complainStatusCd == 'D005'}">
+																<span class="badge badge-danger">반려</span>
+															</c:when>
+															<c:when test="${item.complainStatusCd == 'D006'}">
+																<span class="badge badge-primary">승인</span>
 															</c:when>
 															<c:otherwise>
-																<span class="badge badge-secondary">${item.complainStatusCd}</span>
+																<span class="badge badge-light">${item.complainStatusCd}</span>
 															</c:otherwise>
 														</c:choose>
 													</td>

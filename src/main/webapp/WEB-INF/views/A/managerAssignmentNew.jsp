@@ -131,7 +131,7 @@
 												<td colspan="1">
 												  <select name="accountId" id="accountId" class="form-control form-control-sm">
 												    <option value="">-- 로그인계정 선택 --</option>
-												    <c:forEach var="account" items="${accountByDept}">
+												    <c:forEach var="account" items="${accountByInstDept}">
 												      <option value="${account.accountId}"
 												        <c:if test="${MAInfo.accountId == account.accountId}">selected="selected"</c:if>>
 												        ${account.loginId}
@@ -241,7 +241,8 @@ $(function () {
 	      });
 
 	    // 계정
-	    $.getJSON(ctx + '/MA/accounts', { dept_id: deptId })
+	    const instId = $('#instId').val();
+		$.getJSON(ctx + '/MA/accounts', { inst_id: instId, dept_id: deptId })
 	      .done(function (list) {
 	        $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
 	        (list || []).forEach(function (a) {

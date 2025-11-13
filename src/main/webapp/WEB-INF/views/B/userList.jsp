@@ -122,7 +122,7 @@
 							          <tr class="clickable-row"
 							              data-href="${pageContext.request.contextPath}/user/detail/${user.userNo}"
 							              style="cursor:pointer;">
-							            <td>${pageInfo.startRow + status.index + 1}</td>
+							            <td>${pageInfo.startRow + status.index}</td>
 							            <td><c:out value="${user.userName}" /></td>
 							            <td><c:out value="${user.userPositionName}" /></td>
 							            <td><c:out value="${user.userEmail}" /></td>

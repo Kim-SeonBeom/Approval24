@@ -221,7 +221,7 @@
 									<button type="button" class="btn btn-light" id="btnSave">
 										<i class="fas fa-edit mr-1"></i>수정
 									</button>
-									<button type="button" class="btn btn-warning" id="btnComplainCancle">
+									<button type="button" class="btn btn-warning" id="btnComplainCancel">
 										<i class="fas fa-edit mr-1"></i>취하
 									</button>
 
@@ -245,7 +245,10 @@
 					</form>
 
 				</div>
-				<!-- /.container-fluid -->
+				<!-- 결재라인 모달로 처리 -->
+				<jsp:include page="../../D/approvalLineEditor.jsp" />
+
+		
 			</div>
 			<!-- /#content -->
 
@@ -276,6 +279,7 @@
 	</script>
 	<!--페이지 전용 js -->
 	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/ue2.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/assets/js/complain/approvalLine.js"></script>
 
 	<!-- Submit Modal -->
 	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">

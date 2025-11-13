@@ -128,7 +128,7 @@
 		parameterType="long" resultType="AccountDTO">
 		select
 		a.account_id as accountId,
-		a.user_no as userNo,
+		a.user_no as userNo, a.login_id,
 		u.user_name as userName
 		from t1000_account a
 		join
@@ -234,5 +234,20 @@
 	WHERE account_id = #{accountId}
 </update>
 
+<!-- 선택한 기관/부서의 계정들 -->
+<select id="findAccountsByInstAndDept"
+        parameterType="map" resultType="AccountDTO">
+    SELECT
+        a.account_id   AS accountId,
+        a.user_no      AS userNo,
+        a.login_id     AS loginId,
+        u.user_name    AS userName
+    FROM t1000_account a
+    JOIN t1000_user u
+      ON a.user_no = u.user_no
+    WHERE a.inst_id = #{instId}
+      AND a.dept_id = #{deptId}
+      AND a.del_yn = 'N'
+</select>
 
 </mapper>

@@ -109,9 +109,8 @@ public class ApprovalHistoryService {
 		if (complainDto == null) {
 		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
 		}
-
-        
-        if (complainDto.getComplainStatusCd().equals("D004")) {
+		
+		if (complainDto.getComplainStatusCd().equals("D004")) {
         	throw new IllegalArgumentException("이미 취하한 민원입니다.");
         }
         else if (complainDto.getComplainStatusCd().equals("D005")) {
@@ -131,8 +130,12 @@ public class ApprovalHistoryService {
 
             String approvalStatusCd;
             if (i == 0) {
-            	if(loginId != dto.getAccountId())
+            	if(!loginId.equals(dto.getAccountId()))
             	{
+            		System.out.println("로그인id");
+            		System.out.println(loginId);
+            		System.out.println("dtogetid");
+            		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
                 approvalStatusCd = "E002";  //승인

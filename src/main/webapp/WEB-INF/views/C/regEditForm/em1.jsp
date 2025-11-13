@@ -152,56 +152,55 @@
 								</div>
 							</div>
 						</div>
+						<!-- 결재내역 -->
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex align-items-center">
+								<h6 class="m-0 font-weight-bold text-primary">결재 내역</h6>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table style="text-align: center;" class="table table-bordered mb-0" id="historyTable">
+										<thead>
+											<tr>
+												<th>카테고리</th>
+												<th>사용자</th>
+												<th>결재자 유형</th>
+												<th>상태</th>
+												<th>처리일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="5">로딩 중...</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="mt-2">
+									<label>의견: <input type="text" id="comment" class="form-control" style="width: 300px; display: inline-block;"></label>
+								</div>
+							</div>
+						</div>
 
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
+							<a href="${pageContext.request.contextPath}/complain/category/em1" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>
 							<div>
-							
-							<%--  <c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}"> --%>
+
+								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
 									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
 										<i class="fas fa-edit mr-1"></i>결재선설정
 									</button>
-							<%--   </c:if>  --%>
-							
+								</c:if>
+
 								<c:if test="${pageAuth.updateYn == 'Y'}">
 									<button type="button" class="btn btn-light" id="btnSave">
 										<i class="fas fa-edit mr-1"></i>수정
 									</button>
-									<button type="button" class="btn btn-warning" id="btnComplainCancle">
+									<button type="button" class="btn btn-warning" id="btnComplainCancel">
 										<i class="fas fa-edit mr-1"></i>취하
 									</button>
 								</c:if>
-<!-- 결재내역 -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">결재 내역</h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered mb-0" id="historyTable">
-                <thead>
-                    <tr>
-                        <th>카테고리</th>
-                        <th>사용자</th>
-                        <th>결재자 유형</th>
-                        <th>상태</th>
-                        <th>처리일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="5">로딩 중...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="mt-2">
-            <label>의견: <input type="text" id="comment" class="form-control" style="width: 300px; display:inline-block;"></label>
-        </div>
-    </div>
-</div>									
-									
-
-
 								<c:if test="${pageAuth.approveYn == 'Y'}">
 									<button type="button" class="btn btn-primary" id="btnApprove">
 										<i class="fas fa-edit mr-1"></i>승인
@@ -210,6 +209,7 @@
 										<i class="fas fa-edit mr-1"></i>반려
 									</button>
 								</c:if>
+
 							</div>
 						</div>
 						<input type="hidden" name="complainId" value="<c:out value='${detail.complainId}'/>"> <input type="hidden" name="complainuserNo" value="<c:out value='${userInfo.complainuserNo}'/>">
@@ -249,6 +249,7 @@
 				&& (authData.complainAccountId === authData.sessionAccountId);
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/em1.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/approvalLine.js"></script>
 
 
 	<!-- Submit Modal -->

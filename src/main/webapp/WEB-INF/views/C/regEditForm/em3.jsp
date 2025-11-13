@@ -148,7 +148,7 @@
 									<button type="button" class="btn btn-light" id="btnSave">
 										<i class="fas fa-edit mr-1"></i>수정
 									</button>
-									<button type="button" class="btn btn-warning" id="btnComplainCancle">
+									<button type="button" class="btn btn-warning" id="btnComplainCancel">
 										<i class="fas fa-edit mr-1"></i>취하
 									</button>
 
@@ -170,6 +170,9 @@
 
 				</div>
 				<!-- /.container-fluid -->
+				<!-- 결재라인 모달로 처리 -->
+				<jsp:include page="../../D/approvalLineEditor.jsp" />
+
 			</div>
 			<!-- /#content -->
 
@@ -199,6 +202,7 @@
 				&& (authData.complainAccountId === authData.sessionAccountId);
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/em3.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/approvalLine.js"></script>
 
 	<!-- Submit Modal -->
 	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">

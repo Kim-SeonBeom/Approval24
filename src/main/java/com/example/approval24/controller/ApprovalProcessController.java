@@ -91,7 +91,7 @@ public class ApprovalProcessController {
         }
 
         // 권한 체크 
-        if (!loggedInUserId.equals(approvalData.getAccountId()) || !loggedInUserId.equals(approvalData.getDelegateId())) {
+        if (!loggedInUserId.equals(approvalData.getAccountId()) && !loggedInUserId.equals(approvalData.getDelegateId())) {
             response.put("success", false);
             response.put("message", "해당 결재를 처리할 계정이 아닙니다.");
             return ResponseEntity.status(403).body(response);

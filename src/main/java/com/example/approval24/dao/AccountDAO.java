@@ -32,9 +32,12 @@ public interface AccountDAO {
   // 계정 리스트 (로그인id 리스트)
 	List<AccountDTO> getAllAccount();
   
-  List<AccountDTO> findByAccountIdAndDeptIdAndInstId(long accountId);
+  List<AccountDTO> findByAccountIdAndDeptIdAndInstId(@Param("accountId") long accountId);
 
   int countAccountsByFilter(Map<String, Object> params);
+  
+  // 선택한 기관/부서의 계정 목록
+  List<AccountDTO> findAccountsByInstAndDept(@Param("instId") Long instId, @Param("deptId") Long deptId);
 }
 
 

@@ -98,8 +98,8 @@ public class ComplainService {
 
 		ComplainDTO complainDTO = new ComplainDTO();
 		
-		long complainCategoryId = complainDTO.getComplainCategoryId();
-		
+		long complainCategoryId = complainRegDTO.getComplainCategoryId();
+
 		long managerAccountId = managerDAO.ManagerAccountId(complainCategoryId);
 		
 
@@ -117,18 +117,14 @@ public class ComplainService {
 		//
 		//
 		// 한번 확인할것!!!!
-		complainDTO.setComplainStatusCd("접수");
+		complainDTO.setComplainStatusCd("D001");
 		//
 		//
 		complainDTO.setDeadlineDt(deadlineDt);
 		complainDTO.setReceiverAccountId(receiverAccountId);
 
-		int result = complainDAO.registComplain(complainDTO);
-	/*	if (result == 1) {
-			System.out.println("민원 등록 성공");
-		} else {
-			System.out.println("민원 등록 실패");
-		}*/
+		complainDAO.registComplain(complainDTO);
+
 
 	}
 	// 페이징처리를 위한 "민원 접수 목록"  개수(Filter 적용)
@@ -137,7 +133,6 @@ public class ComplainService {
 	}
 	
 
-	
 	//민원 접수 목록 
 	public List<ComplainDTO> complainListByDept(ComplainFilterDTO filter, long accountId) {
 
@@ -253,8 +248,8 @@ public class ComplainService {
 		}
 
 		public void saveem1(EM1DTO em1dto) {
+			complainDAO.updateStatusByComplainId(em1dto.getComplainId(),"D002");
 			em1DAO.updateInfo(em1dto);
-
 		}
 	
 	
