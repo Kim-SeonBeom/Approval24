@@ -97,10 +97,36 @@ function updateApprovalButtons() {
 
 async function handleDecision(statusCd) {
     const current = approvalList.find(a => a.approvalStatusCd === 'E001');
+
+    // 🔹 E001이 없으면 -> 새 컨트롤러 (/complain/reject)로 POST
     if (!current) {
-        alert('현재 처리 가능한 결재가 없습니다.');
+        if (statusCd === 'E003') { // 반려일 때만 처리
+            if (!confirm('반려 하시겠습니까?')) return;
+            try {
+                const res = await fetch(`/approval24/api/approval/complain/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    credentials: 'same-origin',
+                    body: new URLSearchParams({ complainId })
+                });
+                const json = await res.json().catch(() => null);
+                if (res.ok) {
+                    alert(json?.message || '반려 완료되었습니다.');
+                    loadApprovalLine();
+                } else {
+                    alert(json?.message || `오류: ${res.status}`);
+                }
+            } catch (e) {
+                console.error(e);
+                alert('서버 에러 발생');
+            }
+        } else {
+            alert('현재 처리 가능한 결재가 없습니다.');
+        }
         return;
     }
+
+    // 🔹 이하 기존 승인/반려 로직 그대로 유지
     if (statusCd === 'E003' && !$('#comment').val().trim()) {
         alert("반려 시에는 의견이 필수입니다.");
         $('#comment').focus();
@@ -136,13 +162,35 @@ async function handleDecision(statusCd) {
     }
 }
 
+
 async function handleCancel() {
     const current = approvalList.find(a => a.approvalStatusCd === 'E001');
+
+    // 🔹 E001이 없으면 -> 새 컨트롤러 (/complain/cancel)로 POST
     if (!current) {
-        alert('현재 취하 가능한 결재가 없습니다.');
+        if (!confirm('신청서를 취하하시겠습니까?')) return;
+        try {
+            const res = await fetch(`/approval24/api/approval/complain/cancel`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                credentials: 'same-origin',
+                body: new URLSearchParams({ complainId })
+            });
+            const json = await res.json().catch(() => null);
+            if (res.ok) {
+                alert(json?.message || '취하 완료되었습니다.');
+                loadApprovalLine();
+            } else {
+                alert(json?.message || `오류: ${res.status}`);
+            }
+        } catch (e) {
+            console.error(e);
+            alert('서버 에러 발생');
+        }
         return;
     }
 
+    // 🔹 이하 기존 handleCancel 로직 그대로 유지
     if (!confirm('신청서를 취하하시겠습니까?')) return;
 
     const payload = {
@@ -172,6 +220,7 @@ async function handleCancel() {
         alert('서버 에러 발생');
     }
 }
+
 
 $('#btnApprovalLine').on('click', function() {
     $('#approvalLineEditorModal').modal('show'); 

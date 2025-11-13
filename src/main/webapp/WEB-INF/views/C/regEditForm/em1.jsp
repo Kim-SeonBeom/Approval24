@@ -187,7 +187,7 @@
 							</a>
 							<div>
 
-								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
+								<c:if test="${pageAuth.updateYn == 'Y'}">
 									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
 										<i class="fas fa-edit mr-1"></i>결재선설정
 									</button>
