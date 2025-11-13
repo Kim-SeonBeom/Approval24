@@ -41,7 +41,7 @@
 								<button class="btn btn-primary btn-sm" type="submit"
 									form="noticeFilterForm">검색</button>
 								
-								<c:if test="${logindeptName eq '인사과'}">
+								<c:if test="${logindeptName eq '인사팀'}">
 								<button class="btn btn-success btn-sm ml-2" type="button"
 									onclick="location.href='${pageContext.request.contextPath}/notice/new'">추가</button>
 									</c:if>

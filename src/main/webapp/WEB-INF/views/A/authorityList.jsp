@@ -159,7 +159,14 @@
 					                <td class="text-left pl-3">${item.authorityName}</td>
 					                <td><fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd"/></td>
 					                <td><fmt:formatDate value="${item.updateDt}" pattern="yyyy-MM-dd"/></td>
-					                <td>${item.isSystem}</td>
+					                   <!--  <td>${item.isSystem}</td> -->
+					                <td>
+					                     <c:choose>
+					                    <c:when test="${item.isSystem== 'Y'}">시스템</c:when>
+					                    <c:when test="${item.isSystem== 'N'}">일반사용자</c:when>
+					                    <c:otherwise><span class="badge badge-light">${item.isSystem}</span></c:otherwise>
+					                  </c:choose>
+					                </td>
 					                <td>
 					                  <c:choose>
 					                    <c:when test="${item.delYn == 'Y'}"><span class="badge badge-secondary">삭제</span></c:when>

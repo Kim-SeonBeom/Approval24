@@ -66,13 +66,13 @@ public class MainPageController {
 		model.addAttribute("enableAccount", myDeptEnable);
 		
 		// 기관내 신청 대기
-		filter.remove("accountStatus");
+		filter.remove("accountStatusCd");
 		filter.put("accountStatusCd", "B001");
 		int myDeptWaiting = accountService.countAccountsByFilter(filter);
 		model.addAttribute("waitingAccount", myDeptWaiting);
 		
 		// 기관내 정지(비번잠김)
-		filter.remove("accountStatus");
+		filter.remove("accountStatusCd");
 		filter.put("accountStatusCd", "B005");
 		int myDeptLock = accountService.countAccountsByFilter(filter);
 		model.addAttribute("lockAccount", myDeptLock);
@@ -80,30 +80,31 @@ public class MainPageController {
 		
 		// -------------일반---------------
 		 Long userId = (Long) session.getAttribute("user");
-		Map<String, Object> filters = new HashMap<>();
+		Map<String, Object> filterMap = new HashMap<>();
 		
 		// 내 전체 민원
-		filters.put("accountId", userId);
-		int myTotalApproval = accountHistoryService.countMyApprovalHistoryList(filters);
+		filterMap.put("accountId", userId);
+		int myTotalApproval = accountHistoryService.countMyApprovalHistoryList(filterMap);
 		model.addAttribute("totalApproval", myTotalApproval);
 		
 		// 결재 대기중인 내 민원(History 상태 결재)
-		filters.put("approvalStatusCd", "E001");
-		int myWaitingApproval = accountHistoryService.countMyApprovalHistoryList(filters);
+		filterMap.put("approvalStatusCd", "E001");
+		int myWaitingApproval = accountHistoryService.countMyApprovalHistoryList(filterMap);
+		System.out.println(myWaitingApproval);
 		model.addAttribute("waitingApproval", myWaitingApproval);
 		
-		
-		// 승인한 결재
-		filters.remove("approvalStatusCd");
 		// 승인
-		filters.put("approvalStatusCd", "E002");
-		int myRefuseApproval = accountHistoryService.countMyApprovalHistoryList(filters);
+		filterMap.remove("approvalStatusCd");
+		filterMap.put("approvalStatusCd", "E002");
+		int myRefuseApproval = accountHistoryService.countMyApprovalHistoryList(filterMap);
+		System.out.println(myRefuseApproval );
 		model.addAttribute("refuseApproval", myRefuseApproval);
 		
 		// 반려한 결재
-		filters.remove("approvalStatusCd");
-		filters.put("approvalStatusCd", "E003");
-		int myapprovalsInTransit = accountHistoryService.countMyApprovalHistoryList(filters);
+		filterMap.remove("approvalStatusCd");
+		filterMap.put("approvalStatusCd", "E003");
+		int myapprovalsInTransit = accountHistoryService.countMyApprovalHistoryList(filterMap);
+		System.out.println(myapprovalsInTransit);
 		model.addAttribute("approvalInTransit", myapprovalsInTransit);
 		// -------------일반 끝---------------
 		

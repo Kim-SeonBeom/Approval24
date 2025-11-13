@@ -65,7 +65,7 @@
 							<a href="${pageContext.request.contextPath}/notice" class="btn btn-light btn-sm"> <i class="fas fa-list mr-1"></i>목록
 							</a>
 							<div>
-								<c:if test="${logindeptName eq '인사과'}">
+								<c:if test="${logindeptName eq '인사팀'}">
 									<a href="<c:url value='/notice/edit/${notice.noticeId}'><c:param name='noticeId' value='${notice.noticeId}'/></c:url>" class="btn btn-primary btn-sm"> <i class="fas fa-edit mr-1"></i>수정
 									</a>
 									<button type="button" class="btn btn-danger btn-sm" id="btnDeleteFooter">
