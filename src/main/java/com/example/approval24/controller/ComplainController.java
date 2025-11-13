@@ -336,14 +336,17 @@ public class ComplainController {
 			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
 			return "redirect:/complain/category/em1/" + complainId;
 		}
-		else if(!complainDTO.getComplainStatusCd().equals("D002") || !check) {
+		else if(!check) {
 			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/em1/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D002") || !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
 			return "redirect:/complain/category/em1/" + complainId;
 		}
 		complainuserService.saveComplainuser(complainuserDTO);
 		complainService.saveem1(em1DTO);
 
-		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
 		return "redirect:/complain/category/em1/" + complainId;
 	}

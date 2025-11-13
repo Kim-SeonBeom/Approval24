@@ -53,6 +53,14 @@ public class ApprovalProcessController {
             return ResponseEntity.status(400).body(response);
         }
         
+		boolean check = historyService.checkHistoryManager(complainId,loggedInUserId);
+		
+		if(!check) {
+			response.put("success", false);
+	        response.put("message", "결재 중에는 결재선을 추가할 수 없습니다.");
+	        return ResponseEntity.status(400).body(response);
+		}
+        
         try {
 
             historyService.createApprovalLine(loggedInUserId, complainId, url, approvalLine);
@@ -113,7 +121,6 @@ public class ApprovalProcessController {
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {
-            // 결재 이미 처리됨, 잘못된 상태값 등의 비즈니스 로직 오류
             response.put("success", false);
             response.put("message", "결재 처리 중 오류: " + e.getMessage());
             return ResponseEntity.status(400).body(response);
@@ -179,6 +186,12 @@ public class ApprovalProcessController {
         
         ComplainDTO dto = complainService.getComplainInfo(complainId);
         
+        if(dto.getComplainStatusCd().equals("E003")) {
+            response.put("success", false);
+            response.put("message", "이미 반려된 민원입니다.");
+            return ResponseEntity.status(403).body(response);
+        }
+        
         //담당자 체크
         if (!loggedInUserId.equals((Long)dto.getAccountId()) ) {
             response.put("success", false);
@@ -223,8 +236,14 @@ public class ApprovalProcessController {
         
         ComplainDTO dto = complainService.getComplainInfo(complainId);
         
+        if(dto.getComplainStatusCd().equals("E005")) {
+            response.put("success", false);
+            response.put("message", "이미 취하된 민원입니다.");
+            return ResponseEntity.status(403).body(response);
+        }
+        
         //담당자 체크
-        if (!loggedInUserId.equals((Long)dto.getAccountId()) ) {
+        if (!loggedInUserId.equals((Long)dto.getAccountId())) {
             response.put("success", false);
             response.put("message", "해당 민원을 처리할 담당자가 아닙니다.");
             return ResponseEntity.status(403).body(response);

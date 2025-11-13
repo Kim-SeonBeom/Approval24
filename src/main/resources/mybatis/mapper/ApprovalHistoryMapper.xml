@@ -198,6 +198,22 @@
         )
         WHERE ROWNUM = 1
     </select>
+    
+        <select id="getLastComplainManager" resultType="ApprovalHistoryDTO">
+        SELECT
+            *
+        FROM (
+            SELECT
+                *
+            FROM
+                T2000_APPROVAL_HISTORY
+            WHERE
+                complain_id = #{complainId}
+            ORDER BY
+                SEQ_NO DESC, PROCESS_DT DESC
+        )
+        WHERE ROWNUM = 1
+    </select>
         
     <!-- 민원 ID로 전체 결재 라인 조회 -->
     <select id="getHistoryIdByComplainId" resultType="ApprovalHistoryDTO">
