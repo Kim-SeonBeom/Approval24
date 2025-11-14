@@ -72,7 +72,7 @@ public class ApprovalProcessController {
 
         } catch (IllegalArgumentException e) {
             response.put("success", false);
-            response.put("message", "데이터 처리 중 오류: " + e.getMessage());
+            response.put("message", e.getMessage());
             return ResponseEntity.status(400).body(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,11 +186,24 @@ public class ApprovalProcessController {
         
         ComplainDTO dto = complainService.getComplainInfo(complainId);
         
-        if(dto.getComplainStatusCd().equals("E003")) {
+        switch (dto.getComplainStatusCd()) {
+        case "D001":
+            response.put("success", false);
+            response.put("message", "접수중입니다. 민원 내용을 서식을 통해 채워주세요.");
+            return ResponseEntity.status(403).body(response);
+        case "D004":
+            response.put("success", false);
+            response.put("message", "이미 취하된 민원입니다.");
+            return ResponseEntity.status(403).body(response);
+        case "D005":
             response.put("success", false);
             response.put("message", "이미 반려된 민원입니다.");
             return ResponseEntity.status(403).body(response);
-        }
+        case "D006":
+            response.put("success", false);
+            response.put("message", "이미 승인된 민원입니다.");
+            return ResponseEntity.status(403).body(response);
+            }
         
         //담당자 체크
         if (!loggedInUserId.equals((Long)dto.getAccountId()) ) {
@@ -236,11 +249,26 @@ public class ApprovalProcessController {
         
         ComplainDTO dto = complainService.getComplainInfo(complainId);
         
-        if(dto.getComplainStatusCd().equals("E005")) {
+        switch (dto.getComplainStatusCd()) {
+        case "D001":
+            response.put("success", false);
+            response.put("message", "접수중입니다. 민원 내용을 서식을 통해 채워주세요.");
+            return ResponseEntity.status(403).body(response);
+        case "D004":
             response.put("success", false);
             response.put("message", "이미 취하된 민원입니다.");
             return ResponseEntity.status(403).body(response);
-        }
+        case "D005":
+            response.put("success", false);
+            response.put("message", "이미 반려된 민원입니다.");
+            return ResponseEntity.status(403).body(response);
+        case "D006":
+            response.put("success", false);
+            response.put("message", "이미 승인된 민원입니다.");
+            return ResponseEntity.status(403).body(response);
+            }
+        
+        
         
         //담당자 체크
         if (!loggedInUserId.equals((Long)dto.getAccountId())) {
