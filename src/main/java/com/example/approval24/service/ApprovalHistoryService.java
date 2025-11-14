@@ -1,6 +1,5 @@
 package com.example.approval24.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import com.example.approval24.dao.ApprovalHistoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.ComplainDTO;
-import com.example.approval24.domain.ComplainFilterDTO;
 
 @Service
 public class ApprovalHistoryService {
@@ -45,8 +43,6 @@ public class ApprovalHistoryService {
         Long nextSeq = approvalData.getSeqNo() + 1;
         Long complainId = approvalData.getComplainId();
         String codeId = approvalData.getApprovalStatusCd();
-        ComplainDTO complainDTO = complainDAO.findById(complainId);
-        String complain_cd = complainDTO.getComplainStatusCd();
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
         		complainId, nextSeq);
         
@@ -113,9 +109,7 @@ public class ApprovalHistoryService {
             throw new IllegalArgumentException("민원 ID 또는 결재 라인 정보가 유효하지 않습니다.");
         }
         
-        List<ApprovalHistoryDTO> checkList = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 		ComplainDTO complainDto = complainDAO.findById(complainId);
-		ApprovalHistoryDTO managerDTO = approvalHistoryDAO.getComplainManager(complainId);
 		
 		if (complainDto == null) {
 		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
@@ -134,6 +128,10 @@ public class ApprovalHistoryService {
         else if (complainDto.getComplainStatusCd().equals("D006")) {
         	throw new IllegalArgumentException("이미 승인된 민원입니다.");
         }
+		
+		if(approvalLine.size() < 2) {
+			throw new IllegalArgumentException("결재선은 본인 포함 최소 2명 이상이어야 합니다.");
+		}
         
         
         for (int i = 0; i < approvalLine.size(); i++) {
@@ -143,8 +141,7 @@ public class ApprovalHistoryService {
             if (dto.getAccountId() == null) {
                  throw new IllegalArgumentException((i + 1) + "번째 결재 단계의 **계정 ID**가 누락되었습니다.");
             }
-
-            String approvalStatusCd;
+            
             if (i == 0) {
             	if(!loginId.equals(dto.getAccountId()))
             	{
@@ -154,23 +151,19 @@ public class ApprovalHistoryService {
             		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
-            	if(checkList == null) {
-            		continue;
-            	}
-                approvalStatusCd = "E001";  // 결재
+            	dto.setApprovalStatusCd("E001");  // 결재
+            	dto.setApproverTypeCd("F002"); //담당자
             } 
+            else if(approvalLine.size() - 1 == i) {
+            	dto.setApprovalStatusCd("E004");  // 대기
+            	dto.setApproverTypeCd("F004");  //승인자
+            }
             else {
-            	approvalStatusCd = "E004"; // 대기
+            	dto.setApprovalStatusCd("E004");  // 대기
+            	dto.setApproverTypeCd("F003");  //검토자
             }
-            dto.setApprovalStatusCd(approvalStatusCd);
-            dto.setUrl(url);
             
-            // approverTypeCd (검토자/승인자) 체크 
-            if (dto.getApproverTypeCd() == null || (!dto.getApproverTypeCd().equals("F001") && 
-            		!dto.getApproverTypeCd().equals("F002") && !dto.getApproverTypeCd().equals("F003")
-            		&& !dto.getApproverTypeCd().equals("F004"))) {
-                 throw new IllegalArgumentException((i + 1) + "번째 결재 단계의 **승인자 유형 코드**가 누락되었거나 잘못되었습니다.");
-            }
+            dto.setUrl(url);
             
             approvalHistoryDAO.insertApprovalHistory(dto);
         }
