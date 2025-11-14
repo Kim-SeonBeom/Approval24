@@ -30,6 +30,7 @@
 </head>
 
 <body id="page-top">
+
 	<div id="wrapper">
 
 		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
@@ -270,5 +271,32 @@
 			</div>
 		</div>
 	</div>
+	
+<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="msgModalLabel">알림</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ${msg}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<c:if test="${not empty msg}">
+    <script>
+        $(document).ready(function(){
+            $('#msgModal').modal('show');
+        });
+    </script>
+</c:if>
 </body>
 </html>

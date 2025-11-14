@@ -91,8 +91,6 @@ async function loadApprovalLine() {
 
 function updateApprovalButtons() {
     const hasPending = approvalList.some(a => a.approvalStatusCd === 'E001');
-    $btnApprove.prop('disabled', !hasPending || !authData.canApprove);
-    $btnReject.prop('disabled', !hasPending || !authData.canApprove);
 }
 
 async function handleDecision(statusCd) {
