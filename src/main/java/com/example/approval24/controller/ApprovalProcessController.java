@@ -55,7 +55,7 @@ public class ApprovalProcessController {
         
 		boolean check = historyService.checkHistoryManager(complainId,loggedInUserId);
 		
-		if(!check) {
+		if(check) {
 			response.put("success", false);
 	        response.put("message", "결재 중에는 결재선을 추가할 수 없습니다.");
 	        return ResponseEntity.status(400).body(response);
@@ -199,7 +199,7 @@ public class ApprovalProcessController {
             return ResponseEntity.status(403).body(response);
         }
         try {
-        	complainService.setComplainStatus(complainId,"E003");
+        	complainService.setComplainStatus(complainId,"D005");
         	response.put("success", true);
         	response.put("message", "민원 상태가 성공적으로 변경되었습니다.");
         	return ResponseEntity.ok(response);
@@ -249,7 +249,7 @@ public class ApprovalProcessController {
             return ResponseEntity.status(403).body(response);
         }
         try {
-        	complainService.setComplainStatus(complainId,"E005");
+        	complainService.setComplainStatus(complainId,"D004");
         	response.put("success", true);
         	response.put("message", "민원 상태가 성공적으로 변경되었습니다.");
         	return ResponseEntity.ok(response);

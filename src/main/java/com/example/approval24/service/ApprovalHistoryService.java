@@ -50,9 +50,6 @@ public class ApprovalHistoryService {
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
         		complainId, nextSeq);
         
-        if(!complain_cd.equals("D002")) {
-        	throw new IllegalArgumentException("민원 등록 상태가 아닙니다. 민원 상태 코드: " + complain_cd);
-        }
         
         if ("E002".equals(codeId)) { // 승인 로직
   
@@ -124,7 +121,7 @@ public class ApprovalHistoryService {
 		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
 		}
 		
-		if(loginId.equals((Long)complainDto.getAccountId())) {
+		if(!loginId.equals((Long)complainDto.getAccountId())) {
 			throw new IllegalArgumentException("담당자 계정이 아닙니다.");
 		}
 		
@@ -157,7 +154,7 @@ public class ApprovalHistoryService {
             		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
-            	if(checkList != null) {
+            	if(checkList == null) {
             		continue;
             	}
                 approvalStatusCd = "E001";  // 결재
@@ -201,12 +198,12 @@ public class ApprovalHistoryService {
 	    for (ApprovalHistoryDTO dto : list) {
 	        if ("E001".equals(dto.getApprovalStatusCd())) {
 	            if (dto.getAccountId().equals(userId)) {
-	                hasUserE001 = true;   
+	                hasUserE001 = false;   
 	            } else {
 	                hasOtherE001 = true;  
 	            }
 	        }
 	    }
-	    return hasUserE001 || !hasOtherE001;
+	    return hasUserE001 || hasOtherE001;
 	}
 }

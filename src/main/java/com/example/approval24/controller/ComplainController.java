@@ -318,7 +318,7 @@ public class ComplainController {
 	//
 	//
 	//
-	//
+	//수정
 	@PostMapping("/category/em1/{complainId}")
 	public String submitEmptyWork(@PathVariable long complainId, EM1DTO em1DTO, ComplainuserDTO complainuserDTO,
 			HttpSession session,
@@ -336,11 +336,11 @@ public class ComplainController {
 			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
 			return "redirect:/complain/category/em1/" + complainId;
 		}
-		else if(!check) {
+		else if(check) {
 			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
 			return "redirect:/complain/category/em1/" + complainId;
 		}
-		else if(!complainDTO.getComplainStatusCd().equals("D002") || !complainDTO.getComplainStatusCd().equals("D003")) {
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")) {
 			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
 			return "redirect:/complain/category/em1/" + complainId;
 		}
