@@ -57,17 +57,17 @@
 										<tbody>
 											<!-- 제목 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">제목</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">제목</th>
 												<td colspan="3"><input type="text" name="title" id="title"  value="${notice.title}" class="form-control form-control-sm" placeholder="공지 제목을 입력하세요" required maxlength="200"></td>
 											</tr>
 
 											<!-- 작성자 / 등록일 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">작성자</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">작성자</th>
 												<!-- 나중에 로그인 정보를 가져와 해당 유저의 insert -->
 												<td><input type="text" class="form-control form-control-sm" value="${loginuserName}"  readonly>
 														<input type="hidden" name="createId" value="${sessionScope.user}"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">등록일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">등록일</th>
 												<td>
 													<input type="text" class="form-control form-control-sm" value="<fmt:formatDate value='${now}' pattern='yyyy-MM-dd'/>" readonly>
 												</td>
@@ -75,13 +75,13 @@
 
 											<!-- 내용 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">내용</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">내용</th>
 												<td colspan="3" class="content-cell"><textarea name="content" id="noticeContent"class="form-control" style="min-height: 300px;" placeholder="공지 내용을 입력하세요"  required>${notice.content}</textarea></td>
 											</tr>
 
 											<!-- 카테고리 선택 -->
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">카테고리 선택</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">카테고리 선택</th>
 												<td colspan="3">
 												<select class="form-control mr-2" id="complainCategoryId" name="complainCategoryId" style="min-width: 220px;">
 													<option value="">전체</option>
@@ -99,7 +99,7 @@
 									</table>
 								</div>
 								<div class="d-flex justify-content-end">
-								<button type="button" class="btn btn-primary btn-sm mr-4" id="btnSaveBottom">
+								<button type="button" class="btn btn-primary btn-sm mr-2" id="btnSaveBottom">
 									<i class="fas fa-save mr-1"></i>등록	
 								</button>
 								<a href="${pageContext.request.contextPath}/notice" class="btn btn-danger btn-sm">

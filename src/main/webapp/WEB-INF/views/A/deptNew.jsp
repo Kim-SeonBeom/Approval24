@@ -62,7 +62,7 @@
 
                       <!-- 부서명 -->
                       <tr>
-                        <th scope="col" class="text-dark bg-light font-weight-bold">부서명</th>
+                        <th scope="col" class="text-dark bg-light font-weight-bold text-center">부서명</th>
                         <td colspan="3">
                           <input type="text"
                                  name="deptName"
@@ -76,7 +76,7 @@
 
                       <!-- 연락처 -->
                       <tr>
-                        <th scope="col" class="text-dark bg-light font-weight-bold">연락처</th>
+                        <th scope="col" class="text-dark bg-light font-weight-bold text-center">연락처</th>
                         <td colspan="3">
                           <input type="tel"
                                  name="deptPhone"
@@ -88,7 +88,7 @@
 
                       <!-- 소속 기관 체크박스 -->
                       <tr>
-                        <th class="text-dark bg-light font-weight-bold">소속 기관</th>
+                        <th class="text-dark bg-light font-weight-bold text-center">소속 기관</th>
                         <td colspan="3">
                           <div style="display:flex; flex-wrap:wrap; gap:8px 16px; line-height:1.8;">
                             <c:forEach var="inst" items="${getAllInst}">

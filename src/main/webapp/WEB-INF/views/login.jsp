@@ -30,7 +30,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center" >
-                                        <h1 class="h4 text-gray-900 mb-4" action="">고용24</h1>
+                                        <h1 class="h4 text-gray-900 mb-4" action="">민원 처리 시스템</h1>
                                     </div>
 
 										<c:if test="${not empty error}">
