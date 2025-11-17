@@ -62,7 +62,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -108,7 +108,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -131,7 +131,7 @@
 											</tr>
 											<tr>
 												<th>사업자 등록 유무</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="bizRegYn" id="bizY" value="Y" <c:if test="${detail != null && detail.bizRegYn eq 'Y'}">checked</c:if>> <label class="form-check-label" for="bizY">예</label>
 													</div>
@@ -139,6 +139,7 @@
 														<input class="form-check-input" type="radio" name="bizRegYn" id="bizN" value="N" <c:if test="${detail == null || detail.bizRegYn ne 'Y'}">checked</c:if>> <label class="form-check-label" for="bizN">아니오</label>
 													</div>
 												</td>
+												<th></th><td></td>
 											</tr>
 										</tbody>
 									</table>
@@ -153,7 +154,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -206,7 +207,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 82%">
@@ -214,7 +215,7 @@
 										<tbody>
 											<tr>
 												<th>대부 신청 금액</th>
-												<td><input type="number" class="form-control d-inline-block" style="max-width: 240px;" name="loanApplAmt" min="0" value="<c:out value='${detail.loanApplAmt}'/>"> <span class="ml-2 text-muted">※ 천원 단위 미만 버림</span></td>
+												<td class="text-left"><input type="number" class="form-control d-inline-block" style="max-width: 240px;" name="loanApplAmt" min="0" value="<c:out value='${detail.loanApplAmt}'/>"> <span class="ml-2 text-muted">※ 천원 단위 미만 버림</span></td>
 											</tr>
 										</tbody>
 									</table>
