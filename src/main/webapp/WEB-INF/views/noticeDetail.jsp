@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,10 +62,10 @@
 					<div class="card shadow mb-4">
 
 						<div class="d-flex justify-content-between mt-3 mx-4">
-							<a href="${pageContext.request.contextPath}/notice" class="btn btn-light btn-sm"> <i class="fas fa-list mr-1"></i>목록
+							<a href="${pageContext.request.contextPath}/notice" class="btn btn-light"> <i class="fas fa-list mr-1"></i>목록
 							</a>
 							<div>
-								<c:if test="${logindeptName eq '인사과'}">
+								<c:if test="${logindeptName eq '인사팀'}">
 									<a href="<c:url value='/notice/edit/${notice.noticeId}'><c:param name='noticeId' value='${notice.noticeId}'/></c:url>" class="btn btn-primary btn-sm"> <i class="fas fa-edit mr-1"></i>수정
 									</a>
 									<button type="button" class="btn btn-danger btn-sm" id="btnDeleteFooter">
@@ -90,35 +90,35 @@
 									<tbody>
 										<!-- 제목 -->
 										<tr>
-											<th scope="col" class="text-dark bg-light  font-weight-bold">제목</th>
-											<td ><strong class="text-gray-900"> <c:out value="${notice.title}" default="[제목 없음]" />
+											<th scope="col" class="text-dark bg-light  font-weight-bold text-center">제목</th>
+											<td class="text-left pl-3"><strong class="text-gray-900"> <c:out value="${notice.title}" default="[제목 없음]" />
 											</strong></td>
-											<th scope="col" class="text-dark bg-light  font-weight-bold">조회수</th>
-											<td><c:out value="${notice.viewCount}"/></td>
+											<th scope="col" class="text-dark bg-light  font-weight-bold text-center">조회수</th>
+											<td class="text-left pl-3"><c:out value="${notice.viewCount}" /></td>
 										</tr>
-										
-										<c:if test="${empty notice.updateDt}" >
+
+										<c:if test="${empty notice.updateDt}">
 											<tr>
-												<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
-												<td><c:out value="${notice.userName}" default="-" /></td>
-												<th scope="col" class="text-dark bg-light  font-weight-bold">등록일</th>
-												<td><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년 'MM'월 'dd'일 'HH:mm" /></td>
+												<th scope="col" class="text-dark bg-light  font-weight-bold text-center">작성자</th>
+												<td class="text-left pl-3"><c:out value="${notice.userName}" default="-" /></td>
+												<th scope="col" class="text-dark bg-light  font-weight-bold text-center">등록일</th>
+												<td class="text-left pl-3"><fmt:formatDate value="${notice.createDt}" pattern="yyyy'년 'MM'월 'dd'일 'HH:mm" /></td>
 											</tr>
 										</c:if>
-										
+
 										<c:if test="${notice.updateDt != null }">
 											<tr>
-												<th scope="col" class="text-dark bg-light  font-weight-bold">작성자</th>
-												<td><c:out value="${notice.userName}" default="-" /></td>
-												<th scope="col" class="text-dark bg-light  font-weight-bold">수정일</th>
-												<td><fmt:formatDate value="${notice.updateDt}" pattern="yyyy'년 'MM'월 'dd'일 'HH:mm" /></td>
+												<th scope="col" class="text-dark bg-light  font-weight-bold text-center">작성자</th>
+												<td class="text-left pl-3"><c:out value="${notice.userName}" default="-" /></td>
+												<th scope="col" class="text-dark bg-light  font-weight-bold text-center">수정일</th>
+												<td class="text-left pl-3"><fmt:formatDate value="${notice.updateDt}" pattern="yyyy'년 'MM'월 'dd'일 'HH:mm" /></td>
 											</tr>
 										</c:if>
 
 										<!-- 내용 -->
 										<tr>
-											<th scope="col" class="text-dark bg-light  font-weight-bold">내용</th>
-											<td colspan="3" class="content-cell"><c:out value="${notice.content}" default="내용이 없습니다." /></td>
+											<th scope="col" class="text-dark bg-light  font-weight-bold text-center">내용</th>
+											<td colspan="3" class="content-cell text-left pl-3"><c:out value="${notice.content}" default="내용이 없습니다." /></td>
 
 										</tr>
 

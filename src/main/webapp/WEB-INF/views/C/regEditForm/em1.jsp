@@ -30,6 +30,7 @@
 </head>
 
 <body id="page-top">
+
 	<div id="wrapper">
 
 		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
@@ -55,7 +56,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -97,7 +98,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -129,7 +130,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -159,7 +160,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table style="text-align: center;" class="table table-bordered mb-0" id="historyTable">
+									<table style="text-align: center;" class="table table-bordered mb-0 text-center" id="historyTable">
 										<thead>
 											<tr>
 												<th>카테고리</th>
@@ -187,7 +188,7 @@
 							</a>
 							<div>
 
-								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
+								<c:if test="${pageAuth.updateYn == 'Y'}">
 									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
 										<i class="fas fa-edit mr-1"></i>결재선설정
 									</button>
@@ -270,5 +271,32 @@
 			</div>
 		</div>
 	</div>
+	
+<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="msgModalLabel">알림</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ${msg}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<c:if test="${not empty msg}">
+    <script>
+        $(document).ready(function(){
+            $('#msgModal').modal('show');
+        });
+    </script>
+</c:if>
 </body>
 </html>

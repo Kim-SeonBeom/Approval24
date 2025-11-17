@@ -1,6 +1,5 @@
 package com.example.approval24.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import com.example.approval24.dao.ApprovalHistoryDAO;
 import com.example.approval24.dao.ComplainDAO;
 import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.ComplainDTO;
-import com.example.approval24.domain.ComplainFilterDTO;
 
 @Service
 public class ApprovalHistoryService {
@@ -38,7 +36,6 @@ public class ApprovalHistoryService {
         
         int result = 0;
         
-        
         if (approvalData.getSeqNo() == null) {
         	throw new IllegalArgumentException("결재시도는 SEQ_NO가 필수입니다.");
         }
@@ -46,14 +43,9 @@ public class ApprovalHistoryService {
         Long nextSeq = approvalData.getSeqNo() + 1;
         Long complainId = approvalData.getComplainId();
         String codeId = approvalData.getApprovalStatusCd();
-        ComplainDTO complainDTO = complainDAO.findById(complainId);
-        String complain_cd = complainDTO.getComplainStatusCd();
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
         		complainId, nextSeq);
         
-        if(!complain_cd.equals("D002")) {
-        	throw new IllegalArgumentException("민원 등록 상태가 아닙니다. 민원 상태 코드: " + complain_cd);
-        }
         
         if ("E002".equals(codeId)) { // 승인 로직
   
@@ -85,20 +77,15 @@ public class ApprovalHistoryService {
         
         else if ("E003".equals(codeId)) { // 반려 로직
         	if(approvalData.getApproverTypeCd().equals("F002")) { // 담당자면
-        		if(nextApprovalData == null){
-        			result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
-        			complainDAO.updateStatusByComplainId(complainId, "D005"); // 민원 반려
-        		}
-        	}
-        	else { // 검토자나 승인자가 반려하는 경우 담당자가 결재 상태여야함.
         		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
-        		nextApprovalData = approvalHistoryDAO.getComplainManager(complainId);
-                nextApprovalData.setApprovalStatusCd("E001"); // 결재
-                approvalHistoryDAO.insertApprovalHistory(nextApprovalData);
+        		complainDAO.updateStatusByComplainId(complainId, "D005"); // 민원 반려
         	}
-
+        	else { // 검토자나 승인자가 반려하는 경우 
+        		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
+        	}
         	return result;
         } 
+        
         else if ("E005".equals(codeId)) { // 취하 로직
         	if(approvalData.getApproverTypeCd().equals("F002")) { //담당자면
         		result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
@@ -122,11 +109,14 @@ public class ApprovalHistoryService {
             throw new IllegalArgumentException("민원 ID 또는 결재 라인 정보가 유효하지 않습니다.");
         }
         
-
 		ComplainDTO complainDto = complainDAO.findById(complainId);
 		
 		if (complainDto == null) {
 		    throw new IllegalArgumentException("해당 민원이 존재하지 않습니다.");
+		}
+		
+		if(!loginId.equals((Long)complainDto.getAccountId())) {
+			throw new IllegalArgumentException("담당자 계정이 아닙니다.");
 		}
 		
 		if (complainDto.getComplainStatusCd().equals("D004")) {
@@ -138,6 +128,11 @@ public class ApprovalHistoryService {
         else if (complainDto.getComplainStatusCd().equals("D006")) {
         	throw new IllegalArgumentException("이미 승인된 민원입니다.");
         }
+		
+		if(approvalLine.size() < 2) {
+			throw new IllegalArgumentException("결재선은 본인 포함 최소 2명 이상이어야 합니다.");
+		}
+        
         
         for (int i = 0; i < approvalLine.size(); i++) {
             ApprovalHistoryDTO dto = approvalLine.get(i);
@@ -146,8 +141,7 @@ public class ApprovalHistoryService {
             if (dto.getAccountId() == null) {
                  throw new IllegalArgumentException((i + 1) + "번째 결재 단계의 **계정 ID**가 누락되었습니다.");
             }
-
-            String approvalStatusCd;
+            
             if (i == 0) {
             	if(!loginId.equals(dto.getAccountId()))
             	{
@@ -157,22 +151,19 @@ public class ApprovalHistoryService {
             		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
-                approvalStatusCd = "E002";  //승인
-            } else if (i == 1) {
-                approvalStatusCd = "E001"; // 결재
+            	dto.setApprovalStatusCd("E001");  // 결재
+            	dto.setApproverTypeCd("F002"); //담당자
+            } 
+            else if(approvalLine.size() - 1 == i) {
+            	dto.setApprovalStatusCd("E004");  // 대기
+            	dto.setApproverTypeCd("F004");  //승인자
             }
             else {
-            	approvalStatusCd = "E004"; // 대기
+            	dto.setApprovalStatusCd("E004");  // 대기
+            	dto.setApproverTypeCd("F003");  //검토자
             }
-            dto.setApprovalStatusCd(approvalStatusCd);
-            dto.setUrl(url);
             
-            // approverTypeCd (검토자/승인자) 체크 
-            if (dto.getApproverTypeCd() == null || (!dto.getApproverTypeCd().equals("F001") && 
-            		!dto.getApproverTypeCd().equals("F002") && !dto.getApproverTypeCd().equals("F003")
-            		&& !dto.getApproverTypeCd().equals("F004"))) {
-                 throw new IllegalArgumentException((i + 1) + "번째 결재 단계의 **승인자 유형 코드**가 누락되었거나 잘못되었습니다.");
-            }
+            dto.setUrl(url);
             
             approvalHistoryDAO.insertApprovalHistory(dto);
         }
@@ -190,4 +181,22 @@ public class ApprovalHistoryService {
 	}
 
 
+	public boolean checkHistoryManager(long complainId, Long userId) {
+	    List<ApprovalHistoryDTO> list = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
+	    if (list == null || list.isEmpty()) return false;
+
+	    boolean hasUserE001 = false;  // 본인 E001 존재 여부
+	    boolean hasOtherE001 = false; // 다른 사람 E001 존재 여부
+
+	    for (ApprovalHistoryDTO dto : list) {
+	        if ("E001".equals(dto.getApprovalStatusCd())) {
+	            if (dto.getAccountId().equals(userId)) {
+	                hasUserE001 = false;   
+	            } else {
+	                hasOtherE001 = true;  
+	            }
+	        }
+	    }
+	    return hasUserE001 || hasOtherE001;
+	}
 }

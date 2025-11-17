@@ -94,35 +94,35 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">기관명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">기관명</th>
 												<td colspan="3"><input type="text" name="instName" id="instName" class="form-control form-control-sm" readonly value="${MAInfo.instName}" required></td>
 											</tr>
 											
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">부서명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">부서명</th>
 												<td colspan="3"><input type="text" name="deptName" id="deptName" class="form-control form-control-sm" readonly value="${MAInfo.deptName}" required></td>
 											</tr>
 											
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">민원서식명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">민원서식명</th>
 												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" readonly value="${MAInfo.categoryName}" required></td>
 											</tr>
 											
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">로그인ID</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">로그인ID</th>
 												<td colspan="1"><input type="text" name="accountId" id="accountId" class="form-control form-control-sm" readonly value="${MAInfo.loginId}" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">사용자이름</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">사용자이름</th>
 												<td colspan="1"><input type="text" name="userName" id="userName" class="form-control form-control-sm" readonly value="${MAInfo.userName}" required></td>
 											</tr>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">생성일</th>
 												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${MAInfo.createDt}" required></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">수정일</th>
 												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${MAInfo.updateDt}" required></td>
 											</tr>
 
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">삭제여부</th>
 											  <td colspan="6">
 											    <div class="d-flex align-items-center" style="gap:16px;">
 											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">
@@ -147,7 +147,7 @@
 					</div>
 					<!-- 하단 버튼 -->
 					<div class="d-flex justify-content-between mt-4">
-						<a href="${pageContext.request.contextPath}/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 취소</a>
+						<a href="${pageContext.request.contextPath}/MA" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i>목록으로</a>
 					</div>
 				</div>
 				</div>

@@ -49,41 +49,35 @@
 </select>
 
 <select id="countMyApprovalHistoryList" resultType="int">
-
     SELECT COUNT(*)
-
     FROM
         T2000_APPROVAL_HISTORY T1
-
     INNER JOIN
         T2000_COMPLAIN T2
         ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
-
     LEFT OUTER JOIN
         T2000_COMPLAIN_CATEGORY T3
         ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
-    <where>
-        (
-            T1.ACCOUNT_ID = #{accountId}
-            OR T1.DELEGATE_ID = #{accountId}
-        )
-
-        <if test="filterMap.startDate != null and filterMap.startDate != ''">
-            AND T1.PROCESS_DT >= TO_DATE(#{filterMap.startDate}, 'YYYY-MM-DD')
+ 		WHERE
+        ( T1.ACCOUNT_ID = #{accountId}
+            OR T1.DELEGATE_ID = #{accountId})
+        <if test="startDate != null and startDate != ''">
+            AND T1.PROCESS_DT >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND T1.PROCESS_DT &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
         </if>
 
-        <if test="filterMap.endDate != null and filterMap.endDate != ''">
-            AND T1.PROCESS_DT &lt; TO_DATE(#{filterMap.endDate}, 'YYYY-MM-DD') + 1
+        <if test="approvalStatusCd != null and approvalStatusCd != ''">
+            AND T1.APPROVAL_STATUS_CD = #{approvalStatusCd}
         </if>
 
-        <if test="filterMap.approvalStatusCd != null and filterMap.approvalStatusCd != ''">
-            AND T1.APPROVAL_STATUS_CD = #{filterMap.approvalStatusCd}
+        <if test="categoryCd != null and categoryCd != ''">
+            AND T3.CATEGORY_CD = #{categoryCd}
         </if>
-
-        <if test="filterMap.categoryCd != null and filterMap.categoryCd != ''">
-            AND T3.CATEGORY_CD = #{filterMap.categoryCd}
+          <if test="approvalStatusCd != null and approvalStatusCd != ''">
+           AND T1.APPROVAL_STATUS_CD = #{approvalStatusCd}
         </if>
-    </where>
 </select>
     
 
@@ -201,6 +195,22 @@
                 complain_id = #{complainId}
             ORDER BY
                 SEQ_NO ASC, PROCESS_DT ASC
+        )
+        WHERE ROWNUM = 1
+    </select>
+    
+        <select id="getLastComplainManager" resultType="ApprovalHistoryDTO">
+        SELECT
+            *
+        FROM (
+            SELECT
+                *
+            FROM
+                T2000_APPROVAL_HISTORY
+            WHERE
+                complain_id = #{complainId}
+            ORDER BY
+                SEQ_NO DESC, PROCESS_DT DESC
         )
         WHERE ROWNUM = 1
     </select>

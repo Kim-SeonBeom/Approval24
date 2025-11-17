@@ -21,12 +21,10 @@
                             <div class="card-body">
                                 <table class="table table-bordered mb-0 text-center" width="100%">
                                     <colgroup>
-                                        <col style="width: 5%">
-                                        <col style="width: 20%">
-                                        <col style="width: 5%">
-                                        <col style="width: 20%">
-                                        <col style="width: 10%">
-                                        <col style="width: 40%">
+                                        <col style="width: 15%">
+                                        <col style="width: 30%">
+                                        <col style="width: 15%">
+                                        <col style="width: 35%">
                                     </colgroup>
                                     <tbody>
                                         <tr>
@@ -38,25 +36,19 @@
                                             <td><select class="form-control w-auto" id="accountSelect">
                                                     <option value="">-- 계정 선택 --</option>
                                             </select></td>
-                                            <th>승인자 유형</th>
-                                            <td><select class="form-control w-auto" id="approverTypeSelect">
-                                                    <option value="">-- 승인자 유형 선택 --</option>
-                                            </select></td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <table class="table table-bordered mb-0 text-center" width="100%" id="approvalLineTable">
                                     <colgroup>
-                                        <col style="width: 25%">
-                                        <col style="width: 25%">
-                                        <col style="width: 25%">
-                                        <col style="width: 25%">
+                                        <col style="width: 40%">
+                                        <col style="width: 40%">
+                                        <col style="width: 20%">
                                     </colgroup>
                                     <thead>
                                         <tr>
                                             <th>부서</th>
                                             <th>계정</th>
-                                            <th>승인자 유형</th>
                                             <th>삭제</th>
                                         </tr>
                                     </thead>
@@ -120,22 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(err => console.error(err));
     });
 
-    // 승인자 유형 코드 목록 불러오기 (그룹ID: F0)
-    fetch("/approval24/api/common/codes?groupId=F0")
-        .then(res => res.json())
-        .then(list => {
-            list.forEach(c => {
-                const opt = document.createElement("option");
-                opt.value = c.codeId;
-                opt.text = c.codeName;
-                typeSel.appendChild(opt);
-            });
-        });
 
     // 결재자 추가
     document.getElementById("addLineBtn").addEventListener("click", () => {
-        if (!deptSel.value || !accSel.value || !typeSel.value) {
-            alert("부서, 계정, 승인자 유형을 모두 선택하세요.");
+        if (!deptSel.value || !accSel.value) {
+            alert("부서,계정을 모두 선택하세요.");
             return;
         }
 
@@ -143,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tr.innerHTML = `
             <td data-id="\${deptSel.value}">\${deptSel.options[deptSel.selectedIndex].text}</td>
             <td data-id="\${accSel.value}">\${accSel.options[accSel.selectedIndex].text}</td>
-            <td data-id="\${typeSel.value}">\${typeSel.options[typeSel.selectedIndex].text}</td>
             <td><button type="button" class="btn btn-danger btn-sm btn-del">삭제</button></td> 
         `;
         tableBody.appendChild(tr);
@@ -167,7 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const approvalLineData = Array.from(rows).map(tr => ({
             deptId: tr.children[0].dataset.id,
             accountId: tr.children[1].dataset.id,
-            approverTypeCd: tr.children[2].dataset.id 
         }));
         
         // 민원 ID는 부모 페이지의 숨겨진 input에서 가져와야 합니다.

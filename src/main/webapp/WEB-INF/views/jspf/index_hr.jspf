@@ -16,7 +16,7 @@
 
                 <!-- Page Title -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">인사 팀</h1>
+                    <h1 class="h3 mb-0 text-gray-800">인사팀</h1>
                 </div>
 
                 <!-- Main Row -->
@@ -43,7 +43,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                           <a href="${pageContext.request.contextPath}/account/list" class="ml-4">전체 계정 조회 →</a>
+                                           <a href="${pageContext.request.contextPath}/user/list" class="ml-4">전체 계정 조회 →</a>
                                 </div>
                             </div>
 
@@ -64,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    	<a href="${pageContext.request.contextPath}/account/list?accountStatusCd=B002" class="ml-4">활성화 계정 조회 →</a>
+                                    	<a href="${pageContext.request.contextPath}/user/list?accountStatusCd=B002" class="ml-4">활성화 계정 조회 →</a>
                                     	
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/account/list?accountStatusCd=B001" class="ml-4">대기 계정 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/user/list?accountStatusCd=B001" class="ml-4">대기 계정 조회 →</a>
                                 </div>
                             </div>
 
@@ -111,7 +111,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/account/list?accountStatusCd=B005" class="ml-4">잠긴 계정 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/user/list?accountStatusCd=B005" class="ml-4">잠긴 계정 조회 →</a>
                                 </div>
                             </div>
 
@@ -138,7 +138,7 @@
 												<tr class="clickable-row"
 													data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}"
 													style="cursor: pointer;">
-													<td class="text-left">${notice.title}</td>
+													<td class="text-left pl-3">${notice.title}</td>
 													<td class="text-center"><fmt:formatDate value="${notice.createDt}"
 															pattern="yyyy-MM-dd"/></td>
 													<td class="text-center">${notice.viewCount}</td>

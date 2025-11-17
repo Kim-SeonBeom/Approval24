@@ -95,7 +95,7 @@
 
                             <hr>
                             
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-between">
                                 <c:choose>
                                     <c:when test="${isEditMode}">
                                         <a href="${pageContext.request.contextPath}/user/detail/${user.userResidentNo}" class="btn btn-secondary mr-2">취소 및 상세 보기</a>

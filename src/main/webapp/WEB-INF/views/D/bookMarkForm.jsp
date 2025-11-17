@@ -100,13 +100,12 @@
 									</div>
 								</div>
 
-								<div style="text-align: right;">
-									<button type="submit" class="btn btn-primary">북마크 저장</button>
-									
+								<div class="d-flex justify-content-end mt-3">
+									<button type="button" class="btn btn-danger mr-2" onclick="location.href='/approval24/bookmark/list'">취소</button>
+									<button type="submit" class="btn btn-primary ">북마크 저장</button>
 								</div>
 							</div>
 					</form>
-					<a href="/approval24/bookmark/list"><button class="btn btn-danger">취소</button></a>
 				</div>
 				<!-- /.container-fluid -->
 			</div>

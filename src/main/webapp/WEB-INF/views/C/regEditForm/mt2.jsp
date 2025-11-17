@@ -56,7 +56,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -83,7 +83,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" style="width: 100%">
+									<table class="table table-bordered mb-0 text-center" style="width: 100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -103,17 +103,27 @@
 												</td>
 												<th>친족여부</th>
 												<td>
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="relationship" id="relationship_1" value="배우자" <c:if test="${detail.relationship eq '배우자'}">checked</c:if>> <label class="form-check-label" for="relationship_1">배우자</label>
-													</div> &emsp;&emsp;&ensp;
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="relationship" id="relationship_2" value="4촌이내" <c:if test="${detail.relationship eq '4촌이내'}">checked</c:if>> <label class="form-check-label" for="relationship_2">4촌이내 인척 </label>
-													</div> <br>
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="relationship" id="relationship_3" value="8촌이내" <c:if test="${detail.relationship eq '8촌이내'}">checked</c:if>> <label class="form-check-label" for="relationship_3">8촌이내 혈족</label>
-													</div>
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="relationship" id="relationship_4" value="해당없음" <c:if test="${detail.relationship eq '해당없음'}">checked</c:if>> <label class="form-check-label" for="relationship_4">해당없음</label>
+													<div class="d-flex flex-column">
+														<div>
+
+															<div class="form-check form-check-inline ml">
+																<input class="form-check-input" type="radio" name="relationship" id="relationship_1" value="배우자" <c:if test="${detail.relationship eq '배우자'}">checked</c:if>> <label class="form-check-label" for="relationship_1">배우자</label>
+															</div>
+															&nbsp; &nbsp;
+															<div class="form-check form-check-inline ml-3">
+																<input class="form-check-input" type="radio" name="relationship" id="relationship_2" value="4촌이내" <c:if test="${detail.relationship eq '4촌이내'}">checked</c:if>> <label class="form-check-label" for="relationship_2">4촌이내 인척 </label>
+															</div>
+														</div>
+
+
+														<div class="mt-2">
+															<div class="form-check form-check-inline ml">
+																<input class="form-check-input" type="radio" name="relationship" id="relationship_3" value="8촌이내" <c:if test="${detail.relationship eq '8촌이내'}">checked</c:if>> <label class="form-check-label" for="relationship_3">8촌이내 혈족</label>
+															</div>
+															<div class="form-check form-check-inline ml-3">
+																<input class="form-check-input" type="radio" name="relationship" id="relationship_4" value="해당없음" <c:if test="${detail.relationship eq '해당없음'}">checked</c:if>> <label class="form-check-label" for="relationship_4">해당없음</label>
+															</div>
+														</div>
 													</div>
 												</td>
 											</tr>
@@ -130,7 +140,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" style="width: 100%">
+									<table class="table table-bordered mb-0 text-center" style="width: 100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -162,7 +172,7 @@
 											</tr>
 											<tr>
 												<th>자영업자고용보험 가입여부</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="selfEmpInsurYn" id="selfEmpInsurYnY" value="Y" <c:if test="${detail.selfEmpInsurYn eq 'Y'}">checked</c:if>> <label class="form-check-label" for="selfEmpInsurYnY">가입</label>
 													</div>
@@ -170,6 +180,8 @@
 														<input class="form-check-input" type="radio" name="selfEmpInsurYn" id="selfEmpInsurYnN" value="N" <c:if test="${detail.selfEmpInsurYn ne 'Y'}">checked</c:if>> <label class="form-check-label" for="selfEmpInsurYnN">미가입</label>
 													</div>
 												</td>
+												<th></th>
+												<th></th>
 											</tr>
 										</tbody>
 									</table>
@@ -184,7 +196,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" style="width: 100%">
+									<table class="table table-bordered mb-0 text-center" style="width: 100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -204,17 +216,24 @@
 												</td>
 												<th>임신기간</th>
 												<td>
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_1" value="15주이내" <c:if test="${detail.pregnancyWeek eq '15주이내'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_1">15주 이내</label>
-													</div>
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_2" value="16~21주" <c:if test="${detail.pregnancyWeek eq '16~21주'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_2">16~21주</label>
-													</div> <br>
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_3" value="22~27주" <c:if test="${detail.pregnancyWeek eq '22~27주'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_3">22~27주 </label>
-													</div>&nbsp;
-													<div class="form-check form-check-inline ml-3">
-														<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_4" value="28주이상" <c:if test="${detail.pregnancyWeek eq '28주이상'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_4">28주 이상</label>
+													<div class="d-flex flex-column">
+
+														<div>
+															<div class="form-check form-check-inline ml-3">
+																<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_1" value="15주이내" <c:if test="${detail.pregnancyWeek eq '15주이내'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_1">15주 이내</label>
+															</div>
+															<div class="form-check form-check-inline ml-3">
+																<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_2" value="16~21주" <c:if test="${detail.pregnancyWeek eq '16~21주'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_2">16~21주</label>
+															</div>
+														</div>
+														<div class="mt-2">
+															<div class="form-check form-check-inline ml-3">
+																<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_3" value="22~27주" <c:if test="${detail.pregnancyWeek eq '22~27주'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_3">22~27주 </label>
+															</div>
+															<div class="form-check form-check-inline ml-3">
+																<input class="form-check-input" type="radio" name="pregnancyWeek" id="PREGNANCY_WEEK_4" value="28주이상" <c:if test="${detail.pregnancyWeek eq '28주이상'}">checked</c:if>> <label class="form-check-label" for="PREGNANCY_WEEK_4">28주 이상</label>
+															</div>
+														</div>
 													</div>
 												</td>
 											</tr>
@@ -242,7 +261,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" style="width: 100%">
+									<table class="table table-bordered mb-0 text-center" style="width: 100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -252,7 +271,7 @@
 										<tbody>
 											<tr>
 												<th>근로자</th>
-												<td colspan="3">
+												<td class="text-left" colspan="3">
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio" name="incomeAct" id="incomeAct_1" value="incomeType1" <c:if test="${detail.incomeAct eq 'incomeType1'}">checked</c:if>> <label class="form-check-label" for="incomeAct_1">고용보험 피보험자이나 180일 요건 미충족으로 고용보험의 ‘출산전후휴가급여’를 지급받지 못하는 자</label>
 													</div> <br>
@@ -266,7 +285,7 @@
 											</tr>
 											<tr>
 												<th>1인사업자(피고용인이 없는 단독사업자 및 공동사업자)</th>
-												<td colspan="3">
+												<td class="text-left" colspan="3">
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio" name="incomeAct" id="incomeAct_4" value="incomeType4" <c:if test="${detail.incomeAct eq 'incomeType4'}">checked</c:if>> <label class="form-check-label" for="incomeAct_4">전전년도~출산년도 사업에 대한 세금신고 사실이 있는 자</label>
 													</div> <br>
@@ -277,7 +296,7 @@
 											</tr>
 											<tr>
 												<th>기타 소득활동하는 자</th>
-												<td colspan="3">
+												<td class="text-left" colspan="3">
 													<div class="form-check form-check-inline ml-3">
 														<input class="form-check-input" type="radio" name="incomeAct" id="incomeAct_6" value="incomeType6" <c:if test="${detail.incomeAct eq 'incomeType6'}">checked</c:if>> <label class="form-check-label" for="incomeAct_6">사업자등록증 없는 특수형태근로자, 프리랜서 등</label>
 													</div>
@@ -297,7 +316,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" style="width: 100%">
+									<table class="table table-bordered mb-0 text-center" style="width: 100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -382,7 +401,7 @@
 				&& (authData.complainAccountId === authData.sessionAccountId);
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/mt2.js"></script>
-		<script src="${pageContext.request.contextPath}/resources/assets/js/complain/approvalLine.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/approvalLine.js"></script>
 
 	<!-- Submit Modal -->
 	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">

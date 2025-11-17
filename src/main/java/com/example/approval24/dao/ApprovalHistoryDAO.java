@@ -21,6 +21,8 @@ public interface ApprovalHistoryDAO {
             @Param("seqNo") Long seqNo);
 	ApprovalHistoryDTO getComplainManager(Long complainId);
 	
+	ApprovalHistoryDTO getLastComplainManager(Long complainId);
+	
 	List<ApprovalHistoryDTO> getHistoryIdByComplainId(Long complainId);
 	
 	int countMyApprovalHistoryList(Map<String, Object> filterMap);

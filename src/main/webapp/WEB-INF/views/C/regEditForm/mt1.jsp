@@ -64,7 +64,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -116,7 +116,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -147,7 +147,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -183,7 +183,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -193,7 +193,7 @@
 										<tbody>
 											<tr>
 												<th>소득여부</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="incomeYn" id="incomeYnY" value="Y" ${detail.incomeYn == 'Y' ? 'checked' : ''}> <label class="form-check-label" for="incomeYnY">예</label>
 													</div>
@@ -201,11 +201,8 @@
 														<input class="form-check-input" type="radio" name="incomeYn" id="incomeYnN" value="N" ${detail.incomeYn != 'Y' ? 'checked' : ''}> <label class="form-check-label" for="incomeYnN">아니오</label>
 													</div>
 												</td>
-											</tr>
-
-											<tr>
 												<th>소득 종류</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="incomeType" id="incomeTypeBiz" value="사업소득" ${detail.incomeType == '사업소득' ? 'checked' : ''}> <label class="form-check-label" for="incomeTypeBiz">사업소득</label>
 													</div>
@@ -214,6 +211,7 @@
 													</div>
 												</td>
 											</tr>
+
 
 											<tr>
 												<th>소득 활동 시작일</th>

@@ -91,13 +91,13 @@
 										</colgroup>
 										<tbody>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">기관명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">기관명</th>
 											  <td colspan="3">
 											  	<input type="text" name="instName" id="instName" class="form-control form-control-sm" value="${instName.instName}" readonly>
 											  </td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">부서명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">부서명</th>
 											  <td colspan="3">
 											    <select name="deptId" id="deptId" class="form-control form-control-sm">
 											      <option value="">-- 부서 선택 --</option>
@@ -112,7 +112,7 @@
 											</tr>
 											
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">민원서식명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">민원서식명</th>
 											  <td colspan="3">
 											    <select name="complainCategoryId" id="complainCategoryId" class="form-control form-control-sm">
 											      <option value="">-- 민원서식 선택 --</option>
@@ -140,6 +140,26 @@
 											      <option value="">-- 로그인계정 선택 --</option>
 											    </select>
 											  </td>
+												<th class="text-dark bg-light font-weight-bold text-center align-middle">로그인ID</th>
+												<td colspan="1">
+												  <select name="accountId" id="accountId" class="form-control form-control-sm">
+												    <option value="">-- 로그인계정 선택 --</option>
+												    <c:forEach var="account" items="${accountByInstDept}">
+												      <option value="${account.accountId}"
+												        <c:if test="${MAInfo.accountId == account.accountId}">selected="selected"</c:if>>
+												        ${account.loginId}
+												      </option>
+												    </c:forEach>
+												  </select>
+												</td>
+
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">사용자이름</th>
+												<td colspan="1">
+												  <input type="text" name="userName" id="userName"
+												         class="form-control form-control-sm"
+												         placeholder="사용자 이름 입력"
+												         value="<c:out value='${MAInfo.userName}'/>">
+												</td>
 											</tr>
 
 										</tbody>

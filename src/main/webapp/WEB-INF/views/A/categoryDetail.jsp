@@ -91,7 +91,7 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">민원서식명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">민원서식명</th>
 												<td colspan="3">
 												      <input type="text" 
 												             name="codeName" 
@@ -102,7 +102,7 @@
 												</td>
 											</tr>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">유형코드</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">유형코드</th>
 												<td colspan="1">
 												      <input type="text" 
 												             name="codeId" 
@@ -112,31 +112,31 @@
 												             readonly>
 												</td>
 												
-												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">생성일</th>
 												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${categoryInfo.createDt}" required></td>
 											</tr>
 											
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">처리소요일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">처리소요일</th>
 												<td colspan="1"><input type="text" name="dueDt" id="dueDt" class="form-control form-control-sm" value="${categoryInfo.dueDt}" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">수정일</th>
 												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${categoryInfo.updateDt}" required></td>
 											</tr>
 
 											
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">생성자ID</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">생성자 계정관리번호</th>
 												<td colspan="1"><input type="text" name="createId" id="createId" class="form-control form-control-sm" readonly value="${categoryInfo.createId}" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">수정자ID</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">수정자 계정관리번호</th>
 												<td colspan="1"><input type="text" name="updateId" id="updateId" class="form-control form-control-sm" readonly value="${categoryInfo.updateId}" required></td>
 											</tr>
 											<tr>	
-												<th>민원서식 URL</th>
+												<th class="text-dark bg-light font-weight-bold text-center">서식URL</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${categoryInfo.categoryUrl}"
 													name="categoryUrl"></td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">소속 부서명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center">소속 부서</th>
 											  <td colspan="6">
 											    <div style="display:flex; flex-wrap:wrap; gap:8px 16px; line-height:1.8;">
 											      <c:forEach var="dept" items="${getAllDept}">
@@ -162,7 +162,7 @@
 											  </td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <th class="text-dark bg-light font-weight-bold text-center">삭제여부</th>
 											  <td colspan="6">
 											    <div class="d-flex align-items-center" style="gap:16px;">
 											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">

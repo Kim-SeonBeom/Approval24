@@ -83,7 +83,7 @@
 					
 					      <!-- 2) 코드그룹ID -->
 					      <div class="form-group row align-items-center mb-3">
-					        <label for="groupId" class="col-sm-2 col-form-label font-weight-bold text-center">코드그룹ID</label>
+					        <label for="groupId" class="col-sm-2 col-form-label font-weight-bold text-center">코드그룹</label>
 					        <div class="col-sm-10">
 					          <input type="text" class="form-control w-25" id="groupId" name="groupId"
 					                 value="${filter.groupId}" placeholder="코드그룹Id 입력">
@@ -92,7 +92,7 @@
 					
 					      <!-- 3) 코드ID -->
 					      <div class="form-group row align-items-center mb-3">
-					        <label for="codeId" class="col-sm-2 col-form-label font-weight-bold text-center">코드ID</label>
+					        <label for="codeId" class="col-sm-2 col-form-label font-weight-bold text-center">코드</label>
 					        <div class="col-sm-10">
 					          <input type="text" class="form-control w-25" id="codeId" name="codeId"
 					                 value="${filter.codeId}" placeholder="코드ID 입력">
@@ -152,8 +152,8 @@
 					          <thead class="thead-light">
 					            <tr>
 					              <th style="width:60px;">번호</th>
-					              <th style="width:90px;">코드그룹ID</th>
-					              <th style="width:90px;">코드ID</th>
+					              <th style="width:90px;">코드그룹</th>
+					              <th style="width:90px;">코드</th>
 					              <th style="width:150px;">코드명</th>
 					              <th style="width:200px;">코드내용</th>
 					              <th style="width:90px;">삭제여부</th>

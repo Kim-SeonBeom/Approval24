@@ -159,7 +159,14 @@
 					                <td class="text-left pl-3">${item.authorityName}</td>
 					                <td><fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd"/></td>
 					                <td><fmt:formatDate value="${item.updateDt}" pattern="yyyy-MM-dd"/></td>
-					                <td>${item.isSystem}</td>
+					                   <!--  <td>${item.isSystem}</td> -->
+					                <td>
+					                     <c:choose>
+					                    <c:when test="${item.isSystem== 'Y'}">시스템</c:when>
+					                    <c:when test="${item.isSystem== 'N'}">일반사용자</c:when>
+					                    <c:otherwise><span class="badge badge-light">${item.isSystem}</span></c:otherwise>
+					                  </c:choose>
+					                </td>
 					                <td>
 					                  <c:choose>
 					                    <c:when test="${item.delYn == 'Y'}"><span class="badge badge-secondary">삭제</span></c:when>
@@ -168,11 +175,11 @@
 					                  </c:choose>
 					                </td>
 					                <td>
-									  <a class="btn btn-sm btn-warning" href="${pageContext.request.contextPath}/authority/edit/${item.authorityId}">수정</a>
+									  <a class="btn btn-sm btn-warning mr-1" href="${pageContext.request.contextPath}/authority/edit/${item.authorityId}">수정</a>
 									  <form action="${pageContext.request.contextPath}/authority/delete/${item.authorityId}"
 									        method="post" style="display:inline"
 									        onsubmit="return confirm('정말로 권한 [${item.authorityName}]을(를) 삭제하시겠습니까?');">
-									    <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+									    <button type="submit" class="btn btn-sm btn-danger  ml-1">삭제</button>
 									  </form>
 									</td>
 

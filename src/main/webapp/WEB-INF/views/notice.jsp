@@ -41,8 +41,8 @@
 								<button class="btn btn-primary btn-sm" type="submit"
 									form="noticeFilterForm">검색</button>
 								
-								<c:if test="${logindeptName eq '인사과'}">
-								<button class="btn btn-success btn-sm ml-2" type="button"
+								<c:if test="${logindeptName eq '인사팀'}">
+								<button class="btn btn-success btn-sm" type="button"
 									onclick="location.href='${pageContext.request.contextPath}/notice/new'">추가</button>
 									</c:if>
 							</div>
@@ -140,8 +140,8 @@
 													data-href="${pageContext.request.contextPath}/notice/detail/${item.noticeId}"
 													style="cursor: pointer;">
 													<td>${(filter.page - 1) * filter.size + status.index + 1}</td>
-													<td class="text-left">${item.title}</td>
-													<td class="text-left">${item.categoryName}</td>
+													<td class="text-left pl-3">${item.title}</td>
+													<td class="text-left pl-3">${item.categoryName}</td>
 													<td>${item.userName}</td>
 													<td>${item.createDt}</td>
 													<td>${item.viewCount}</td>

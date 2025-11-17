@@ -56,7 +56,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -72,7 +72,9 @@
 											</tr>
 											<tr>
 												<th>계좌번호</th>
-												<td colspan="3"><input type="text" class="form-control" name="accountNo" value="<c:out value='${detail.accountNo}'/>"></td>
+												<td><input type="text" class="form-control" name="accountNo" value="<c:out value='${detail.accountNo}'/>"></td>
+												<th></th>
+												<th></th>
 											</tr>
 										</tbody>
 									</table>
@@ -87,7 +89,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -97,7 +99,7 @@
 										<tbody>
 											<tr>
 												<th>소득 발생 여부</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="incomeOccurYn" id="incomeOccurYnY" value="Y" <c:if test="${detail != null && detail.incomeOccurYn eq 'Y'}">checked</c:if>> <label class="form-check-label" for="incomeOccurYnY">예</label>
 													</div>
@@ -105,6 +107,8 @@
 														<input class="form-check-input" type="radio" name="incomeOccurYn" id="incomeOccurYnN" value="N" <c:if test="${detail == null || detail.incomeOccurYn ne 'Y'}">checked</c:if>> <label class="form-check-label" for="incomeOccurYnN">아니오</label>
 													</div>
 												</td>
+												<th></th>
+												<th></th>
 											</tr>
 
 											<tr>
@@ -123,7 +127,7 @@
 
 											<tr>
 												<th>사업자 등록(자영업 개시)</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="bizRegYn" id="bizRegYnY" value="Y" <c:if test="${detail != null && detail.bizRegYn eq 'Y'}">checked</c:if>> <label class="form-check-label" for="bizRegYnY">예</label>
 													</div>
@@ -131,6 +135,8 @@
 														<input class="form-check-input" type="radio" name="bizRegYn" id="bizRegYnN" value="N" <c:if test="${detail == null || detail.bizRegYn ne 'Y'}">checked</c:if>> <label class="form-check-label" for="bizRegYnN">아니오</label>
 													</div>
 												</td>
+												<th></th>
+												<th></th>
 											</tr>
 
 											<tr>
@@ -152,7 +158,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" width="100%">
+									<table class="table table-bordered mb-0 text-center" width="100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
@@ -162,7 +168,7 @@
 										<tbody>
 											<tr>
 												<th>자영업 준비활동</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="selfEmpPrepActYn" id="selfEmpPrepActYnY" value="Y" <c:if test="${detail != null && detail.selfEmpPrepActYn eq 'Y'}">checked</c:if>> <label class="form-check-label" for="selfEmpPrepActYnY">예</label>
 													</div>
@@ -170,6 +176,8 @@
 														<input class="form-check-input" type="radio" name="selfEmpPrepActYn" id="selfEmpPrepActYnN" value="N" <c:if test="${detail == null || detail.selfEmpPrepActYn ne 'Y'}">checked</c:if>> <label class="form-check-label" for="selfEmpPrepActYnN">아니오</label>
 													</div>
 												</td>
+												<th></th>
+												<th></th>
 											</tr>
 
 											<tr>
@@ -181,7 +189,7 @@
 
 											<tr>
 												<th>재취업여부</th>
-												<td colspan="3">
+												<td>
 													<div class="form-check form-check-inline">
 														<input class="form-check-input" type="radio" name="reEmploymentYn" id="reEmploymentYnY" value="Y" <c:if test="${detail != null && detail.reEmploymentYn eq 'Y'}">checked</c:if>> <label class="form-check-label" for="reEmploymentYnY">예</label>
 													</div>
@@ -189,6 +197,8 @@
 														<input class="form-check-input" type="radio" name="reEmploymentYn" id="reEmploymentYnN" value="N" <c:if test="${detail == null || detail.reEmploymentYn ne 'Y'}">checked</c:if>> <label class="form-check-label" for="reEmploymentYnN">아니오</label>
 													</div>
 												</td>
+												<th></th>
+												<th></th>
 											</tr>
 
 											<tr>
@@ -200,7 +210,9 @@
 
 											<tr>
 												<th>구직활동 외 활동사항</th>
-												<td colspan="3"><input type="text" class="form-control" name="nonJobSeekActivity" value="<c:out value='${detail.nonJobSeekActivity}'/>"></td>
+												<td><input type="text" class="form-control" name="nonJobSeekActivity" value="<c:out value='${detail.nonJobSeekActivity}'/>"></td>
+												<th></th>
+												<th></th>
 											</tr>
 										</tbody>
 									</table>

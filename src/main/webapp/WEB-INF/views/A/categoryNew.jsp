@@ -91,24 +91,24 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">민원서식명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">민원서식명</th>
 												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" required maxlength="200"></td>
 											</tr>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">유형코드</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">유형코드</th>
 												<td colspan="1"><input type="text" name="categoryCd" id="categoryCd" class="form-control form-control-sm" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">처리소요일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">처리소요일</th>
 												<td colspan="1"><input type="text" name="dueDt" id="dueDt" class="form-control form-control-sm" placeholder="숫자만 입력하세요." required maxlength="200"></td>
 											</tr>
 											
 											<tr>	
-												<th>민원서식 URL</th>
+												<th class="text-dark bg-light font-weight-bold text-center">서식 URL</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm"
 													name="categoryUrl"></td>
 											</tr>
 											<!-- 소속 부서 체크박스 -->
 						                      <tr>
-						                        <th class="text-dark bg-light font-weight-bold">소속 부서</th>
+						                        <th class="text-dark bg-light font-weight-bold text-center">소속 부서</th>
 						                        <td colspan="3">
 						                          <div style="display:flex; flex-wrap:wrap; gap:8px 16px; line-height:1.8;">
 						                            <c:forEach var="dept" items="${getAllDept}">

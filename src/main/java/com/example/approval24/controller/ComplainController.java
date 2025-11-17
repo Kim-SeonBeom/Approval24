@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainFilterDTO;
@@ -28,6 +29,7 @@ import com.example.approval24.domain.MT2DTO;
 import com.example.approval24.domain.MenuVO;
 import com.example.approval24.domain.UE1DTO;
 import com.example.approval24.domain.UE2DTO;
+import com.example.approval24.service.ApprovalHistoryService;
 import com.example.approval24.service.CategoryService;
 import com.example.approval24.service.ComplainService;
 import com.example.approval24.service.ComplainuserService;
@@ -44,6 +46,9 @@ public class ComplainController {
 
 	@Autowired
 	private ComplainuserService complainuserService;
+	
+	@Autowired
+	private ApprovalHistoryService historyService;
 
 	@GetMapping("/myWork")
 	public String myWorkList(Model model, HttpSession session) {
@@ -305,18 +310,54 @@ public class ComplainController {
 
 	}
 
+	//수정부분
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//수정
 	@PostMapping("/category/em1/{complainId}")
 	public String submitEmptyWork(@PathVariable long complainId, EM1DTO em1DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
-
+		
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryManager(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/em1/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/em1/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/em1/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/em1/" + complainId;
+		}
 		complainuserService.saveComplainuser(complainuserDTO);
-
 		complainService.saveem1(em1DTO);
 
-		// 등록 완료 후 리다이렉트 (예: 상세 페이지나 목록)
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
 		return "redirect:/complain/category/em1/" + complainId;
 	}
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	
 
 	// 청년 도전 사업 지원 신청
 	@GetMapping("/category/em2/{complainId}")
