@@ -125,6 +125,12 @@
 		SELECT INST_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID =
 		#{accountId}
 	</select>
+	
+	<select id="findDeptIdByAccountId" parameterType="long"
+		resultType="long">
+		SELECT DEPT_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID =
+		#{accountId}
+	</select>
 
 	<select id="findByAccountIdAndDeptIdAndInstId"
 		parameterType="long" resultType="AccountDTO">

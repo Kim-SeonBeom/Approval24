@@ -104,17 +104,10 @@ public class ApprovalProcessController {
             response.put("message", "필수 결재 정보(ComplainID 또는 AccountID)가 누락되었습니다.");
             return ResponseEntity.status(400).body(response);
         }
-
-        // 권한 체크 
-        if (!loggedInUserId.equals(approvalData.getAccountId()) && !loggedInUserId.equals(approvalData.getDelegateId())) {
-            response.put("success", false);
-            response.put("message", "해당 결재를 처리할 계정이 아닙니다.");
-            return ResponseEntity.status(403).body(response);
-        }
         
         // 서비스 로직 호출 및 예외 처리
         try {
-            historyService.processApprovalHistory(approvalData);
+            historyService.processApprovalHistory(approvalData,loggedInUserId);
             
             response.put("success", true);
             response.put("message", "결재 처리가 성공적으로 완료되었습니다.");

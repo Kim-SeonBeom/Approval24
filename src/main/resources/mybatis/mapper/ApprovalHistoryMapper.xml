@@ -3,83 +3,110 @@
 <mapper namespace="com.example.approval24.dao.ApprovalHistoryDAO">
 
     <!-- 내가 결재해야 하거나 이미 처리한 내역 목록 조회 (필터링 포함) -->
-<select id="selectMyApprovalHistoryList" resultType="ApprovalHistoryDTO" >
-  SELECT * FROM (
-    SELECT 
-      T1.COMPLAIN_ID,
-      T1.DELEGATE_ID,
-      T1.ACCOUNT_ID,
-      T1.APPROVAL_STATUS_CD,
-      T1.APPROVER_TYPE_CD,
-      T1.PROCESS_DT,
-      T1.APPROVAL_COMMENT,
-      T1.SEQ_NO,
-      T1.URL,
-      T3.CATEGORY_CD,
-      TC1.CODE_NAME AS CATEGORY_NAME,
-      TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
-      TC3.CODE_NAME AS APPROVER_TYPE_NAME,
-      TU.USER_NAME AS USER_NAME,
-      ROW_NUMBER() OVER (ORDER BY T1.PROCESS_DT DESC, T1.SEQ_NO DESC) AS RNUM
-    FROM T2000_APPROVAL_HISTORY T1
-    INNER JOIN T2000_COMPLAIN T2 ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
-    LEFT JOIN T2000_COMPLAIN_CATEGORY T3 ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
-    LEFT JOIN TOTAL_CODE TC1 ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
-    LEFT JOIN TOTAL_CODE TC2 ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
-    LEFT JOIN TOTAL_CODE TC3 ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
-    LEFT JOIN T1000_ACCOUNT TA ON T1.ACCOUNT_ID = TA.ACCOUNT_ID
-    LEFT JOIN T1000_USER TU ON TA.USER_NO = TU.USER_NO
-    <where>
-      (T1.ACCOUNT_ID = #{accountId} OR T1.DELEGATE_ID = #{accountId})
-      <if test="startDate != null and startDate != ''">
-        AND T1.PROCESS_DT &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
-      </if>
-      <if test="endDate != null and endDate != ''">
-        AND T1.PROCESS_DT &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
-      </if>
-      <if test="approvalStatusCd != null and approvalStatusCd != ''">
-        AND T1.APPROVAL_STATUS_CD = #{approvalStatusCd}
-      </if>
-      <if test="categoryCd != null and categoryCd != ''">
-        AND T3.CATEGORY_CD = #{categoryCd}
-      </if>
-    </where>
-  )
-  WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+<select id="selectMyApprovalHistoryList" resultType="ApprovalHistoryDTO">
+    SELECT * FROM (
+        SELECT 
+            T1.COMPLAIN_ID,
+            -- T1.DELEGATE_ID가 NULL이면, TP.DELEGATE_ID를 사용하여 처리자 ID를 통합
+            COALESCE(T1.DELEGATE_ID, TP.DELEGATE_ID) AS DELEGATE_ID, 
+            T1.ACCOUNT_ID,
+            T1.APPROVAL_STATUS_CD,
+            T1.APPROVER_TYPE_CD,
+            T1.APPROVAL_TYPE_CD, 
+            T1.PROCESS_DT,
+            T1.APPROVAL_COMMENT,
+            T1.SEQ_NO,
+            T1.URL,
+            T3.CATEGORY_CD,
+            TC1.CODE_NAME AS CATEGORY_NAME,
+            TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
+            TC3.CODE_NAME AS APPROVER_TYPE_NAME,
+            TC4.CODE_NAME AS APPROVAL_TYPE_NAME, 
+            
+            TU1.USER_NAME AS ACCOUNT_NAME,
+            
+            CASE 
+    			WHEN T1.DELEGATE_ID IS NOT NULL THEN TU2_HISTORY.USER_NAME 
+   				WHEN T1.PROCESS_DT IS NOT NULL THEN TU1.USER_NAME 
+   				WHEN T1.PROCESS_DT IS NULL AND TP.DELEGATE_ID IS NOT NULL THEN TU2_PROXY.USER_NAME
+    			ELSE TU1.USER_NAME -- 원래 담당자 이름
+				END AS PROCESSOR_NAME,
+            
+            ROW_NUMBER() OVER (ORDER BY T1.PROCESS_DT DESC, T1.SEQ_NO DESC) AS RNUM
+            
+        FROM T2000_APPROVAL_HISTORY T1
+        INNER JOIN T2000_COMPLAIN T2 ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
+        LEFT JOIN T2000_COMPLAIN_CATEGORY T3 ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
+        LEFT JOIN TOTAL_CODE TC1 ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
+        LEFT JOIN TOTAL_CODE TC2 ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
+        LEFT JOIN TOTAL_CODE TC3 ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
+        LEFT JOIN TOTAL_CODE TC4 ON T1.APPROVAL_TYPE_CD = TC4.CODE_ID AND TC4.GROUP_ID = 'H0' 
+        
+        LEFT JOIN T1000_ACCOUNT TA1 ON T1.ACCOUNT_ID = TA1.ACCOUNT_ID
+        LEFT JOIN T1000_USER TU1 ON TA1.USER_NO = TU1.USER_NO
+        
+        LEFT JOIN T1000_ACCOUNT TA_HIS ON T1.DELEGATE_ID = TA_HIS.ACCOUNT_ID
+        LEFT JOIN T1000_USER TU2_HISTORY ON TA_HIS.USER_NO = TU2_HISTORY.USER_NO
+        
+        LEFT JOIN T2000_PROXY TP 
+            ON T1.ACCOUNT_ID = TP.ABS_ID 
+            AND SYSDATE BETWEEN TP.START_DT AND TP.END_DT 
+            AND TP.DEL_YN = 'N'
+        
+        LEFT JOIN T1000_ACCOUNT TA_PROXY ON TP.DELEGATE_ID = TA_PROXY.ACCOUNT_ID
+        LEFT JOIN T1000_USER TU2_PROXY ON TA_PROXY.USER_NO = TU2_PROXY.USER_NO
+        
+        <where>
+            (T1.ACCOUNT_ID = #{accountId} OR T1.DELEGATE_ID = #{accountId} OR TP.DELEGATE_ID = #{accountId})
+
+            <if test="startDate != null and startDate != ''">
+                AND T1.PROCESS_DT &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND T1.PROCESS_DT &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+            </if>
+            <if test="approvalStatusCd != null and approvalStatusCd != ''">
+                AND T1.APPROVAL_STATUS_CD = #{approvalStatusCd}
+            </if>
+            <if test="categoryCd != null and categoryCd != ''">
+                AND T3.CATEGORY_CD = #{categoryCd}
+            </if>
+        </where>
+    )
+    WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 </select>
+
 
 <select id="countMyApprovalHistoryList" resultType="int">
     SELECT COUNT(*)
-    FROM
-        T2000_APPROVAL_HISTORY T1
-    INNER JOIN
-        T2000_COMPLAIN T2
-        ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
-    LEFT OUTER JOIN
-        T2000_COMPLAIN_CATEGORY T3
-        ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
- 		WHERE
-        ( T1.ACCOUNT_ID = #{accountId}
-            OR T1.DELEGATE_ID = #{accountId})
+    FROM T2000_APPROVAL_HISTORY T1
+    INNER JOIN T2000_COMPLAIN T2 ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
+    LEFT JOIN T2000_COMPLAIN_CATEGORY T3 ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
+
+    <!-- 🔹 대결자 테이블 조인 추가 -->
+    LEFT JOIN T2000_PROXY TP 
+        ON T1.ACCOUNT_ID = TP.ABS_ID 
+        AND SYSDATE BETWEEN TP.START_DT AND TP.END_DT 
+        AND TP.DEL_YN = 'N'
+
+    <where>
+        <!-- 🔹 로그인 계정이 담당자 또는 대결자인 경우 -->
+        (T1.ACCOUNT_ID = #{accountId} OR T1.DELEGATE_ID = #{accountId} OR TP.DELEGATE_ID = #{accountId})
+
         <if test="startDate != null and startDate != ''">
-            AND T1.PROCESS_DT >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            AND T1.PROCESS_DT &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
         </if>
         <if test="endDate != null and endDate != ''">
             AND T1.PROCESS_DT &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
         </if>
-
         <if test="approvalStatusCd != null and approvalStatusCd != ''">
             AND T1.APPROVAL_STATUS_CD = #{approvalStatusCd}
         </if>
-
         <if test="categoryCd != null and categoryCd != ''">
             AND T3.CATEGORY_CD = #{categoryCd}
         </if>
-          <if test="approvalStatusCd != null and approvalStatusCd != ''">
-           AND T1.APPROVAL_STATUS_CD = #{approvalStatusCd}
-        </if>
+    </where>
 </select>
-    
 
     <insert id="insertApprovalHistory" parameterType="ApprovalHistoryDTO">
         INSERT INTO T2000_APPROVAL_HISTORY (
@@ -88,7 +115,7 @@
             ACCOUNT_ID,
             APPROVAL_STATUS_CD,
             APPROVER_TYPE_CD,
-            PROCESS_DT,
+            APPROVAL_TYPE_CD, 
             APPROVAL_COMMENT,
             URL
         ) VALUES (
@@ -97,185 +124,152 @@
             #{accountId},
             #{approvalStatusCd},
             #{approverTypeCd},
-            SYSDATE,  
+            #{approvalTypeCd}, 
             #{approvalComment},
             #{url}
         )
     </insert>
-        
-    <!-- 결재 상태 및 의견 업데이트 -->
-	<update id="updateApprovalHistoryStatus" parameterType="ApprovalHistoryDTO">
-        UPDATE T2000_APPROVAL_HISTORY
-        <set>
-            APPROVAL_STATUS_CD = #{approvalStatusCd},
-            PROCESS_DT = SYSDATE,
-            APPROVAL_COMMENT = #{approvalComment}
-            
-            <if test="delegateId != null">
-                DELEGATE_ID = #{delegateId}
-            </if>
-        </set>
-        WHERE
-            COMPLAIN_ID = #{complainId}
-            AND SEQ_NO = #{seqNo}
-    </update>
-        
-    <!-- Complain ID와 Seq No로 특정 결재 내역 조회 
-         (⭐️ 코드 이름 및 카테고리 정보 조인 추가) -->
-    <select id="getHistoryIdByComplainIdAndSeqNo" resultType="ApprovalHistoryDTO">
-        SELECT 
-            T1.COMPLAIN_ID,
-            T1.DELEGATE_ID,
-            T1.ACCOUNT_ID,
-            T1.APPROVAL_STATUS_CD,
-            T1.APPROVER_TYPE_CD,
-            T1.PROCESS_DT,
-            T1.APPROVAL_COMMENT,
-            T1.SEQ_NO,
-            T1.URL,
-            
-            T3.CATEGORY_CD,
-            TC1.CODE_NAME AS CATEGORY_NAME,
-            
-            TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
-            TC3.CODE_NAME AS APPROVER_TYPE_NAME,
-            
-            TU.USER_NAME AS USER_NAME
-            
-        FROM 
-            T2000_APPROVAL_HISTORY T1
-        
-        INNER JOIN 
-            T2000_COMPLAIN T2 
-            ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
-            
-        LEFT OUTER JOIN 
-            T2000_COMPLAIN_CATEGORY T3 
-            ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC1 
-            ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
-            
-        <!-- ⭐️ 결재 상태 코드 이름 조회 추가 -->
-        LEFT OUTER JOIN  
-            TOTAL_CODE TC2  
-            ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
-            
-        <!-- ⭐️ 결재자 유형 코드 이름 조회 추가 -->
-        LEFT OUTER JOIN  
-            TOTAL_CODE TC3  
-            ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
 
-        <!-- 유저 이름 조회 (기존 로직 유지) -->
-        LEFT OUTER JOIN 
-            T1000_ACCOUNT TA
-            ON T1.ACCOUNT_ID = TA.ACCOUNT_ID
+<update id="updateApprovalHistoryStatus" parameterType="ApprovalHistoryDTO">
+    UPDATE T2000_APPROVAL_HISTORY
+    <set>
+        APPROVAL_STATUS_CD = #{approvalStatusCd},
+        PROCESS_DT = SYSDATE,
+        APPROVAL_COMMENT = #{approvalComment},
         
-        LEFT OUTER JOIN
-            T1000_USER TU
-            ON TA.USER_NO = TU.USER_NO
-            
-        WHERE 
-            T1.complain_id = #{complainId}
-        AND 
-            T1.seq_no = #{seqNo}
-    </select>
-        
-    <!-- 최초 민원 담당자 (처리자) 조회 (Oracle 호환을 위해 ROWNUM 사용) -->
-    <select id="getComplainManager" resultType="ApprovalHistoryDTO">
-        SELECT
-            *
-        FROM (
-            SELECT
-                *
-            FROM
-                T2000_APPROVAL_HISTORY
-            WHERE
-                complain_id = #{complainId}
-            ORDER BY
-                SEQ_NO ASC, PROCESS_DT ASC
-        )
-        WHERE ROWNUM = 1
-    </select>
+        <if test="delegateId != null">
+            DELEGATE_ID = #{delegateId},
+        </if>
+
+        <if test="approvalTypeCd != null">
+            APPROVAL_TYPE_CD = #{approvalTypeCd}
+        </if>
+    </set>
+    WHERE COMPLAIN_ID = #{complainId}
+      AND SEQ_NO = #{seqNo}
+</update>
+
+    <!-- Complain ID와 Seq No로 특정 결재 내역 조회 -->
+<select id="getHistoryIdByComplainIdAndSeqNo" resultType="ApprovalHistoryDTO">
+    SELECT 
+        T1.COMPLAIN_ID,
+        T1.DELEGATE_ID,
+        T1.ACCOUNT_ID,
+        T1.APPROVAL_STATUS_CD,
+        T1.APPROVER_TYPE_CD,
+        T1.APPROVAL_TYPE_CD, 
+        T1.PROCESS_DT,
+        T1.APPROVAL_COMMENT,
+        T1.SEQ_NO,
+        T1.URL,
+        T3.CATEGORY_CD,
+        TC1.CODE_NAME AS CATEGORY_NAME,         -- 카테고리 코드명 (TC1)
+        TC2.CODE_NAME AS APPROVAL_STATUS_NAME,  -- 결재 상태 코드명 (TC2)
+        TC3.CODE_NAME AS APPROVER_TYPE_NAME,    -- 결재자 유형 코드명 (TC3)
+        TC4.CODE_NAME AS APPROVAL_TYPE_NAME,    -- 결재 유형 코드명 (TC4)
+        TU1.USER_NAME AS ACCOUNT_NAME,          -- 담당자(ACCOUNT_ID)의 사용자 이름
+        TU2.USER_NAME AS DELEGATE_NAME          -- 위임받은 결재자(DELEGATE_ID)의 사용자 이름
+    FROM T2000_APPROVAL_HISTORY T1              -- 결재 이력 테이블 (메인 테이블)
     
-        <select id="getLastComplainManager" resultType="ApprovalHistoryDTO">
-        SELECT
-            *
+    INNER JOIN T2000_COMPLAIN T2 
+        ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
+    
+    LEFT JOIN T2000_COMPLAIN_CATEGORY T3 
+        ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
+    
+    LEFT JOIN TOTAL_CODE TC1 ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
+    LEFT JOIN TOTAL_CODE TC2 ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
+    LEFT JOIN TOTAL_CODE TC3 ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
+    LEFT JOIN TOTAL_CODE TC4 ON T1.APPROVAL_TYPE_CD = TC4.CODE_ID AND TC4.GROUP_ID = 'H0' 
+    
+    LEFT JOIN T1000_ACCOUNT TA1 
+        ON T1.ACCOUNT_ID = TA1.ACCOUNT_ID
+    LEFT JOIN T1000_USER TU1 
+        ON TA1.USER_NO = TU1.USER_NO
+    
+    LEFT JOIN T1000_ACCOUNT TA2 
+        ON T1.DELEGATE_ID = TA2.ACCOUNT_ID
+    LEFT JOIN T1000_USER TU2 
+        ON TA2.USER_NO = TU2.USER_NO
+    
+    WHERE T1.COMPLAIN_ID = #{complainId}  
+      AND T1.SEQ_NO = #{seqNo}            
+</select>
+
+    <!-- 최초 민원 담당자 조회 -->
+    <select id="getComplainManager" resultType="ApprovalHistoryDTO">
+        SELECT *
         FROM (
-            SELECT
-                *
-            FROM
-                T2000_APPROVAL_HISTORY
-            WHERE
-                complain_id = #{complainId}
-            ORDER BY
-                SEQ_NO DESC, PROCESS_DT DESC
+            SELECT *
+            FROM T2000_APPROVAL_HISTORY
+            WHERE complain_id = #{complainId}
+            ORDER BY SEQ_NO ASC, PROCESS_DT ASC
         )
         WHERE ROWNUM = 1
     </select>
-        
-    <!-- 민원 ID로 전체 결재 라인 조회 -->
-    <select id="getHistoryIdByComplainId" resultType="ApprovalHistoryDTO">
-        
-        SELECT 
-            T1.COMPLAIN_ID,
-            T1.DELEGATE_ID,
-            T1.ACCOUNT_ID,
-            T1.APPROVAL_STATUS_CD,
-            T1.APPROVER_TYPE_CD,
-            T1.PROCESS_DT,
-            T1.APPROVAL_COMMENT,
-            T1.SEQ_NO,
-            T1.URL,
-            
-            T3.CATEGORY_CD,
-            
-            TC1.CODE_NAME AS CATEGORY_NAME,
-            
-            TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
-            
-            TC3.CODE_NAME AS APPROVER_TYPE_NAME,
-            
-            TU.USER_NAME AS USER_NAME
-            
-        FROM 
-            T2000_APPROVAL_HISTORY T1
-        
-        INNER JOIN 
-            T2000_COMPLAIN T2 
-            ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
-            
-        LEFT OUTER JOIN 
-            T2000_COMPLAIN_CATEGORY T3 
-            ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC1 
-            ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC2 
-            ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
-            
-        LEFT OUTER JOIN 
-            TOTAL_CODE TC3 
-            ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
-            
-        LEFT OUTER JOIN 
-            T1000_ACCOUNT TA
-            ON T1.ACCOUNT_ID = TA.ACCOUNT_ID
-            
-        LEFT OUTER JOIN
-            T1000_USER TU
-            ON TA.USER_NO = TU.USER_NO
-            
-        WHERE
-            T1.COMPLAIN_ID = #{complainId}
-            
-        ORDER BY 
-            T1.SEQ_NO ASC
-            
+
+    <!-- 마지막 민원 담당자 조회 -->
+    <select id="getLastComplainManager" resultType="ApprovalHistoryDTO">
+        SELECT *
+        FROM (
+            SELECT *
+            FROM T2000_APPROVAL_HISTORY
+            WHERE complain_id = #{complainId}
+            ORDER BY SEQ_NO DESC, PROCESS_DT DESC
+        )
+        WHERE ROWNUM = 1
     </select>
-        
+
+<select id="getHistoryIdByComplainId" resultType="ApprovalHistoryDTO">
+    SELECT 
+        T1.COMPLAIN_ID,
+        T1.DELEGATE_ID,
+        T1.ACCOUNT_ID,
+        T1.APPROVAL_STATUS_CD,
+        T1.APPROVER_TYPE_CD,
+        T1.APPROVAL_TYPE_CD, 
+        T1.PROCESS_DT,
+        T1.APPROVAL_COMMENT,
+        T1.SEQ_NO,
+        T1.URL,
+        T3.CATEGORY_CD,
+        TC1.CODE_NAME AS CATEGORY_NAME,
+        TC2.CODE_NAME AS APPROVAL_STATUS_NAME,
+        TC3.CODE_NAME AS APPROVER_TYPE_NAME,
+        TC4.CODE_NAME AS APPROVAL_TYPE_NAME, 
+        TU1.USER_NAME AS ACCOUNT_NAME,     
+        TU2.USER_NAME AS DELEGATE_NAME    
+    FROM T2000_APPROVAL_HISTORY T1
+    
+    INNER JOIN T2000_COMPLAIN T2 ON T1.COMPLAIN_ID = T2.COMPLAIN_ID
+    
+    LEFT JOIN T2000_COMPLAIN_CATEGORY T3 ON T2.COMPLAIN_CATEGORY_ID = T3.COMPLAIN_CATEGORY_ID
+    LEFT JOIN TOTAL_CODE TC1 ON T3.CATEGORY_CD = TC1.CODE_ID AND TC1.GROUP_ID = 'G0'
+    LEFT JOIN TOTAL_CODE TC2 ON T1.APPROVAL_STATUS_CD = TC2.CODE_ID AND TC2.GROUP_ID = 'E0'
+    LEFT JOIN TOTAL_CODE TC3 ON T1.APPROVER_TYPE_CD = TC3.CODE_ID AND TC3.GROUP_ID = 'F0'
+    LEFT JOIN TOTAL_CODE TC4 ON T1.APPROVAL_TYPE_CD = TC4.CODE_ID AND TC4.GROUP_ID = 'H0'
+    
+    LEFT JOIN T1000_ACCOUNT TA1 ON T1.ACCOUNT_ID = TA1.ACCOUNT_ID
+    LEFT JOIN T1000_USER TU1 ON TA1.USER_NO = TU1.USER_NO
+    
+    LEFT JOIN T1000_ACCOUNT TA2 ON T1.DELEGATE_ID = TA2.ACCOUNT_ID
+    LEFT JOIN T1000_USER TU2 ON TA2.USER_NO = TU2.USER_NO
+    
+    
+    WHERE T1.COMPLAIN_ID = #{complainId}
+    
+    ORDER BY T1.SEQ_NO ASC 
+</select>
+    
+    <select id="getProxyIdByAccountAndComplainId" resultType="long">
+    SELECT TP.DELEGATE_ID
+    FROM T2000_APPROVAL_HISTORY T1
+    INNER JOIN T2000_PROXY TP
+        ON T1.ACCOUNT_ID = TP.ABS_ID
+        AND SYSDATE BETWEEN TP.START_DT AND TP.END_DT
+        AND TP.DEL_YN = 'N'
+    WHERE T1.COMPLAIN_ID = #{complainId}
+      AND T1.SEQ_NO = #{seqNo}
+	</select>
+
 </mapper>

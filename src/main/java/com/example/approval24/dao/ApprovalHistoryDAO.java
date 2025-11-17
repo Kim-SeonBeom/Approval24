@@ -26,4 +26,6 @@ public interface ApprovalHistoryDAO {
 	List<ApprovalHistoryDTO> getHistoryIdByComplainId(Long complainId);
 	
 	int countMyApprovalHistoryList(Map<String, Object> filterMap);
+	
+	Long getProxyIdByAccountAndComplainId(@Param("complainId")Long complainId,@Param("seqNo")Long seqNo);
 }

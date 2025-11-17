@@ -26,6 +26,26 @@
 	background: #f8f9fc;
 	vertical-align: middle;
 }
+
+#historyTable {
+    width: 100%;           /* 테이블 너비 100% */
+    table-layout: fixed;   /* 컬럼 폭 고정 */
+    text-align: center;    /* 텍스트 중앙 정렬 */
+}
+
+/* 헤더 중앙 정렬 */
+#historyTable thead th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 컬럼별 너비 지정 (예시) */
+#historyTable colgroup col:nth-child(1) { width: 20%; } /* 카테고리 */
+#historyTable colgroup col:nth-child(2) { width: 15%; } /* 사용자 */
+#historyTable colgroup col:nth-child(3) { width: 15%; } /* 결재자 유형 */
+#historyTable colgroup col:nth-child(4) { width: 15%; } /* 결재 종류 */
+#historyTable colgroup col:nth-child(5) { width: 15%; } /* 상태 */
+#historyTable colgroup col:nth-child(6) { width: 20%; } /* 처리일 */
 </style>
 </head>
 
@@ -161,11 +181,13 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table style="text-align: center;" class="table table-bordered mb-0" id="historyTable">
+									
 										<thead>
 											<tr>
 												<th>카테고리</th>
 												<th>사용자</th>
 												<th>결재자 유형</th>
+												<th>결재 종류</th>
 												<th>상태</th>
 												<th>처리일</th>
 											</tr>

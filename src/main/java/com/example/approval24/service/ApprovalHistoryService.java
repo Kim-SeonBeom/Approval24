@@ -28,7 +28,7 @@ public class ApprovalHistoryService {
     
 
     @Transactional
-    public int processApprovalHistory(ApprovalHistoryDTO approvalData) {
+    public int processApprovalHistory(ApprovalHistoryDTO approvalData, Long loggedInUserId) {
         // 필수 값 체크
         if (approvalData.getApprovalStatusCd() == null) {
             throw new IllegalArgumentException("필수 결재 정보가 누락되었습니다.");
@@ -46,9 +46,20 @@ public class ApprovalHistoryService {
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
         		complainId, nextSeq);
         
+        Long delegateId = approvalHistoryDAO.getProxyIdByAccountAndComplainId(complainId, approvalData.getSeqNo());
+       
+        if(approvalData.getAccountId() != loggedInUserId && delegateId != null && !delegateId.equals(loggedInUserId)) {
+        	throw new IllegalArgumentException("결재 권한이 존재하지 않습니다.");
+        }
+        
+        approvalData.setApprovalTypeCd("H001");
+        
+        if(delegateId != null && delegateId.equals(loggedInUserId)){
+        	approvalData.setDelegateId(delegateId);
+        	approvalData.setApprovalTypeCd("H002");
+        }
         
         if ("E002".equals(codeId)) { // 승인 로직
-  
         	if(nextApprovalData == null) {
         		if(approvalData.getApproverTypeCd().equals("F004")) { // 승인자
         			result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
@@ -171,6 +182,12 @@ public class ApprovalHistoryService {
 
 
 	public List<ApprovalHistoryDTO> getApprovalHistoryByComplainId(Long complainId) {
+		List<ApprovalHistoryDTO> approvalLine = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
+		for (int i = 0; i < approvalLine.size(); i++) {
+            ApprovalHistoryDTO dto = approvalLine.get(i);
+
+            dto.setComplainId(complainId); 
+		}
 		return approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 	}
 	
@@ -183,7 +200,7 @@ public class ApprovalHistoryService {
 
 	public boolean checkHistoryManager(long complainId, Long userId) {
 	    List<ApprovalHistoryDTO> list = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
-	    if (list == null || list.isEmpty()) return true;
+	    if (list == null || list.isEmpty()) return false;
 
 	    boolean hasUserE001 = false;  // 본인 E001 존재 여부
 	    boolean hasOtherE001 = false; // 다른 사람 E001 존재 여부
@@ -191,9 +208,9 @@ public class ApprovalHistoryService {
 	    for (ApprovalHistoryDTO dto : list) {
 	        if ("E001".equals(dto.getApprovalStatusCd())) {
 	            if (dto.getAccountId().equals(userId)) {
-	                hasUserE001 = true;   
+	                hasUserE001 = false;   
 	            } else {
-	                hasOtherE001 = false;  
+	                hasOtherE001 = true;  
 	            }
 	        }
 	    }

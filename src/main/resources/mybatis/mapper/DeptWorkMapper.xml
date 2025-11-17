@@ -3,11 +3,34 @@
 <mapper namespace="com.example.approval24.dao.DeptWorkDAO">
 
 <!-- 특정 민원서식의 매핑 부서 -->
-<select id="deptByCategory" parameterType="long" resultType="DeptWorkDTO">
-	SELECT d.dept_id, d.dept_name, dw.complain_category_id
-	FROM t1000_department_work dw
-	JOIN t1000_department d ON d.dept_id = dw.department_id
-	WHERE dw.complain_category_id=#{complainCategoryId}
+<select id="deptByCategory" resultType="DeptWorkDTO">
+    SELECT 
+        d.dept_id, 
+        d.dept_name, 
+        dw.complain_category_id,
+        c.category_name, 
+        c.category_cd
+    FROM t1000_department_work dw
+    JOIN t1000_department d 
+        ON d.dept_id = dw.department_id
+    LEFT JOIN t2000_complain_category c 
+        ON c.complain_category_id = dw.complain_category_id  
+    WHERE dw.complain_category_id = #{complainCategoryId}
+</select>
+
+<select id="categoryByDept" resultType="DeptWorkDTO">
+    SELECT 
+        dw.department_id,
+        d.dept_name,
+        dw.complain_category_id,
+        c.category_name,
+        c.category_cd
+    FROM t1000_department_work dw
+    JOIN t1000_department d
+        ON d.dept_id = dw.department_id
+    LEFT JOIN t2000_complain_category c 
+    	ON c.complain_category_id = dw.complain_category_id
+    WHERE dw.department_id = #{deptId}
 </select>
 
 <!-- 단일 매핑 -->

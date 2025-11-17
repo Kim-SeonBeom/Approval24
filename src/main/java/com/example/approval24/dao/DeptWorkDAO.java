@@ -13,6 +13,9 @@ public interface DeptWorkDAO {
 	// 특정 민원서식의 매핑 부서
 	public List<DeptWorkDTO> deptByCategory (@Param("complainCategoryId") long complainCategoryId);
 	
+	//특정 부서의 민원서식
+	public List<DeptWorkDTO> categoryByDept (Long deptId);
+	
 	// 단일 매핑
 	public int insertDW (@Param("deptId") Long deptId, @Param("complainCategoryId") Long complainCategoryId);
 	

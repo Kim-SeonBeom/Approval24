@@ -53,18 +53,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadApprovalLine() {
     if (!complainId) {
-        $historyTbody.html('<tr><td colspan="5">민원 ID가 없어 결재 내역을 불러올 수 없습니다.</td></tr>');
+        $historyTbody.html('<tr><td colspan="6">민원 ID가 없어 결재 내역을 불러올 수 없습니다.</td></tr>');
         return;
     }
 
-    $historyTbody.html('<tr><td colspan="5">로딩 중...</td></tr>');
+    $historyTbody.html('<tr><td colspan="6">로딩 중...</td></tr>');
 
     try {
         const res = await fetch(`/approval24/api/approval/line?complainId=${complainId}`, { credentials: 'same-origin' });
         approvalList = await res.json();
 
         if (!Array.isArray(approvalList) || approvalList.length === 0) {
-            $historyTbody.html('<tr><td colspan="5">결재 이력이 없습니다.</td></tr>');
+            $historyTbody.html('<tr><td colspan="6">결재 이력이 없습니다.</td></tr>');
             updateApprovalButtons();
             return;
         }
@@ -75,6 +75,7 @@ async function loadApprovalLine() {
                 <td>${item.categoryName || ''}</td>
                 <td>${item.userName || ''}</td>
                 <td>${item.approverTypeName || ''}</td>
+                <td>${item.approvalTypeName || '-'}</td>  
                 <td>${item.approvalStatusName || ''}</td>
                 <td>${item.processDt ? new Date(item.processDt).toLocaleString() : ''}</td>
             `);
@@ -85,7 +86,7 @@ async function loadApprovalLine() {
 
     } catch (e) {
         console.error(e);
-        $historyTbody.html('<tr><td colspan="5">서버 오류 발생</td></tr>');
+        $historyTbody.html('<tr><td colspan="6">서버 오류 발생</td></tr>');
     }
 }
 

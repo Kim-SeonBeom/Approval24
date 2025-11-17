@@ -137,6 +137,10 @@ public class AccountService {
 	    return accountDAO.findInstIdByAccountId(accountId);
 	}
 	
+	public Long findDeptIdByAccountId(Long accountId) {
+	    return accountDAO.findDeptIdByAccountId(accountId);
+	}
+	
 	//현재 로그인한 아이디와 같은기관&같은부서인 아이디 목록 조회
 	public List<AccountDTO> myTeamAccountList(long accountId){
 		return accountDAO.findByAccountIdAndDeptIdAndInstId(accountId);
