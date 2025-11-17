@@ -47,6 +47,12 @@
 									</c:if>
 							</div>
 						</div>
+						<!-- 메시지 -->
+						<c:if test="${not empty errorMessage}">
+							<div class="alert alert-danger" role="alert">
+								<i class="fas fa-exclamation-triangle mr-2"></i> ${errorMessage}
+							</div>
+						</c:if>
 
 						<div class="card-body">
 							<form id="noticeFilterForm" action="${pageContext.request.contextPath}/notice" method="get">
@@ -67,10 +73,10 @@
 									<div class="col-sm-10">
 										<div class="form-inline">
 											<!-- name/id 를 complainCategoryId 로 통일 -->
-											<select class="form-control mr-2" id="complainCategoryId" name="complainCategoryId" style="min-width: 220px;">
+											<select class="form-control mr-2" id="codeId" name="codeId" style="min-width: 220px;">
 												<option value="">전체</option>
 												<c:forEach var="list" items="${categoryList}">
-													<option value="${list.complainCategoryId}" <c:if test="${filter.complainCategoryId == list.complainCategoryId}">selected</c:if>>${list.categoryName}</option>
+													<option value="${list.codeId}" <c:if test="${filter.categoryCd == list.codeId}">selected</c:if>>${list.codeName}</option>
 												</c:forEach>
 											</select>
 										</div>

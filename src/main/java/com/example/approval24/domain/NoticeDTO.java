@@ -20,5 +20,6 @@ public class NoticeDTO {
 	private String popupYn;
 	private String delYn;
     private Long complainCategoryId;
+    private String codeId;
 
 }

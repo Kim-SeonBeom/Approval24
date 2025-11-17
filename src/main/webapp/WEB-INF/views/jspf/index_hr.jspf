@@ -28,7 +28,7 @@
                         <div class="row flex-grow-1">
 
                             <!-- 전체 계정 -->
-                            <div class="col-6 mb-4 d-flex">
+                            <div class="col-12 mb-4 d-flex">
                                 <div class="card border-left-primary shadow h-100 flex-fill py-2">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -48,7 +48,7 @@
                             </div>
 
                             <!-- 활성 계정 -->
-                            <div class="col-6 mb-4 d-flex">
+                            <div class="col-12 mb-4 d-flex">
                                 <div class="card border-left-success shadow h-100 flex-fill py-2">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -70,7 +70,7 @@
                             </div>
 
                             <!-- 승인 대기 -->
-                            <div class="col-6 mb-4 d-flex">
+                            <div class="col-12 mb-4 d-flex">
                                 <div class="card border-left-info shadow h-100 flex-fill py-2">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -95,7 +95,7 @@
                             </div>
 
                             <!-- 잠긴 계정 -->
-                            <div class="col-6 mb-4 d-flex">
+                            <div class="col-12 mb-4 d-flex">
                                 <div class="card border-left-warning shadow h-100 flex-fill py-2">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -124,7 +124,7 @@
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body mt-4">
                                 <div class="table-responsive">
                 					<table class="table table-bordered table-hover table-sm text-center align-middle">
                                     	<thead class="thead-light">
@@ -134,7 +134,7 @@
 											<th class="text-center">조회수</th>
 										<thead>
 									</thead>
-                                            <c:forEach var="notice" items="${noticeList}">
+                                            <c:forEach var="notice" items="${noticeList}" end="9">
 												<tr class="clickable-row"
 													data-href="${pageContext.request.contextPath}/notice/detail/${notice.noticeId}"
 													style="cursor: pointer;">
@@ -148,7 +148,7 @@
 										
                                     </table>
                                 </div>
-                                <a href="/approval24/notice">공지사항 조회 →</a>
+                                <div style="margin-top: 30px;"><a  href="/approval24/notice">공지사항 조회 →</a></div>
                             </div>
                         </div>
                     </div>
@@ -167,3 +167,12 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
+<script>
+		document.addEventListener('click', function(e) {
+			const tr = e.target.closest('.clickable-row');
+			if (tr && tr.dataset.href) {
+				window.location.href = tr.dataset.href;
+			}
+		});
+	</script>

@@ -82,7 +82,7 @@ public class SignupController {
     
     	List<AuthorityDTO> authList = authDeptDAO.getAuthoritysByDeptId(deptId);
     	
-    	System.out.println(authList.toString());
+
     	return authList;
     }
     
