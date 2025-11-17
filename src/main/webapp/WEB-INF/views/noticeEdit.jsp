@@ -84,10 +84,10 @@
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">카테고리 선택</th>
 												<td colspan="3">
-												<select class="form-control mr-2" id="complainCategoryId" name="complainCategoryId" style="min-width: 220px;">
-													<option value="">전체</option>
+												<select class="form-control mr-2" id="codeId" name="codeId" style="min-width: 220px;">
+													<option value="">---카테고리 선택---</option>
 														<c:forEach var="list" items="${categoryList}">
-														<option value="${list.complainCategoryId}" <c:if test="${filter.complainCategoryId == list.complainCategoryId}">selected</c:if>>${list.categoryName}</option>
+															<option value="${list.codeId}" <c:if test="${filter.categoryCd == list.codeId}">selected</c:if>>${list.codeName}</option>
 													</c:forEach>
 												</select>
 													
