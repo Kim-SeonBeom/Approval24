@@ -68,7 +68,6 @@ public class SignUpService {
 			newAccountId = account.getAccountId();
 		}
 		
-		System.out.println("등록 서비스 끝");
 		
 		return newAccountId;
 	}

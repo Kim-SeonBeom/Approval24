@@ -86,21 +86,19 @@ public class AccountService {
 
 	    // 권한이 없으면 메뉴 빈값 세션 저장
 	    if (authorityIds.isEmpty()) {
-	        System.out.println("⚠️ 권한이 없는 계정입니다.");
 	        return Collections.emptyList();
 	    }
 
-	    // 4️⃣ 권한-메뉴 조회
+	    // 권한-메뉴 조회
 	    List<AuthorityMenuDTO> authorityMenus = authorityMenuDAO.findByAuthorityIds(authorityIds);
 	    if (authorityMenus.isEmpty()) {
-	        System.out.println("⚠️ 메뉴 권한이 없는 계정입니다.");
 	        return Collections.emptyList();
 	    }
 
-	    // 5️⃣ 전체 메뉴 조회
+	    // 전체 메뉴 조회
 	    List<MenuDTO> menus = menuDAO.findAll();
 
-	    // 6️⃣ 권한 매핑
+	    // 권한 매핑
 	    List<MenuVO> menuVOList = menus.stream().map(menu -> {
 	        MenuVO vo = new MenuVO();
 	        vo.setMenuId(menu.getMenuId());
@@ -153,6 +151,7 @@ public class AccountService {
 			accountDAO.updateAccount(account);
 		}
 	}
+	
 	// ajax
 	public List<AccountDTO> accountsByInstDept(Long instId, Long deptId) {
 	    return accountDAO.findAccountsByInstAndDept(instId, deptId);

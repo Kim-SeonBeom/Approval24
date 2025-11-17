@@ -94,7 +94,7 @@ public class ManagerAssignmentController {
 		}
 		
 		managerDTO.setUpdateId(id);
-		System.out.println(managerDTO);
+		
 		int result = MAService.ManagerAssignmentUpd(managerDTO);
 		
 		if(result > 0) {

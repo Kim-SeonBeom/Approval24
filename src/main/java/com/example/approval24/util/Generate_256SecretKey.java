@@ -7,7 +7,6 @@ public class Generate_256SecretKey {
 
     public static void main(String[] args) {
         String key = generateEncryptionKey();
-        System.out.println("Generated Base64-encoded AES-256 encryption key: " + key);
     }
 
     public static String generateEncryptionKey() {
