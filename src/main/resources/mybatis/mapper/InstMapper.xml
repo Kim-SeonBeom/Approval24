@@ -129,7 +129,7 @@
   <choose>
     <when test="dateType == 'createDt'">ORDER BY create_dt DESC, inst_id DESC</when>
     <when test="dateType == 'updateDt'">ORDER BY update_dt DESC, inst_id DESC</when>
-    <otherwise>ORDER BY inst_id DESC</otherwise>
+    <otherwise>ORDER BY inst_name</otherwise>
   </choose>
 
   OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY

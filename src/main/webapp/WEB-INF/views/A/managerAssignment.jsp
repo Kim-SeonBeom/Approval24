@@ -189,8 +189,8 @@
 					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
 					                <td>${item.instName}</td>
 					                <td>${item.deptName}</td>
-					                <td>${item.categoryName}</td>
-					                <td>${item.loginId}</td>
+					                <td class="text-left pl-3">${item.categoryName}</td>
+					                <td class="text-left pl-3">${item.loginId}</td>
 					                <td>${item.userName}</td>
 					                <td>${item.createDt}</td>
 					                <td>${item.updateDt}</td>
