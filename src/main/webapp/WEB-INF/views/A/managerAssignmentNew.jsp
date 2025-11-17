@@ -127,39 +127,19 @@
 											</tr>
 											
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">사용자 이름</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">사용자 이름</th>
 											  <td>
 											    <select name="userName" id="userNameSelect" class="form-control form-control-sm">
 											      <option value="">-- 사용자 선택 --</option>
 											    </select>
 											  </td>
 											
-											  <th class="text-dark bg-light font-weight-bold">로그인 ID</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">로그인 ID</th>
 											  <td>
 											    <select name="accountId" id="accountId" class="form-control form-control-sm">
 											      <option value="">-- 로그인계정 선택 --</option>
 											    </select>
 											  </td>
-												<th class="text-dark bg-light font-weight-bold text-center align-middle">로그인ID</th>
-												<td colspan="1">
-												  <select name="accountId" id="accountId" class="form-control form-control-sm">
-												    <option value="">-- 로그인계정 선택 --</option>
-												    <c:forEach var="account" items="${accountByInstDept}">
-												      <option value="${account.accountId}"
-												        <c:if test="${MAInfo.accountId == account.accountId}">selected="selected"</c:if>>
-												        ${account.loginId}
-												      </option>
-												    </c:forEach>
-												  </select>
-												</td>
-
-												<th scope="col" class="text-dark bg-light font-weight-bold text-center align-middle">사용자이름</th>
-												<td colspan="1">
-												  <input type="text" name="userName" id="userName"
-												         class="form-control form-control-sm"
-												         placeholder="사용자 이름 입력"
-												         value="<c:out value='${MAInfo.userName}'/>">
-												</td>
 											</tr>
 
 										</tbody>
