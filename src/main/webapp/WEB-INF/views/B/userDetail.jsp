@@ -35,6 +35,11 @@ border-color
 .form-control[readonly] {
 	background-color: #e9ecef;
 }
+
+.table th,
+.table td {
+    vertical-align: middle !important;
+}
 </style>
 </head>
 <body id="page-top">
@@ -67,7 +72,7 @@ border-color
 							<div class="card-body">
 
 								<div class="table-responsive">
-									<table class="table table-bordered" style="width: 100%; max-width: 800px;">
+									<table class="table table-bordered text-center align-middle"  style="width: 100%; max-width: 800px;">
 										<colgroup>
 											<col style="width: 20%;">
 											<col style="width: 30%;">
@@ -107,12 +112,6 @@ border-color
 												<td><input type="text" class="form-control" value="<fmt:formatDate value="${user.updateDt}" pattern="yyyy-MM-dd HH:mm:ss"/>" readonly></td>
 											</tr>
 											<tr>
-												<th>생성자 ID</th>
-												<td><input type="text" class="form-control" value="${user.createId}" readonly></td>
-												<th>수정자 ID</th>
-												<td><input type="text" class="form-control" value="${user.updateId}" readonly></td>
-											</tr>
-											<tr>
 												<th>상태</th>
 												<td colspan="3"><select class="custom-select form-control" name="delYn">
 														<option value="N" ${user.delYn eq 'N' ? 'selected' : ''}>활성</option>
@@ -133,7 +132,7 @@ border-color
 
 								<c:if test="${not empty accountList}">
 									<div class="table-responsive">
-										<table class="table table-bordered table-hover" width="100%" cellspacing="0">
+										<table class="table table-bordered table-hover text-center align-middle" width="100%" cellspacing="0">
 											<thead>
 												<tr>
 													<th style="width: 60px;">번호</th>

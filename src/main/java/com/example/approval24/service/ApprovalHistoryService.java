@@ -183,7 +183,7 @@ public class ApprovalHistoryService {
 
 	public boolean checkHistoryManager(long complainId, Long userId) {
 	    List<ApprovalHistoryDTO> list = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
-	    if (list == null || list.isEmpty()) return true;
+	    if (list == null || list.isEmpty()) return false;
 
 	    boolean hasUserE001 = false;  // 본인 E001 존재 여부
 	    boolean hasOtherE001 = false; // 다른 사람 E001 존재 여부
@@ -191,9 +191,9 @@ public class ApprovalHistoryService {
 	    for (ApprovalHistoryDTO dto : list) {
 	        if ("E001".equals(dto.getApprovalStatusCd())) {
 	            if (dto.getAccountId().equals(userId)) {
-	                hasUserE001 = true;   
+	                hasUserE001 = false;   
 	            } else {
-	                hasOtherE001 = false;  
+	                hasOtherE001 = true;  
 	            }
 	        }
 	    }
