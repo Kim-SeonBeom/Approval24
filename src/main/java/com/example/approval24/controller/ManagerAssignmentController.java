@@ -141,7 +141,7 @@ public class ManagerAssignmentController {
         return MAService.findDeptByInst(instId);
     }
 
-    // 부서 → 민원서식
+    // 기관부서 → 민원서식
     @GetMapping(value = "/MA/categories", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<CategoryDTO> getCategoriesByDept(@RequestParam("dept_id") Long deptId) {
@@ -158,8 +158,14 @@ public class ManagerAssignmentController {
     	
     	Long id = (Long) session.getAttribute("user");
         
-		long findInstId = accountService.findInstIdByAccountId(id);
+		Long findInstId = accountService.findInstIdByAccountId(id);
         if (findInstId != instId) return Collections.emptyList();
+        
+        // 로그인한 사람의 기관과 요청 기관이 다르면 차단
+        if (!findInstId.equals(instId)) {
+            return Collections.emptyList();
+        }
+        
         return accountService.accountsByInstDept(instId, deptId);
     }
 	

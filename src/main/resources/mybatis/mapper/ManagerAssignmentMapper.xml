@@ -46,7 +46,7 @@
 	and   account_id=#{accountId}
 </update>
 
-<!-- 담당자배정 등록 -->
+<!-- 민원서식에 대한 담당자 배정 -->
 <insert id="ManagerAssignmentInsert" parameterType="ManagerAssignmentDTO">
 	insert into t1500_manager_assignment(inst_id, dept_id, complain_category_id, account_id, create_id, create_dt)
 	values (#{instId}, #{deptId}, #{complainCategoryId}, #{accountId}, #{createId}, SYSDATE)
@@ -56,13 +56,21 @@
 <select id="ManagerAccountId" parameterType="long" resultType="long">
   SELECT account_id
   FROM (
-    SELECT account_id
-    FROM t1500_manager_assignment
-    WHERE complain_category_id = #{complainCategoryId}
-      AND del_yn = 'N'
-    ORDER BY dbms_random.value
+    SELECT
+      ma.account_id,
+      COUNT(c.complain_id) AS open_cnt
+    FROM t1500_manager_assignment ma
+    LEFT JOIN t2000_complain c
+      ON c.account_id = ma.account_id
+     AND c.complain_category_id = ma.complain_category_id
+     AND c.complain_status_cd IN ('D001','D002','D003')
+    WHERE ma.complain_category_id = #{complainCategoryId}
+      AND ma.del_yn = 'N'
+    GROUP BY ma.account_id
+    ORDER BY open_cnt ASC, dbms_random.value
   )
   WHERE ROWNUM = 1
+
 </select>
 
 <!-- Filter 적용한 목록 조회 -->
