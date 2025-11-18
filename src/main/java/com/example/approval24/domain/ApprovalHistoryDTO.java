@@ -23,6 +23,7 @@ public class ApprovalHistoryDTO {
     private String approvalTypeName;
     private String categoryCd;        
     private String categoryName;
-    private String userName;
     private String processorName;
+    private String processorLoginId; 
+    private String processorPositionName;
 }

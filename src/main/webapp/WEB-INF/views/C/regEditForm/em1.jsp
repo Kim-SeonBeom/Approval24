@@ -28,24 +28,25 @@
 }
 
 #historyTable {
-    width: 100%;           /* 테이블 너비 100% */
-    table-layout: fixed;   /* 컬럼 폭 고정 */
-    text-align: center;    /* 텍스트 중앙 정렬 */
+    width: 100%;           
+    table-layout: fixed;   
+    text-align: center;    
 }
 
 /* 헤더 중앙 정렬 */
 #historyTable thead th {
-    text-align: center;
-    vertical-align: middle;
+    text-align: center;
+    vertical-align: middle;
 }
 
-/* 컬럼별 너비 지정 (예시) */
-#historyTable colgroup col:nth-child(1) { width: 20%; } /* 카테고리 */
-#historyTable colgroup col:nth-child(2) { width: 15%; } /* 사용자 */
-#historyTable colgroup col:nth-child(3) { width: 15%; } /* 결재자 유형 */
-#historyTable colgroup col:nth-child(4) { width: 15%; } /* 결재 종류 */
-#historyTable colgroup col:nth-child(5) { width: 15%; } /* 상태 */
-#historyTable colgroup col:nth-child(6) { width: 20%; } /* 처리일 */
+/* 💡 컬럼별 너비 지정 (총 7개 컬럼에 맞게 조정) */
+#historyTable colgroup col:nth-child(1) { width: 10%; } /* 이름 */
+#historyTable colgroup col:nth-child(2) { width: 10%; } /* 직급 */
+#historyTable colgroup col:nth-child(3) { width: 10%; } /* 계정 ID */
+#historyTable colgroup col:nth-child(4) { width: 10%; } /* 결재자 유형 */
+#historyTable colgroup col:nth-child(5) { width: 10%; } /* 결재 종류 */
+#historyTable colgroup col:nth-child(6) { width: 10%; } /* 상태 */
+#historyTable colgroup col:nth-child(7) { width: 40%; } /* 처리일 */
 </style>
 </head>
 
@@ -61,7 +62,6 @@
 
 				<div class="container-fluid mb-4">
 
-					<!-- Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800">「청년 빈 일자리 취업지원 특화 프로그램」 수당 지급 신청</h1>
 					</div>
@@ -173,7 +173,6 @@
 								</div>
 							</div>
 						</div>
-						<!-- 결재내역 -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex align-items-center">
 								<h6 class="m-0 font-weight-bold text-primary">결재 내역</h6>
@@ -181,11 +180,12 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table style="text-align: center;" class="table table-bordered mb-0" id="historyTable">
-									
+							
 										<thead>
 											<tr>
-												<th>카테고리</th>
-												<th>사용자</th>
+												<th>이름</th>
+												<th>직급</th>
+												<th>계정 ID</th>
 												<th>결재자 유형</th>
 												<th>결재 종류</th>
 												<th>상태</th>
@@ -194,7 +194,7 @@
 										</thead>
 										<tbody>
 											<tr>
-												<td colspan="5">로딩 중...</td>
+												<td colspan="7">로딩 중...</td>
 											</tr>
 										</tbody>
 									</table>
@@ -217,7 +217,7 @@
 								</c:if>
 
 								<c:if test="${pageAuth.updateYn == 'Y'}">
-									<button type="button" class="btn  btn-secondary" id="btnSave">
+									<button type="button" class="btn  btn-secondary" id="btnSave">
 										<i class="fas fa-edit mr-1"></i>수정
 									</button>
 									<button type="button" class="btn btn-warning" id="btnComplainCancel">
@@ -236,24 +236,15 @@
 							</div>
 						</div>
 						<input type="hidden" name="complainId" value="<c:out value='${detail.complainId}'/>"> <input type="hidden" name="complainuserNo" value="<c:out value='${userInfo.complainuserNo}'/>">
-
-
 					</form>
 
 				</div>
-				<!-- 결재라인 모달로 처리 -->
 				<jsp:include page="../../D/approvalLineEditor.jsp" />
 
 			</div>
-			<!-- /#content -->
-
-
 			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 		</div>
-		<!-- /#content-wrapper -->
-	</div>
-	<!-- /#wrapper -->
-
+		</div>
 	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
 	<script>
 		const authData = {
@@ -272,10 +263,9 @@
 				&& (authData.complainAccountId === authData.sessionAccountId);
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/em1.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/assets/js/complain/approvalLine.js"></script>
+	
 
 
-	<!-- Submit Modal -->
 	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -295,30 +285,30 @@
 	</div>
 	
 <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content shadow">
-            <div class="modal-header">
-                <h5 class="modal-title" id="msgModalLabel">알림</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ${msg}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="msgModalLabel">알림</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ${msg}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <c:if test="${not empty msg}">
-    <script>
-        $(document).ready(function(){
-            $('#msgModal').modal('show');
-        });
-    </script>
+    <script>
+        $(document).ready(function(){
+            $('#msgModal').modal('show');
+        });
+    </script>
 </c:if>
 </body>
 </html>

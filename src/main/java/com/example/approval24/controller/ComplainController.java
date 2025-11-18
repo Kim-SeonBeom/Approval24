@@ -326,7 +326,7 @@ public class ComplainController {
 		
 		Long userId = (Long) session.getAttribute("user");
 		ComplainDTO complainDTO = complainService.getComplainById(complainId);
-		boolean check = historyService.checkHistoryManager(complainId,userId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
 		
 		if(complainDTO == null) {
 			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");

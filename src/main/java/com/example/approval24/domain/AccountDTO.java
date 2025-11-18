@@ -30,5 +30,6 @@ public class AccountDTO {
     private String userName; 		 // 추가 사항 유저이름
     private String deptName;         // 추가 사항 부서이름
     private String accountStatusName; // 계정 상태 이름
+    private String userPositionName; // 유지 직급 이름
 }
 

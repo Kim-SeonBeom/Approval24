@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.approval24.dao.UserDAO;
+import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.UserDTO;
 
 @Service
@@ -81,4 +82,5 @@ public class UserService {
 	public UserDTO getUserDetailByUserNo(Long userNo) {
 		return userDAO.findByUserNo(userNo);
 	}
+	
 }

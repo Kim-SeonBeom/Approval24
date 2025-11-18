@@ -1,5 +1,6 @@
 package com.example.approval24.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,7 @@ public class ApprovalHistoryService {
         }
         
         approvalData.setApprovalTypeCd("H001");
+        approvalData.setProcessDt(new Date());
         
         if(delegateId != null && delegateId.equals(loggedInUserId)){
         	approvalData.setDelegateId(delegateId);
@@ -140,20 +142,34 @@ public class ApprovalHistoryService {
         	throw new IllegalArgumentException("이미 승인된 민원입니다.");
         }
 		
-		if(approvalLine.size() < 2) {
-			throw new IllegalArgumentException("결재선은 본인 포함 최소 2명 이상이어야 합니다.");
+		int newApproversCount = (int) approvalLine.stream().filter(dto -> dto.getSeqNo() == null).count();
+		if (newApproversCount < 3) {
+			throw new IllegalArgumentException("새 결재선은 본인(담당자) 포함 최소 3명 이상이어야 합니다.");
 		}
         
+		int cnt = 0;
         
         for (int i = 0; i < approvalLine.size(); i++) {
+        	
             ApprovalHistoryDTO dto = approvalLine.get(i);
+            
+            System.out.println("--- INSERT DTO INFO ---");
+            System.out.println("Cnt: " + cnt);
+            System.out.println("ComplainId: " + dto.getComplainId());
+            System.out.println("AccountId: " + dto.getAccountId());
+            System.out.println("Status: " + dto.getApprovalStatusCd());
+            System.out.println("Type: " + dto.getApproverTypeCd());
+            System.out.println("ProcessDt: " + dto.getProcessDt()); // null이면 null로 출력됨
+            System.out.println("-----------------------");
 
             dto.setComplainId(complainId); 
             if (dto.getAccountId() == null) {
                  throw new IllegalArgumentException((i + 1) + "번째 결재 단계의 **계정 ID**가 누락되었습니다.");
             }
             
-            if (i == 0) {
+            if(dto.getSeqNo() != null) continue;
+            
+            if (cnt == 0) {
             	if(!loginId.equals(dto.getAccountId()))
             	{
             		System.out.println("로그인id");
@@ -162,10 +178,16 @@ public class ApprovalHistoryService {
             		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
-            	dto.setApprovalStatusCd("E001");  // 결재
+            	dto.setApprovalStatusCd("E002");  // 승인
+            	dto.setApprovalTypeCd("H001");  // 일반 결재
+            	dto.setProcessDt(new Date());
             	dto.setApproverTypeCd("F002"); //담당자
             } 
-            else if(approvalLine.size() - 1 == i) {
+            else if(cnt == 1) {
+            	dto.setApprovalStatusCd("E001");  
+            	dto.setApproverTypeCd("F003");
+            }
+            else if(newApproversCount - 1 == cnt) {
             	dto.setApprovalStatusCd("E004");  // 대기
             	dto.setApproverTypeCd("F004");  //승인자
             }
@@ -175,8 +197,8 @@ public class ApprovalHistoryService {
             }
             
             dto.setUrl(url);
-            
             approvalHistoryDAO.insertApprovalHistory(dto);
+            cnt++;
         }
     }
 
@@ -198,22 +220,14 @@ public class ApprovalHistoryService {
 	}
 
 
-	public boolean checkHistoryManager(long complainId, Long userId) {
+	public boolean checkHistoryIng(long complainId, Long userId) {
 	    List<ApprovalHistoryDTO> list = approvalHistoryDAO.getHistoryIdByComplainId(complainId);
 	    if (list == null || list.isEmpty()) return false;
 
-	    boolean hasUserE001 = false;  // 본인 E001 존재 여부
-	    boolean hasOtherE001 = false; // 다른 사람 E001 존재 여부
-
 	    for (ApprovalHistoryDTO dto : list) {
-	        if ("E001".equals(dto.getApprovalStatusCd())) {
-	            if (dto.getAccountId().equals(userId)) {
-	                hasUserE001 = false;   
-	            } else {
-	                hasOtherE001 = true;  
-	            }
-	        }
+	        if ("E001".equals(dto.getApprovalStatusCd()) && !dto.getAccountId().equals(userId)) 
+	        	return true;
 	    }
-	    return hasUserE001 || hasOtherE001;
+	    return false;
 	}
 }

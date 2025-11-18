@@ -53,7 +53,7 @@ public class ApprovalProcessController {
             return ResponseEntity.status(400).body(response);
         }
         
-		boolean check = historyService.checkHistoryManager(complainId,loggedInUserId);
+		boolean check = historyService.checkHistoryIng(complainId,loggedInUserId);
 		
 		if(check) {
 			response.put("success", false);
@@ -64,7 +64,6 @@ public class ApprovalProcessController {
         try {
 
             historyService.createApprovalLine(loggedInUserId, complainId, url, approvalLine);
-            
             // 4. 성공 응답
             response.put("success", true);
             response.put("message", "새 결재 라인 등록이 성공적으로 완료되었습니다.");
