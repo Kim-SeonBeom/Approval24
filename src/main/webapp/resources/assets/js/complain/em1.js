@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const processorLoginId = item.processorLoginId || 'N/A';
 
             const tr = $('<tr>').html(`
+            	<td>${processorPositionName}</td>   
                 <td>${processorName}</td>         
-                <td>${processorPositionName}</td>         
                 <td>${processorLoginId}</td>           
                 <td>${item.approverTypeName || '-'}</td>
                 <td>${item.approvalTypeName || '-'}</td>  
@@ -128,10 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 렌더링 함수 호출
             renderApprovalTable(approvalList); 
+            renderRejectComments(approvalList);
 
         } catch (e) {
             console.error(e);
             $historyTbody.html('<tr><td colspan="7">서버 오류 발생</td></tr>');
+            $('#rejectCommentTable tbody').html('<tr><td colspan="4">서버 오류로 사유를 불러올 수 없습니다.</td></tr>');
         }
     }
 
@@ -305,6 +307,35 @@ document.addEventListener('DOMContentLoaded', function() {
      // 최종적으로 처리 후 재로드
      loadApprovalLine();
  }
+ 
+ function renderRejectComments(list) {
+	    const $tbody = $('#rejectCommentTable tbody');
+	    $tbody.empty();
+
+	    // 1. E003 (반려) 상태이고, 코멘트 내용이 있는 항목만 필터링
+	    const rejectComments = list.filter(item => 
+	        item.approvalStatusCd === 'E003' && item.approvalComment && item.approvalComment.trim() !== ''
+	    );
+
+	    // ⭐️ 컬럼 개수: 3개
+	    if (rejectComments.length === 0) {
+	        $tbody.html('<tr><td colspan="3">반려 사유가 없습니다.</td></tr>');
+	        return;
+	    }
+
+	    rejectComments.forEach(item => {
+	        const processorName = item.processorName || 'N/A';
+	        const processorPositionName = item.processorPositionName || 'N/A';
+	        // 처리 일시는 제외
+
+	        const tr = $('<tr>').html(`
+	        	<td>${processorPositionName}</td>
+	            <td>${processorName}</td>
+	            <td class="text-left">${item.approvalComment}</td>
+	        `);
+	        $tbody.append(tr);
+	    });
+	}
 
 
 //-------------------------------------------------------------

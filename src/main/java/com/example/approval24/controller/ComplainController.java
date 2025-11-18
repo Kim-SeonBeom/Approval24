@@ -326,7 +326,7 @@ public class ComplainController {
 			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
 			return "redirect:/complain/category/em1/" + complainId;
 		}
-		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")) {
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
 			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
 			return "redirect:/complain/category/em1/" + complainId;
 		}
