@@ -30,10 +30,10 @@ public class AesEncryptionService {
         try {
             Properties prop = new Properties();
 
-            // 1️⃣ classpath에서 읽기 시도
+            //  classpath에서 읽기 시도
             InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties");
 
-            // 2️⃣ Eclipse WTP 환경에서는 WEB-INF/classes를 직접 참조
+            // classpath 없을시 WEB-INF/classes를 직접 참조
             if (input == null) {
                 File file = new File("WebContent/WEB-INF/classes/application.properties");
                 if (file.exists()) {
