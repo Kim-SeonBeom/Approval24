@@ -21,113 +21,141 @@
 
 					<div class="row justify-content-center">
 						<div class="col-lg-10 col-xl-10">
-						<form id="requestForm" action="${pageContext.request.contextPath}/signup/approveForm" method="post">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3 d-flex align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">
-										계정신청
-									</h6>
-								</div>
+							<form id="requestForm"
+								action="${pageContext.request.contextPath}/signup/approveForm"
+								method="post">
+								<div class="card shadow mb-4">
 
-								<div class="card-body">
-
-									<!-- 신청 정보 -->
-									<div class="row">
-										<!-- 기관 -->
-										<div class="col-md-6 mb-3">
-											<label>기관</label>
-											<select class="form-control" id="instId" name="instId">
-												<option value="">-- 기관 선택 --</option>
-												<c:forEach var="inst" items="${instList}">
-													<option value="${inst.instId}">${inst.instName}</option>
-												</c:forEach>
-											</select>
+									<c:if test="${not empty error}">
+										<div class="alert alert-danger alert-dismissible fade show"
+											role="alert" style="margin: 15px;">
+											<i class="fas fa-exclamation-triangle mr-2"></i> <strong>오류:</strong>
+											${error}
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
 										</div>
-										
-										<!-- 부서 -->
-										<div class="col-md-6 mb-3">
-											<label>부서</label>
-											<select class="form-control"id="deptId" name="deptId">
-												<option value="">-- 부서 선택--</option>
-												<c:forEach var="dept" items="${deptList}">
-													<option value="${dept.deptId}">${dept.deptName}</option>
-												</c:forEach>
-											</select>
-											<small id="deptMessage" class="form-text text-muted"></small>
-										</div>
-
-										<div class="col-md-4 mb-3">
-											<label>신청자</label> <input type="text" class="form-control readonly-box" value="${request.userName}" placeholder="신청자 입력" >
-										</div>
-										<div class="col-md-4 mb-3">
-											<label>휴대전화</label> <input type="text" class="form-control readonly-box" value="${request.phone}"placeholder="휴대전화 입력" >
-										</div>
-										<div class="col-md-4 mb-3">
-											<label>주민번호</label> <input type="text" class="form-control readonly-box" name="residentNo"value="${request.residentNo}"placeholder="주민번호 입력"  >
-										</div>
-										<!-- 아이디 -->
-										<div class="col-md-4 mb-3">
-											<label>아이디</label> 
-											<div class="input-group">
-												<input type="text" class="form-control" name="loginId" id="loginId" value="${request.loginId}"placeholder="아이디 입력" >
-												<div class="input-group-append">
-													<button class="btn btn-secondary" type="button" id="idCheck">중복확인</button>
-												</div>
-											</div>
-											<input type="hidden" id="idCheckResult" value="false">
-											<small id="idCheckMessage" class="form-text text-muted"></small>
-										</div>  
-										
-										<div class="col-md-4 mb-3">
-											<label>비밀번호</label> <input id="password" name="password"type="password" class="form-control readonly-box"  placeholder="비밀번호 입력">
-										</div>
-										
-										<div class="col-md-4 mb-3">
-											<label>비밀번호 확인</label> <input id="passwordCheck"type="password" class="form-control readonly-box" placeholder="비밀번호 확인" >
-    										<small id="passwordCheckMessage" class="form-text text-muted"></small>
-										</div>
+									</c:if>
+									<div
+										class="card-header py-3 d-flex align-items-center justify-content-between">
+										<h6 class="m-0 font-weight-bold text-primary">계정신청</h6>
 									</div>
-									<!-- row끝 -->
-											<!-- 권한 요청 start-->
-											<div id="authFieldsContainer" class="row">
-												<div class="col-md-6 mb-3 auth-field-group" data-index="0">
-													<label>요청 권한</label>
-													<div class="input-group">
-													<!--권한 리스트 -->
-														<select class="form-control auth-select authorityId"name="authorityIds"required>
-															<option value="">-- 권한 선택 --</option>
-															<c:forEach var="auth" items="${authList}">
-																<option value="${auth.authorityId}">${auth.authorityName}</option>
-																
-															</c:forEach>
-														</select>
-														
-														<div class="input-group-append">
-															<button class="btn btn-success btn-add-auth"	type="button" >+</button>
-														</div>
-														
-													</div>
-													<small id="authMessage" class="form-text text-muted"></small>
-												</div>
+
+									<div class="card-body">
+
+										<!-- 신청 정보 -->
+										<div class="row">
+											<!-- 기관 -->
+											<div class="col-md-6 mb-3">
+												<label>기관</label> <select class="form-control" id="instId"
+													name="instId">
+													<option value="">-- 기관 선택 --</option>
+													<c:forEach var="inst" items="${instList}">
+														<option value="${inst.instId}">${inst.instName}</option>
+													</c:forEach>
+												</select>
 											</div>
-											<!-- 권한 요청 end-->
 
+											<!-- 부서 -->
+											<div class="col-md-6 mb-3">
+												<label>부서</label> <select class="form-control" id="deptId"
+													name="deptId">
+													<option value="">-- 부서 선택--</option>
+													<c:forEach var="dept" items="${deptList}">
+														<option value="${dept.deptId}">${dept.deptName}</option>
+													</c:forEach>
+												</select> <small id="deptMessage" class="form-text text-muted"></small>
+											</div>
+
+											<div class="col-md-4 mb-3">
+												<label>신청자</label> <input type="text"
+													class="form-control readonly-box"
+													value="${request.userName}" placeholder="신청자 입력">
+											</div>
+											<div class="col-md-4 mb-3">
+												<label>휴대전화</label> <input type="text"
+													class="form-control readonly-box" value="${request.phone}"
+													placeholder="휴대전화 입력">
+											</div>
+											<div class="col-md-4 mb-3">
+												<label>주민번호</label> <input type="text"
+													class="form-control readonly-box" name="residentNo"
+													value="${request.residentNo}" placeholder="주민번호 입력">
+											</div>
+											<!-- 아이디 -->
+											<div class="col-md-4 mb-3">
+												<label>아이디</label>
+												<div class="input-group">
+													<input type="text" class="form-control" name="loginId"
+														id="loginId" value="${request.loginId}"
+														placeholder="아이디 입력">
+													<div class="input-group-append">
+														<button class="btn btn-secondary" type="button"
+															id="idCheck">중복확인</button>
+													</div>
+												</div>
+												<input type="hidden" id="idCheckResult" value="false">
+												<small id="idCheckMessage" class="form-text text-muted"></small>
+											</div>
+
+											<div class="col-md-4 mb-3">
+												<label>비밀번호</label> <input id="password" name="password"
+													type="password" class="form-control readonly-box"
+													placeholder="비밀번호 입력">
+											</div>
+
+											<div class="col-md-4 mb-3">
+												<label>비밀번호 확인</label> <input id="passwordCheck"
+													type="password" class="form-control readonly-box"
+													placeholder="비밀번호 확인"> <small
+													id="passwordCheckMessage" class="form-text text-muted"></small>
+											</div>
 										</div>
+										<!-- row끝 -->
+										<!-- 권한 요청 start-->
+										<div id="authFieldsContainer" class="row">
+											<div class="col-md-6 mb-3 auth-field-group" data-index="0">
+												<label>요청 권한</label>
+												<div class="input-group">
+													<!--권한 리스트 -->
+													<select class="form-control auth-select authorityId"
+														name="authorityIds" required>
+														<option value="">-- 권한 선택 --</option>
+														<c:forEach var="auth" items="${authList}">
+															<option value="${auth.authorityId}">${auth.authorityName}</option>
+
+														</c:forEach>
+													</select>
+
+													<div class="input-group-append">
+														<button class="btn btn-success btn-add-auth" type="button">+</button>
+													</div>
+
+												</div>
+												<small id="authMessage" class="form-text text-muted"></small>
+											</div>
+										</div>
+										<!-- 권한 요청 end-->
+
+									</div>
 
 
 
 
-								<div class="d-flex justify-content-between mb-4 ml-4 mr-4">
-									<a href="${pageContext.request.contextPath}/login" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 홈으로 가기
-									</a>
+									<div class="d-flex justify-content-between mb-4 ml-4 mr-4">
+										<a href="${pageContext.request.contextPath}/login"
+											class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i>
+											홈으로 가기
+										</a>
 
-									<div>
+										<div>
 											<button type="submit" class="btn btn-primary" id="btnApprove">
 												<i class="fas fa-check mr-1"></i> 신청
 											</button>
+										</div>
 									</div>
-								</div>						
-							</div>
+								</div>
 							</form>
 						</div>
 
