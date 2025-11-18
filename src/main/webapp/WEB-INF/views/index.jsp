@@ -9,7 +9,7 @@
 
 <!-- header 영역 -->
 <head>
-<title>결재해조</title>
+<title>민원처리 시스템</title>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 </head>
