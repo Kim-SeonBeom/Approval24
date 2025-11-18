@@ -111,7 +111,8 @@ public class UserController {
 		String userResidentNo = null;
 		try {
 			userResidentNo = encryptionService.decrypt(user.getUserResidentNo());
-			user.setUserResidentNo(userResidentNo);
+			String ResidentNo = encryptionService.maskResidentNo(userResidentNo);
+			user.setUserResidentNo(ResidentNo);
 		} catch (Exception e) {
 			rttr.addFlashAttribute("errorMessage", "정보를 가져오는 도중 에러가 발생했습니다. " + e.getMessage());
 		}
@@ -203,6 +204,8 @@ public class UserController {
    
             if (!accountList.isEmpty()) {
                 accountService.updateAccountList(accountList);
+                user.setInstId(user.getInstId());
+                userService.updateUserInfo(user);
             }
 
             rttr.addFlashAttribute("successMessage", "사용자 정보 및 계정 상태 수정 성공");

@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<title>직원정보</title>
 <style>
 /* 수정 가능한 input/select의 스타일을 명확히 표시 */
 .form-control
@@ -86,6 +88,7 @@ border-color
 
 												<th>주민등록번호</th>
 												<td><input type="text" class="form-control" value="${user.userResidentNo}" readonly></td>
+												
 											</tr>
 											<tr>
 												<th>이름</th>

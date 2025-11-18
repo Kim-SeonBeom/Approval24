@@ -134,15 +134,30 @@
 
     <update id="updateUser" parameterType="UserDTO">
         UPDATE T1000_USER
-        SET
+        <set>
+       <if test="userName != null and userName != ''">
             USER_NAME = #{userName},
+        </if>
+         <if test="userEmail != null and userEmail != ''">
             USER_EMAIL = #{userEmail},
+        </if>
+         <if test="userTel != null and userTel != ''">
             USER_TEL = #{userTel},
+        </if>
+        <if test="userPhone!= null and userPhone != ''">
             USER_PHONE = #{userPhone},
+        </if>
+        <if test="userPositionCd != null and userPositionCd != ''">
             USER_POSITION_CD = #{userPositionCd},
+        </if>
+         <if test="delYn != null and delYn != ''">
             DEL_YN = #{delYn, jdbcType=CHAR},    UPDATE_DT = SYSDATE,
+         </if>
             UPDATE_ID = #{updateId},
-            INST_ID = #{instID}
+        <if test="instId != null and instId != ''">
+            INST_ID = #{instId}
+        </if>
+        </set>
         WHERE USER_NO = #{userNo}
     </update>
 

@@ -47,7 +47,7 @@ public class AesEncryptionService {
 
             prop.load(input);
 
-            // 3️⃣ AES 키와 IV 가져오기, 공백 제거
+            // AES 키와 IV 가져오기, 공백 제거
             this.secretKey = prop.getProperty("my.crypto.key.secret").trim();
             this.ivKey = prop.getProperty("my.crypto.key.iv").trim();
 
@@ -84,4 +84,13 @@ public class AesEncryptionService {
         byte[] decryptedBytes = cipher.doFinal(decodedEncryptedText);
         return new String(decryptedBytes, "UTF-8");
     }
+    public String maskResidentNo(String rrn) {
+        if (rrn == null || rrn.length() < 7) return rrn;
+
+        String cleaned = rrn.replace("-", ""); // 하이픈 제거
+
+        // 앞 6자리 + 뒤 1자리 + ******
+        return cleaned.substring(0, 6) + "-" + cleaned.substring(6, 7) + "******";
+    }
+
 }
