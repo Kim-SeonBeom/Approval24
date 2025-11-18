@@ -3,10 +3,14 @@ package com.example.approval24.controller;
 import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.InstDTO;
 import com.example.approval24.domain.TotalCodeDTO;
+import com.example.approval24.domain.UserDTO;
 import com.example.approval24.service.AccountService;
+import com.example.approval24.service.BookmarkService;
 import com.example.approval24.service.DeptService;
 import com.example.approval24.service.TotalCodeService;
-import com.example.approval24.domain.AccountDTO; 
+import com.example.approval24.service.UserService;
+import com.example.approval24.domain.AccountDTO;
+import com.example.approval24.domain.BookmarkDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +35,8 @@ public class CommonController {
 	private DeptService deptServie;
 	@Autowired
 	private TotalCodeService codeService;
+	@Autowired
+	private BookmarkService bookmarkService;
 	
 	// 기관 전체 목록
 	@GetMapping("/insts")
@@ -63,38 +69,46 @@ public class CommonController {
 
     //부서에 속한 계정 목록
     @GetMapping("/accounts")
-    public ResponseEntity<List<AccountDTO>> getAccountList(@RequestParam("deptId") String deptIdStr,HttpSession session) {
-        
-        if (deptIdStr == null || deptIdStr.trim().isEmpty()) {
-            return ResponseEntity.badRequest().build(); 
-        }
+    public ResponseEntity<List<AccountDTO>> getAccountList(@RequestParam(value = "deptId", required = false) String deptIdStr,
+    		HttpSession session) {
         
         Long userId = (Long) session.getAttribute("user");
-
         if (userId == null) {
             return ResponseEntity.status(401).build(); 
         }
         
         Long instId = accountService.findInstIdByAccountId(userId);
-        
-        // instId를 못 찾았을 경우의 예외 처리 로직 (선택적)
         if (instId == null) {
-             return ResponseEntity.status(404).build(); 
+            return ResponseEntity.status(404).build(); 
         }
         
-        Long deptId;
-        try {
-            deptId = Long.valueOf(deptIdStr); 
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(400).body(null); 
+        Long deptId = null;
+        
+        if (deptIdStr == null || deptIdStr.trim().isEmpty()) {   
+            try {
+                deptId = accountService.findDeptIdByAccountId(userId);
+            } catch (Exception e) {
+                return ResponseEntity.status(500).build(); 
+            }
+            
+            if (deptId == null) {
+                 return ResponseEntity.status(400).body(null); 
+            }
+            
+        } else {
+            try {
+                deptId = Long.valueOf(deptIdStr); 
+            } catch (NumberFormatException e) {
+                return ResponseEntity.status(400).body(null); 
+            }
         }
- 
+        
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("instId", instId);
-        filterMap.put("deptId", deptId);
-        filterMap.put("accountStatus", "B002");
+        filterMap.put("deptId", deptId); 
+        filterMap.put("accountStatus", "B002"); 
         
-		List<AccountDTO> accountList = accountService.getAccountsByFilter(filterMap);
+        List<AccountDTO> accountList = accountService.getAccountsByFilter(filterMap);
 
         return ResponseEntity.ok(accountList);
     }
@@ -107,5 +121,19 @@ public class CommonController {
         }
 		List<TotalCodeDTO> codeList = codeService.getTotalCodeByGroupId(groupId);
 		return ResponseEntity.ok(codeList);
+    }
+    
+    @GetMapping("/bookmark/list")
+    public ResponseEntity<List<BookmarkDTO>> getBookmarkList(HttpSession session) {
+        
+
+		Long userId = (Long) session.getAttribute("user");
+        if (userId == null) {
+            return ResponseEntity.status(401).build(); 
+        }
+        
+        List<BookmarkDTO> bookmarkList = bookmarkService.findByAccountId(userId);
+        
+        return ResponseEntity.ok(bookmarkList);
     }
 }

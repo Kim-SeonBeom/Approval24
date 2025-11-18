@@ -99,5 +99,9 @@ public class CategoryService {
     public List<DeptWorkDTO> deptByCategory(long complainCategoryId) {
         return deptWorkDAO.deptByCategory(complainCategoryId);
     }
-
+    
+    // 특정 부서의 민원서식들
+    public List<DeptWorkDTO> categoryByDept(long deptId) {
+        return deptWorkDAO.categoryByDept(deptId);
+    }
 }

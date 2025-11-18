@@ -9,4 +9,6 @@ public class DeptWorkDTO {
 	private long complainCategoryId;
 	
 	private String deptName;
+	private String categoryCd;
+	private String categoryName;
 }

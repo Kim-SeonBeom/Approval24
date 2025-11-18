@@ -20,7 +20,6 @@
             <div class="container-fluid">
                 <h1 class="h3 mb-3 text-gray-800">결재 이력</h1>
 
-                <!-- 🔍 검색 필터 카드 -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                         <h6 class="h6 m-0 font-weight-bold text-primary">검색 및 필터링</h6>
@@ -30,37 +29,44 @@
                     <div class="card-body">
                         <form id="approvalFilterForm" method="get" action="/approval24/history/list">
 
-                            <!-- 결재 상태 -->
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label font-weight-bold text-center">결재 상태</label>
                                 <div class="col-sm-10">
                                     <select name="approvalStatusCd" class="form-control w-25">
                                         <option value="">전체</option>
                                         <c:forEach var="status" items="${statusCodeList}">
-                                            <option value="${status.codeId}" ${filterMap.approvalStatusCd == status.codeId ? 'selected' : ''}>
-                                                ${status.codeName}
-                                            </option>
+                                            <c:choose>
+                                                <c:when test="${not empty filterMap.approvalStatusCd && filterMap.approvalStatusCd == status.codeId}">
+                                                    <option value="${status.codeId}" selected>${status.codeName}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${status.codeId}">${status.codeName}</option>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
                                     </select>
                                 </div>
                             </div>
 
-                            <!-- 결재 구분 -->
                             <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-2 col-form-label font-weight-bold text-center">결재 구분</label>
+                                <label class="col-sm-2 col-form-label font-weight-bold text-center">민원 구분</label>
                                 <div class="col-sm-10">
                                     <select name="categoryCd" class="form-control w-25">
                                         <option value="">전체</option>
-                                        <c:forEach var="category" items="${categoryCodeList}">
-                                            <option value="${category.codeId}" ${filterMap.categoryCd == category.codeId ? 'selected' : ''}>
-                                                ${category.codeName}
-                                            </option>
+                                        <c:forEach var="category" items="${categoryList}">
+                                            <c:choose>
+                                                <c:when test="${not empty filterMap.categoryCd && filterMap.categoryCd == category.categoryCd}">
+                                                    <option value="${category.categoryCd}" selected>${category.categoryName}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${category.categoryCd}">${category.categoryName}</option>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
                                     </select>
                                 </div>
                             </div>
 
-                            <!-- 페이지당 -->
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label font-weight-bold text-center">페이지당</label>
                                 <div class="col-sm-10">
@@ -76,12 +82,11 @@
                     </div>
                 </div>
 
-                <!-- 📋 결재 이력 목록 -->
                 <div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">결재목록</h6>
-						</div>
-						<div class="card-body">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">결재목록</h6>
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-sm text-center align-middle">
                                 <thead class="thead-light">
@@ -90,8 +95,8 @@
                                         <th>결재 구분</th>
                                         <th>결재 상태</th>
                                         <th>결재자 유형</th>
+                                        <th>결재자</th> <th>결재 종류</th>
                                         <th>처리일자</th>
-                                        <th>의견</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -106,26 +111,27 @@
                                                     <td class="text-left pl-3">${item.categoryName}</td>
                                                     <td>${item.approvalStatusName}</td>
                                                     <td>${item.approverTypeName}</td>
-                                                    <td><fmt:formatDate value="${item.processDt}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                                    <td class="text-left pl-3">${item.approvalComment}</td>
-                                                </tr>
+                                                    <td>${item.processorName}</td> <td>${item.approvalTypeName}</td>
+                                                    <td>
+                                                        <c:if test="${not empty item.processDt}">
+                                                            <fmt:formatDate value="${item.processDt}" pattern="yyyy-MM-dd HH:mm" />
+                                                        </c:if>
+                                                    </td>
+                                                    </tr>
                                             </c:forEach>
                                         </c:when>
                                         <c:otherwise>
-                                            <tr><td colspan="6">조회된 결재 이력이 없습니다.</td></tr>
+                                            <tr><td colspan="7">조회된 결재 이력이 없습니다.</td></tr>
                                         </c:otherwise>
                                     </c:choose>
                                 </tbody>
                             </table>
                         </div>
-                        
 
-                        <!-- 📄 페이징 -->
                         <c:if test="${pageInfo.totalPages > 1}">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center mb-0">
 
-                                    <!-- 이전 버튼 -->
                                     <c:url var="prevUrl" value="/history/list">
                                         <c:param name="page" value="${pageInfo.page - 1}" />
                                         <c:param name="approvalStatusCd" value="${filterMap.approvalStatusCd}" />
@@ -136,7 +142,6 @@
                                         <a class="page-link" href="${prevUrl}">이전</a>
                                     </li>
 
-                                    <!-- 페이지 번호 -->
                                     <c:forEach begin="1" end="${pageInfo.totalPages}" var="p">
                                         <c:url var="pageUrl" value="/history/list">
                                             <c:param name="page" value="${p}" />
@@ -149,7 +154,6 @@
                                         </li>
                                     </c:forEach>
 
-                                    <!-- 다음 버튼 -->
                                     <c:url var="nextUrl" value="/history/list">
                                         <c:param name="page" value="${pageInfo.page + 1}" />
                                         <c:param name="approvalStatusCd" value="${filterMap.approvalStatusCd}" />
@@ -168,7 +172,6 @@
             </div>
         </div>
 
-        <!-- 🧾 푸터 -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">

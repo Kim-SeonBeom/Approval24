@@ -53,7 +53,7 @@ public class ApprovalProcessController {
             return ResponseEntity.status(400).body(response);
         }
         
-		boolean check = historyService.checkHistoryManager(complainId,loggedInUserId);
+		boolean check = historyService.checkHistoryIng(complainId,loggedInUserId);
 		
 		if(check) {
 			response.put("success", false);
@@ -64,7 +64,6 @@ public class ApprovalProcessController {
         try {
 
             historyService.createApprovalLine(loggedInUserId, complainId, url, approvalLine);
-            
             // 4. 성공 응답
             response.put("success", true);
             response.put("message", "새 결재 라인 등록이 성공적으로 완료되었습니다.");
@@ -104,17 +103,10 @@ public class ApprovalProcessController {
             response.put("message", "필수 결재 정보(ComplainID 또는 AccountID)가 누락되었습니다.");
             return ResponseEntity.status(400).body(response);
         }
-
-        // 권한 체크 
-        if (!loggedInUserId.equals(approvalData.getAccountId()) && !loggedInUserId.equals(approvalData.getDelegateId())) {
-            response.put("success", false);
-            response.put("message", "해당 결재를 처리할 계정이 아닙니다.");
-            return ResponseEntity.status(403).body(response);
-        }
         
         // 서비스 로직 호출 및 예외 처리
         try {
-            historyService.processApprovalHistory(approvalData);
+            historyService.processApprovalHistory(approvalData,loggedInUserId);
             
             response.put("success", true);
             response.put("message", "결재 처리가 성공적으로 완료되었습니다.");
@@ -161,9 +153,11 @@ public class ApprovalProcessController {
         }
     }
     
-    @PostMapping("/complain/reject") //반려
+    
+    // 담당자 반려 & 취하
+    @PostMapping("/complain/rejectAndCancle") 
     public ResponseEntity<Map<String, Object>> complainReject(
-    		@RequestParam Long complainId,
+    		@RequestBody ApprovalCreationRequestVO requestVO,
             HttpSession session) {
     	
         Map<String, Object> response = new HashMap<>(); 
@@ -178,13 +172,13 @@ public class ApprovalProcessController {
         }
 
         // 요청 데이터 유효성 검증
-        if (complainId == null) {
+        if (requestVO.getComplainId() == null) {
             response.put("success", false);
             response.put("message", "민원 ID는 필수 항목입니다.");
             return ResponseEntity.badRequest().body(response); 
         }
         
-        ComplainDTO dto = complainService.getComplainInfo(complainId);
+        ComplainDTO dto = complainService.getComplainInfo(requestVO.getComplainId());
         
         switch (dto.getComplainStatusCd()) {
         case "D001":
@@ -212,7 +206,7 @@ public class ApprovalProcessController {
             return ResponseEntity.status(403).body(response);
         }
         try {
-        	complainService.setComplainStatus(complainId,"D005");
+        	historyService.managerApproval(requestVO,loggedInUserId);
         	response.put("success", true);
         	response.put("message", "민원 상태가 성공적으로 변경되었습니다.");
         	return ResponseEntity.ok(response);
@@ -224,70 +218,6 @@ public class ApprovalProcessController {
         }
     }
     
-    @PostMapping("/complain/cancel") //취하
-    public ResponseEntity<Map<String, Object>> complainCancel(
-    		@RequestParam Long complainId,
-            HttpSession session) {
-    	
-        Map<String, Object> response = new HashMap<>(); 
-        
-        
-        // 로그인 사용자 확인 및 권한 검증 
-        Long loggedInUserId = (Long) session.getAttribute("user");
-        if (loggedInUserId == null) { 
-            response.put("success", false);
-            response.put("message", "로그인이 필요합니다.");
-            return ResponseEntity.status(401).body(response); 
-        }
-
-        // 요청 데이터 유효성 검증
-        if (complainId == null) {
-            response.put("success", false);
-            response.put("message", "민원 ID는 필수 항목입니다.");
-            return ResponseEntity.badRequest().body(response); 
-        }
-        
-        ComplainDTO dto = complainService.getComplainInfo(complainId);
-        
-        switch (dto.getComplainStatusCd()) {
-        case "D001":
-            response.put("success", false);
-            response.put("message", "접수중입니다. 민원 내용을 서식을 통해 채워주세요.");
-            return ResponseEntity.status(403).body(response);
-        case "D004":
-            response.put("success", false);
-            response.put("message", "이미 취하된 민원입니다.");
-            return ResponseEntity.status(403).body(response);
-        case "D005":
-            response.put("success", false);
-            response.put("message", "이미 반려된 민원입니다.");
-            return ResponseEntity.status(403).body(response);
-        case "D006":
-            response.put("success", false);
-            response.put("message", "이미 승인된 민원입니다.");
-            return ResponseEntity.status(403).body(response);
-            }
-        
-        
-        
-        //담당자 체크
-        if (!loggedInUserId.equals((Long)dto.getAccountId())) {
-            response.put("success", false);
-            response.put("message", "해당 민원을 처리할 담당자가 아닙니다.");
-            return ResponseEntity.status(403).body(response);
-        }
-        try {
-        	complainService.setComplainStatus(complainId,"D004");
-        	response.put("success", true);
-        	response.put("message", "민원 상태가 성공적으로 변경되었습니다.");
-        	return ResponseEntity.ok(response);
-            
-        } catch (Exception e) {       
-        	response.put("success", false);
-        	response.put("message", "민원 상태 변경 중 오류가 발생했습니다: " + e.getMessage()); 
-        	return ResponseEntity.internalServerError().body(response); 
-        }
-    }
 }
         	
         	
