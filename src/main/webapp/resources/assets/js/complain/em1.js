@@ -142,209 +142,185 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // -------------------------------------------------------------
-    // 4. 통합 승인/반려 로직 수정 (handleDecision)
-    // -------------------------------------------------------------
+ // -------------------------------------------------------------
+ // 4. 통합 승인/반려 로직 수정 (handleDecision)
+ // -------------------------------------------------------------
 
-    async function handleDecision(statusCd) {
-        const isApprove = statusCd === 'E002';
-        const isInitiator = authData.complainAccountId === authData.sessionAccountId; //담당자 체크 로직
-        //const hasPendingInDb = approvalList.some(a => a.approvalStatusCd === 'E001');
-        
-        const commentVal = $('#comment').val();
-        
-        if (isApprove && isInitiator) {
-            
-//            if (approvalList.length === 0 || !approvalList.some(a => a.approvalStatusCd === 'E004')) { 
-//                alert("결재선을 먼저 설정해야 제출할 수 있습니다.");
-//                return;
-//            }
+ async function handleDecision(statusCd) {
+     const isApprove = statusCd === 'E002';
+     // isInitiator: 민원 담당자 계정 ID와 현재 세션 계정 ID가 같은지 확인
+     const isInitiator = authData.complainAccountId === authData.sessionAccountId;
+     
+     // ⭐️ 1. 코멘트 변수를 let으로 함수 시작 시 선언하고 초기화
+     let commentVal = $('#comment').val() || ''; 
 
-            if (!confirm('결재선을 제출하고 승인을 처리하시겠습니까?')) return;
-            
-            const commentVal = $('#comment').val() || ''; 
-            if (approvalList.length > 0) {
-            	approvalList[0].approvalComment = commentVal; 
-            }
-            const payload = {
-                complainId: complainId,
-                approvalLineData: approvalList, 
-                contextUrl: window.location.href
-            };
+     // ==========================================================
+     // 1. [담당자 첫 제출 및 승인] (isApprove === true && isInitiator === true)
+     // ==========================================================
+     if (isApprove && isInitiator) {
+         
+         // (주석 처리된 결재선 유효성 검사 로직은 현재 비활성화 상태 유지)
 
-            try {
-                // 💡 첫 제출 및 승인 통합 API 호출 
-                const res = await fetch(`/approval24/api/approval/create`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(payload)
-                });
+         if (!confirm('결재선을 제출하고 승인을 처리하시겠습니까?')) return;
+         
+         // 현재는 첫 번째 결재자(대부분 담당자 본인)에게 코멘트를 남기는 방식
+         if (approvalList.length > 0) {
+             approvalList[0].approvalComment = commentVal; 
+         }
+         
+         const payload = {
+             complainId: complainId,
+             approvalLineData: approvalList, 
+             contextUrl: window.location.href
+         };
+
+         try {
+             // 💡 첫 제출 및 승인 통합 API 호출
+             const res = await fetch(`/approval24/api/approval/create`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 credentials: 'same-origin',
+                 body: JSON.stringify(payload)
+             });
+             
+             const json = await res.json().catch(() => null);
+             if (res.ok) {
+                 alert(json?.message || '제출 및 첫 승인 완료되었습니다.');
+                 $('#comment').val(''); // 코멘트 초기화
+             } else {
+                 alert(json?.message || `오류: ${res.status}`);
+             }
+         } catch (e) {
+             console.error(e);
+             alert('서버 에러 발생');
+         }
+     } 
+     
+     // ==========================================================
+     // 2. [일반 승인/반려] 또는 [담당자의 반려/취하] (나머지 케이스)
+     // ==========================================================
+     else {
+         // 현재 E001(결재 대기) 상태인 결재 건을 찾음
+         const current = approvalList.find(a => a.approvalStatusCd === 'E001');
+         
+         // 🔹 A. E001 대기 건이 없음 -> 담당자의 반려(E003) 또는 취하(E005) 처리 시나리오
+         if (!current) {
+             
+             // ⭐️ 담당자의 반려(E003) 또는 취하(E005) 요청일 경우에만 처리
+             if (statusCd === 'E003' || statusCd === 'E005') { 
+                 
+                 const actionName = statusCd === 'E003' ? '반려' : '취하';
+                 
+                 // 반려(E003) 시에만 의견 필수 체크
+                 if (statusCd === 'E003' && !commentVal.trim()) {
+                     alert("반려 시에는 의견이 필수입니다.");
+                     $('#comment').focus();
+                     return;
+                 }
+
+                 if (!confirm(`${actionName} 하시겠습니까?`)) return;
+                 
+                 try {
+                     // ⭐️ 단일 기록을 위한 DTO 생성 및 코멘트 설정
+                     const singleActionRecord = [{
+                         complainId: complainId,
+                         approvalStatusCd: statusCd, // E003 또는 E005
+                         approvalComment: commentVal, 
+                     }];
+                     
+                     const payload = {
+                         complainId: complainId,
+                         approvalLineData: singleActionRecord, 
+                         contextUrl: window.location.href
+                     };
+
+                     // ⭐️ 통합된 URL로 fetch 호출
+                     const res = await fetch(`/approval24/api/approval/complain/rejectAndCancle`, {
+                         method: 'POST',
+                         headers: { 'Content-Type': 'application/json' },
+                         credentials: 'same-origin',
+                         body: JSON.stringify(payload)
+                     });
+                     
+                     const json = await res.json().catch(() => null);
+                     if (res.ok) {
+                         alert(json?.message || `${actionName} 완료되었습니다.`);
+                         $('#comment').val('');
+                     } else {
+                         alert(json?.message || `오류: ${res.status}`);
+                     }
+                 } catch (e) {
+                     console.error(e);
+                     alert('서버 에러 발생');
+                 }
+             } else {
                 
-                const json = await res.json().catch(() => null);
-                if (res.ok) {
-                    alert(json?.message || '제출 및 첫 승인 완료되었습니다.');
-                } else {
-                    alert(json?.message || `오류: ${res.status}`);
-                }
-            } catch (e) {
-                console.error(e);
-                alert('서버 에러 발생');
-            }
+                 alert('현재 처리 가능한 결재가 없습니다.');
+             }
+             
+             loadApprovalLine(); // 처리 후 재로드
+             return;
+         }
 
-        } 
-        // ==========================================================
-        // 2. [기존 로직 유지] (일반 승인/반려 또는 담당자의 E001 처리)
-        // ==========================================================
-        else {
-            const current = approvalList.find(a => a.approvalStatusCd === 'E001');
-            
-            // 🔹 E001이 없으면 -> 반려 시에만 별도 컨트롤러 호출 (기존 로직 유지)
-            if (!current) {
-                if (statusCd === 'E003') { 
-                    if (!confirm('반려 하시겠습니까?')) return;
-                    try {
-                        const res = await fetch(`/approval24/api/approval/complain/reject`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            credentials: 'same-origin',
-                            body: new URLSearchParams({ complainId })
-                        });
-                        const json = await res.json().catch(() => null);
-                        if (res.ok) {
-                            alert(json?.message || '반려 완료되었습니다.');
-                        } else {
-                            alert(json?.message || `오류: ${res.status}`);
-                        }
-                    } catch (e) {
-                        console.error(e);
-                        alert('서버 에러 발생');
-                    }
-                } else {
-                    alert('현재 처리 가능한 결재가 없습니다.');
-                }
-                loadApprovalLine(); // 처리 후 재로드
-                return;
-            }
+         // 🔹 B. E001 대기 건이 있음 -> 일반적인 승인/반려 로직 (기존 로직 유지)
+         
+         // 반려(E003) 시에만 의견 필수 체크
+         if (statusCd === 'E003' && !commentVal.trim()) {
+             alert("반려 시에는 의견이 필수입니다.");
+             $('#comment').focus();
+             return;
+         }
+         
+         // commentVal이 이미 선언되어 있으므로 const 없이 사용
+         const payload = {
+             ...current,
+             approvalStatusCd: statusCd,
+             approvalComment: commentVal || '' // 업데이트된 commentVal 사용
+         };
+         
+         if (!confirm(isApprove ? '승인 하시겠습니까?' : '반려 하시겠습니까?')) return;
 
-            // 🔹 E001이 있으면, 해당 결재 건 처리 (기존 로직 유지)
-            if (statusCd === 'E003' && !commentVal.trim()) {
-                alert("반려 시에는 의견이 필수입니다.");
-                $('#comment').focus();
-                return;
-            }
-            
-            const payload = {
-                ...current,
-                approvalStatusCd: statusCd,
-                approvalComment: commentVal || ''
-            };
-            
-            if (!confirm(isApprove ? '승인 하시겠습니까?' : '반려 하시겠습니까?')) return;
-
-            try {
-                const res = await fetch(`/approval24/api/approval/process`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(payload)
-                });
-                
-                const json = await res.json().catch(() => null);
-                if (res.ok) {
-                    alert(json?.message || '처리 성공');
-                    $('#comment').val('');
-                } else {
-                    alert(json?.message || `오류: ${res.status}`);
-                }
-            } catch (e) {
-                console.error(e);
-                alert('서버 에러 발생');
-            }
-        }
-        
-        // 최종적으로 처리 후 재로드
-        loadApprovalLine();
-    }
+         try {
+             const res = await fetch(`/approval24/api/approval/process`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 credentials: 'same-origin',
+                 body: JSON.stringify(payload)
+             });
+             
+             const json = await res.json().catch(() => null);
+             if (res.ok) {
+                 alert(json?.message || '처리 성공');
+                 $('#comment').val('');
+             } else {
+                 alert(json?.message || `오류: ${res.status}`);
+             }
+         } catch (e) {
+             console.error(e);
+             alert('서버 에러 발생');
+         }
+     }
+     
+     // 최종적으로 처리 후 재로드
+     loadApprovalLine();
+ }
 
 
-    // -------------------------------------------------------------
-    // 5. 기타 이벤트 핸들러 (기존 로직 유지)
-    // -------------------------------------------------------------
-    
-    // handleCancel 함수 (기존 로직 유지)
-    async function handleCancel() {
-        // ... (기존 handleCancel 로직 그대로 사용) ...
-        const current = approvalList.find(a => a.approvalStatusCd === 'E001');
+//-------------------------------------------------------------
+     // 5. 이벤트 핸들러 정리 (최종)
+     // -------------------------------------------------------------
+     $('#btnApprovalLine').on('click', function() {
+         $('#approvalLineEditorModal').modal('show'); 
+     });
+     
+     // 승인, 반려, 취소 버튼은 모두 handleDecision으로 통합합니다.
+     $btnApprove.on('click', () => handleDecision('E002')); // 승인
+     $btnReject.on('click', () => handleDecision('E003')); // 반려
+     $btnComplainCancel.on('click', () => handleDecision('E005')); // ⭐️ 취하 (E005)
 
-        if (!current) {
-            if (!confirm('신청서를 취하하시겠습니까?')) return;
-            try {
-                const res = await fetch(`/approval24/api/approval/complain/cancel`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    credentials: 'same-origin',
-                    body: new URLSearchParams({ complainId })
-                });
-                const json = await res.json().catch(() => null);
-                if (res.ok) {
-                    alert(json?.message || '취하 완료되었습니다.');
-                } else {
-                    alert(json?.message || `오류: ${res.status}`);
-                }
-            } catch (e) {
-                console.error(e);
-                alert('서버 에러 발생');
-            }
-            loadApprovalLine();
-            return;
-        }
-
-        if (!confirm('신청서를 취하하시겠습니까?')) return;
-
-        const payload = {
-            ...current,
-            approvalStatusCd: 'E005',
-            approvalComment: $('#comment').val() || ''
-        };
-
-        try {
-            const res = await fetch(`/approval24/api/approval/process`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'same-origin',
-                body: JSON.stringify(payload)
-            });
-
-            const json = await res.json().catch(() => null);
-            if (res.ok) {
-                alert(json?.message || '취하 완료되었습니다.');
-                $('#comment').val('');
-            } else {
-                alert(json?.message || `오류: ${res.status}`);
-            }
-        } catch (e) {
-            console.error(e);
-            alert('서버 에러 발생');
-        }
-        loadApprovalLine();
-    }
-
-
-    $('#btnApprovalLine').on('click', function() {
-        // 모달이 열릴 때 기존 이력(existingDbLines)이 모달 내부 JS에 전달되어
-        // 모달 내부의 draftApprovalLine을 초기화하도록 로직이 설계되어 있습니다.
-        $('#approvalLineEditorModal').modal('show'); 
-    });
-
-    $('#btnComplainCancel').on('click', handleCancel);
-    $btnApprove.on('click', () => handleDecision('E002'));
-    $btnReject.on('click', () => handleDecision('E003'));
-
-    // 페이지 로드 시 실행
-    loadApprovalLine();
-
-
+     // 페이지 로드 시 실행
+     loadApprovalLine();
+ 
     function openBizPostcode() {
         new daum.Postcode({
             oncomplete : function(data) {
