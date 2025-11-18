@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const $form = $('#submitForm'); 
     const $confirmBtn = $('#btnSubmitConfirm');
     const complainId = $form.find('input[name="complainId"]').val();
+
     
     const $btnSave = $('#btnSave');
     const $btnApprove = $('#btnApprove');
@@ -220,6 +221,8 @@ async function handleCancel() {
 }
 
 
+
+
 $('#btnApprovalLine').on('click', function() {
     $('#approvalLineEditorModal').modal('show'); 
 });
@@ -231,9 +234,8 @@ $btnReject.on('click', () => handleDecision('E003'));
 // 페이지 로드 시 실행
 loadApprovalLine();
 
-
 function openBizPostcode() {
-	new daum.Postcode({
+const  postcodePopup = new daum.Postcode({
 		oncomplete : function(data) {
 			// R: 도로명, J: 지번
 			const addr = data.userSelectedType === 'R' ? data.roadAddress
@@ -247,8 +249,19 @@ function openBizPostcode() {
 
 			// 상세 주소 입력창에 포커스
 			document.getElementById('bizAddrDetail').focus();
+			
+	
 		}
 	}).open();
-}
+
+};
+
+$('#btnSearchBizAddress').on('click', function () {
+    openBizPostcode();
+});
+
+
+
+
 });
 

@@ -76,7 +76,7 @@
 													<div class="d-flex mb-2">
 														<input type="text" class="form-control form-postal-code mr-2" placeholder="우편번호" name="bizPost" id="bizPost" readonly style="width: 150px;" value="<c:out value='${detail.bizPost}'/>">
 
-														<button type="button" class="btn btn-secondary" id="btnSearchBizAddress" onclick="openBizPostcode()">주소 검색</button>
+														<button type="button" class="btn btn-secondary" id="btnSearchBizAddress">주소 검색</button>
 													</div> <input type="text" class="form-control mb-2" placeholder="기본 주소" name="bizAddr" id="bizAddr" value="<c:out value='${detail.bizAddr}'/>" readonly> <input type="text" class="form-control" placeholder="상세 주소 (건물명, 동/호수 등)" name="bizAddrDetail" id="bizAddrDetail" value="<c:out value='${detail.bizAddrDetail}'/>">
 												</td>
 
