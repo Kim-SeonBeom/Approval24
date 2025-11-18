@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const processorLoginId = item.processorLoginId || 'N/A';
 
             const tr = $('<tr>').html(`
+            	<td>${processorPositionName}</td>   
                 <td>${processorName}</td>         
-                <td>${processorPositionName}</td>         
                 <td>${processorLoginId}</td>           
                 <td>${item.approverTypeName || '-'}</td>
                 <td>${item.approvalTypeName || '-'}</td>  
@@ -329,9 +329,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	        // 처리 일시는 제외
 
 	        const tr = $('<tr>').html(`
+	        	<td>${processorPositionName}</td>
 	            <td>${processorName}</td>
-	            <td>${processorPositionName}</td>
-	            <td>${item.approvalComment}</td>
+	            <td class="text-left">${item.approvalComment}</td>
 	        `);
 	        $tbody.append(tr);
 	    });
