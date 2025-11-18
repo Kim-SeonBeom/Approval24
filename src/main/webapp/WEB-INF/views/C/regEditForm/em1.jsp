@@ -224,6 +224,7 @@
         <tr>
             <td colspan="3">반려 사유를 로딩 중입니다...</td>
         </tr>
+        
     </tbody>
 </table>
 </div></div></div>
