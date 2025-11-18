@@ -198,13 +198,35 @@
 											</tr>
 										</tbody>
 									</table>
+									<hr>
 								</div>
 								<div class="mt-2">
 									<label>의견: <input type="text" id="comment" class="form-control" style="width: 300px; display: inline-block;"></label>
 								</div>
 							</div>
 						</div>
-
+						
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex align-items-center">
+								<h6 class="m-0 font-weight-bold text-primary">반려 사유</h6>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+<table style="text-align: center;" class="table table-bordered mb-0"  id="rejectCommentTable">
+    <thead>
+        <tr>
+            <th>처리자 이름</th>
+            <th>직급</th>
+            <th>반려 사유</th>
+            </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="3">반려 사유를 로딩 중입니다...</td>
+        </tr>
+    </tbody>
+</table>
+</div></div></div>
 						<div class="d-flex justify-content-between mt-4">
 							<a href="${pageContext.request.contextPath}/complain/category/em1" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>

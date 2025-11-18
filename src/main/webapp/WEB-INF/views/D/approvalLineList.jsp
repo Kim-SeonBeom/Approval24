@@ -92,7 +92,8 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>번호</th>
-                                        <th>결재 구분</th>
+                                        <th>민원 접수 번호</th>
+                                        <th>민원 서식 이름</th>
                                         <th>결재 상태</th>
                                         <th>결재자 유형</th>
                                         <th>결재자</th> <th>결재 종류</th>
@@ -108,6 +109,7 @@
                                                         onclick="window.open('${item.url}','_blank');"
                                                     </c:if>>
                                                     <td>${(pageInfo.page - 1) * pageInfo.pageSize + status.index + 1}</td>
+                                                    <td>${item.complainId}</td>
                                                     <td class="text-left pl-3">${item.categoryName}</td>
                                                     <td>${item.approvalStatusName}</td>
                                                     <td>${item.approverTypeName}</td>
