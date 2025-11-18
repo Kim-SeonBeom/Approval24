@@ -189,6 +189,7 @@ public class ApprovalHistoryService {
             approvalHistoryDAO.insertApprovalHistory(dto);
             cnt++;
         }
+        complainDAO.updateStatusByComplainId(complainId, "D003");
     }
 
 
