@@ -34,8 +34,10 @@
                 A.DEL_YN,
                 A.CREATE_ID,
                 A.UPDATE_ID,
+                A.IS_SYSTEM,
                 A.ACCOUNT_STATUS_CD,
                 CC.CODE_NAME AS ACCOUNT_STATUS_NAME,
+                C2.CODE_NAME AS USER_POSITION_NAME,
                 A.PWD_FAIL_CNT,
                 A.PWD_CHANGE_DT
             FROM t1000_account A
@@ -45,6 +47,9 @@
             LEFT JOIN total_code CC
                 ON A.ACCOUNT_STATUS_CD = CC.CODE_ID
                AND CC.GROUP_ID = 'B0'
+			LEFT JOIN total_code C2
+                ON U.USER_POSITION_CD = C2.CODE_ID
+               AND C2.GROUP_ID = 'A0'
             WHERE A.IS_SYSTEM = 'N'
               <if test="instId != null">
                 AND A.INST_ID = #{instId}
@@ -123,6 +128,12 @@
 	<select id="findInstIdByAccountId" parameterType="long"
 		resultType="long">
 		SELECT INST_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID =
+		#{accountId}
+	</select>
+	
+	<select id="findDeptIdByAccountId" parameterType="long"
+		resultType="long">
+		SELECT DEPT_ID FROM T1000_ACCOUNT WHERE ACCOUNT_ID =
 		#{accountId}
 	</select>
 

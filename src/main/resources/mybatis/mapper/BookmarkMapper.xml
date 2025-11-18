@@ -23,6 +23,11 @@
             TCC.CODE_NAME AS approverTypeCdName,
             U.USER_NAME AS approverName,
             D.DEPT_NAME AS deptName,
+            
+            A.LOGIN_ID AS loginId,
+            
+            C2.CODE_NAME AS userPositionName, 
+
             BD.CREATE_DT,
             BD.UPDATE_DT
         FROM T2000_BOOKMARK_DETAIL BD
@@ -30,7 +35,10 @@
         JOIN T1000_USER U ON A.USER_NO = U.USER_NO
         LEFT JOIN T1000_DEPARTMENT D ON A.DEPT_ID = D.DEPT_ID
         LEFT JOIN TOTAL_CODE TCC ON BD.APPROVER_TYPE_CD = TCC.CODE_ID AND TCC.GROUP_ID = 'F0'
-        WHERE BD.BOOKMARK_ID = #{bookmarkId}
+        
+        LEFT JOIN TOTAL_CODE C2 
+            ON U.USER_POSITION_CD = C2.CODE_ID 
+           AND C2.GROUP_ID = 'A0'  WHERE BD.BOOKMARK_ID = #{bookmarkId}
         ORDER BY BD.SEQ_NO
     </select>
 

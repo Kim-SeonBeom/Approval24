@@ -29,5 +29,7 @@ public class BookmarkDTO {
         private String approverName;
         private String deptName;
         private String approverTypeCdName;
+        private String loginId;         
+    	private String userPositionName;
     }
 }

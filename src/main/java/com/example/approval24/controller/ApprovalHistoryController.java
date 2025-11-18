@@ -15,21 +15,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.ComplainDTO;
+import com.example.approval24.domain.DeptWorkDTO;
 import com.example.approval24.domain.PageInfoVO;
 import com.example.approval24.domain.TotalCodeDTO;
+import com.example.approval24.service.AccountService;
 import com.example.approval24.service.ApprovalHistoryService;
+import com.example.approval24.service.CategoryService;
 import com.example.approval24.service.ComplainService;
 import com.example.approval24.service.TotalCodeService;
 
 @Controller
 @RequestMapping("/history")
 public class ApprovalHistoryController {
+	
+	@Autowired
+	private AccountService accountService;
     
     @Autowired
     private ApprovalHistoryService historyService;
     
     @Autowired
     private TotalCodeService codeService;
+    
+    @Autowired
+    private CategoryService categoryService;
     
     @GetMapping("/list")
     public String getApprovalHistory(
@@ -44,8 +53,9 @@ public class ApprovalHistoryController {
             return "redirect:/login"; 
         }
         
-        filterMap.put("accountId", userId);
+        Long deptId = accountService.findDeptIdByAccountId(userId);
         
+        filterMap.put("accountId", userId);
         filterMap.entrySet().removeIf(e ->
         e.getValue() == null ||
         (e.getValue() instanceof String && ((String) e.getValue()).trim().isEmpty())
@@ -79,8 +89,8 @@ public class ApprovalHistoryController {
         }
         
         List<TotalCodeDTO> statusCodeList = codeService.getTotalCodeByGroupId("E0");
-        List<TotalCodeDTO> categoryCodeList = codeService.getTotalCodeByGroupId("G0");
-        model.addAttribute("categoryCodeList", categoryCodeList);
+        List<DeptWorkDTO> categoryList = categoryService.categoryByDept(deptId);
+        model.addAttribute("categoryList", categoryList);
         model.addAttribute("statusCodeList", statusCodeList);
 
         return "D/approvalLineList"; 

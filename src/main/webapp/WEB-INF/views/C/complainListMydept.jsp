@@ -132,7 +132,7 @@
 													<td>${item.complainuserName}</td>
 													<td>${item.userName}</td>
 													<td><c:choose>
-															<c:when test="${item.complainStatusCd == 'B001'}">
+															<c:when test="${item.complainStatusCd == 'D001'}">
 																<span class="badge badge-info">접수중</span>
 															</c:when>
 															<c:otherwise>

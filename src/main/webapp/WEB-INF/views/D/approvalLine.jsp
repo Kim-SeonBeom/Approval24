@@ -16,7 +16,7 @@
             <thead>
                 <tr>
                     <th>카테고리</th>
-                    <th>사용자</th>
+                    <th>결재자</th>
                     <th>결재자 유형</th>
                     <th>상태</th>
                     <th>처리일</th>
@@ -68,7 +68,7 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${item.categoryName || ''}</td>
-                        <td>${item.userName || ''}</td>
+                        <td>${item.processorName || ''}</td>
                         <td>${item.approverTypeName || ''}</td>
                         <td>${item.approvalStatusName || ''}</td>
                         <td>${item.processDt ? new Date(item.processDt).toLocaleString() : ''}</td>

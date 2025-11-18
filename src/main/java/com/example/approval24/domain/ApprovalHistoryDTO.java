@@ -15,12 +15,15 @@ public class ApprovalHistoryDTO {
     private String approvalComment;
     private Long seqNo;
     private String url;
+    private String approvalTypeCd;
     
     //추가사항
-    private String approvalStatusName; // 결재 상태 이름 승인,반려 등등..
-    private String approverTypeName;    // 결재자 이름 접수자,담당자,승인자,반려자 등등..
+    private String approvalStatusName; 
+    private String approverTypeName;    
+    private String approvalTypeName;
     private String categoryCd;        
     private String categoryName;
-    private String userName;
-    
+    private String processorName;
+    private String processorLoginId; 
+    private String processorPositionName;
 }
