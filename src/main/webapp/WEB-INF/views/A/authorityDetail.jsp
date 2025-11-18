@@ -38,7 +38,7 @@
 							</div>
 							<div class="align-items-center mb-1">
 								<h5>
-									<strong  class="text-primary">권한명 : </strong> ${authority.authorityName}
+									<strong class="text-primary">권한명 : </strong> ${authority.authorityName}
 								</h5>
 							</div>
 						</div>
@@ -274,11 +274,16 @@
 									</c:if>
 								</div>
 							</div>
+
 						</div>
 
 					</div>
+					<div class="mb-4 mt-4">
+						<div class="d-flex align-items-center">
+							<button class="btn btn-secondary" type="button" onclick="location.href='<c:url value="/authority/list"/>'">목록으로</button>
+						</div>
+					</div>
 
-					<button class="btn btn-secondary" type="button" onclick="location.href='<c:url value="/authority/list"/>'">목록으로</button>
 				</div>
 
 			</div>

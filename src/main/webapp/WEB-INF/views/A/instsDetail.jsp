@@ -90,17 +90,17 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">기관명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">기관명</th>
 												<td colspan="3"><input type="text" name="instName" id="instName" class="form-control form-control-sm" value="${inst.instName}" required maxlength="200"></td>
 											</tr>
 
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">대표자명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">대표자명</th>
 												<td colspan="3"><input type="text" name="instHeadName" id="instHeadName" class="form-control form-control-sm" value="${inst.instHeadName}" required></td>
 											</tr>
 
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold"
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center"
 													style="vertical-align: middle;">주소</th>
 												<td colspan="3">
 													<div class="d-flex mb-2">
@@ -120,18 +120,18 @@
 											</tr>
 
 											<tr>
-												<th>기관 연락처</th>
+												<th class="text-center">기관 연락처</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${inst.instPhone}"
 													name="instPhone"></td>
 											</tr>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">생성일</th>
 												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${inst.createDt}" required></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">수정일</th>
 												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${inst.updateDt}" required></td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <th class="text-dark bg-light font-weight-bold text-center">삭제여부</th>
 											  <td colspan="6">
 											    <div class="d-flex align-items-center" style="gap:16px;">
 											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">

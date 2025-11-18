@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.approval24.dao.UserDAO;
 import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.UserDTO;
+import com.example.approval24.util.AesEncryptionService;
 
 @Service
 public class UserService {
@@ -20,7 +21,10 @@ public class UserService {
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
-
+    
+    @Autowired 
+    public AesEncryptionService encryptionService;
+   
     // 사용자 목록 조회 (필터링 포함)
     public List<UserDTO> getUsers(Map<String, Object> params) {
         return userDAO.findUsersByFilter(params);
@@ -50,16 +54,29 @@ public class UserService {
     // 3. 사용자 등록
     @Transactional
     public int registerUser(UserDTO user) {
-        UserDTO existingUser = userDAO.findByResidentNo(user.getUserResidentNo());
+    	if( user.getUserResidentNo() == null|| user.getUserResidentNo().trim().isEmpty()) {
+    		  throw new IllegalArgumentException("주민번호가 입력되지 않았습니다..");
+    	}
+    	String encryptedResidentNo = null;
+    	try {
+    		String residentNo = user.getUserResidentNo().replaceAll("\\s", "");
+            // 입력받은 평문 주민번호를 암호화
+            encryptedResidentNo = encryptionService.encrypt(residentNo);
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            throw new RuntimeException("사용자 주민번호 암호화 중 치명적인 오류 발생", e);
+        }
+        UserDTO existingUser = userDAO.findByResidentNo(encryptedResidentNo);
 
         if (existingUser != null) {
-            if ("Y".equals(existingUser.getDelYn())) {
+            if ("Y".equals(existingUser.getDelYn())) { 	
                 user.setDelYn("N");
                 return userDAO.updateUser(user);
             } else if ("N".equals(existingUser.getDelYn())) {
                 throw new IllegalArgumentException("이미 활성화된 상태의 사용자입니다. 수정 기능을 이용해 주세요.");
             }
         }
+        user.setUserResidentNo(encryptedResidentNo);
         return userDAO.insertUser(user);
     }
 

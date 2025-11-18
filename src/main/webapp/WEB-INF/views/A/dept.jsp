@@ -158,7 +158,7 @@
 					                  data-href="${pageContext.request.contextPath}/dept/detail?dept_id=${item.deptId}"
 					                  style="cursor:pointer;">
 					                <td>${(filter.page - 1) * filter.size + status.index + 1}</td>
-					                <td>${item.deptName}</td>
+					                <td class="text-left pl-3">${item.deptName}</td>
 					                <td>${item.deptPhone}</td>
 					                <td>${item.createDt}</td>
 					                <td>${item.updateDt}</td>

@@ -21,7 +21,6 @@ public class DelegateService {
 
 	public int insertDelegate(long accountId, DelegateDTO delegateDTO) {
 		delegateDTO.setAbsId(accountId);
-		System.out.println(delegateDTO.toString());
 		
 		return delegateDAO.insertDelegate(delegateDTO);
 		
@@ -33,7 +32,6 @@ public class DelegateService {
 
 	public int updateDelegate(long accountId, DelegateDTO delegateDTO) {
 		delegateDTO.setAbsId(accountId);
-		System.out.println(delegateDTO.toString());
 		
 		return delegateDAO.updateDelegate(delegateDTO);
 	}

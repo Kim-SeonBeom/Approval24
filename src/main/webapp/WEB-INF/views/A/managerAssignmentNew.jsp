@@ -91,13 +91,13 @@
 										</colgroup>
 										<tbody>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">기관명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">기관명</th>
 											  <td colspan="3">
 											  	<input type="text" name="instName" id="instName" class="form-control form-control-sm" value="${instName.instName}" readonly>
 											  </td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">부서명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">부서명</th>
 											  <td colspan="3">
 											    <select name="deptId" id="deptId" class="form-control form-control-sm">
 											      <option value="">-- 부서 선택 --</option>
@@ -112,7 +112,7 @@
 											</tr>
 											
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">민원서식명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">민원서식명</th>
 											  <td colspan="3">
 											    <select name="complainCategoryId" id="complainCategoryId" class="form-control form-control-sm">
 											      <option value="">-- 민원서식 선택 --</option>
@@ -127,27 +127,21 @@
 											</tr>
 											
 											<tr>
-												<th class="text-dark bg-light font-weight-bold">로그인ID</th>
-												<td colspan="1">
-												  <select name="accountId" id="accountId" class="form-control form-control-sm">
-												    <option value="">-- 로그인계정 선택 --</option>
-												    <c:forEach var="account" items="${accountByInstDept}">
-												      <option value="${account.accountId}"
-												        <c:if test="${MAInfo.accountId == account.accountId}">selected="selected"</c:if>>
-												        ${account.loginId}
-												      </option>
-												    </c:forEach>
-												  </select>
-												</td>
-
-												<th scope="col" class="text-dark bg-light font-weight-bold">사용자이름</th>
-												<td colspan="1">
-												  <input type="text" name="userName" id="userName"
-												         class="form-control form-control-sm"
-												         placeholder="사용자 이름 입력"
-												         value="<c:out value='${MAInfo.userName}'/>">
-												</td>
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">사용자 이름</th>
+											  <td>
+											    <select name="userName" id="userNameSelect" class="form-control form-control-sm">
+											      <option value="">-- 사용자 선택 --</option>
+											    </select>
+											  </td>
+											
+											  <th class="text-dark bg-light font-weight-bold text-center align-middle">로그인 ID</th>
+											  <td>
+											    <select name="accountId" id="accountId" class="form-control form-control-sm">
+											      <option value="">-- 로그인계정 선택 --</option>
+											    </select>
+											  </td>
 											</tr>
+
 										</tbody>
 
 									</table>
@@ -188,12 +182,16 @@ $(function () {
 	  const $dept = $('#deptId');
 	  const $cat  = $('#complainCategoryId');
 	  const $acc  = $('#accountId');
+	  const $user = $('#userNameSelect');
+
+	  let accountListCache = [];
 
 	  function loadDepts(instId, preselectDeptId) {
 	    $dept.empty().append('<option value="">-- 부서 선택 --</option>');
 	    $cat.empty().append('<option value="">-- 민원서식 선택 --</option>');
 	    $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
-	    $('#userName').val('');
+	    $user.empty().append('<option value="">-- 사용자 선택 --</option>');
+	    accountListCache = [];
 
 	    if (!instId) return;
 
@@ -215,6 +213,24 @@ $(function () {
 	      });
 	  }
 
+	  function fillAccountSelectByUser(userName) {
+	    $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
+	    if (!userName) return;
+
+	    const filtered = accountListCache.filter(function (a) {
+	      return a.userName === userName;
+	    });
+
+	    filtered.forEach(function (a) {
+	      const sel = (initAccId && String(initAccId) === String(a.accountId)) ? ' selected' : '';
+	      $acc.append(
+	        '<option value="'+ a.accountId + '"' + sel + '>' +
+	        a.loginId +
+	        '</option>'
+	      );
+	    });
+	  }
+
 	  // 초기 1회: hidden instId로 부서 로드
 	  const initInstId  = $('#instId').val();                  // hidden에서 읽음
 	  const initDeptId  = '${MAInfo != null ? MAInfo.deptId : ""}';
@@ -226,7 +242,7 @@ $(function () {
 	    loadDepts(initInstId, initDeptId);
 	  }
 
-	  // 기존 부서 변경 → 서식/계정 로드
+	  // 기존 기관부서 변경 → 서식/사용자 로드
 	  $('#deptId').on('change', function () {
 	    const deptId = $(this).val();
 
@@ -242,26 +258,34 @@ $(function () {
 
 	    // 계정
 	    const instId = $('#instId').val();
-		$.getJSON(ctx + '/MA/accounts', { inst_id: instId, dept_id: deptId })
+	    $.getJSON(ctx + '/MA/accounts', { inst_id: instId, dept_id: deptId })
 	      .done(function (list) {
-	        $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
-	        (list || []).forEach(function (a) {
-	          const sel = (initAccId && String(initAccId) === String(a.accountId)) ? ' selected' : '';
-	          $acc.append('<option value="'+ a.accountId + '"' + sel + ' data-username="'+ (a.userName || '') +'">' + a.loginId + '</option>');
+	        accountListCache = list || [];
+
+	        $user.empty().append('<option value="">-- 사용자 선택 --</option>');
+	        const userNameSet = new Set();
+	        accountListCache.forEach(function (a) {
+	          if (a.userName) {
+	            userNameSet.add(a.userName);
+	          }
 	        });
 
-	        // 수정모드 유저명 세팅
+	        Array.from(userNameSet).forEach(function (name) {
+	          const sel = (initUserName && String(initUserName) === String(name)) ? ' selected' : '';
+	          $user.append('<option value="'+ name + '"' + sel + '>' + name + '</option>');
+	        });
+
+	        $acc.empty().append('<option value="">-- 로그인계정 선택 --</option>');
+
 	        if (initUserName) {
-	          $('#userName').val(initUserName);
-	        } else {
-	          $('#userName').val($('#accountId option:selected').data('username') || '');
+	          fillAccountSelectByUser(initUserName);
 	        }
 	      });
 	  });
 
-	  // 계정 선택 시 사용자명
-	  $('#accountId').on('change', function () {
-	    $('#userName').val($('#accountId option:selected').data('username') || '');
+	  $user.on('change', function () {
+	    const selectedName = $(this).val();
+	    fillAccountSelectByUser(selectedName);
 	  });
 
 	  // 저장 버튼
@@ -272,6 +296,7 @@ $(function () {
 	    if (confirm('작성된 내용을 등록하시겠습니까?')) $('#managerAssignmentForm').submit();
 	  });
 	});
+
 
 </script>
 

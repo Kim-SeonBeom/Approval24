@@ -175,11 +175,11 @@
 					                  </c:choose>
 					                </td>
 					                <td>
-									  <a class="btn btn-sm btn-warning" href="${pageContext.request.contextPath}/authority/edit/${item.authorityId}">수정</a>
+									  <a class="btn btn-sm btn-warning mr-1" href="${pageContext.request.contextPath}/authority/edit/${item.authorityId}">수정</a>
 									  <form action="${pageContext.request.contextPath}/authority/delete/${item.authorityId}"
 									        method="post" style="display:inline"
 									        onsubmit="return confirm('정말로 권한 [${item.authorityName}]을(를) 삭제하시겠습니까?');">
-									    <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+									    <button type="submit" class="btn btn-sm btn-danger  ml-1">삭제</button>
 									  </form>
 									</td>
 

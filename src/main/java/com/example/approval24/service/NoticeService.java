@@ -38,7 +38,6 @@ public class NoticeService {
 	// 공지사항 디테일
 	public NoticeDTO getnoticeDetail(Long noticeId) {
 		NoticeDTO dto = noticeDAO.getnoticeDetail(noticeId);
-		System.out.println(dto.toString());
 		return noticeDAO.getnoticeDetail(noticeId);
 	}
 	

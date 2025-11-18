@@ -18,7 +18,6 @@
 	JOIN T1000_account  A ON COALESCE(T.update_Id, T.create_id) = A.account_id
 	JOIN t1000_user U ON A.user_no = U.user_no
 	JOIN total_code C ON T.category_cd = C.code_id
-	JOIN t2000_complain_category CC ON T.category_cd = CC.category_cd
 	WHERE T.del_yn = 'N'
 				<if test="title != null and title !=''">
 				AND T.title LIKE '%' || #{title} || '%'
@@ -29,8 +28,8 @@
 				<if test="categoryName != null and categoryName !=''">
 				AND C.code_name = #{categoryName}
 				</if>
-				<if test="complainCategoryId != null and complainCategoryId !=''">
-				AND CC.complain_category_id = #{complainCategoryId}
+				<if test="codeId != null and codeId !=''">
+				AND C.code_id = #{codeId}
 				</if>
              <if test="startDate != null  and endDate !=null and startDate !='' and endDate !=''">
                <![CDATA[
@@ -55,7 +54,6 @@
 	JOIN T1000_account  A ON COALESCE(T.update_Id, T.create_id) = A.account_id
 	JOIN t1000_user U ON A.user_no = U.user_no
 	JOIN total_code C ON T.category_cd = C.code_id
-	JOIN t2000_complain_category CC ON T.category_cd = CC.category_cd
 	WHERE T.del_yn = 'N'
 				<if test="title != null and title !=''">
 				AND T.title = #{title}
@@ -66,8 +64,8 @@
 				<if test="categoryName != null and categoryName !=''">
 				AND C.code_name = #{categoryName}
 				</if>
-			<if test="complainCategoryId != null and complainCategoryId !=''">
-				AND CC.complain_category_id = #{complainCategoryId}
+				<if test="codeId != null and codeId !=''">
+				AND C.code_id = #{codeId}
 				</if>
 	             <if test="startDate != null  and endDate !=null and startDate !='' and endDate !=''">
                 <![CDATA[

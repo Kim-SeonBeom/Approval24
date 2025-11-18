@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const $form = $('#submitForm'); 
     const $confirmBtn = $('#btnSubmitConfirm');
     const complainId = $form.find('input[name="complainId"]').val();
+
     
     const $btnSave = $('#btnSave');
     const $btnApprove = $('#btnApprove');
