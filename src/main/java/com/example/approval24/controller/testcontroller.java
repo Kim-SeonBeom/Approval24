@@ -19,7 +19,6 @@ public class testcontroller {
 
 	@GetMapping("/pending")
 	public String pending() {
-		// 잘 하는 집을 안 가봐서 그래
 		return "pending";
 	}
 

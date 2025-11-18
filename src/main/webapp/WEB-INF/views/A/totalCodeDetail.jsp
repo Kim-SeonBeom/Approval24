@@ -88,24 +88,24 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">코드그룹ID</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드그룹</th>
 												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" readonly value="${codeInfo.groupId}" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">코드ID</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드</th>
 												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" readonly value="${codeInfo.codeId}" required></td>
 											</tr>
 
 											<tr>
-												<th>코드명</th>
+												<th class="text-dark bg-light font-weight-bold text-center">코드명</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${codeInfo.codeName}"
 													name="codeName"></td>
 											</tr>
 											<tr>
-												<th>코드내용</th>
+												<th class="text-dark bg-light font-weight-bold text-center">코드내용</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${codeInfo.codeDetail}"
 													name="codeDetail"></td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <th class="text-dark bg-light font-weight-bold text-center">삭제여부</th>
 											  <td colspan="6">
 											    <div class="d-flex align-items-center" style="gap:16px;">
 											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">

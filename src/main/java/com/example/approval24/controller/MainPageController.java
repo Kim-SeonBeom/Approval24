@@ -90,21 +90,18 @@ public class MainPageController {
 		// 결재 대기중인 내 민원(History 상태 결재)
 		filterMap.put("approvalStatusCd", "E001");
 		int myWaitingApproval = accountHistoryService.countMyApprovalHistoryList(filterMap);
-		System.out.println(myWaitingApproval);
 		model.addAttribute("waitingApproval", myWaitingApproval);
 		
 		// 승인
 		filterMap.remove("approvalStatusCd");
 		filterMap.put("approvalStatusCd", "E002");
 		int myRefuseApproval = accountHistoryService.countMyApprovalHistoryList(filterMap);
-		System.out.println(myRefuseApproval );
 		model.addAttribute("refuseApproval", myRefuseApproval);
 		
 		// 반려한 결재
 		filterMap.remove("approvalStatusCd");
 		filterMap.put("approvalStatusCd", "E003");
 		int myapprovalsInTransit = accountHistoryService.countMyApprovalHistoryList(filterMap);
-		System.out.println(myapprovalsInTransit);
 		model.addAttribute("approvalInTransit", myapprovalsInTransit);
 		// -------------일반 끝---------------
 		

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.approval24.dao.AuthorityDeptDAO;
 import com.example.approval24.dao.DeptInstDAO;
@@ -82,26 +83,29 @@ public class SignupController {
     
     	List<AuthorityDTO> authList = authDeptDAO.getAuthoritysByDeptId(deptId);
     	
-    	System.out.println(authList.toString());
+
     	return authList;
     }
     
     //회원가입 신청
     @PostMapping("/approveForm")
     public String approveRequest(@RequestParam Map<String,Object> m,
-    		 @RequestParam(value = "authorityIds", required = false) List<String> authorityIds)  {
-    	System.out.println("계정신청 컨트롤러 받음");
+    		 @RequestParam(value = "authorityIds", required = false) List<String> authorityIds, 
+    		 RedirectAttributes redirectAttributes)  {
     	// 주민번호가 공란일때
     	String residentNo = (String) m.get("residentNo"); 
     	if(residentNo == null || residentNo.isEmpty()) {
-    			throw new IllegalArgumentException("주민번호가 입력되지 않았습니다.");
-    		}
-    	UserDTO userdto = userService.getUserDetailByResidentNo(residentNo);
-    	if(userdto == null) {
-    		throw new IllegalArgumentException("해당하는 직원이 없습니다.");
+    		redirectAttributes.addFlashAttribute("error", "주민번호가 입력되지 않았습니다.");
+            return "redirect:/signup/Form";
     		}
     		// 생성된 계정 id
-    		Long accountId = signUpService.approveRequest(m);
+    		Long accountId = null;
+    		try {
+    			accountId = signUpService.approveRequest(m);    
+    			} catch (RuntimeException e) {
+    				redirectAttributes.addFlashAttribute("error", e);
+    				return "redirect:/signup/Form";
+    			}
     		// 권한 id 만큼 반복(null 확인)
     		if(authorityIds != null && !authorityIds.isEmpty()) {
     			List<AuthorityAccountDTO> authList = new ArrayList<>();

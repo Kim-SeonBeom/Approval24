@@ -26,6 +26,7 @@ import com.example.approval24.domain.UserDTO;
 import com.example.approval24.service.AccountService;
 import com.example.approval24.service.TotalCodeService;
 import com.example.approval24.service.UserService;
+import com.example.approval24.util.AesEncryptionService;
 
 @Controller
 @RequestMapping("/user")
@@ -39,6 +40,9 @@ public class UserController {
     
     @Autowired
     TotalCodeService codeService;
+    
+    @Autowired 
+    public AesEncryptionService encryptionService;
 
     // 사용자 목록 조회 
     @GetMapping("/list")
@@ -102,6 +106,16 @@ public class UserController {
         Map<String, Object> filterMap = new HashMap<> ();
         filterMap.put("userNo", userNo);
 		List<AccountDTO> accountList = accountService.getAccountsByFilter(filterMap);
+		
+		// 복호화
+		String userResidentNo = null;
+		try {
+			userResidentNo = encryptionService.decrypt(user.getUserResidentNo());
+			user.setUserResidentNo(userResidentNo);
+		} catch (Exception e) {
+			rttr.addFlashAttribute("errorMessage", "정보를 가져오는 도중 에러가 발생했습니다. " + e.getMessage());
+		}
+		
 		
 		model.addAttribute("user", user);
 	    model.addAttribute("accountList", accountList);

@@ -282,19 +282,6 @@ public class ComplainController {
 
 		MenuVO pageAuth = (MenuVO) req.getAttribute("pageAuth");
 
-		// 권한 확인 (Null 체크 필수!)
-		if (pageAuth != null) {
-			System.out.println("**** [Auth Check] 현재 메뉴: " + pageAuth.getMenuName());
-			System.out.println("**** [Auth Check] 읽기 권한: " + pageAuth.getReadYn());
-			System.out.println("**** [Auth Check] 수정 권한: " + pageAuth.getUpdateYn());
-			System.out.println("**** [Auth Check] 등록 권한: " + pageAuth.getCreateYn());
-			System.out.println("**** [Auth Check] 승인 권한: " + pageAuth.getApproveYn());
-			System.out.println("**** [Auth Check] 삭제 권한: " + pageAuth.getDeleteYn());
-
-		} else {
-			System.out.println("**** [Auth Check] 이 URL에 대한 메뉴 권한 정보를 찾을 수 없습니다.");
-
-		}
 		ComplainDTO complainDTO = complainService.getComplainInfo(complainId);
 
 		ComplainuserDTO complainuserDTO = complainuserService.complainuserInfo(complainDTO.getComplainuserNo());
@@ -314,10 +301,9 @@ public class ComplainController {
 	//
 	//
 	//
-	//
-	//
-	//
-	//
+
+
+	
 	//수정
 	@PostMapping("/category/em1/{complainId}")
 	public String submitEmptyWork(@PathVariable long complainId, EM1DTO em1DTO, ComplainuserDTO complainuserDTO,

@@ -21,6 +21,7 @@ import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.domain.InstDTO;
 import com.example.approval24.domain.RequestDTO;
 import com.example.approval24.domain.UserDTO;
+import com.example.approval24.util.AesEncryptionService;
 import com.example.approval24.util.BCryptUtil;
 
 @Service
@@ -41,10 +42,26 @@ public class SignUpService {
 	@Autowired
 	private AuthorityAccountDAO authAccountDAO;
 	
+    @Autowired 
+    public AesEncryptionService encryptionService;
+	
 	
 	// 계정 등록
 	public long approveRequest(Map<String,Object> m) {
-		UserDTO user = userDAO.findByResidentNo((String)m.get("residentNo"));
+		Object obj = m.get("residentNo");
+		String residentNo = String.valueOf(obj);
+		String  encryptedResidentNo = null;
+	  	try {
+            // 입력받은 평문 주민번호를 암호화
+	  		encryptedResidentNo = encryptionService.encrypt(residentNo);
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            throw new RuntimeException("사용자 주민번호 암호화 중 치명적인 오류 발생", e);
+        }
+		UserDTO user = userDAO.findByResidentNo(encryptedResidentNo);
+		if (user == null) {
+		    throw new RuntimeException("해당 유저를 사용자를 찾을 수 없습니다: ");
+		}
 		Long newAccountId = null;
 		if(user != null) {
 			AccountDTO accountDTO = new AccountDTO();
@@ -68,7 +85,6 @@ public class SignUpService {
 			newAccountId = account.getAccountId();
 		}
 		
-		System.out.println("등록 서비스 끝");
 		
 		return newAccountId;
 	}

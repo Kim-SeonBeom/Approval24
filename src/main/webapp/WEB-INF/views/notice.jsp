@@ -42,11 +42,17 @@
 									form="noticeFilterForm">검색</button>
 								
 								<c:if test="${logindeptName eq '인사팀'}">
-								<button class="btn btn-success btn-sm ml-2" type="button"
+								<button class="btn btn-success btn-sm" type="button"
 									onclick="location.href='${pageContext.request.contextPath}/notice/new'">추가</button>
 									</c:if>
 							</div>
 						</div>
+						<!-- 메시지 -->
+						<c:if test="${not empty errorMessage}">
+							<div class="alert alert-danger" role="alert">
+								<i class="fas fa-exclamation-triangle mr-2"></i> ${errorMessage}
+							</div>
+						</c:if>
 
 						<div class="card-body">
 							<form id="noticeFilterForm" action="${pageContext.request.contextPath}/notice" method="get">
@@ -67,10 +73,10 @@
 									<div class="col-sm-10">
 										<div class="form-inline">
 											<!-- name/id 를 complainCategoryId 로 통일 -->
-											<select class="form-control mr-2" id="complainCategoryId" name="complainCategoryId" style="min-width: 220px;">
+											<select class="form-control mr-2" id="codeId" name="codeId" style="min-width: 220px;">
 												<option value="">전체</option>
 												<c:forEach var="list" items="${categoryList}">
-													<option value="${list.complainCategoryId}" <c:if test="${filter.complainCategoryId == list.complainCategoryId}">selected</c:if>>${list.categoryName}</option>
+													<option value="${list.codeId}" <c:if test="${filter.categoryCd == list.codeId}">selected</c:if>>${list.codeName}</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -141,7 +147,7 @@
 													style="cursor: pointer;">
 													<td>${(filter.page - 1) * filter.size + status.index + 1}</td>
 													<td class="text-left pl-3">${item.title}</td>
-													<td class="text-left">${item.categoryName}</td>
+													<td class="text-left pl-3">${item.categoryName}</td>
 													<td>${item.userName}</td>
 													<td>${item.createDt}</td>
 													<td>${item.viewCount}</td>

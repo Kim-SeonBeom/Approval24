@@ -90,11 +90,11 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">부서명</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">부서명</th>
 												<td colspan="1"><input type="text" name="deptName" id="deptName" class="form-control form-control-sm" value="${deptInfo.deptName}" required maxlength="200"></td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">소속 기관명</th>
+											  <th class="text-dark bg-light font-weight-bold text-center">소속 기관</th>
 											  <td colspan="6">
 											    <div style="display:flex; flex-wrap:wrap; gap:8px 16px; line-height:1.8;">
 											      <c:forEach var="inst" items="${getAllInst}">
@@ -120,18 +120,18 @@
 											  </td>
 											</tr>
 											<tr>
-												<th>부서 연락처</th>
+												<th class="text-dark bg-light font-weight-bold text-center">부서 연락처</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm" value="${deptInfo.deptPhone}"
 													name="deptPhone"></td>
 											</tr>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold">생성일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center"">생성일</th>
 												<td colspan="1"><input type="text" name=createDt id="createDt" class="form-control form-control-sm" readonly value="${deptInfo.createDt}" required></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold">수정일</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center"">수정일</th>
 												<td colspan="1"><input type="text" name="updateDt" id="updateDt" class="form-control form-control-sm" readonly value="${deptInfo.updateDt}" required></td>
 											</tr>
 											<tr>
-											  <th class="text-dark bg-light font-weight-bold">삭제여부</th>
+											  <th class="text-dark bg-light font-weight-bold text-center"">삭제여부</th>
 											  <td colspan="6">
 											    <div class="d-flex align-items-center" style="gap:16px;">
 											      <label class="d-inline-flex align-items-center mb-0" for="delYnN">

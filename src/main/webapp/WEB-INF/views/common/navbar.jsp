@@ -17,7 +17,7 @@
 				<!-- 로그인 상태 -->
 				<li class="nav-item no-arrow">
 					<a class="nav-link" href="/approval24/mypage" id="userDropdown" role="button" aria-haspopup="true"aria-expanded="false">
-						<span class="mr-2 d-none d-lg-inline text-gray-600 small">
+						<span class="mr-2 d-none d-lg-inline text-gray-600 fs-1">
 							${logininstName} | ${logindeptName} | ${loginuserName} </span>	
 						<img class="img-profile rounded-circle" src="${pageContext.request.contextPath}/resources/assets/img/undraw_profile.svg">
 					</a> <!-- Dropdown -->

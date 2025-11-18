@@ -54,7 +54,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered mb-0" style="width: 100%">
+									<table class="table table-bordered mb-0 text-center" style="width: 100%">
 										<colgroup>
 											<col style="width: 18%">
 											<col style="width: 32%">
