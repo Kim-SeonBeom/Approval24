@@ -20,10 +20,13 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
 
         @SuppressWarnings("unchecked")
         List<MenuVO> authMenus = (List<MenuVO>) session.getAttribute("authMenus");
-        System.out.println("authMenus 확인");
-        System.out.println(authMenus.toString());
+        //System.out.println("authMenus 확인");
+       // System.out.println(authMenus.toString());
         
-        if(authMenus == null || authMenus.isEmpty()) return true;
+        if(authMenus == null || authMenus.isEmpty()) {
+        	res.sendRedirect(req.getContextPath() + "/login");
+        	return false; 
+        }
         
    
         // 컨텍스트 포함한 채로 그대로 사용 (예: "/approval24/complain/category/mt1/81")
