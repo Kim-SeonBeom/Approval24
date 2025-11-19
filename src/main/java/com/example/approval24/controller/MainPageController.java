@@ -52,6 +52,9 @@ public class MainPageController {
 	
 	@GetMapping("/")
 	public String mainPage(@SessionAttribute(name = "user", required = false) long accountId, Model model, HttpSession session) {
+		if(session == null) {
+			return "redirect:/login";
+		}
 		Long instId = accountService.findInstIdByAccountId(accountId);
 		// -------------인사---------------
 		// 내 기관 전체 계정
