@@ -64,9 +64,5 @@
 				<a href="/approval24/logout"data-toggle="modal" data-target="#logoutModal"> 
 					<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"  title="로그아웃" style="font-size: 24px;"></i>
 				</a>
-
-
-
-
 </nav>
 <!-- End of Topbar -->

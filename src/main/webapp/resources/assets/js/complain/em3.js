@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
          const payload = {
              complainId: complainId,
              approvalLineData: approvalList, 
-             contextUrl: window.location.href
+             contextUrl: window.location.pathname
          };
 
          try {
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
                      const payload = {
                          complainId: complainId,
                          approvalLineData: singleActionRecord, 
-                         contextUrl: window.location.href
+                         contextUrl: window.location.pathname
                      };
 
                      // ⭐️ 통합된 URL로 fetch 호출
