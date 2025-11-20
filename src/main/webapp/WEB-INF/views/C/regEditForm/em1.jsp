@@ -249,6 +249,7 @@
 						<div class="d-flex justify-content-between mt-4">
 							<a href="${pageContext.request.contextPath}/complain/category/em1" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>
+							<!-- <button onclick="forword.back()">목록</button> -->
 							<div>
 
 								<c:if test="${pageAuth.updateYn == 'Y'}">

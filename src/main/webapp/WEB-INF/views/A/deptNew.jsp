@@ -82,7 +82,7 @@
                                  name="deptPhone"
                                  id="deptPhone"
                                  class="form-control form-control-sm"
-                                 placeholder="010-xxxx-xxxx" />
+                                 placeholder="010-1234-5678" />
                         </td>
                       </tr>
 
