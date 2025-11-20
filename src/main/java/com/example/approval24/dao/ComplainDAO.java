@@ -12,7 +12,7 @@ import com.example.approval24.domain.ComplainFilterDTO;
 public interface ComplainDAO {
 	public List<ComplainDTO> getMyWorks(long accountId);
 	
-	public int registComplain(ComplainDTO complainDTO);
+	public long registComplain(ComplainDTO complainDTO);
 
 	public List<ComplainDTO> findByDeptOfAccountIdAndFilter(@Param("filter")ComplainFilterDTO filter, @Param("accountId")long accountId);
 	

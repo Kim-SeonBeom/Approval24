@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('🔔 읽음 처리 API 호출 중 에러:', error);
         })
         .finally(() => {
-            window.location.href = url ? url : CONTEXT_PATH + '/dashboard';
+            window.location.href = url;
         });
     }
 

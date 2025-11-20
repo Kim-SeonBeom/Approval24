@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.approval24.dao.CategoryDAO;
 import com.example.approval24.dao.ComplainDAO;
@@ -19,6 +20,7 @@ import com.example.approval24.dao.MT2DAO;
 import com.example.approval24.dao.ManagerAssignmentDAO;
 import com.example.approval24.dao.UE1DAO;
 import com.example.approval24.dao.UE2DAO;
+import com.example.approval24.domain.AlarmDTO;
 import com.example.approval24.domain.CategoryDTO;
 import com.example.approval24.domain.ComplainDTO;
 import com.example.approval24.domain.ComplainFilterDTO;
@@ -45,6 +47,9 @@ public class ComplainService {
 	
 	@Autowired
 	private ManagerAssignmentDAO managerDAO;
+	
+	@Autowired
+	private AlarmService alarmService;
 
 	@Autowired
 	private UE1DAO ue1DAO;
@@ -73,6 +78,7 @@ public class ComplainService {
 		return complainDAO.getMyWorks(accountId);
 	}
 
+	@Transactional
 	public void complainRegister(ComplainRegDTO complainRegDTO, long accountId) {
 
 		String fullRegidentNo = complainRegDTO.getComplainuserResidentNo();
@@ -116,8 +122,20 @@ public class ComplainService {
 		complainDTO.setReceiverAccountId(receiverAccountId);
 
 		complainDAO.registComplain(complainDTO);
-
-
+		
+		Long complainId = complainDTO.getComplainId();
+		 
+		// 담당자에게 알림 로직
+		AlarmDTO alarmDTO = new AlarmDTO();
+		alarmDTO.setSenderId(accountId);
+		alarmDTO.setReceiverId(managerAccountId);
+		String categoryName = categoryDAO.CategoryInfo(complainRegDTO.getComplainCategoryId()).getCategoryName();
+		String categoryUrl = categoryDAO.CategoryInfo(complainRegDTO.getComplainCategoryId()).getCategoryUrl();
+		String message = categoryName + "(민원 번호: " + complainId + ") 민원 접수";
+		String url ="/approval24/complain/category/" + categoryUrl + "/" + complainId;
+		alarmDTO.setMessage(message);
+		alarmDTO.setUrl(url);
+		alarmService.sendAlarm(alarmDTO);
 	}
 	// 페이징처리를 위한 "민원 접수 목록"  개수(Filter 적용)
 	public int countComplainsByDept(ComplainFilterDTO filter,long accountId) {

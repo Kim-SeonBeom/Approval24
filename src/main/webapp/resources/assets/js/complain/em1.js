@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const $form = $('#submitForm'); 
     const $confirmBtn = $('#btnSubmitConfirm');
     const complainId = $form.find('input[name="complainId"]').val();
+    const relativeUrl = window.location.pathname; 
 
     
     const $btnSave = $('#btnSave');
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
          const payload = {
              complainId: complainId,
              approvalLineData: approvalList, 
-             contextUrl: window.location.href
+             contextUrl: relativeUrl
          };
 
          try {
@@ -235,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
                      const payload = {
                          complainId: complainId,
                          approvalLineData: singleActionRecord, 
-                         contextUrl: window.location.href
+                         contextUrl: relativeUrl
                      };
 
                      // ⭐️ 통합된 URL로 fetch 호출

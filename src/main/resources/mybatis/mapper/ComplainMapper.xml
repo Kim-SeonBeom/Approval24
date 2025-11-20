@@ -21,25 +21,29 @@
 	</select>
 
 	<!-- 민원 접수 -->
-	<insert id="registComplain" parameterType="ComplainDTO">
-		INSERT INTO
-		T2000_COMPLAIN (
-		COMPLAIN_CATEGORY_ID,
-		COMPLAINUSER_NO,
-		ACCOUNT_ID,
-		COMPLAIN_STATUS_CD,
-		DEADLINE_DT,
-		RECEIVER_ACCOUNT_ID
-		)
-		VALUES (
-		#{complainCategoryId},
-		#{complainuserNo},
-		#{accountId},
-		#{complainStatusCd},
-		#{deadlineDt},
-		#{receiverAccountId}
-		)
-	</insert>
+<insert id="registComplain" parameterType="ComplainDTO">
+    <selectKey keyProperty="complainId" resultType="Long" order="AFTER">
+        SELECT "APPROVE"."ISEQ$$_81814".CURRVAL FROM DUAL
+    </selectKey>
+
+    INSERT INTO
+    T2000_COMPLAIN (
+        COMPLAIN_CATEGORY_ID,
+        COMPLAINUSER_NO,
+        ACCOUNT_ID,
+        COMPLAIN_STATUS_CD,
+        DEADLINE_DT,
+        RECEIVER_ACCOUNT_ID
+    )
+    VALUES (
+        #{complainCategoryId},
+        #{complainuserNo},
+        #{accountId},
+        #{complainStatusCd},
+        #{deadlineDt},
+        #{receiverAccountId}
+    )
+</insert>
 
 	<select id="findByDeptOfAccountId" parameterType="long"
 		resultType="ComplainDTO">
@@ -74,11 +78,16 @@
 		#{accountId}
 	</select>
 
-	<select id="findById" parameterType="long"
-		resultType="ComplainDTO">
-		select * from t2000_complain where complain_id =
-		#{complainId}
-	</select>
+<select id="findById" parameterType="long" resultType="ComplainDTO">
+    SELECT 
+        c.*, 
+        g.category_name, 
+        g.category_url
+    FROM t2000_complain c
+    JOIN t2000_complain_category g
+        ON c.complain_category_id = g.complain_category_id
+    WHERE c.complain_id = #{complainId}
+</select>
 
 	<select id="findByCategoryId" parameterType="long"
 		resultType="ComplainDTO">
