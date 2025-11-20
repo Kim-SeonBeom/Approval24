@@ -11,6 +11,11 @@ public class testcontroller {
 		return "userApplication";
 	}
 
+	@GetMapping("/test")
+	public String test() {
+		return "test";
+	}
+	
 	@GetMapping("/tables")
 	public String tables() {
 		return "tables";

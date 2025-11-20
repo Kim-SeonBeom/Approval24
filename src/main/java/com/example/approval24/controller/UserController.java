@@ -139,6 +139,8 @@ public class UserController {
             Long currentUserId = (Long)session.getAttribute("user");
             if(currentUserId == null) return "redirect:/login";
             user.setCreateId(currentUserId); 
+            Long instId = accountService.findInstIdByAccountId(currentUserId);
+            user.setInstId(instId);
             
             int result = userService.registerUser(user);
 

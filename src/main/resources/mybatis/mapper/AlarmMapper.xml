@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.approval24.dao.AlarmDAO">
+
+    <!-- 1. 알람 저장 -->
+    <insert id="insertAlarm" parameterType="AlarmDTO">
+        INSERT INTO T3000_ALARM (SENDER_ID, RECEIVER_ID, MESSAGE, URL)
+        VALUES (#{senderId}, #{receiverId}, #{message}, #{url})
+    </insert>
+
+    <!-- 2. 특정 사용자 알람 조회 -->
+    <select id="selectRecentAlarmsByReceiver" resultType="AlarmDTO">
+        SELECT SEQ_NO, SENDER_ID, RECEIVER_ID, MESSAGE, URL, READ_YN, CREATED_DT
+        FROM T3000_ALARM
+        WHERE RECEIVER_ID = #{receiverId}
+        	AND CREATED_DT >= SYSDATE - 3
+        ORDER BY CREATED_DT DESC
+    </select>
+
+    <!-- 3. 읽음 처리 -->
+    <update id="markAsRead" parameterType="long">
+        UPDATE T3000_ALARM
+        SET READ_YN = 'Y'
+        WHERE SEQ_NO = #{seqNo}
+    </update>
+
+    <!-- 4. 안 읽은 알람 개수 조회 (선택) -->
+    <select id="countUnreadAlarms" resultType="int">
+        SELECT COUNT(*)
+        FROM T3000_ALARM
+        WHERE RECEIVER_ID = #{receiverId}
+          AND READ_YN = 'N'
+    </select>
+
+</mapper>

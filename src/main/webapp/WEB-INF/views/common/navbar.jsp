@@ -1,4 +1,5 @@
 <%@page pageEncoding="UTF-8" %>
+
 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -7,7 +8,7 @@
 
 
 	<ul class="navbar-nav ml-auto" width="100%">
-
+<%@ include file="/WEB-INF/views/common/webSocket.jsp"%> 
 
 	
 
@@ -34,9 +35,29 @@
 				</li>
 			</c:otherwise>
 		</c:choose>
+		              
 		</ul>
 		
 			<div class="topbar-divider d-none d-sm-block"></div>
+			<ul class="navbar-nav" width="100%">
+			<li class="nav-item dropdown no-arrow mx-1" id="alarm-dropdown-container">
+                    <a class="nav-link dropdown-toggle" href="#" id="alarm-bell" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell fa-fw" style="font-size: 1.5rem;"></i>
+                        <span class="badge badge-danger badge-counter" id="alarm-badge" style="display:none;"></span>
+                    </a>
+                    
+                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                         aria-labelledby="alarm-bell" id="alarm-list-container">
+                        
+                        <h6 class="dropdown-header">알림 센터</h6>
+                        
+                        <div id="alarm-items-list" style="max-height: 300px; overflow-y: auto;">
+                            <a class="dropdown-item text-center small text-gray-500">알림을 로딩 중입니다...</a>
+                        </div>
+                        
+                    </div>
+                </li>
+                </ul>
 				<a  href="/approval24/mypage">
 					<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"  title="내 정보"style="font-size: 24px;"></i> 
 				</a>

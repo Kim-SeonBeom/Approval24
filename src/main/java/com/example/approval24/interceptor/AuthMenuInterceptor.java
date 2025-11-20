@@ -15,35 +15,44 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
-    	HttpSession session = req.getSession(false);
-        if (session == null) return true;
+        
+        String uri = req.getRequestURI();
+        String contextPath = req.getContextPath(); 
+        
+        if (uri.startsWith(contextPath + "/ws")) { //웹소켓 이건 제외
+            System.out.println("⭐ Auth Interceptor PASS: WebSocket 경로 (" + uri + ")");
+            return true;
+        }
+        
+        // 기존 권한 체크 로직 시작
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            // 세션이 없으면 일단 통과시키거나, 혹은 로그인 페이지로 리다이렉트하는 기존 로직 유지
+            // 여기서는 기존 코드의 흐름을 따라 세션이 없으면 통과(true) 시킵니다.
+            return true;
+        }
 
         @SuppressWarnings("unchecked")
         List<MenuVO> authMenus = (List<MenuVO>) session.getAttribute("authMenus");
-        //System.out.println("authMenus 확인");
-       // System.out.println(authMenus.toString());
-        
+
         if(authMenus == null || authMenus.isEmpty()) {
-        	res.sendRedirect(req.getContextPath() + "/login");
-        	return false; 
+            // 권한 메뉴가 없으면 로그인 페이지로 리다이렉트 (기존 로직)
+            res.sendRedirect(req.getContextPath() + "/login");
+            return false; 
         }
-        
-   
-        // 컨텍스트 포함한 채로 그대로 사용 (예: "/approval24/complain/category/mt1/81")
-        String uri = req.getRequestURI();
+
         System.out.println("URI 확인 : " + uri);
 
         // menuUrl(null 제외) 중에서 가장 긴 prefix 매칭 선택
         MenuVO pageAuth = authMenus.stream()
             .filter(m -> m != null && m.getMenuUrl() != null && !m.getMenuUrl().isEmpty())
             .filter(m -> {
-                String base = m.getMenuUrl(); // 예: "/approval24/complain/category/mt1"
+                String base = m.getMenuUrl();
                 // 세그먼트 경계 고려: 완전일치 또는 "/..."로 이어질 때만 인정
                 return uri.equals(base) || uri.startsWith(base + "/");
             })
             .max(Comparator.comparingInt(m -> m.getMenuUrl().length()))
             .orElse(null);
-        
 
         if (pageAuth != null) {
             System.out.println("**** 인터셉터: 현재 페이지 권한 찾음 = " + pageAuth.getMenuName());
@@ -56,4 +65,5 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
         
         return true;
     }
+    
 }
