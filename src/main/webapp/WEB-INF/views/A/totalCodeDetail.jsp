@@ -88,9 +88,9 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드그룹</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드그룹ID</th>
 												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" readonly value="${codeInfo.groupId}" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드</th>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드ID</th>
 												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" readonly value="${codeInfo.codeId}" required></td>
 											</tr>
 

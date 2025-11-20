@@ -92,11 +92,11 @@
 										<tbody>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold text-center">민원서식명</th>
-												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" required maxlength="200"></td>
+												<td colspan="3"><input type="text" name="categoryName" id="categoryName" class="form-control form-control-sm" required maxlength="200" placeholder="민원서식명을 입력하세요"></td>
 											</tr>
 											<tr>
 												<th scope="col" class="text-dark bg-light font-weight-bold text-center">유형코드</th>
-												<td colspan="1"><input type="text" name="categoryCd" id="categoryCd" class="form-control form-control-sm" required maxlength="200"></td>
+												<td colspan="1"><input type="text" name="categoryCd" id="categoryCd" class="form-control form-control-sm" required maxlength="200" placeholder="예) A001"></td>
 												<th scope="col" class="text-dark bg-light font-weight-bold text-center">처리소요일</th>
 												<td colspan="1"><input type="text" name="dueDt" id="dueDt" class="form-control form-control-sm" placeholder="숫자만 입력하세요." required maxlength="200"></td>
 											</tr>
