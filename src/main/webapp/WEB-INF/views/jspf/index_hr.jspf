@@ -64,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    	<a href="${pageContext.request.contextPath}/user/list?accountStatusCd=B002" class="ml-4">활성화 계정 조회 →</a>
+                                    	<a href="${pageContext.request.contextPath}/user/list?dateType=createDt&createDtStr=&updateDtStr=&delYn=&userName=&userPositionName=&accountStatusCd=B002&userEmail=&page=1&size=10" class="ml-4">활성화 계정 조회 →</a>
                                     	
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/user/list?accountStatusCd=B001" class="ml-4">대기 계정 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/user/list?dateType=createDt&createDtStr=&updateDtStr=&delYn=&userName=&userPositionName=&accountStatusCd=B001&userEmail=&page=1&size=10" class="ml-4">대기 계정 조회 →</a>
                                 </div>
                             </div>
 
@@ -111,7 +111,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/user/list?accountStatusCd=B005" class="ml-4">잠긴 계정 조회 →</a>
+                                    <a href="${pageContext.request.contextPath}/user/list?dateType=createDt&createDtStr=&updateDtStr=&delYn=&userName=&userPositionName=&accountStatusCd=B005&userEmail=&page=1&size=10" class="ml-4">잠긴 계정 조회 →</a>
                                 </div>
                             </div>
 

@@ -3,8 +3,10 @@ package com.example.approval24.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -61,6 +63,11 @@ public class UserController {
             return "redirect:/login";
         }
     	
+    	// 계정 상태 코드
+    	TotalCodeDTO totalDto = new TotalCodeDTO();
+    	totalDto.setCodeId("B");
+    	List<TotalCodeDTO> codeDto= codeService.searchCodes(totalDto);
+    	
     	Long instId = accountService.findInstIdByAccountId(accountId);
     	
     	filter.setInstId(instId);
@@ -76,17 +83,38 @@ public class UserController {
     	
     	// 최초 진입 (빈 리스트)
 		if (filter.isEmptyFilter()) {
+			model.addAttribute("accountStatusCd", codeDto);
 			model.addAttribute("userList", Collections.emptyList());
 			model.addAttribute("filter", filter);
 			model.addAttribute("totalCount", 0);
 			model.addAttribute("totalPages", 0);
 			return "B/userList";
 		}
+		Map<String, Object> filterMap = new HashMap<>();
+		String statusCd = filter.getAccountStatusCd();
+		filterMap.put("accountStatusCd", statusCd);
+		List<AccountDTO> accountDto = accountService.getAccountsByFilter(filterMap);
+		if (accountDto != null && !accountDto.isEmpty()) {
+		    // 중복 제거
+		    Set<Long> userNoSet = new HashSet<>();
+		    for (AccountDTO dto : accountDto) {
+		        userNoSet.add(dto.getUserNo());
+		    }
+		    for (Long no : userNoSet) {
+		        System.out.println("userNo = " + no);
+		    }
+		    // Set을 다시 List로 변환
+		    filter.setUserNoList(new ArrayList<>(userNoSet));
+		}
+		System.out.println(filter.getUserNoList().toString());
+
+		
 		
 		// 조건 검색
 		int totalCount = userService.countInsts(filter);
 		List<UserDTO> userList = userService.searchInsts(filter);
 		
+		model.addAttribute("accountStatusCd", codeDto);
 		model.addAttribute("userList", userList);
 		model.addAttribute("filter", filter);
 		model.addAttribute("totalCount", totalCount);

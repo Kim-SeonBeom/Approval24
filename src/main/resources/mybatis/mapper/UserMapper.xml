@@ -220,7 +220,13 @@
 	<if test="userPositionName != null and userPositionName != ''">
 	  AND p.code_name LIKE '%' || #{userPositionName} || '%'
 	</if>
-
+	<if test="userNoList != null and userNoList.size() > 0">
+	AND user_no IN
+		<foreach item="userNo" collection="userNoList" open="(" separator="," close=")">
+  		  #{userNo}
+		</foreach>
+	</if>
+	
     <!-- 기간 필터: dateType = 'createDt' or 'updateDt' -->
     <if test="dateType != null and dateType != '' 
               and createDt != null 
