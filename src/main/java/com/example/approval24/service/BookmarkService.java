@@ -79,22 +79,7 @@ public class BookmarkService {
 
         return mainResult;
     }
-
-// --- 수정/삭제/교체 ---
     
-    // 북마크 이름만 수정 
-    @Transactional
-    public int updateBookmarkName(Long bookmarkId, String newName) {
-        if (newName == null || newName.isEmpty()) {
-             return 0;
-        }
-        Map<String, Object> params = new HashMap<>();
-        params.put("bookmarkId", bookmarkId);
-        params.put("bookmarkName", newName);
-        
-        return bookmarkDAO.updateBookmark(params);
-    }
-
     // 북마크 논리적 삭제
     @Transactional
     public int deleteBookmark(Long bookmarkId) {
@@ -103,42 +88,46 @@ public class BookmarkService {
         params.put("delYn", "Y"); // 논리적 삭제
         
         return bookmarkDAO.updateBookmark(params);
-    }
+    }   
 
-    // 특정 북마크의 결재자 목록 전체 교체 
-    // 특정 북마크의 결재자 목록 전체 교체 
+    // 북마크 업데이트
     @Transactional
-    public int replaceApprovers(Long bookmarkId, List<Approver> newApprovers) {
-        if (bookmarkId == null) {
+    public int updateBookmark(BookmarkDTO bookmark) {
+        if (bookmark.getBookmarkId() == null) {
             return 0;
         }
         
-        // 1. 기존 결재자 삭제 (PK 충돌 방지)
-        bookmarkDAO.deleteApproversByBookmarkId(bookmarkId);
-        
-        // 2. 새로운 결재자 삽입 및 순번(SEQ_NO) 부여
+        Long bookmarkId = bookmark.getBookmarkId();
+        int updateCount = 0;
+
+        // 북마크 이름 업데이트 처리
+        String newName = bookmark.getBookmarkName();
+        if (newName != null && !newName.trim().isEmpty()) {
+            Map<String, Object> nameParams = new HashMap<>();
+            nameParams.put("bookmarkId", bookmarkId);
+            nameParams.put("bookmarkName", newName);
+            
+            bookmarkDAO.updateBookmark(nameParams);
+            updateCount++;
+        }
+
+        // 결재자 목록 교체 처리
+        List<Approver> newApprovers = bookmark.getApprovers();
         if (newApprovers != null && !newApprovers.isEmpty()) {
             
-            // ⭐ 오류 수정: 순번을 1로 초기화
-            Long seqNo = 1L; 
+            // 기존 결재자 삭제
+            bookmarkDAO.deleteApproversByBookmarkId(bookmarkId);
+            Long seqNo = (long) 1;
             
             for (Approver approver : newApprovers) {
                 approver.setBookmarkId(bookmarkId);
                 approver.setSeqNo(seqNo);
-                
-                // ⭐ 핵심 수정: 순번을 1씩 증가
-                seqNo++; 
+                seqNo++;
             }
-            
-            // DTO에 순번과 ID가 제대로 세팅된 후 일괄 삽입
             bookmarkDAO.insertApprovers(newApprovers);
+            updateCount++;
         }
-        
-        // 3. 북마크 업데이트 (옵션: 갱신일자 업데이트 등)
-        Map<String, Object> params = new HashMap<>();
-        params.put("bookmarkId", bookmarkId);
-        
-        // updateBookmark는 업데이트된 행의 수를 반환할 것으로 예상
-        return bookmarkDAO.updateBookmark(params); 
+        // 이름 수정, 결재선 교체 중 하나라도 실행되었다면 1을 반환 
+        return updateCount > 0 ? 1 : 0;
     }
 }

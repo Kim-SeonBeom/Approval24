@@ -20,16 +20,11 @@ import java.util.List;
 @RestController 
 @RequestMapping("/api/approval") 
 public class ApprovalProcessController {
-
     @Autowired
     private ApprovalHistoryService historyService;
     
     @Autowired
     private ComplainService complainService;
-    
-    @Autowired
-    private AlarmService alarmService;
-    
 
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createNewApproval(

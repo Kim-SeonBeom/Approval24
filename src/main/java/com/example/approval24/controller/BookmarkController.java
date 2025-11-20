@@ -27,7 +27,7 @@ public class BookmarkController {
     private final AccountService accountService;
     private final DeptService deptService;
 
-    /** 북마크 목록 페이지 */
+    // 북마크 목록 페이지 
     @GetMapping("/list")
     public String list(Model model,HttpSession session) {
         Long id = (Long) session.getAttribute("user");
@@ -36,7 +36,7 @@ public class BookmarkController {
         return "D/bookMarkList"; 
     }
 
-    /** 북마크 상세 (결재자 목록 포함) */
+    // 북마크 상세 (결재자 목록 포함)
     @GetMapping("/{bookmarkId}")
     public String detail(@PathVariable Long bookmarkId, HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("user");
@@ -64,7 +64,7 @@ public class BookmarkController {
         return "D/bookMarkDetail";
     }
 
-    /** 북마크 등록 페이지 이동 */
+    // 북마크 등록
     @GetMapping("/create")
     public String createForm(Model model,HttpSession session) {
         Long userId = (Long) session.getAttribute("user");
@@ -113,53 +113,63 @@ public class BookmarkController {
     }
 
 
-    /** 북마크 이름 수정 또는 논리적 삭제 처리 */
+    // 북마크 이름 수정 또는 논리적 삭제 처리 
     @PostMapping("/update")
-    public String update(@RequestParam Map<String, Object> params) {
-        Long bookmarkId = Long.parseLong(params.get("bookmarkId").toString());
-        
-        // 1. 논리적 삭제 처리 (delYn 파라미터가 있을 경우)
-        if (params.containsKey("delYn") && "Y".equalsIgnoreCase((String) params.get("delYn"))) {
-            bookmarkService.deleteBookmark(bookmarkId);
-            return "redirect:/bookmark/list";
-        }
-        
-        // 2. 이름 수정 처리 (bookmarkName 파라미터가 있을 경우)
-        if (params.containsKey("bookmarkName") && !((String) params.get("bookmarkName")).isEmpty()) {
-            String newName = (String) params.get("bookmarkName");
-            bookmarkService.updateBookmarkName(bookmarkId, newName);
-            return "redirect:/bookmark/" + bookmarkId; 
-        }
-        
-        return "redirect:/bookmark/list";
-    }
-
-   
-    
-    /** 특정 북마크 내 결재자 목록 전체 교체 처리 (기존 updateApprover 대체) */
-    @PostMapping("/approver/replace") // 엔드포인트 이름을 명확하게 변경 권장 (기존 /approver/update 유지도 가능)
-    public String replaceApprovers(@ModelAttribute BookmarkDTO bookmark, Model model,HttpSession session) {
-        // 클라이언트에서 BookmarkDTO 형태로 데이터(bookmarkId, approvers 리스트)를 전송한다고 가정
+    @ResponseBody // ⭐ 이 어노테이션을 추가하여 JSON 응답을 강제합니다. ⭐
+    public Map<String, Object> updateBookmark(@RequestBody BookmarkDTO bookmark, HttpSession session) {
+        // Model 객체 대신 Map을 사용하여 JSON 응답을 구성합니다.
+        Map<String, Object> response = new HashMap<>();
         Long bookmarkId = bookmark.getBookmarkId();
-        
-        Long userId = (Long) session.getAttribute("user");
-        bookmark.setAccountId(userId);
-        
+
+        // 1. 필수 데이터 검증 (북마크 ID)
         if (bookmarkId == null) {
-             model.addAttribute("error","북마크 ID가 누락되었습니다.");
-             return "common/errorPage";
+            response.put("result", "FAIL");
+            response.put("message", "북마크 ID가 누락되었습니다.");
+            return response;
         }
 
+        // 2. 사용자 ID 설정
+        Long userId = (Long) session.getAttribute("user");
+        if (userId != null) {
+            bookmark.setAccountId(userId);
+        }
+        
         try {
-            bookmarkService.replaceApprovers(bookmarkId, bookmark.getApprovers());
-           
-            return "redirect:/bookmark/" + bookmarkId;
+            // 3. 삭제 요청 처리
+            if ("Y".equalsIgnoreCase(bookmark.getDelYn())) {
+                bookmarkService.deleteBookmark(bookmarkId);
+                response.put("result", "SUCCESS");
+                response.put("message", "북마크가 성공적으로 삭제되었습니다.");
+                return response;
+            }
+
+            // 4. 결재선 최소 인원 검증 (수정 요청일 경우만)
+            if (bookmark.getApprovers() == null || bookmark.getApprovers().size() < 3) {
+                response.put("result", "FAIL");
+                response.put("message", "결재선은 최소 3명 이상 지정해야 합니다.");
+                return response;
+            }
             
+            // 5. 이름 수정 및/또는 결재선 교체 통합 서비스 호출
+            int result = bookmarkService.updateBookmark(bookmark);
+
+            if (result > 0) {
+                response.put("result", "SUCCESS");
+                response.put("message", "북마크가 성공적으로 수정되었습니다.");
+                // 리다이렉트는 클라이언트(JSP)에서 처리하도록 메시지만 반환
+                return response;
+            } else {
+                response.put("result", "FAIL");
+                response.put("message", "북마크 정보를 수정할 수 없습니다. 변경 사항을 확인해 주세요.");
+                return response;
+            }
+
         } catch (Exception e) {
-            // DB 오류 등이 발생한 경우 에러 페이지 처리
-            model.addAttribute("error", "결재자 목록 교체 중 오류 발생: " + e.getMessage());
-            return "common/errorPage";
+            // ORA-00001 등의 DB 오류는 여기서 포착됩니다.
+            System.err.println("Bookmark update failed: " + e.getMessage());
+            response.put("result", "FAIL");
+            response.put("message", "북마크 수정 중 시스템 오류 발생: " + e.getMessage());
+            return response;
         }
     }
-
 }
