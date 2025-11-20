@@ -3,6 +3,7 @@ package com.example.approval24.controller;
 import com.example.approval24.domain.ApprovalCreationRequestVO;
 import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.ComplainDTO;
+import com.example.approval24.service.AlarmService;
 import com.example.approval24.service.ApprovalHistoryService;
 import com.example.approval24.service.ComplainService;
 
@@ -25,6 +26,9 @@ public class ApprovalProcessController {
     
     @Autowired
     private ComplainService complainService;
+    
+    @Autowired
+    private AlarmService alarmService;
     
 
     @PostMapping("/create")

@@ -1,5 +1,4 @@
 <%@page pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/views/common/webSocket.jsp"%> 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
     <ul class="navbar-nav ml-auto" width="100%">
@@ -49,3 +48,4 @@
         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" title="로그아웃" style="font-size: 24px;"></i>
     </a>
 </nav>
+<%@ include file="/WEB-INF/views/common/webSocket.jsp"%> 
