@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const $form = $('#submitForm'); 
     const $confirmBtn = $('#btnSubmitConfirm');
     const complainId = $form.find('input[name="complainId"]').val();
+    const relativeUrl = window.location.pathname; 
 
     
     const $btnSave = $('#btnSave');
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const $btnApprovalLine = $('#btnApprovalLine');
     const $btnComplainCancel = $('#btnComplainCancel');
     const $historyTbody = $('#historyTable tbody');
+    const $btnBizAddress = $('#btnSearchBizAddress');
     
     // 💡 전역 변수 선언: 결재선 설정 및 DB 조회 결과 저장
     let approvalList = []; 
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // -------------------------------------------------------------
-    // 💡 1. 결재 내역 테이블 렌더링 함수 
+    // 💡 1. 결재 내역 테이블 렌더링 함수
     // -------------------------------------------------------------
 
     function renderApprovalTable(list) {
@@ -174,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
          const payload = {
              complainId: complainId,
              approvalLineData: approvalList, 
-             contextUrl: window.location.href
+             contextUrl: relativeUrl
          };
 
          try {
@@ -234,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
                      const payload = {
                          complainId: complainId,
                          approvalLineData: singleActionRecord, 
-                         contextUrl: window.location.href
+                         contextUrl: relativeUrl
                      };
 
                      // ⭐️ 통합된 URL로 fetch 호출
@@ -338,17 +340,19 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 
-//-------------------------------------------------------------
+// -------------------------------------------------------------
      // 5. 이벤트 핸들러 정리 (최종)
      // -------------------------------------------------------------
      $('#btnApprovalLine').on('click', function() {
          $('#approvalLineEditorModal').modal('show'); 
      });
+ 	$btnBizAddress.on('click', openBizPostcode);
      
      // 승인, 반려, 취소 버튼은 모두 handleDecision으로 통합합니다.
      $btnApprove.on('click', () => handleDecision('E002')); // 승인
      $btnReject.on('click', () => handleDecision('E003')); // 반려
-     $btnComplainCancel.on('click', () => handleDecision('E005')); // ⭐️ 취하 (E005)
+     $btnComplainCancel.on('click', () => handleDecision('E005')); // ⭐️ 취하
+																	// (E005)
 
      // 페이지 로드 시 실행
      loadApprovalLine();

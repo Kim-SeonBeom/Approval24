@@ -21,7 +21,7 @@ public interface ManagerAssignmentDAO {
 	public int ManagerAssignmentInsert(ManagerAssignmentDTO managerDTO);
 	
 	// 담당자배정 로직
-	public long ManagerAccountId(long complainCategoryId);
+	public Long ManagerAccountId(long complainCategoryId);
 	
 	// 검색에 해당되는 목록 개수
 	public int countByFilter(ManagerAssignmentDTO filter);

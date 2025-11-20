@@ -106,7 +106,7 @@
 											<c:when test="${not empty historyList}">
 												<c:forEach var="item" items="${historyList}" varStatus="status">
 													<tr style="cursor: pointer;" <c:if test="${not empty item.url}">
-                                                        onclick="window.open('${item.url}','_blank');"
+                                                        onclick="location.href='${item.url}';"
                                                     </c:if>>
 														<td>${(pageInfo.page - 1) * pageInfo.pageSize + status.index + 1}</td>
 														<td>${item.complainId}</td>

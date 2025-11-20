@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.approval24.dao.ApprovalHistoryDAO;
 import com.example.approval24.dao.ComplainDAO;
+import com.example.approval24.domain.AlarmDTO;
 import com.example.approval24.domain.ApprovalCreationRequestVO;
 import com.example.approval24.domain.ApprovalHistoryDTO;
 import com.example.approval24.domain.ComplainDTO;
@@ -22,6 +23,9 @@ public class ApprovalHistoryService {
     
     @Autowired
     private ComplainDAO complainDAO;
+    
+    @Autowired
+    private AlarmService alarmService;
 
     @Transactional(readOnly = true) 
     public List<ApprovalHistoryDTO> getMyApprovalHistoryList(Map<String, Object> filterMap) {
@@ -71,9 +75,18 @@ public class ApprovalHistoryService {
         // 결재 상태 코드별 로직 
         int result = 0;
         
+        // 알람용 데이터 준비
+        AlarmDTO alarmDTO = new AlarmDTO();
+        alarmDTO.setSenderId(loggedInUserId);
+        String message = "";
+        ApprovalHistoryDTO managerDTO = approvalHistoryDAO.getComplainManager(complainId);
+        Long managerId = managerDTO.getAccountId();
+        ComplainDTO complainDTO = complainDAO.findById(complainId);
+        String categoryName = complainDTO.getCategoryName();
+        
+        
         if ("E002".equals(codeId)) { // 승인 로직
             result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData); // 현재 결재 이력 승인 처리
-
             if (nextApprovalData == null) {
                 // 마지막 결재자 승인
                 // 현재 결재자가 승인자(F004)인지 확인 필요.
@@ -82,6 +95,12 @@ public class ApprovalHistoryService {
                 }
                 // 최종 승인 시 민원 상태를 D006으로 업데이트
                 complainDAO.updateStatusByComplainId(complainId, "D006"); 
+                // 담당자에게 알람
+                alarmDTO.setReceiverId(managerId);
+                message = categoryName + "(민원 번호: " + complainId + ") 민원 승인";
+                alarmDTO.setMessage(message);
+                alarmDTO.setUrl(approvalData.getUrl());
+                alarmService.sendAlarm(alarmDTO);
                 
             } else {
                 // 중간 결재자 승인 -> 다음 결재자 상태를 E001(결재 대기)로 변경
@@ -91,7 +110,12 @@ public class ApprovalHistoryService {
                 // 민원 상태를 D003(결재중)으로 업데이트 (최초 승인 시 이미 D003일 수 있으므로 중복 실행되어도 무방)
                 complainDAO.updateStatusByComplainId(complainId, "D003");
                 
-                // 다음 결재자에게 알림 전송 로직 
+                // 다음 결재자에게 알림
+                alarmDTO.setReceiverId(nextApprovalData.getAccountId());
+                message = categoryName + "(민원 번호: " + complainId + ") 결재 요청";
+                alarmDTO.setMessage(message);
+                alarmDTO.setUrl(approvalData.getUrl());
+                alarmService.sendAlarm(alarmDTO);
             }
             return result;
             
@@ -101,6 +125,11 @@ public class ApprovalHistoryService {
             result = approvalHistoryDAO.updateApprovalHistoryStatus(approvalData);
             
             // 담당자에게 반려 알림 전송 로직 
+            alarmDTO.setReceiverId(managerId);
+            message = categoryName + "(민원 번호: " + complainId + ") 결재 반려";
+            alarmDTO.setMessage(message);
+            alarmDTO.setUrl(approvalData.getUrl());
+            alarmService.sendAlarm(alarmDTO);
             return result;
             
         } else if ("E005".equals(codeId)) { 
@@ -145,6 +174,13 @@ public class ApprovalHistoryService {
 			throw new IllegalArgumentException("새 결재선은 본인(담당자) 포함 최소 3명 이상이어야 합니다.");
 		}
         
+		// 알람용 데이터 준비
+		AlarmDTO alarmDTO = new AlarmDTO();
+		alarmDTO.setSenderId(loginId);
+		String message = "";
+		ComplainDTO complainDTO = complainDAO.findById(complainId);
+        String categoryName = complainDTO.getCategoryName();
+		
 		int cnt = 0;
         
         for (int i = 0; i < approvalLine.size(); i++) {
@@ -161,20 +197,24 @@ public class ApprovalHistoryService {
             if (cnt == 0) {
             	if(!loginId.equals(dto.getAccountId()))
             	{
-            		System.out.println("로그인id");
-            		System.out.println(loginId);
-            		System.out.println("dtogetid");
-            		System.out.println(dto.getAccountId());
             		throw new IllegalArgumentException("결재 시작이 본인 계정이 아닙니다.");
             	}
             	dto.setApprovalStatusCd("E002");  // 승인
             	dto.setApprovalTypeCd("H001");  // 일반 결재
             	dto.setProcessDt(new Date());
             	dto.setApproverTypeCd("F002"); //담당자
+            	
             } 
             else if(cnt == 1) {
             	dto.setApprovalStatusCd("E001");  
             	dto.setApproverTypeCd("F003");
+            	
+            	// 결재 단계임. 따라서 알람을 보냄.
+            	alarmDTO.setReceiverId(dto.getAccountId());
+            	message = categoryName + "(민원 번호: " + complainId + ") 결재 요청";
+            	alarmDTO.setUrl(url);
+            	alarmDTO.setMessage(message);
+            	alarmService.sendAlarm(alarmDTO);
             }
             else if(newApproversCount - 1 == cnt) {
             	dto.setApprovalStatusCd("E004");  // 대기

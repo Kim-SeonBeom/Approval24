@@ -22,10 +22,42 @@
 }
 
 .table th {
-	width: 18%;
 	background: #f8f9fc;
 	vertical-align: middle;
 }
+
+#historyTable {    width:100%;                table-layout:fixed;       
+	text-align:center;   
+	
+}
+
+/* 헤더 중앙 정렬 */
+#historyTable thead th {    text-align:center;    vertical-align:middle;
+	
+}
+
+/* 💡 컬럼별 너비 지정 (총 7개 컬럼에 맞게 조정) */
+#historyTable colgroup col:nth-child(1) {
+	width: 10%;
+} /* 직급 */
+#historyTable colgroup col:nth-child(2) {
+	width: 10%;
+} /* 이름 */
+#historyTable colgroup col:nth-child(3) {
+	width: 10%;
+} /* 계정 ID */
+#historyTable colgroup col:nth-child(4) {
+	width: 10%;
+} /* 결재자 유형 */
+#historyTable colgroup col:nth-child(5) {
+	width: 10%;
+} /* 결재 종류 */
+#historyTable colgroup col:nth-child(6) {
+	width: 10%;
+} /* 상태 */
+#historyTable colgroup col:nth-child(7) {
+	width: 40%;
+} /* 처리일 */
 </style>
 </head>
 
@@ -223,17 +255,82 @@
 							</div>
 						</div>
 
-						<!-- 하단 버튼 -->
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex align-items-center">
+								<h6 class="m-0 font-weight-bold text-primary">결재 내역</h6>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table style="text-align: center;" class="table table-bordered mb-0" id="historyTable">
+
+										<thead>
+											<tr>
+												<th>직급</th>
+												<th>이름</th>
+												<th>계정 ID</th>
+												<th>결재자 유형</th>
+												<th>결재 종류</th>
+												<th>상태</th>
+												<th>처리일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="7">로딩 중...</td>
+											</tr>
+										</tbody>
+									</table>
+									<hr>
+								</div>
+								<div class="mt-2">
+									<label>의견: <input type="text" id="comment" class="form-control" style="width: 300px; display: inline-block;"></label>
+								</div>
+							</div>
+						</div>
+
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex align-items-center">
+								<h6 class="m-0 font-weight-bold text-primary">반려 사유</h6>
+							</div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table style="text-align: center;" class="table table-bordered mb-0" id="rejectCommentTable">
+										<colgroup>
+											<col style="width: 10%">
+											<col style="width: 10%">
+											<col style="width: 80%">
+										</colgroup>
+										<thead>
+											<tr>
+												<th>직급</th>
+												<th>처리자 이름</th>
+												<th>반려 사유</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="3">반려 사유를 로딩 중입니다...</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+
+
 						<div class="d-flex justify-content-between mt-4">
-							<a href="${pageContext.request.contextPath}/complains" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
+							<a href="${pageContext.request.contextPath}/complain/category/em1" class="btn btn-light"> <i class="fas fa-arrow-left mr-1"></i> 목록으로
 							</a>
 							<div>
-								<c:if test="${pageAuth.updateYn == 'Y' && complainInfo.accountId == sessionScope.user}">
+
+								<c:if test="${pageAuth.updateYn == 'Y'}">
 									<button type="button" class="btn btn-secondary" id="btnApprovalLine">
 										<i class="fas fa-edit mr-1"></i>결재선설정
 									</button>
-
 								</c:if>
+
 								<c:if test="${pageAuth.updateYn == 'Y'}">
 									<button type="button" class="btn btn-secondary" id="btnSave">
 										<i class="fas fa-edit mr-1"></i>수정
@@ -241,9 +338,7 @@
 									<button type="button" class="btn btn-warning" id="btnComplainCancel">
 										<i class="fas fa-times-circle mr-1"></i>취하
 									</button>
-
 								</c:if>
-
 								<c:if test="${pageAuth.approveYn == 'Y'}">
 									<button type="button" class="btn btn-primary" id="btnApprove">
 										<i class="fas fa-check-circle mr-1"></i>승인
@@ -252,6 +347,7 @@
 										<i class="fas fa-undo-alt mr-1"></i>반려
 									</button>
 								</c:if>
+
 							</div>
 						</div>
 
