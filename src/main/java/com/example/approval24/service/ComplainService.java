@@ -100,8 +100,7 @@ public class ComplainService {
 		
 		long complainCategoryId = complainRegDTO.getComplainCategoryId();
 
-		long managerAccountId = managerDAO.ManagerAccountId(complainCategoryId);
-		
+		Long managerAccountId = managerDAO.ManagerAccountId(complainCategoryId);
 
 		// 서식별 처리기한 로직
 		int dueDt = categoryDAO.findDueDtById(complainRegDTO.getComplainCategoryId());
@@ -112,14 +111,7 @@ public class ComplainService {
 		complainDTO.setComplainCategoryId(complainRegDTO.getComplainCategoryId());
 		complainDTO.setComplainuserNo(complainuserNo);
 		complainDTO.setAccountId(managerAccountId);
-
-		// 민원 상태 코드 변경할지 말지 체크(현재는 하드코딩함)
-		//
-		//
-		// 한번 확인할것!!!!
 		complainDTO.setComplainStatusCd("D001");
-		//
-		//
 		complainDTO.setDeadlineDt(deadlineDt);
 		complainDTO.setReceiverAccountId(receiverAccountId);
 

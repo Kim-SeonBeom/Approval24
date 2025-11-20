@@ -170,7 +170,29 @@ public class ComplainController {
 
 	@PostMapping("/category/ue1/{complainId}")
 	public String submitTrainingLoan(@PathVariable long complainId, UE1DTO ue1DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/ue1/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/ue1/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/ue1/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/ue1/" + complainId;
+		}
+
 
 
 		complainuserService.saveComplainuser(complainuserDTO);
@@ -202,7 +224,29 @@ public class ComplainController {
 
 	@PostMapping("/category/ue2/{complainId}")
 	public String submitreport(@PathVariable long complainId, UE2DTO ue2DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/ue2/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/ue2/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/ue2/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/ue2/" + complainId;
+		}
+
 
 		complainuserService.saveComplainuser(complainuserDTO);
 
@@ -233,7 +277,29 @@ public class ComplainController {
 
 	@PostMapping("/category/mt1/{complainId}")
 	public String submitTempWorker(@PathVariable long complainId, MT1DTO mt1DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/mt1/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/mt1/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/mt1/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/mt1/" + complainId;
+		}
+
 
 		complainuserService.saveComplainuser(complainuserDTO);
 
@@ -265,7 +331,30 @@ public class ComplainController {
 
 	@PostMapping("/category/mt2/{complainId}")
 	public String submitNoInsurance(@PathVariable long complainId, MT2DTO mt2DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
+		
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/mt2/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/mt2/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/mt2/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/mt2/" + complainId;
+		}
+
 
 		complainuserService.saveComplainuser(complainuserDTO);
 
@@ -296,11 +385,6 @@ public class ComplainController {
 		return "C/regEditForm/em1";
 
 	}
-
-	//수정부분
-	//
-	//
-	//
 
 
 	
@@ -336,13 +420,6 @@ public class ComplainController {
 		redirectAttributes.addFlashAttribute("msg", "정상저장 되었습니다.");
 		return "redirect:/complain/category/em1/" + complainId;
 	}
-	//
-	//
-	//
-	//
-	//
-	//
-	//
 	
 
 	// 청년 도전 사업 지원 신청
@@ -366,7 +443,29 @@ public class ComplainController {
 
 	@PostMapping("/category/em2/{complainId}")
 	public String submitYouthChallange(@PathVariable long complainId, EM2DTO em2DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
+
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/em2/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/em2/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/em2/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/em2/" + complainId;
+		}
 
 		complainuserService.saveComplainuser(complainuserDTO);
 
@@ -398,7 +497,29 @@ public class ComplainController {
 
 	@PostMapping("/category/em3/{complainId}")
 	public String submitGraduateProgram(@PathVariable long complainId, EM3DTO em3DTO, ComplainuserDTO complainuserDTO,
+			HttpSession session,
 			RedirectAttributes redirectAttributes) {
+
+		Long userId = (Long) session.getAttribute("user");
+		ComplainDTO complainDTO = complainService.getComplainById(complainId);
+		boolean check = historyService.checkHistoryIng(complainId,userId);
+		
+		if(complainDTO == null) {
+			redirectAttributes.addFlashAttribute("msg", "민원이 존재하지 않습니다.");
+			return "redirect:/complain/category/em3/" + complainId;
+		}
+		else if(!((Long)complainDTO.getAccountId()).equals(userId)) {
+			redirectAttributes.addFlashAttribute("msg", "해당 담당자가 아닙니다.");
+			return "redirect:/complain/category/em3/" + complainId;
+		}
+		else if(check) {
+			redirectAttributes.addFlashAttribute("msg", "결재 중에 수정할 수 없습니다.");
+			return "redirect:/complain/category/em3/" + complainId;
+		}
+		else if(!complainDTO.getComplainStatusCd().equals("D001") && !complainDTO.getComplainStatusCd().equals("D002")&& !complainDTO.getComplainStatusCd().equals("D003")) {
+			redirectAttributes.addFlashAttribute("msg", "민원 상태를 변경할 수 없습니다."); 
+			return "redirect:/complain/category/em3/" + complainId;
+		}
 
 		complainuserService.saveComplainuser(complainuserDTO);
 
