@@ -34,8 +34,10 @@
 
                     <div class="card-body">
                         <form id="userFilterForm" action="${pageContext.request.contextPath}/user/list" method="get">
+								
 
-                            <!-- 등록/수정일 -->
+
+								<!-- 등록/수정일 -->
                             <div class="form-group row mb-3">
                                 <label class="col-sm-2 col-form-label font-weight-bold text-center">등록/수정일</label>
                                 <div class="col-sm-10 form-inline">
@@ -129,14 +131,22 @@
                     </div>
 
                     <div class="card-body">
+							<c:choose>
+								<c:when test="${not empty errorMessage}">
+									<div class="alert alert-danger text-center" role="alert">
+										${errorMessage}</div>
+								</c:when>
+								<c:otherwise>
+									<c:if test="${empty userList}">
+										<div class="text-center text-muted py-4">
+											검색 조건을 입력하고 <b>검색</b>을 눌러주세요.
+										</div>
+									</c:if>
+								</c:otherwise>
+							</c:choose>
 
-                        <c:if test="${empty userList}">
-                            <div class="text-center text-muted py-4">
-                                검색 조건을 입력하고 <b>검색</b>을 눌러주세요.
-                            </div>
-                        </c:if>
 
-                        <c:if test="${not empty userList}">
+							<c:if test="${not empty userList}">
                             <div class="mb-2 text-left text-muted">총 <b>${totalCount}</b>건</div>
 
                             <div class="table-responsive">

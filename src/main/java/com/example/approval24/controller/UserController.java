@@ -94,19 +94,36 @@ public class UserController {
 		String statusCd = filter.getAccountStatusCd();
 		filterMap.put("accountStatusCd", statusCd);
 		List<AccountDTO> accountDto = accountService.getAccountsByFilter(filterMap);
-		if (accountDto != null && !accountDto.isEmpty()) {
-		    // 중복 제거
-		    Set<Long> userNoSet = new HashSet<>();
-		    for (AccountDTO dto : accountDto) {
+
+		if (accountDto == null || accountDto.isEmpty()) {
+		    model.addAttribute("errorMessage", "검색 조건에 해당하는 사용자가 존재하지 않습니다.");
+		    model.addAttribute("accountStatusCd", codeDto);
+		    model.addAttribute("userList", Collections.emptyList());
+		    model.addAttribute("filter", filter);
+		    model.addAttribute("totalCount", 0);
+		    model.addAttribute("totalPages", 0);
+		    return "B/userList";
+		}
+
+		// 중복 제거
+		Set<Long> userNoSet = new HashSet<>();
+		for (AccountDTO dto : accountDto) {
+		    if (dto.getUserNo() != null) {
 		        userNoSet.add(dto.getUserNo());
 		    }
-		    for (Long no : userNoSet) {
-		        System.out.println("userNo = " + no);
-		    }
-		    // Set을 다시 List로 변환
-		    filter.setUserNoList(new ArrayList<>(userNoSet));
 		}
-		System.out.println(filter.getUserNoList().toString());
+
+		if (userNoSet.isEmpty()) {
+		    model.addAttribute("errorMessage", "검색 조건에 해당하는 사용자가 존재하지 않습니다.");
+		    model.addAttribute("accountStatusCd", codeDto);
+		    model.addAttribute("userList", Collections.emptyList());
+		    model.addAttribute("filter", filter);
+		    model.addAttribute("totalCount", 0);
+		    model.addAttribute("totalPages", 0);
+		    return "B/userList";
+		}
+
+		filter.setUserNoList(new ArrayList<>(userNoSet));
 
 		
 		
