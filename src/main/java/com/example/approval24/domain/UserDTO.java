@@ -3,6 +3,7 @@ package com.example.approval24.domain;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -22,11 +23,15 @@ public class UserDTO {
     private Long updateId;         // 수정자 ID
     private Long instId;		   //기관 ID
     
+    private String accountStatusCd;
+    
     //추가사항
     private String userPositionName; //직급 이름
     
     
     private String dateType;
+    
+    private List<Long> userNoList;
 	
 	private int page = 1;          
     private int size = 10;         
