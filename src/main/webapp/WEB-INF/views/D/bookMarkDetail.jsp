@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -10,11 +11,17 @@
 <title>${bookmark.bookmarkName}상세|결재24</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-/* (스타일 유지) */
 .approver-box { border: 1px dashed #ccc; padding: 10px; margin-bottom: 10px; }
 .approver-list-item { margin-top: 5px; border: 1px solid #eee; padding: 5px; }
 .readonly-box { background: #f8f9fc; }
 .list-equal { height: 350px; overflow-y: auto; border: 1px solid #e3e6f0; }
+#content-wrapper {
+    min-height: auto !important; 
+}
+
+body#page-top {
+    min-height: 100%;
+}
 </style>
 </head>
 <body id="page-top">
@@ -22,11 +29,12 @@
 	<div id="wrapper">
 		<%@ include file="/WEB-INF/views/common/sidebar.jsp"%>
 
-		<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content-wrapper" class="d-flex flex-column ">
 			<div id="content">
 				<%@ include file="/WEB-INF/views/common/navbar.jsp"%>
 
 				<div class="container-fluid">
+				
 					<h1 class="h3 mb-3 text-gray-800">북마크 상세/수정</h1>
 
 					<form id="bookmarkUpdateForm" action="" method="post">
@@ -39,7 +47,7 @@
 									
 									<button type="button" class="btn btn-danger btn-sm" id="btnDelete" onclick="handleUpdate(true)">삭제</button>
 									
-									<a href="approval24/bookmark/list" class="btn btn-secondary btn-sm">목록</a>
+									<a href="${pageContext.request.contextPath}/bookmark/list" class="btn btn-secondary btn-sm">목록</a>
 								</div>
 							</div>
 							<div class="card-body">
@@ -53,57 +61,60 @@
 
 						<div class="row">
 							<div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-header py-2 d-flex align-items-center justify-content-between">
-                                        <strong>전체 계정 목록</strong>
-                                    </div>
-                                    <div class="card-body p-2">
-                                        <div id="accountList" class="list-equal">
-                                            <div class="text-muted small text-center">계정 목록을 불러오는 중...</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-							<div class="col-md-6 mb-3">
 								<div class="card h-100">
 									<div class="card-header py-2 d-flex align-items-center justify-content-between">
-										<strong>선택된 결재 경로</strong>
+										<strong>전체 계정 목록</strong>
 									</div>
-									<div class="card-body p-2 list-equal">
-										<div id="selectedApprovers">
+									<div class="card-body p-2 mt-4 mb-4">
+										<div id="accountList" class="list-equal">
+											<div class="text-muted small text-center">계정 목록을 불러오는 중...</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6 mb-3">
+							<div class="card h-100">
+								<div class="card-header py-2 d-flex align-items-center justify-content-between">
+									<strong>선택된 결재 경로</strong>
+									</div>
+									<div class="card-body p-2 mt-4 mb-4">
+										<div id="selectedApprovers" class="list-equal">
 											<ul class="list-group" id="approverList">
 												<c:forEach var="appr" items="${bookmark.approvers}" varStatus="st">
 													<li id="appr_${st.index+1}" class="list-group-item d-flex justify-content-between align-items-center" data-account-id="${appr.approverId}">
-                                                        <span class="text-dark fw-bold"> 
-                                                            순서 <span class="order">${st.index+1}</span> : ${appr.approverName} 
-                                                            <small class="text-muted">(${appr.deptName})</small> 
-                                                            <c:if test="${not empty appr.approverTypeCdName}">
+														<span class="text-dark fw-bold">
+															순서 <span class="order">${st.index+1}</span> : ${appr.approverName}
+															<small class="text-muted">(${appr.deptName})</small>
+															<c:if test="${not empty appr.approverTypeCdName}">
 																<small class="text-muted">- ${appr.approverTypeCdName}</small>
 															</c:if>
-													    </span>
+														</span>
 														<div class="d-flex align-items-center">
-                                                            <input type="hidden" class="hid-approverId" name="approvers[${st.index}].approverId" value="${appr.approverId}"> 
-                                                            <input type="hidden" class="hid-type" name="approvers[${st.index}].approverTypeCd" value="${appr.approverTypeCd}"> 
-                                                            <input type="hidden" class="hid-del" name="approvers[${st.index}].delYn" value="N">
+															<input type="hidden" class="hid-approverId" name="approvers[${st.index}].approverId" value="${appr.approverId}">
+															<input type="hidden" class="hid-type" name="approvers[${st.index}].approverTypeCd" value="${appr.approverTypeCd}">
+															<input type="hidden" class="hid-del" name="approvers[${st.index}].delYn" value="N">
 															<button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>
 														</div>
-                                                    </li>
+													</li>
 												</c:forEach>
 											</ul>
 										</div>
 									</div>
 								</div>
 							</div>
+							
 						</div>
 					</form>
 
 				</div>
+
 			</div>
-			<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
-			<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 		</div>
 	</div>
+
+	<%@ include file="/WEB-INF/views/common/logoutModal.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 
@@ -315,10 +326,10 @@
         const liHtml = ''
             + '<li id="appr_' + order + '" class="list-group-item d-flex justify-content-between align-items-center" '
             + '    data-account-id="' + approverIdStr + '">'
-            + '  <span class="text-dark fw-bold">'
-            + '    순서 <span class="order">' + order + '</span> : ' + approverName
-            + '    <small class="text-muted">(' + (deptName || '') + ')</small>' // 여기는 부서 이름 유지
-            + '  </span>'
+            + '<span class="text-dark fw-bold">'
+            + '순서 <span class="order">' + order + '</span> : ' + approverName 
+            + '<small class="text-muted">(' + (deptName || '') + ')</small>' // 여기는 부서 이름 유지
+            + '</span>'
             + '  <div class="d-flex align-items-center">'
             + '    <input type="hidden" class="hid-approverId" name="approvers[' + currentIdx + '].approverId" value="' + approverIdStr + '">'
             + '    <input type="hidden" class="hid-type" name="approvers[' + currentIdx + '].approverTypeCd" value="">'
@@ -326,7 +337,7 @@
             + '    <button type="button" class="btn btn-warning btn-sm ml-3 js-remove-approver">제거</button>'
             + '  </div>'
             + '</li>';
-
+            
         $('#approverList').append(liHtml);
 
         reindexApprovers();
