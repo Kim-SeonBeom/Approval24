@@ -49,6 +49,11 @@ public class MenuService {
     // 메뉴 필터
     public List<MenuDTO>findfilterMenu(Map<String, Object> filterMap){
     	return menuDAO.findfilterMenu(filterMap);
-    	
+    }
+    
+    // 메뉴 필터 수
+    public int findCountByFilter(Map<String, Object> filterMap){
+    	return menuDAO.findCountByFilter(filterMap);
     }
 }
+
