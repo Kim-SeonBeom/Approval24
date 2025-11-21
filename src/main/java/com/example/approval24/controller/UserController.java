@@ -44,6 +44,11 @@ public class UserController {
     @Autowired 
     public AesEncryptionService encryptionService;
 
+    @GetMapping("")
+    public String Defalt() {
+    	return "redirect:/user/list";
+    }
+    
     // 사용자 목록 조회 
     @GetMapping("/list")
     public String listUsers(

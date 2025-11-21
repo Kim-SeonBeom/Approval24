@@ -6,7 +6,8 @@ import com.example.approval24.domain.DeptInstDTO;
 import com.example.approval24.service.BookmarkService;
 import com.example.approval24.service.AccountService;
 import com.example.approval24.service.DeptService;
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,21 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/bookmark")
-@RequiredArgsConstructor
 public class BookmarkController {
 
-    private final BookmarkService bookmarkService;
-    private final AccountService accountService;
-    private final DeptService deptService;
+	@Autowired
+    private BookmarkService bookmarkService;
+	
+	@Autowired
+    private AccountService accountService;
+	
+	@Autowired
+    private DeptService deptService;
+    
+    @GetMapping("")
+    public String Defalt() {
+    	return "redirect:/bookmark/list";
+    }
 
     // 북마크 목록 페이지 
     @GetMapping("/list")

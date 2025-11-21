@@ -1,24 +1,57 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>에러 발생</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f8f8; text-align: center; padding-top: 50px; }
-        .container { background-color: #fff; padding: 30px; border: 1px solid #ccc; display: inline-block; }
-        h1 { color: #d9534f; }
-        p { margin: 15px 0; }
-        a { text-decoration: none; color: #337ab7; }
-        a:hover { text-decoration: underline; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendor/bootstrap/css/bootstrap.min.css">
+    
+    <title>접근 거부</title>
+    <%@ include file="/WEB-INF/views/common/header.jsp"%>
 </head>
-<body>
+
+<body class="bg-light" style="background: linear-gradient(to right, #126C83, #74BCAA); height: 100vh;">
+
+<div class="h-100 d-flex flex-column justify-content-center">
     <div class="container">
-        <h1>⚠️ 오류 발생</h1>
-        <p>${error != null ? error : "알 수 없는 오류가 발생했습니다."}</p>
-        
-        <p><a href="/approval24">홈 페이지로 이동</a></p>
+
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-xl-8 col-lg-10 col-md-8">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="p-5 text-center">
+                                    
+                                    <h1 class="h2 text-danger mb-4">⛔ 접근 권한 없음</h1>
+                                    
+                                    <hr class="mb-4">
+                                    
+                                    <p class="lead text-gray-800">
+                                        <c:out value="${error != null ? error : '알수 없는 에러'}" />
+                                    </p>
+                                    
+                                    <a href="${pageContext.request.contextPath}/" class="btn btn-danger btn-user mt-4">
+                                        홈 페이지로 돌아가기
+                                    </a>
+                                    
+                                    <div class="mt-4">
+                                        <a class="small text-muted" href="${pageContext.request.contextPath}/login">로그인 페이지로 이동</a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+</div>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 </html>

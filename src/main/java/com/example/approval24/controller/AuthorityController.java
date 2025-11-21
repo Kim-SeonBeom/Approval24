@@ -33,6 +33,10 @@ public class AuthorityController {
     @Autowired
     private AuthorityService authorityService;
 
+    @GetMapping("")
+    public String Defalt() {
+    	return "redirect:/authority/list";
+    }
     // 전체 권한 목록 조회
     @GetMapping("/list")
     public String listAuthorities(

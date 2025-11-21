@@ -18,8 +18,13 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
+    
+    @GetMapping("")
+    public String Defalt() {
+    	return "redirect:/menu/list";
+    }
 
-    // 1️⃣ 전체 메뉴 목록 조회
+    // 전체 메뉴 목록 조회
     @GetMapping("/list")
     public String listMenus(Model model,
     		@RequestParam Map<String, Object> filterMap, 
@@ -38,7 +43,7 @@ public class MenuController {
         return "A/menuList"; 
     }
 
-    // 2️⃣ 메뉴 상세 조회
+    // 메뉴 상세 조회
     @GetMapping("/detail/{menuId}")
     public String menuDetail(@PathVariable Long menuId, Model model) {
         MenuDTO menu = menuService.getMenuById(menuId);
@@ -46,7 +51,7 @@ public class MenuController {
         return "A/menuDetail"; 
     }
 
-    // 3️⃣ 메뉴 등록 폼 이동
+    // 메뉴 등록 폼 이동
     @GetMapping("/create")
     public String createForm(Model model) {
     	List<MenuDTO> parentMenus = menuService.getAllMenus(); 
@@ -55,14 +60,14 @@ public class MenuController {
         return "A/menuForm";
     }
 
-    // 4️⃣ 메뉴 등록 처리
+    // 메뉴 등록 처리
     @PostMapping("/create")
     public String createMenu(@ModelAttribute MenuDTO menu) {
         menuService.createMenu(menu);
         return "redirect:/menu/list";
     }
 
-    // 5️⃣ 메뉴 수정 폼 이동
+    // 메뉴 수정 폼 이동
     @GetMapping("/edit/{menuId}")
     public String editForm(@PathVariable Long menuId, Model model) {
     	MenuDTO menu = menuService.getMenuById(menuId);

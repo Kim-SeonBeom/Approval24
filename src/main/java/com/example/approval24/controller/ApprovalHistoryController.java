@@ -40,6 +40,11 @@ public class ApprovalHistoryController {
     @Autowired
     private CategoryService categoryService;
     
+    @GetMapping("")
+    public String Defalt() {
+    	return "redirect:/history/list";
+    }
+    
     @GetMapping("/list")
     public String getApprovalHistory(
             HttpSession session,
@@ -84,7 +89,7 @@ public class ApprovalHistoryController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("errorMessage", "결재 이력 조회 중 오류가 발생했습니다.");
+            model.addAttribute("error", "결재 이력 조회 중 오류가 발생했습니다.");
             return "error/errorPage"; 
         }
         

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.example.approval24.domain.AccountDTO;
@@ -51,7 +52,7 @@ public class MainPageController {
 	
 	
 	@GetMapping("/")
-	public String mainPage(@SessionAttribute(name = "user", required = false) long accountId, Model model, HttpSession session) {
+	public String mainPage(@SessionAttribute(name = "user", required = false) Long accountId, Model model, HttpSession session) {
 		if(session == null) {
 			return "redirect:/login";
 		}
@@ -135,9 +136,14 @@ public class MainPageController {
 		
 		
 		// 계정 권한정보
-		List<AuthorityDTO> authAccountDto =authorityService.findByAccountId(accountId);
+		List<AuthorityDTO> authAccountDto = authorityService.findByAccountId(accountId);
 		model.addAttribute("authList",authAccountDto);
 		return "mypage";
 	}
-
+	
+	@GetMapping("/accessDenied")
+	public String errorPage(Model model) {
+	    model.addAttribute("error", "해당 페이지 접근 권한이 존재하지 않습니다.");
+	    return "common/errorPage";
+	}
 }
