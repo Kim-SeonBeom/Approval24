@@ -169,7 +169,7 @@
 		$('#btnDelete, #btnDeleteFooter').on('click', doDelete);
 	</script>
 	<script>
-	$(document).ready(funtction(){
+	$(document).ready(function(){
 		const $ipdateForm = $('#instUpdateForm');
 	})
 	</script>

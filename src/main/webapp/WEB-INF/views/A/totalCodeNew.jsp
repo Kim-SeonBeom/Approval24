@@ -100,21 +100,21 @@
 										<tbody>
 										
 											<tr>
-												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드그룹</th>
-												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" placeholder="ex) A0" required maxlength="200"></td>
-												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드</th>
-												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" placeholder="ex) A001" required></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드그룹ID</th>
+												<td colspan="1"><input type="text" name="groupId" id="groupId" class="form-control form-control-sm" placeholder="예) A0" required maxlength="200"></td>
+												<th scope="col" class="text-dark bg-light font-weight-bold text-center">코드ID</th>
+												<td colspan="1"><input type="text" name="codeId" id="codeId" class="form-control form-control-sm" placeholder="예) A001" required></td>
 											</tr>
 
 											<tr>
 												<th class="text-dark bg-light font-weight-bold text-center">코드명</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm"
-													name="codeName"></td>
+													name="codeName" placeholder="코드명을 입력하세요"></td>
 											</tr>
 											<tr>
 												<th class="text-dark bg-light font-weight-bold text-center">코드내용</th>
 												<td colspan="3"><input type="tel" class="form-control form-control-sm"
-													name="codeDetail"></td>
+													name="codeDetail" placeholder="코드내용을 입력하세요"></td>
 											</tr>
 											
 										</tbody>
