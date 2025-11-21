@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>사용자목록</title>
     <%@ include file="/WEB-INF/views/common/header.jsp"%>
     <style>
         .pagination { display: flex; padding-left: 0; list-style: none; }
