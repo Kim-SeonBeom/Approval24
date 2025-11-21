@@ -343,6 +343,8 @@
 		</div>
 	</div>
 
+
+
 	<c:if test="${not empty msg}">
     <script>
 	        $(document).ready(function() {
@@ -350,5 +352,40 @@
 	});
 </script>
 	</c:if>
+
+
+<script>
+// 공통으로 쓸 수 있는 generic 함수 하나 만들고
+function openPostcode(postId, addrId, detailId) {
+    new daum.Postcode({
+        oncomplete : function(data) {
+            const addr = data.userSelectedType === 'R'
+                ? data.roadAddress
+                : data.jibunAddress;
+
+            const postEl   = document.getElementById(postId);
+            const addrEl   = document.getElementById(addrId);
+            const detailEl = document.getElementById(detailId);
+
+            if (postEl)   postEl.value = data.zonecode;
+            if (addrEl)   addrEl.value = addr;
+            if (detailEl) detailEl.focus();
+        }
+    }).open();
+}
+
+// 회사 주소 검색용 (이미 em1.js에 있는 로직을 조금 리팩토링)
+function openBizPostcode() {
+    openPostcode('bizPost', 'bizAddr', 'bizAddrDetail');
+}
+
+// ⭐ 민원인 주소 검색용: footer의 user-addr.js 버전을 이걸로 덮어씀
+function openDaumPostcode() {
+    openPostcode('complainuserPost', 'complainuserAddress', 'complainuserAddrDetail');
+}
+</script>
+
+
+
 </body>
 </html>
