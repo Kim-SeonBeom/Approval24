@@ -35,6 +35,7 @@
 										<select name="approvalStatusCd" class="form-control w-25">
 											<option value="">전체</option>
 											<c:forEach var="status" items="${statusCodeList}">
+												<c:if test="${status.codeId != 'E004'}">
 												<c:choose>
 													<c:when test="${not empty filterMap.approvalStatusCd && filterMap.approvalStatusCd == status.codeId}">
 														<option value="${status.codeId}" selected>${status.codeName}</option>
@@ -43,6 +44,7 @@
 														<option value="${status.codeId}">${status.codeName}</option>
 													</c:otherwise>
 												</c:choose>
+												</c:if>
 											</c:forEach>
 										</select>
 									</div>

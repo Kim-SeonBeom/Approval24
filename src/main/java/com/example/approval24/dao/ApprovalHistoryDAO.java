@@ -28,4 +28,6 @@ public interface ApprovalHistoryDAO {
 	int countMyApprovalHistoryList(Map<String, Object> filterMap);
 	
 	Long getProxyIdByAccountAndComplainId(@Param("complainId")Long complainId,@Param("seqNo")Long seqNo);
+	
+	Long getProxyIdByAccountId(Long accountId);
 }

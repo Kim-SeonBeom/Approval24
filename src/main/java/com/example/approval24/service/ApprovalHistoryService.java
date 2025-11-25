@@ -51,6 +51,7 @@ public class ApprovalHistoryService {
         // 권한 및 위임자 확인
         Long delegateId = approvalHistoryDAO.getProxyIdByAccountAndComplainId(complainId, approvalData.getSeqNo());
         
+        
         boolean isOriginalApprover = approvalData.getAccountId().equals(loggedInUserId);
         boolean isDelegateApprover = delegateId != null && delegateId.equals(loggedInUserId);
 
@@ -72,7 +73,7 @@ public class ApprovalHistoryService {
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
                 complainId, nextSeq);
        
-        Long effectiveProxyId = approvalHistoryDAO.getProxyIdByAccountAndComplainId(complainId, nextSeq);
+        Long effectiveProxyId = approvalHistoryDAO.getProxyIdByAccountId(loggedInUserId);
         
         
         // 결재 상태 코드별 로직 
@@ -113,15 +114,17 @@ public class ApprovalHistoryService {
                 // 민원 상태를 D003(결재중)으로 업데이트 (최초 승인 시 이미 D003일 수 있으므로 중복 실행되어도 무방)
                 complainDAO.updateStatusByComplainId(complainId, "D003");
                 Long receiverId = nextApprovalData.getAccountId();
-                if (effectiveProxyId != null) {
-                    receiverId = effectiveProxyId;
-                }
-                // 다음 결재자에게 알림
                 alarmDTO.setReceiverId(receiverId);
                 message = categoryName + "(민원 번호: " + complainId + ") 결재 요청";
                 alarmDTO.setMessage(message);
                 alarmDTO.setUrl(approvalData.getUrl());
                 alarmService.sendAlarm(alarmDTO);
+                
+                if (effectiveProxyId != null) {
+                    receiverId = effectiveProxyId;
+                    alarmDTO.setReceiverId(receiverId);
+                    alarmService.sendAlarm(alarmDTO);
+                }
             }
             return result;
             
@@ -165,6 +168,10 @@ public class ApprovalHistoryService {
 			throw new IllegalArgumentException("담당자 계정이 아닙니다.");
 		}
 		
+		if (complainDto.getComplainStatusCd().equals("D001")) {
+        	throw new IllegalArgumentException("접수중인 민원입니다.");
+        }
+		
 		if (complainDto.getComplainStatusCd().equals("D004")) {
         	throw new IllegalArgumentException("이미 취하한 민원입니다.");
         }
@@ -174,6 +181,7 @@ public class ApprovalHistoryService {
         else if (complainDto.getComplainStatusCd().equals("D006")) {
         	throw new IllegalArgumentException("이미 승인된 민원입니다.");
         }
+		
 		
 		int newApproversCount = (int) approvalLine.stream().filter(dto -> dto.getSeqNo() == null).count();
 		if (newApproversCount < 3) {
@@ -221,6 +229,12 @@ public class ApprovalHistoryService {
             	alarmDTO.setUrl(url);
             	alarmDTO.setMessage(message);
             	alarmService.sendAlarm(alarmDTO);
+            	Long proxyId = approvalHistoryDAO.getProxyIdByAccountId(dto.getAccountId());
+            	if(proxyId != null)
+            	{
+            		alarmDTO.setReceiverId(proxyId);
+            		alarmService.sendAlarm(alarmDTO);
+            	}
             }
             else if(newApproversCount - 1 == cnt) {
             	dto.setApprovalStatusCd("E004");  // 대기

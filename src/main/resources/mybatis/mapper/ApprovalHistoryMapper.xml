@@ -298,5 +298,17 @@
     WHERE T1.COMPLAIN_ID = #{complainId}
       AND T1.SEQ_NO = #{seqNo}
 	</select>
+	
+	<select id="getProxyIdByAccountId" resultType="java.lang.Long">
+    SELECT 
+        TP.DELEGATE_ID  
+    FROM 
+        T2000_PROXY TP
+    WHERE 
+        TP.ABS_ID = #{accountId}  
+        AND TP.DEL_YN = 'N' 
+		AND SYSDATE BETWEEN TP.START_DT AND TP.END_DT
+    	AND ROWNUM = 1
+</select>
 
 </mapper>
