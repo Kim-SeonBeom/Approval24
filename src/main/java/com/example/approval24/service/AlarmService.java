@@ -39,9 +39,7 @@ public class AlarmService {
         
     }
 
-    /**
-     * 특정 사용자 최근 3일 알람 조회
-     */
+    
     public List<AlarmDTO> getRecentAlarms(Long receiverId) {
         if (receiverId == null) {
             throw new IllegalArgumentException("받는 사람 ID가 필요합니다.");
@@ -49,9 +47,7 @@ public class AlarmService {
         return alarmDAO.selectRecentAlarmsByReceiver(receiverId);
     }
 
-    /**
-     * 알람 읽음 처리 (보안 강화)
-     */
+    
     @Transactional
     public void markAsRead(Long seqNo, Long accessorId) {
         if (seqNo == null) {
@@ -66,9 +62,6 @@ public class AlarmService {
         messagingTemplate.convertAndSend("/topic/notification-events", "READ_ALARM_FOR_USER:" + accessorId);
     }
 
-    /**
-     * 안 읽은 알람 개수 조회
-     */
     public int countUnreadAlarms(Long receiverId) {
         if (receiverId == null) {
             throw new IllegalArgumentException("받는 사람 ID가 필요합니다.");

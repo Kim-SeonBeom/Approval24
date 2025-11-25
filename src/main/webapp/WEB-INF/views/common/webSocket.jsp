@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         // 읽지 않은 알림 강조
                         if (isUnread) {
-                            item.style.backgroundColor = '#f8f9fc';
+                            item.style.backgroundColor = '#e8f3ff';
                             item.style.fontWeight = 'bold';
                         }
 
