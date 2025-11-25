@@ -34,7 +34,7 @@
     )
 </insert>
 
-<!-- 기관수정 -->
+<!-- 기관수정/삭제 -->
 <update id="updateInst" parameterType="InstDTO">
 	update t1000_institution
 	set inst_name=#{instName},
@@ -43,15 +43,9 @@
 	 inst_phone=#{instPhone},
 	 inst_post=#{instPost},
 	 inst_head_name=#{instHeadName},
-	 inst_detail_address=#{instDetailAddress}
+	 inst_detail_address=#{instDetailAddress},
+	 del_yn=#{delYn}
 	where inst_id=#{instId}
-</update>
-
-<!-- 기관삭제 -->
-<update id="deleteInst" parameterType="long">
-    update t1000_institution 
-    set del_yn = 'Y' 
-    where inst_id = #{instId}
 </update>
 
 <!-- 기관조회(상세) -->

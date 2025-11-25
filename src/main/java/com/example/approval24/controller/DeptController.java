@@ -72,19 +72,6 @@ public class DeptController {
 		return "redirect:/dept/detail?dept_id=" + deptId;
 	}
 	
-	// 부서 삭제
-	@PostMapping("/dept/delete")
-	public String deptDelete(long deptId, RedirectAttributes rttr) {
-		int result = deptService.deleteDept(deptId);
-		
-		if (result > 0) {
-			rttr.addFlashAttribute("delMessage", "부서 정보가 성공적으로 삭제되었습니다.");
-		} else {
-			rttr.addFlashAttribute("delMessage", "부서 정보 삭제에 실패했습니다.");
-		}
-		return "redirect:/dept";
-	}
-	
 	// 부서 등록
 	@GetMapping("/dept/new")
 	public String deptNew(Model model) {

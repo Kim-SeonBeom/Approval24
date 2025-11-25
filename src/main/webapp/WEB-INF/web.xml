@@ -45,5 +45,11 @@
  <welcome-file-list> 
   <welcome-file>index.html</welcome-file> 
   <welcome-file>index.jsp</welcome-file> 
- </welcome-file-list> 
+ </welcome-file-list>
+ 
+ <session-config>
+    <!-- 분 단위 -->
+    <session-timeout>60</session-timeout>  <!-- 60분 -->
+</session-config>
+  
 </web-app>
