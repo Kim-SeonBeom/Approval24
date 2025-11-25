@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tableBody.appendChild(tr);
         });
 
-        alert(`"${selectedBookmark.bookmarkName}" 북마크가 적용되었습니다.`);
+        alert(`"\${selectedBookmark.bookmarkName}" 북마크가 적용되었습니다.`);
     }
 
     // ⭐ [수정된 이벤트] 북마크 드롭다운 변경 시 메모리 함수 실행

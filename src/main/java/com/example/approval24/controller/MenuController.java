@@ -21,7 +21,10 @@ public class MenuController {
     private MenuService menuService;
     
     @GetMapping("")
-    public String Defalt() {
+    public String Defalt(Model model) {
+    	model.asMap().remove("logininstName");
+        model.asMap().remove("loginuserName");
+        model.asMap().remove("logindeptName");
     	return "redirect:/menu/list";
     }
 

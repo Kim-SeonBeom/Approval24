@@ -113,17 +113,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-2 col-form-label filter-label">등록일 기간</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-sm input-w-25"> 
-                                        <input type="date" class="form-control form-control-sm" name="createDtStart" value="${filterMap.createDtStart}">
-                                        <span class="input-group-text">~</span>
-                                        <input type="date" class="form-control form-control-sm" name="createDtEnd" value="${filterMap.createDtEnd}">
-                                    </div>
-                                </div>
-                            </div>
                             
                             <input type="hidden" name="pageSize" value="${pageInfo.pageSize}" />
                             <input type="hidden" name="page" id="page" value="${pageInfo.page}">

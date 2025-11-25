@@ -47,7 +47,10 @@ public class UserController {
     public AesEncryptionService encryptionService;
 
     @GetMapping("")
-    public String Defalt() {
+    public String Defalt(Model model) {
+    	model.asMap().remove("logininstName");
+        model.asMap().remove("loginuserName");
+        model.asMap().remove("logindeptName");
     	return "redirect:/user/list";
     }
     

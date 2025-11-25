@@ -34,7 +34,10 @@ public class AuthorityController {
     private AuthorityService authorityService;
 
     @GetMapping("")
-    public String Defalt() {
+    public String Defalt(Model model) {
+    	model.asMap().remove("logininstName");
+        model.asMap().remove("loginuserName");
+        model.asMap().remove("logindeptName");
     	return "redirect:/authority/list";
     }
     // 전체 권한 목록 조회
@@ -42,24 +45,9 @@ public class AuthorityController {
     public String listAuthorities(
     		@RequestParam(value = "createDt", required = false) String createDtStr,
             @RequestParam(value = "updateDt", required = false) String updateDtStr,
-        /*@RequestParam(value = "deptId", required = false) Long deptId,
-        @RequestParam(value = "sortField", required = false) String sortField,
-        @RequestParam(value = "sortOrder", required = false) String sortOrder,*/
         AuthorityDTO filter,
         Model model) {
         
-        /*List<AuthorityDTO> authorities = authorityService.getAllAuthorities(deptId, sortField, sortOrder);*/
-        
-        //부서 목록 조회 및 모델에 담기 (JSP 드롭다운 생성용)
-        /*List<DeptDTO> allDepartments = authorityService.getAllDepartments();
-        model.addAttribute("allDepartments", allDepartments);
-        
-        model.addAttribute("authorities", authorities);*/
-        
-        //현재 선택된 필터/정렬 상태를 모델에 담아 JSP가 상태를 유지하도록 함
-        /*model.addAttribute("currentDeptId", deptId);
-        model.addAttribute("currentSortField", sortField);
-        model.addAttribute("currentSortOrder", sortOrder);*/
     	filter.applyDateStrings(createDtStr, updateDtStr);
     	
     	// 최초 진입 (빈 리스트)

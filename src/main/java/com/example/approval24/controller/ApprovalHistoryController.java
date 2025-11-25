@@ -41,7 +41,10 @@ public class ApprovalHistoryController {
     private CategoryService categoryService;
     
     @GetMapping("")
-    public String Defalt() {
+    public String Defalt(Model model) {
+    	model.asMap().remove("logininstName");
+        model.asMap().remove("loginuserName");
+        model.asMap().remove("logindeptName");
     	return "redirect:/history/list";
     }
     
