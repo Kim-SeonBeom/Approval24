@@ -112,9 +112,11 @@ public class UserController {
 		    model.addAttribute("totalPages", 0);
 		    return "B/userList";
 		}
-
-/*		// 중복 제거
+		
+		if(!filter.getAccountStatusCd().isEmpty()) {
+		// 중복 제거
 		Set<Long> userNoSet = new HashSet<>();
+		
 		for (AccountDTO dto : accountDto) {
 		    if (dto.getUserNo() != null) {
 		        userNoSet.add(dto.getUserNo());
@@ -131,7 +133,8 @@ public class UserController {
 		    return "B/userList";
 		}
 
-		filter.setUserNoList(new ArrayList<>(userNoSet));*/
+		filter.setUserNoList(new ArrayList<>(userNoSet));
+		}
 
 		
 		
