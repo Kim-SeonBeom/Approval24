@@ -17,7 +17,7 @@
 	order by create_dt DESC, update_dt DESC
 </select>
 
-<!-- 부서수정 -->
+<!-- 부서수정/삭제 -->
 <update id="updateDept" parameterType="DeptDTO">
 	update t1000_department
 	set dept_name=#{deptName},
@@ -40,13 +40,6 @@
 	from t1000_department
 	where del_yn = 'N'
 </select>
-
-<!-- 부서 삭제 -->
-<update id="deleteDept" parameterType="long">
-	update t1000_department
-	set del_yn = 'Y'
-	where dept_id = #{deptId}
-</update>
 
 <!-- 부서 등록 -->
 <insert id="insertDept" parameterType="DeptDTO">

@@ -65,6 +65,7 @@ public class LoginController {
         HttpSession session = request.getSession();
         session.setAttribute("user", accountDTO.getAccountId());
         session.setAttribute("authMenus", accountService.getAuthMenus(accountDTO.getAccountId()));
+        System.out.println("세션 timeout(초): " + session.getMaxInactiveInterval());
     	
         return "redirect:/";
     }
