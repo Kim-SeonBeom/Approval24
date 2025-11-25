@@ -122,9 +122,12 @@
                                                    		 - 
                                                    		 </c:if>
                                                    		</td>
-														<td><c:if test="${not empty item.processDt}">
-																<fmt:formatDate value="${item.processDt}" pattern="yyyy-MM-dd HH:mm" />
-															</c:if></td>
+														<td>
+														<c:if test="${not empty item.processDt}">
+																<fmt:formatDate value="${item.processDt}" pattern="yyyy-MM-dd HH:mm" /></c:if>
+														<c:if test="${empty item.processDt}">
+																-
+														</c:if></td>
 													</tr>
 												</c:forEach>
 											</c:when>
