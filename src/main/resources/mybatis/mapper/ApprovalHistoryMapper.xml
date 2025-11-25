@@ -56,7 +56,10 @@
             ((T1.ACCOUNT_ID = #{accountId} OR T1.DELEGATE_ID = #{accountId})
             	OR
 			(TP.DELEGATE_ID = #{accountId} AND T1.APPROVAL_TYPE_CD IS NULL))
-
+			
+			AND 
+			T1.APPROVAL_STATUS_CD != 'E004'
+			
             <if test="startDate != null and startDate != ''">
                 AND T1.PROCESS_DT &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
             </if>
@@ -90,6 +93,9 @@
 		((T1.ACCOUNT_ID = #{accountId} OR T1.DELEGATE_ID = #{accountId})
             OR
 		(TP.DELEGATE_ID = #{accountId} AND T1.APPROVAL_TYPE_CD IS NULL))
+		
+		AND 
+			T1.APPROVAL_STATUS_CD != 'E004'
 
         <if test="startDate != null and startDate != ''">
             AND T1.PROCESS_DT &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
