@@ -34,38 +34,95 @@
         WHERE DEL_YN = 'N'
     </select>
     
+<select id="findCountByFilter" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+    FROM T3000_MENU m
+    LEFT JOIN T3000_MENU p
+        ON m.PARENT_MENU_ID = p.MENU_ID 
+    <where>
+        <if test="menuName != null and menuName != ''">
+            AND m.MENU_NAME LIKE '%' || #{menuName} || '%'
+        </if>
+
+        <if test="parentMenuName != null and parentMenuName != ''">
+            AND p.MENU_NAME LIKE '%' || #{parentMenuName} || '%'
+        </if>
+
+        <if test="delYn != null and delYn != 'ALL' and delYn != ''">
+            AND m.DEL_YN = #{delYn}
+        </if>
+        
+        <if test="popupYn != null and popupYn != 'ALL' and popupYn != ''">
+            AND m.POPUP_YN = #{popupYn}
+        </if>
+
+        <if test="createDtStart != null and createDtStart != ''">
+            AND m.CREATE_DT >= TO_DATE(#{createDtStart}, 'YYYY-MM-DD')
+        </if>
+        <if test="createDtEnd != null and createDtEnd != ''">
+            AND m.CREATE_DT &lt;= TO_DATE(#{createDtEnd}, 'YYYY-MM-DD') + 0.99999
+        </if>
+
+    </where>
+</select>
+    
 <!-- 메뉴 필터 조회 -->
 <select id="findfilterMenu" parameterType="map" resultType="com.example.approval24.domain.MenuDTO">
     SELECT *
     FROM (
-        SELECT 
-            T.*, 
+        SELECT
+            T.*,
             ROWNUM AS RNUM
         FROM (
             SELECT
-                MENU_ID,
-                MENU_NAME,
-                MENU_URL,
-                PARENT_MENU_ID,
-                SEQ,
-                POPUP_YN,
-                CREATE_DT,
-                UPDATE_DT,
-                CREATE_ID,
-                UPDATE_ID,
-                DEL_YN
-            FROM T3000_MENU
+                m.MENU_ID,
+                m.MENU_NAME,
+                m.MENU_URL,
+                m.PARENT_MENU_ID,
+                m.SEQ,
+                m.POPUP_YN,
+                m.CREATE_DT,
+                m.UPDATE_DT,
+                m.CREATE_ID,
+                m.UPDATE_ID,
+                m.DEL_YN,
+                p.MENU_NAME AS PARENT_MENU_NAME
+            FROM T3000_MENU m
+            LEFT JOIN T3000_MENU p
+                ON m.PARENT_MENU_ID = p.MENU_ID
             <where>
-                DEL_YN = 'N'
+                <if test="menuName != null and menuName != ''">
+                    AND m.MENU_NAME LIKE '%' || #{menuName} || '%'
+                </if>
+
+                <if test="parentMenuName != null and parentMenuName != ''">
+                    AND p.MENU_NAME LIKE '%' || #{parentMenuName} || '%'
+                </if>
+
+                <if test="delYn != null and delYn != 'ALL' and delYn != ''">
+                    AND m.DEL_YN = #{delYn}
+                </if>
+                
+                <if test="popupYn != null and popupYn != 'ALL' and popupYn != ''">
+                    AND m.POPUP_YN = #{popupYn}
+                </if>
+
+                <if test="createDtStart != null and createDtStart != ''">
+                    AND m.CREATE_DT >= TO_DATE(#{createDtStart}, 'YYYY-MM-DD')
+                </if>
+                <if test="createDtEnd != null and createDtEnd != ''">
+                    AND m.CREATE_DT &lt;= TO_DATE(#{createDtEnd}, 'YYYY-MM-DD') + 0.99999
+                    </if>
+
             </where>
-            ORDER BY SEQ
+            ORDER BY m.SEQ
         ) T
         <if test="endRow != null">
             WHERE ROWNUM &lt;= #{endRow}
         </if>
     )
     <if test="startRow != null">
-        WHERE RNUM &gt;= #{startRow}
+        WHERE RNUM >= #{startRow}
     </if>
 </select>
 

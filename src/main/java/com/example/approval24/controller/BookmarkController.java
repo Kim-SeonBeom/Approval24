@@ -33,7 +33,10 @@ public class BookmarkController {
     private DeptService deptService;
     
     @GetMapping("")
-    public String Defalt() {
+    public String Defalt(Model model) {
+    	model.asMap().remove("logininstName");
+        model.asMap().remove("loginuserName");
+        model.asMap().remove("logindeptName");
     	return "redirect:/bookmark/list";
     }
 

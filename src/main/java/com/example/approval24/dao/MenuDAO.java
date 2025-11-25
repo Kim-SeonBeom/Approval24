@@ -20,6 +20,9 @@ public interface MenuDAO {
     // 메뉴 필터 조회
     List<MenuDTO>findfilterMenu(Map<String, Object> filterMap);
     
+    // 메뉴 필터링 조회
+    int findCountByFilter(Map<String, Object> filterMap);
+    
     // 메뉴 전체 카운트
     int findCountAll();
     

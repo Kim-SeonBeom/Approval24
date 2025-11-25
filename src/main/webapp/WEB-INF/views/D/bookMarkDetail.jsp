@@ -175,7 +175,7 @@ body#page-top {
                 if (response.result === 'SUCCESS') {
                     alert(isDelete ? '북마크가 성공적으로 삭제되었습니다.' : '북마크가 성공적으로 수정되었습니다.');
                     // 성공 후 목록 페이지로 이동
-                    location.href = '/approval24/bookmark/list';
+                    location.href = 'approval24/bookmark/list';
                 } else if (response.result === 'FAIL') {
                     alert(response.message || '요청 처리에 실패했습니다.');
                 } else {

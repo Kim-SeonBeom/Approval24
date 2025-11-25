@@ -1,5 +1,6 @@
 package com.example.approval24.controller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,10 @@ public class MenuController {
     private MenuService menuService;
     
     @GetMapping("")
-    public String Defalt() {
+    public String Defalt(Model model) {
+    	model.asMap().remove("logininstName");
+        model.asMap().remove("loginuserName");
+        model.asMap().remove("logindeptName");
     	return "redirect:/menu/list";
     }
 
@@ -30,8 +34,8 @@ public class MenuController {
     		@RequestParam Map<String, Object> filterMap, 
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        
-        int totalCount = menuService.findCountAll(); 
+		
+        int totalCount = menuService.findCountByFilter(filterMap); 
         PageInfoVO pageInfo = new PageInfoVO(page, pageSize, totalCount);
         filterMap.put("startRow", pageInfo.getStartRow());
         filterMap.put("endRow",pageInfo.getEndRow()); 

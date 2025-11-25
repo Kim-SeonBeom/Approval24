@@ -62,6 +62,7 @@ public class ApprovalHistoryService {
         approvalData.setProcessDt(new Date());
         approvalData.setApprovalTypeCd("H001"); // 기본 일반 결재
         
+        
         if (isDelegateApprover) {
             approvalData.setDelegateId(delegateId);
             approvalData.setApprovalTypeCd("H002"); // 위임 결재
@@ -70,6 +71,8 @@ public class ApprovalHistoryService {
         // 다음 결재자 DTO 조회
         ApprovalHistoryDTO nextApprovalData = approvalHistoryDAO.getHistoryIdByComplainIdAndSeqNo(
                 complainId, nextSeq);
+       
+        Long effectiveProxyId = approvalHistoryDAO.getProxyIdByAccountAndComplainId(complainId, nextSeq);
         
         
         // 결재 상태 코드별 로직 
@@ -109,9 +112,12 @@ public class ApprovalHistoryService {
                 
                 // 민원 상태를 D003(결재중)으로 업데이트 (최초 승인 시 이미 D003일 수 있으므로 중복 실행되어도 무방)
                 complainDAO.updateStatusByComplainId(complainId, "D003");
-                
+                Long receiverId = nextApprovalData.getAccountId();
+                if (effectiveProxyId != null) {
+                    receiverId = effectiveProxyId;
+                }
                 // 다음 결재자에게 알림
-                alarmDTO.setReceiverId(nextApprovalData.getAccountId());
+                alarmDTO.setReceiverId(receiverId);
                 message = categoryName + "(민원 번호: " + complainId + ") 결재 요청";
                 alarmDTO.setMessage(message);
                 alarmDTO.setUrl(approvalData.getUrl());
