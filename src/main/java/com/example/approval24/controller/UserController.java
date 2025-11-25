@@ -113,7 +113,7 @@ public class UserController {
 		    return "B/userList";
 		}
 
-		// 중복 제거
+/*		// 중복 제거
 		Set<Long> userNoSet = new HashSet<>();
 		for (AccountDTO dto : accountDto) {
 		    if (dto.getUserNo() != null) {
@@ -131,7 +131,7 @@ public class UserController {
 		    return "B/userList";
 		}
 
-		filter.setUserNoList(new ArrayList<>(userNoSet));
+		filter.setUserNoList(new ArrayList<>(userNoSet));*/
 
 		
 		
