@@ -129,15 +129,15 @@
         WHERE U.USER_NO = #{userNo}
     </select>
     
-    <insert id="insertUser" parameterType="UserDTO" useGeneratedKeys="true" keyProperty="userNo">
-        INSERT INTO T1000_USER (
-            USER_RESIDENT_NO, USER_NAME, USER_EMAIL, USER_TEL, USER_PHONE, USER_POSITION_CD,
-            DEL_YN, CREATE_DT, CREATE_ID, INST_ID
-        ) VALUES (
-            #{userResidentNo}, #{userName}, #{userEmail}, #{userTel}, #{userPhone}, #{userPositionCd},
-            'N', SYSDATE, #{createId}, #{instId}
-        )
-    </insert>
+       <insert id="insertUser" parameterType="UserDTO" useGeneratedKeys="true" keyProperty="userNo" keyColumn="USER_NO"> 
+           INSERT INTO T1000_USER (
+               USER_RESIDENT_NO, USER_NAME, USER_EMAIL, USER_TEL, USER_PHONE, USER_POSITION_CD,
+               DEL_YN, CREATE_DT, CREATE_ID, INST_ID
+           ) VALUES (
+               #{userResidentNo}, #{userName}, #{userEmail}, #{userTel}, #{userPhone}, #{userPositionCd},
+               'N', SYSDATE, #{createId}, #{instId}
+           )
+       </insert>
 
     <update id="updateUser" parameterType="UserDTO">
         UPDATE T1000_USER
