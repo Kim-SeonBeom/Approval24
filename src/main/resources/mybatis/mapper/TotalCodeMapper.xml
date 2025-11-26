@@ -118,7 +118,10 @@
 
 
 <select id="countByCodeId" resultType="int">
-  SELECT COUNT(*) FROM total_code WHERE code_id = #{codeId}
+    SELECT COUNT(*)
+    FROM total_code
+    WHERE code_id = #{codeId}
+      AND code_id LIKE 'G%'
 </select>
 
 
