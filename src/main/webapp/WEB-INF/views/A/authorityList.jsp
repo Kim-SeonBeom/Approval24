@@ -261,19 +261,18 @@
         var contextPath = "${pageContext.request.contextPath}";
 
 
-        // 💡 1. 부서 드롭다운 변경 시 자동 필터링 (submit 버튼 누르는 것을 대체)
+        // 부서 드롭다운 변경 시 자동 필터링 
         $("#deptFilter").on('change', function() {
             $("#AuthorityFilterForm").submit();
         });
         
-        // 💡 2. 테이블 헤더 클릭 시 정렬 기능
+        // 💡 테이블 헤더 클릭 시 정렬 기능
         $(".sortable").on('click', function() {
             var newSortField = $(this).data('field');
             var currentSortField = $('input[name="sortField"]').val();
             var currentSortOrder = $('input[name="sortOrder"]').val();
             var newSortOrder = 'ASC';
 
-            // 현재 필드를 다시 클릭한 경우, 정렬 순서를 반전
             if (newSortField === currentSortField) {
                 newSortOrder = (currentSortOrder === 'ASC') ? 'DESC' : 'ASC';
             }
@@ -282,7 +281,6 @@
             $('input[name="sortField"]').val(newSortField);
             $('input[name="sortOrder"]').val(newSortOrder);
             
-            // 폼 제출
             $("#AuthorityFilterForm").submit();
         });
     });

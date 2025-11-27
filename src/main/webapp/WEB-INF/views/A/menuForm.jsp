@@ -109,12 +109,9 @@
 							const idDisplay = document
 									.getElementById('selectedParentId');
 							const menuForm = document
-									.getElementById('menuForm'); // 💡 ID로 폼 선택
-							const seqInput = document.getElementById('seq'); // 💡 SEQ 입력 필드 선택
+									.getElementById('menuForm'); 
+							const seqInput = document.getElementById('seq'); 
 
-							// ---------------------------------------------
-							// 1. 부모 메뉴 ID 표시 로직 (기존 로직 유지)
-							// ---------------------------------------------
 							parentSelect.addEventListener('change', function() {
 								const selectedId = this.value;
 								if (selectedId === "") {
@@ -125,29 +122,22 @@
 								}
 							});
 
-							// ---------------------------------------------
-							// 2. 순서(SEQ) 필수 입력 강제 로직 (신규 추가)
-							// ---------------------------------------------
 							menuForm
 									.addEventListener(
 											'submit',
 											function(e) {
-												// HTML5 required와 min="0" 속성이 1차 방어를 하지만, 
-												// JavaScript로 서버 전송 전 최종 검사하여 안정성을 높입니다.
 												const seqVal = seqInput.value
 														.trim();
 
-												// 숫자가 아니거나 (비어있거나) 0보다 작은지 검사
+	
 												if (seqVal === ''
 														|| !/^\d+$/
 																.test(seqVal)
 														|| parseInt(seqVal, 10) < 0) {
-													e.preventDefault(); // 폼 제출 중지
+													e.preventDefault(); 
 
-													// 사용자에게 알림
-													alert("🚨 메뉴 순서(SEQ) 값은 필수 입력 사항입니다.\n0 이상의 정수 값을 입력해 주세요.");
+													alert("메뉴 순서값은 필수 입력 사항입니다.\n0 이상의 정수 값을 입력해 주세요.");
 
-													// 오류 필드로 포커스 이동
 													seqInput.focus();
 													return false;
 												}

@@ -125,30 +125,27 @@ public class BookmarkController {
         return "redirect:/bookmark/list";
     }
 
-
-    // 북마크 이름 수정 또는 논리적 삭제 처리 
+ 
     @PostMapping("/update")
-    @ResponseBody // ⭐ 이 어노테이션을 추가하여 JSON 응답을 강제합니다. ⭐
+    @ResponseBody 
     public Map<String, Object> updateBookmark(@RequestBody BookmarkDTO bookmark, HttpSession session) {
-        // Model 객체 대신 Map을 사용하여 JSON 응답을 구성합니다.
+
         Map<String, Object> response = new HashMap<>();
         Long bookmarkId = bookmark.getBookmarkId();
 
-        // 1. 필수 데이터 검증 (북마크 ID)
         if (bookmarkId == null) {
             response.put("result", "FAIL");
             response.put("message", "북마크 ID가 누락되었습니다.");
             return response;
         }
 
-        // 2. 사용자 ID 설정
         Long userId = (Long) session.getAttribute("user");
         if (userId != null) {
             bookmark.setAccountId(userId);
         }
         
         try {
-            // 3. 삭제 요청 처리
+            // 삭제 요청 처리
             if ("Y".equalsIgnoreCase(bookmark.getDelYn())) {
                 bookmarkService.deleteBookmark(bookmarkId);
                 response.put("result", "SUCCESS");
@@ -156,14 +153,14 @@ public class BookmarkController {
                 return response;
             }
 
-            // 4. 결재선 최소 인원 검증 (수정 요청일 경우만)
+            // 결재선 최소 인원 검증 (수정 요청일 경우만)
             if (bookmark.getApprovers() == null || bookmark.getApprovers().size() < 3) {
                 response.put("result", "FAIL");
                 response.put("message", "결재선은 최소 3명 이상 지정해야 합니다.");
                 return response;
             }
             
-            // 5. 이름 수정 및/또는 결재선 교체 통합 서비스 호출
+            // 이름 수정 및/또는 결재선 교체 통합 서비스 호출
             int result = bookmarkService.updateBookmark(bookmark);
 
             if (result > 0) {
@@ -178,7 +175,7 @@ public class BookmarkController {
             }
 
         } catch (Exception e) {
-            // ORA-00001 등의 DB 오류는 여기서 포착됩니다.
+            
             System.err.println("Bookmark update failed: " + e.getMessage());
             response.put("result", "FAIL");
             response.put("message", "북마크 수정 중 시스템 오류 발생: " + e.getMessage());

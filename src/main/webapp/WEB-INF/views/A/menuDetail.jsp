@@ -137,12 +137,9 @@
     <form id="deleteForm" action="${pageContext.request.contextPath}/menu/delete/${menu.menuId}" method="post"></form>
 
 <script>
-    /**
-     * 삭제 버튼 클릭 시 확인 창을 띄우고 POST 요청을 전송합니다.
-     */
+
     function confirmDelete(menuId) {
         if (confirm('정말로 메뉴 [ID: ' + menuId + ']를 삭제하시겠습니까?')) {
-            // POST 요청으로 삭제를 처리하는 폼을 전송합니다.
             document.getElementById('deleteForm').submit();
         }
     }
