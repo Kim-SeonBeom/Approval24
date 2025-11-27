@@ -128,7 +128,6 @@
 	<!-- footer 영역 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	<script>
-		// 1. 부서 선택 시 해당 부서의 계정 목록을 불러오는 AJAX
 		$('#deptSelect')
 				.on(
 						'change',
@@ -137,7 +136,7 @@
 							if (deptId) {
 								$
 										.ajax({
-											url : '/approval24/bookmark/accounts', // 컨트롤러의 @PostMapping("/accounts") 매핑
+											url : '/approval24/bookmark/accounts', 
 											type : 'POST',
 											data : {
 												deptId : deptId
@@ -202,7 +201,7 @@
 			    const order = i + 1;
 			    $(this).attr('id', 'appr_' + order);
 			    $(this).find('.order').text(order);
-			    // hidden name 인덱스 재설정
+
 			    $(this).find('input.seq')
 			      .val(order)
 			      .attr('name', `approvers[${i}].seqNo`);
@@ -215,11 +214,10 @@
 			  });
 			}
 
-		// 2. '추가' 버튼 클릭 시 결재자 목록에 추가
+
 function addApprover(accountId, approverName) {
   ensureApproverList();
 
-  // 이미 선택돼 있으면 무시
   if (getSelectedIds().has(String(accountId))) return;
 
   const currentIdx = $('#approverList li').length; // 0-based
@@ -268,7 +266,6 @@ $('#selectedApprovers').on('click', '.js-remove-approver', function () {
   // 순번/name 재정렬
   reindexApprovers();
 
-  // 모두 없어지면 비우기(선택)
   if ($('#approverList li').length === 0) {
     $('#selectedApprovers').empty();
   }

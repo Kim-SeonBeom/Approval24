@@ -71,21 +71,21 @@ public class ApprovalHistoryController {
 
 
         try {
-            // 1. 전체 데이터 수 조회
+            
             int totalCount = historyService.countMyApprovalHistoryList(filterMap);
 
-            // 2. PageInfoVO 생성 (startRow, endRow 계산 포함)
+            
             PageInfoVO pageInfo = new PageInfoVO(page, pageSize, totalCount);
 
-            // 3. startRow / endRow를 filterMap에 추가
+            
             filterMap.put("startRow", pageInfo.getStartRow());
             filterMap.put("endRow", pageInfo.getEndRow());
 
-            // 4. 페이징 적용된 목록 조회
+            
             List<ApprovalHistoryDTO> historyList = 
                 historyService.getMyApprovalHistoryList(filterMap);
 
-            // 5. 모델에 전달
+            
             model.addAttribute("historyList", historyList);
             model.addAttribute("filterMap", filterMap);
             model.addAttribute("pageInfo", pageInfo);

@@ -331,7 +331,7 @@ public class ApprovalHistoryService {
         
         complainDAO.updateStatusByComplainId(complainId, complainStatusToUpdate);
         
-        // 후속 알림 로직 (TODO: 알림 Service 호출 등)
+       
 		
 	}
 }
