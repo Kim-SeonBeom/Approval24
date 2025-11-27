@@ -35,7 +35,7 @@
                                     </p>
                                     
                                     <a href="${pageContext.request.contextPath}/" class="btn btn-danger btn-user mt-4">
-                                        홈 페이지로 돌아가기
+                                       					 홈 페이지로 돌아가기
                                     </a>
                                     
                                     <div class="mt-4">

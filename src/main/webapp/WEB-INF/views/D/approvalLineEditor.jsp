@@ -76,10 +76,8 @@
 </div>
 
 <script>
-// 부모 JSP의 전역 변수 approvalList에 접근할 것을 가정합니다.
 document.addEventListener("DOMContentLoaded", () => {
     
-    // 💡 모달 내부 임시 저장 배열
     let allBookmarksData = [];
     let draftApprovalLine = [];
 
@@ -87,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.querySelector("#approvalLineTable tbody");
     const bmSel = document.getElementById("bookmarkSelect");
     
-    // 1. 계정 목록 로드
     fetch("/approval24/api/common/accounts") 
         .then(res => {
             if (!res.ok) throw new Error("계정 목록 조회 실패");
@@ -97,10 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
             list.forEach(a => {
                 const opt = document.createElement("option");
                 opt.value = a.accountId;
-                // 표시: 이름 (직급 / 로그인 ID)
                 opt.text = `\${a.userName} (\${a.userPositionName || '직급없음'} / \${a.loginId})`; 
                 
-                // 데이터 속성 (부모 JSP로 전달할 DTO 필드)
                 opt.dataset.userName = a.userName;
                 opt.dataset.userPositionName = a.userPositionName;
                 opt.dataset.loginId = a.loginId;
@@ -115,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadBookmarks();
 
 
-    // 2. 결재자 추가 (addLineBtn) 로직
     document.getElementById("addLineBtn").addEventListener("click", () => {
         if (!accSel.value) {
             alert("계정을 선택하세요.");
@@ -131,15 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const deptId = selectedOption.dataset.deptId;
         const userDeptName = selectedOption.dataset.userDeptName;
         
-        // 중복 체크
         if (draftApprovalLine.some(item => item.accountId === accountId)) {
             alert("이미 추가된 계정입니다.");
             return;
         }
-
-        // 1. 임시 배열에 저장할 데이터 객체 생성 
+ 
         const newItem = {
-            // DB 통신에 필수적인 값
             accountId: accountId,
             processorName: userName,
             processorPositionName: userPositionName, 
@@ -148,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         draftApprovalLine.push(newItem);
         
-        // 2. HTML 테이블에 반영
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td data-position="\${userPositionName}">\${userPositionName}</td> 
@@ -158,25 +148,21 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         tableBody.appendChild(tr);
 
-        // 선택값 초기화 (선택적)
         accSel.value = "";
     });
 
 
-    // 3. 삭제 버튼 로직 수정 (임시 배열 반영)
     tableBody.addEventListener("click", (e) => {
         if (e.target.classList.contains("btn-del")) {
             const row = e.target.closest("tr");
             
-            // 💡 data-account-id 속성에서 계정 ID를 가져옵니다.
             const accountId = row.querySelector('[data-account-id]').getAttribute('data-account-id');
-            const isDbItem = e.target.disabled; // 비활성화 상태는 DB에 저장된 항목임을 의미
+            const isDbItem = e.target.disabled; 
 
             if (isDbItem && !confirm("이미 DB에 저장된 항목입니다. 정말 삭제하시겠습니까?")) {
                 return;
             }
 
-            // HTML에서 제거
             row.remove();
 
             // draftApprovalLine 배열에서 해당 항목 제거
@@ -184,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 4. 설정 완료 버튼 (`submitApprovalBtn`) 로직 (부모 JSP로 데이터 전송)
     document.getElementById("submitApprovalBtn").addEventListener("click", () => {
         if (draftApprovalLine.length === 0) { 
             alert("결재 라인을 추가하세요.");
@@ -209,13 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return res.json();
             })
             .then(list => {
-                allBookmarksData = list; // ⭐ 데이터 전체를 메모리에 저장
+                allBookmarksData = list; // 데이터 전체를 메모리에 저장
                 
                 // 드롭다운 채우기
                 bmSel.innerHTML = '<option value="">-- 즐겨찾기 선택 --</option>'; 
                 list.forEach(bm => {
                     const opt = document.createElement("option");
-                    // option value에 bookmarkId를 저장합니다.
                     opt.value = bm.bookmarkId; 
                     opt.text = bm.bookmarkName;
                     bmSel.appendChild(opt);
@@ -228,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function loadApproversFromMemory(bookmarkId) {
         if (!bookmarkId) return;
 
-        // 1. 메모리에서 해당 북마크 데이터 찾기
         const selectedBookmark = allBookmarksData.find(bm => String(bm.bookmarkId) === String(bookmarkId));
         
         if (!selectedBookmark || !selectedBookmark.approvers) {
@@ -236,12 +219,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 2. 기존 결재 라인 초기화 및 데이터 갱신
         draftApprovalLine = [];
         tableBody.innerHTML = '';
         
         selectedBookmark.approvers.forEach(item => {
-            // ⭐ Approver DTO 필드명 사용: approverId, approverName, userPositionName, loginId
             const newItem = {
                 accountId: String(item.approverId),
                 processorName: item.approverName || '이름없음',
@@ -249,8 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 processorLoginId: item.loginId || 'ID없음',
             };
             draftApprovalLine.push(newItem);
-            
-            // 3. HTML 테이블에 반영
+
             const tr = document.createElement("tr");
             const position = newItem.processorPositionName;
             const name = newItem.processorName;
@@ -271,7 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(`"\${selectedBookmark.bookmarkName}" 북마크가 적용되었습니다.`);
     }
 
-    // ⭐ [수정된 이벤트] 북마크 드롭다운 변경 시 메모리 함수 실행
     bmSel.addEventListener("change", (e) => {
         const selectedBookmarkId = e.target.value;
         if (selectedBookmarkId) {
@@ -279,22 +258,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 5. 모달이 열릴 때 기존 DB 데이터를 draftApprovalLine으로 로드
     $('#approvalLineEditorModal').on('show.bs.modal', function (e) {
-    	//loadBookmarks();
         const $tableBody = $('#approvalLineTable tbody');
         $tableBody.empty();
         
-        // 부모 페이지의 전역 변수 approvalList에 접근하여 데이터를 복사합니다.
         if (typeof approvalList !== 'undefined') {
             draftApprovalLine = [...approvalList]; 
         } else {
             draftApprovalLine = [];
         }
 
-        // 모달 내부 HTML 테이블을 draftApprovalLine의 내용으로 다시 그립니다.
         draftApprovalLine.forEach(item => {
-            // DB에서 로딩된 항목은 null 처리된 필드를 가질 수 있습니다.
             const displayPosition = item.userPositionName || item.positionName || 'N/A'; // DTO 필드명 유연하게 처리
             const displayLoginId = item.loginId || 'N/A'; 
             
@@ -316,10 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     $('#approvalLineEditorModal').on('hidden.bs.modal', function (e) {
         
-        // 북마크 드롭다운 초기화
         bmSel.value = "";
         
-        // 계정 선택 드롭다운 초기화 (선택 사항이지만 일관성을 위해 권장)
         accSel.value = ""; 
         
     });

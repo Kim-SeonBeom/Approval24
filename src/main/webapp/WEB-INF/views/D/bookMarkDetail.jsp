@@ -119,20 +119,13 @@ body#page-top {
 	<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 
 	<script>
-    // ================= [NEW] AJAX 요청 핸들러 함수 정의 =================
-    
-    /**
-     * 수정 및 삭제 요청을 AJAX로 서버에 전송합니다.
-     * @param {boolean} isDelete 삭제 버튼 클릭 여부
-     */
+
     function handleUpdate(isDelete) {
-        // 1. 삭제 요청일 경우 확인 메시지
         if (isDelete) {
             if (!confirm('정말로 북마크를 삭제하시겠습니까?')) {
                 return;
             }
         } else {
-            // 2. 수정 요청일 경우 유효성 검사 (최소 3명 체크)
             const count = $('#approverList li').length;
             if (count < 3) {
                 alert('결재선은 최소 3명 이상 지정해야 합니다.');
@@ -140,10 +133,8 @@ body#page-top {
             }
         }
         
-        // 3. 결재선 순번 및 타입 재정렬
         reindexApprovers();
 
-        // 4. 전송할 데이터 수집 (DTO 구조에 맞춰 JSON 객체 생성)
         let formData = {
             bookmarkId: $('#bookmarkId').val(),
             bookmarkName: $('#bookmarkName').val(),
@@ -157,14 +148,12 @@ body#page-top {
                 approverId: $(this).find('.hid-approverId').val(),
                 approverTypeCd: $(this).find('.hid-type').val(),
                 delYn: $(this).find('.hid-del').val(),
-                // SEQ_NO는 서버(Service)에서 부여하므로 여기서는 제외합니다.
             };
             formData.approvers.push(approver);
         });
         
         console.log('--- AJAX Update/Delete 전송 데이터 확인 ---', formData);
 
-        // 5. AJAX 요청 전송
         $.ajax({
             url: '/approval24/bookmark/update',
             type: 'POST',
@@ -245,11 +234,7 @@ body#page-top {
         console.log("Reindexing Finished");
     }
 
-    // ================= 왼쪽: 전체 계정 목록 로드 (API 변경 적용) =================
 
-    /**
-     * 페이지 로드 시 전체 계정 목록을 로드하는 함수.
-     */
     function loadAccounts() {
         console.log("API 호출: /approval24/api/common/accounts");
         
@@ -258,7 +243,7 @@ body#page-top {
         $.ajax({
             url: '/approval24/api/common/accounts', 
             type: 'GET', 
-            data: {}, // 데이터 없음 (deptId 전송 안 함)
+            data: {}, 
             dataType: 'json',
             success: function (accounts) {
                 let html = '<ul class="list-group">';
@@ -307,7 +292,6 @@ body#page-top {
         });
     }
 
-    // ================= 결재자 추가/제거 =================
     function addApprover(accountId, approverName, deptName) {
         ensureApproverList();
 
@@ -373,9 +357,7 @@ body#page-top {
         }
     });
 
-    // ⭐ 페이지 로드 완료 시 loadAccounts() 함수 호출 ⭐
     $(document).ready(function() {
-        // HTML에서 부서 선택 드롭다운이 제거되었으므로, 바로 전체 계정 목록을 로드합니다.
         loadAccounts();
     });
 
