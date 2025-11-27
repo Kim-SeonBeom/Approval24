@@ -40,7 +40,7 @@ public class UserDTO {
         return (page - 1) * size;
     }
     
-    /** 컨트롤러에서 전달한 원시 문자열을 안전하게 파싱해서 Date 필드에 세팅 */
+    /* 컨트롤러에서 전달한 원시 문자열을 안전하게 파싱해서 Date 필드에 세팅 */
     public void applyDateStrings(String createDtStr, String updateDtStr) {
         this.createDt = parseYmdOrNull(createDtStr);
         this.updateDt = parseYmdOrNull(updateDtStr);
@@ -64,7 +64,7 @@ public class UserDTO {
             sdf.setLenient(false);
             return sdf.parse(s.trim());
         } catch (ParseException e) {
-            return null; // 잘못된 값은 과감히 무시(기간 필터 미적용)
+            return null; // 잘못된 값은 무시(기간 필터 미적용)
         }
     }
 }

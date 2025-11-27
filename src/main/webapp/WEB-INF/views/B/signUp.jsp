@@ -226,14 +226,14 @@ $(document).ready(function () {
 	    // 최신 전체 옵션으로 리셋
 	    $sel.html(authOptionsHtml);
 
-	    // 다른 필드에서 사용 중인 값은 제거 (단, 자기 자신 제외)
+	    // 다른 필드에서 사용 중인 값은 제거 
 	    used.forEach(id => {
 	      if (id && id !== current) {
 	        $sel.find(`option[value="${id}"]`).remove();
 	      }
 	    });
 
-	    // 플레이스홀더("-- 권한 선택 --")는 항상 유지
+	    //("-- 권한 선택 --")는 유지
 	    if ($sel.find('option[value=""]').length === 0) {
 	      $sel.prepend('<option value="">-- 권한 선택 --</option>');
 	    }
@@ -292,9 +292,8 @@ $(document).ready(function () {
     // 새 필드 추가
     const $new = $(authFieldTemplate);
     const $newSel = $new.find('.auth-select');
-    $newSel.html(authOptionsHtml).val(''); // 플레이스홀더 선택
+    $newSel.html(authOptionsHtml).val(''); 
     $container.append($new);
-    // 에러 잡는중
     console.log('새로 추가된 셀렉트의 권한 목록:');
     $newSel.find('option').each(function () {
       console.log('  option value:', $(this).val(), 'text:', $(this).text());
