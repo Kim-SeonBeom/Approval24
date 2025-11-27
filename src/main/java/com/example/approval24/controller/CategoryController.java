@@ -31,7 +31,6 @@ public class CategoryController {
 		
 		// 최초 진입 (빈 리스트)
 		if (filter.isEmptyFilter()) {
-			System.out.print("초기상태");
 			model.addAttribute("categoryList", Collections.emptyList());
 			model.addAttribute("filter", filter);
 			model.addAttribute("totalCount", 0);

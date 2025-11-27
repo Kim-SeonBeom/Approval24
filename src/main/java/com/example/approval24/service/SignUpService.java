@@ -1,12 +1,9 @@
 package com.example.approval24.service;
 
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 import com.example.approval24.dao.AccountDAO;
@@ -16,10 +13,6 @@ import com.example.approval24.dao.InstDAO;
 import com.example.approval24.dao.UserDAO;
 import com.example.approval24.domain.AccountDTO;
 import com.example.approval24.domain.AuthorityAccountDTO;
-import com.example.approval24.domain.AuthorityDTO;
-import com.example.approval24.domain.DeptInstDTO;
-import com.example.approval24.domain.InstDTO;
-import com.example.approval24.domain.RequestDTO;
 import com.example.approval24.domain.UserDTO;
 import com.example.approval24.util.AesEncryptionService;
 import com.example.approval24.util.BCryptUtil;

@@ -176,7 +176,6 @@ public class BookmarkController {
 
         } catch (Exception e) {
             
-            System.err.println("Bookmark update failed: " + e.getMessage());
             response.put("result", "FAIL");
             response.put("message", "북마크 수정 중 시스템 오류 발생: " + e.getMessage());
             return response;

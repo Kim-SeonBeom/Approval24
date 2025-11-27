@@ -33,28 +33,18 @@ public class AuthInterceptor implements HandlerInterceptor {
         		uri.startsWith(contextPath + "/api") ||
         		uri.startsWith(contextPath + "/topic") || 
         		uri.startsWith(contextPath + "/app")) {
-            System.out.println("⭐ Auth Interceptor PASS: 제외 경로 (" + uri + ")");
             return true;
         }
 
-        System.out.println("URI 확인 : " + uri);
         
         @SuppressWarnings("unchecked")
         List<MenuVO> authMenus = (List<MenuVO>) session.getAttribute("authMenus");
 
         if (authMenus == null || authMenus.isEmpty()) {
-            System.out.println("⛔ Auth Interceptor FAIL: 권한 메뉴 정보 없음");
             res.sendRedirect(contextPath + "/login");
             return false;
         }
-        
-        System.out.println("====== 인가 디버그 시작 ======");
-        System.out.println("요청 URI: " + uri);
-        if (authMenus != null) {
-            System.out.println("사용자 권한 메뉴 목록:");
-            authMenus.forEach(m -> System.out.println(" - " + m.getMenuUrl() + " (" + m.getMenuName() + ")"));
-        }
-        System.out.println("===========================");
+ 
 
         // URI와 가장 잘 매칭되는 메뉴 권한 찾기
         MenuVO pageAuth = authMenus.stream()
@@ -68,18 +58,15 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         // 결과 저장 및 통과
         if (pageAuth == null) {
-            System.out.println("**** 인터셉터: 현재 페이지 권한을 찾을 수 없음 (URI: " + uri + ")");
             res.sendRedirect(req.getContextPath() + "/accessDenied");     
             return false;
 
         } else {
             if ("Y".equals(pageAuth.getReadYn())) {
-                System.out.println("**** 인터셉터: 현재 페이지 권한 찾음 = " + pageAuth.getMenuName());
                 req.setAttribute("pageAuth", pageAuth);
                 return true; 
             } 
             else {
-                System.out.println("⛔ 인터셉터: 해당 메뉴에 대한 읽기 권한 없음 (MenuName: " + pageAuth.getMenuName() + ")");
                 res.sendRedirect(req.getContextPath() + "/accessDenied");     
                 return false;
             }

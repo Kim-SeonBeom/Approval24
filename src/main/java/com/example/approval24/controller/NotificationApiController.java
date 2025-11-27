@@ -35,7 +35,6 @@ public class NotificationApiController {
         try {
             return Long.parseLong(String.valueOf(userIdObj));
         } catch (NumberFormatException e) {
-            System.err.println("세션 사용자 ID 포맷 오류: " + userIdObj);
             return null;
         }
     }

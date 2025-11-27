@@ -68,7 +68,6 @@ public class DelegateController {
         }
 		
 		List<AccountDTO> accountList = accountService.myTeamAccountList(accountId);
-		System.out.println(accountList.toString());
 		model.addAttribute("accountList", accountList);
 		return "delegateNew";
 	}
@@ -98,7 +97,6 @@ public class DelegateController {
 			return "redirect:/login";
 		}
 		
-		System.out.println("controller = " + seqNo);
 
 		DelegateDTO delegatedto = delegateService.delegateDetail(seqNo);
 
@@ -106,7 +104,6 @@ public class DelegateController {
 
 		model.addAttribute("detail", delegatedto);
 		model.addAttribute("accountList", accountList);
-		System.out.println(delegatedto.toString());
 		return "delegateDetail";
 	}
 

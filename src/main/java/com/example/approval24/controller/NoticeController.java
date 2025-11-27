@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.approval24.domain.CategoryDTO;
-import com.example.approval24.domain.ComplainDTO;
-import com.example.approval24.domain.ComplainFilterDTO;
 import com.example.approval24.domain.NoticeDTO;
 import com.example.approval24.domain.NoticeFilterDTO;
 import com.example.approval24.domain.TotalCodeDTO;
 import com.example.approval24.service.CategoryService;
-import com.example.approval24.service.ComplainService;
 import com.example.approval24.service.NoticeService;
 import com.example.approval24.service.TotalCodeService;
 

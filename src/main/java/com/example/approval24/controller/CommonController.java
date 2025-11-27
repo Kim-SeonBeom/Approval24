@@ -49,15 +49,12 @@ public class CommonController {
     public ResponseEntity<List<DeptInstDTO>> getDepartmentList(HttpSession session) {
         Long userId = (Long) session.getAttribute("user");
 
-        System.out.println(userId);
         if (userId == null) {
             return ResponseEntity.status(401).build(); 
         }
         
         Long instId = accountService.findInstIdByAccountId(userId);
-        
-        System.out.println(instId);
-        
+                
         if (instId == null) {
              return ResponseEntity.status(404).build();
         }

@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // -------------------------------------------------------------
-    // 💡 2. 모달에서 최종 데이터를 받아 처리하는 함수 (데이터 병합)
+    //  2. 모달에서 최종 데이터를 받아 처리하는 함수 (데이터 병합)
     // -------------------------------------------------------------
 
     // 이 함수는 approvalLineEditor.jsp의 submitApprovalBtn에서 호출됩니다.
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
      // isInitiator: 민원 담당자 계정 ID와 현재 세션 계정 ID가 같은지 확인
      const isInitiator = authData.complainAccountId === authData.sessionAccountId;
      
-     // ⭐️ 1. 코멘트 변수를 let으로 함수 시작 시 선언하고 초기화
+     // ⭐ 1. 코멘트 변수를 let으로 함수 시작 시 선언하고 초기화
      let commentVal = $('#comment').val() || ''; 
 
      // ==========================================================
