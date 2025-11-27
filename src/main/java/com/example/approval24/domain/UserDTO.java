@@ -64,7 +64,7 @@ public class UserDTO {
             sdf.setLenient(false);
             return sdf.parse(s.trim());
         } catch (ParseException e) {
-            return null; // 잘못된 값은 무시(기간 필터 미적용)
+            return null; 
         }
     }
 }
