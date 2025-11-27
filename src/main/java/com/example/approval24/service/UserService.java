@@ -42,7 +42,7 @@ public class UserService {
     
     
 
-    // 2. 사용자 상세 조회 (주민번호 기준)
+    //  사용자 상세 조회 (주민번호 기준)
     public UserDTO getUserDetailByResidentNo(String userResidentNo) {
         UserDTO user = userDAO.findByResidentNo(userResidentNo);
         if (user != null && "Y".equals(user.getDelYn())) {
@@ -51,7 +51,7 @@ public class UserService {
         return user;
     }
     
-    // 3. 사용자 등록
+    // 사용자 등록
     @Transactional
     public int registerUser(UserDTO user) {
     	if( user.getUserResidentNo() == null|| user.getUserResidentNo().trim().isEmpty()) {
@@ -80,13 +80,13 @@ public class UserService {
         return userDAO.insertUser(user);
     }
 
-    // 4. 사용자 정보 수정 
+    // 사용자 정보 수정 
     @Transactional
     public int updateUserInfo(UserDTO user) {
         return userDAO.updateUser(user);
     }
 
-    // 5. 사용자 논리 삭제 
+    // 사용자 논리 삭제 
     @Transactional
     public int deactivateUser(Long userNo,Long updateId) {
         return userDAO.deleteUser(userNo,updateId);

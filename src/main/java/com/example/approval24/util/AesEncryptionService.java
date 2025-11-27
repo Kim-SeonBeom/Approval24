@@ -21,19 +21,14 @@ public class AesEncryptionService {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
 
-    /**
-     * 초기화 메서드
-     * eGov 환경에서는 application.properties를 직접 읽습니다.
-     */
     @PostConstruct
     public void init() {
         try {
             Properties prop = new Properties();
 
-            //  classpath에서 읽기 시도
+
             InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties");
 
-            // classpath 없을시 WEB-INF/classes를 직접 참조
             if (input == null) {
                 File file = new File("WebContent/WEB-INF/classes/application.properties");
                 if (file.exists()) {
@@ -87,9 +82,8 @@ public class AesEncryptionService {
     public String maskResidentNo(String rrn) {
         if (rrn == null || rrn.length() < 7) return rrn;
 
-        String cleaned = rrn.replace("-", ""); // 하이픈 제거
-
-        // 앞 6자리 + 뒤 1자리 + ******
+        String cleaned = rrn.replace("-", ""); 
+        // 뒷자리 별표시
         return cleaned.substring(0, 6) + "-" + cleaned.substring(6, 7) + "******";
     }
 

@@ -8,7 +8,6 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <title>직원정보</title>
 <style>
-/* 수정 가능한 input/select의 스타일을 명확히 표시 */
 .form-control
 :not
  

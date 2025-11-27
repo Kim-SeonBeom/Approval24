@@ -49,7 +49,7 @@
  
  <session-config>
     <!-- 분 단위 -->
-    <session-timeout>60</session-timeout>  <!-- 60분 -->
+    <session-timeout>100</session-timeout>  <!-- 60분 -->
 </session-config>
   
 </web-app>
