@@ -23,7 +23,7 @@ public interface UserDAO {
     // 사용자 수정
     int updateUser(UserDTO user);
 
-    // 논리 삭제 (DEL_YN = 'Y')
+    // 논리 삭제
     int deleteUser(@Param("userNo")Long userNo,@Param("updateId") Long updateId);
 
 	int countUsersByFilter(Map<String, Object> params);

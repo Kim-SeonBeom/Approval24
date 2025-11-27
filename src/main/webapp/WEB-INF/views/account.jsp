@@ -56,7 +56,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!-- 첫번째 url만 이동을 위해 임시로 넣음 (수정요망) /approval24/account/{id}예상중 -->
+						
 										<tr class="clickable-row" data-href="/approval24/mypage" style="cursor: pointer;">
 											<td>Tiger Nixon</td>
 											<td>System Architect</td>

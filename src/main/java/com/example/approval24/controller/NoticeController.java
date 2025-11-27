@@ -58,7 +58,6 @@ public class NoticeController {
 		int totalCount = noticeService.noticeCountFilter(filter);
 		List<NoticeDTO> noticeList = noticeService.noticeFilterList(filter);
 		
-		System.out.println(filter);
 		model.addAttribute("categoryList",filterList);								// 민원서식목록
 		model.addAttribute("noticeList", noticeList);								//민원 목록
 		model.addAttribute("filter", filter); 											//filter 조건
